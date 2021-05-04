@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 # 8合1安装程序
-# VLESS+TCP+TLS
-# VLESS+TCP+xtls-rprx-direct【推荐】
-# VLESS+gRPC+TLS【支持CDN、IPv6】
-# VLESS+WS+TLS【支持CDN、IPv6】
-# VMess+TCP+TLS
-# VMess+WS+TLS【支持CDN、IPv6】
-# Trojan【推荐】
-# Trojan-Go+WS【支持CDN、不支持IPv6】
+# 1. VLESS+TCP+TLS
+# 2. VLESS+TCP+xtls-rprx-direct【推荐】
+# 3. VLESS+gRPC+TLS【支持CDN、IPv6】
+# 4. VLESS+WS+TLS【支持CDN、IPv6】
+# 5. VMess+TCP+TLS
+# 6. VMess+WS+TLS【支持CDN、IPv6】
+# 7. Trojan【推荐】
+# 8. Trojan-Go+WS【支持CDN、不支持IPv6】
 # ---------------------------------
 # 脚本目录
 # ---------------------------------
