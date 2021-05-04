@@ -277,7 +277,7 @@ showInstallStatus() {
 		readInstallProtocolType
 
 		if [[ -n ${currentInstallProtocolType} ]]; then
-			echoContent yellow "已安装协议：\c"
+			echoContent yellow "已安装协议：\n"
 		fi
 		if echo ${currentInstallProtocolType} | grep -q 0; then
 			if [[ "${coreInstallType}" == 2 ]]; then
@@ -304,7 +304,7 @@ showInstallStatus() {
 		fi
 
 		if echo ${currentInstallProtocolType} | grep -q 5; then
-			echoContent yellow "VLESS+gRPC[TLS] \n"
+			echoContent yellow "VLESS+gRPC[TLS] \c"
 		fi
 	fi
 }
