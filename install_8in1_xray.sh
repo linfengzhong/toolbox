@@ -281,30 +281,30 @@ showInstallStatus() {
 		fi
 		if echo ${currentInstallProtocolType} | grep -q 0; then
 			if [[ "${coreInstallType}" == 2 ]]; then
-				echoContent yellow "VLESS+TCP[TLS] \c"
+				echoContent yellow "VLESS+TCP[TLS] \n"
 			else
-				echoContent yellow "VLESS+TCP[TLS/XTLS] \c"
+				echoContent yellow "VLESS+TCP[TLS/XTLS] \n"
 			fi
 		fi
 
 		if echo ${currentInstallProtocolType} | grep -q 1; then
-			echoContent yellow "VLESS+WS[TLS] \c"
+			echoContent yellow "VLESS+WS[TLS] \n"
 		fi
 
 		if echo ${currentInstallProtocolType} | grep -q 2; then
-			echoContent yellow "VMess+TCP[TLS] \c"
+			echoContent yellow "VMess+TCP[TLS] \n"
 		fi
 
 		if echo ${currentInstallProtocolType} | grep -q 3; then
-			echoContent yellow "VMess+WS[TLS] \c"
+			echoContent yellow "VMess+WS[TLS] \n"
 		fi
 
 		if echo ${currentInstallProtocolType} | grep -q 4; then
-			echoContent yellow "Trojan+TCP/WS[TLS]\c"
+			echoContent yellow "Trojan+TCP/WS[TLS] \n"
 		fi
 
 		if echo ${currentInstallProtocolType} | grep -q 5; then
-			echoContent yellow "VLESS+gRPC[TLS] \c"
+			echoContent yellow "VLESS+gRPC[TLS] \n"
 		fi
 	fi
 }
