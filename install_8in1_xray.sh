@@ -3788,7 +3788,7 @@ initMTGSecret() {
 menu() {
 	cd "$HOME" || exit
 	echoContent red "\n=============================================================="
-	echoContent green "当前版本：v0.01"
+	echoContent green "当前版本：v0.02"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "八合一共存脚本\c"
 	showInstallStatus
