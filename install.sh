@@ -194,9 +194,17 @@ function update_sh() {
 
 #安装必要程序
 function dependency_install() {
+  #lsof（list open files）是一个列出当前系统打开文件的工具。
+
+  #在linux环境下，任何事物都以文件的形式存在，通过文件不仅仅可以访问常规数据，还可以访问网络连接和硬件。
+  #Unix和类Unix系统上的压缩打包工具，可以将多个文件合并为一个文件，打包后的文件后缀亦为“tar”。
+
+  #wget 是一个从网络上自动下载文件的自由工具，支持通过 HTTP、HTTPS、FTP 三个最常见的 TCP/IP协议 下载，并可以使用 HTTP 代理。
+  #"wget" 这个名称来源于 “World Wide Web” 与 “get” 的结合。
   ${INS} wget lsof tar
   judge "安装 wget lsof tar"
 
+  #crontab命令常见于Unix和类Unix的操作系统之中，用于设置周期性被执行的指令。
   if [[ "${ID}" == "centos" ]]; then
     ${INS} crontabs
   else
@@ -214,9 +222,13 @@ function dependency_install() {
   fi
   judge "crontab 自启动配置 "
 
+  #unzip命令用于解压缩zip文件 unzip为.zip压缩文件的解压缩程序。
   ${INS} unzip
   judge "安装 unzip"
 
+  #cURL是一个利用URL语法在命令行下工作的文件传输工具
+  #cURL支持的通信协议有FTP、FTPS、HTTP、HTTPS、TFTP、SFTP、Gopher、SCP、Telnet、DICT、FILE、LDAP、LDAPS、IMAP、POP3、SMTP和RTSP。
+  #cURL还支持SSL认证、HTTP POST、HTTP PUT、FTP上传, HTTP form based upload、proxies、HTTP/2、cookies、用户名+密码认证(Basic, Plain, Digest, CRAM-MD5, NTLM, Negotiate and Kerberos)、file transfer resume、proxy tunneling。
   ${INS} curl
   judge "安装 curl"
 
@@ -232,14 +244,21 @@ function dependency_install() {
   #  fi
   #  judge "编译工具包 安装"
 
+  #PCRE(Perl Compatible Regular Expressions)是一个Perl库，包括 perl 兼容的正则表达式库。
+  #pcre-devel packages
+  #zlib-devel
+  #epel-release EPEL的全称叫 Extra Packages for Enterprise Linux 。EPEL是由 Fedora 社区打造，为 RHEL 及衍生发行版如 CentOS、Scientific Linux 等提供高质量软件包的项目。装上了 EPEL之后，就相当于添加了一个第三方源。
+  #OpenSSL是一个开放源代码的软件库包，应用程序可以使用这个包来进行安全通信，避免窃听，同时确认另一端连接者的身份。
+  #openssl-devel
   if [[ "${ID}" == "centos" ]]; then
     ${INS} pcre pcre-devel zlib-devel epel-release openssl openssl-devel
   else
     ${INS} libpcre3 libpcre3-dev zlib1g-dev openssl libssl-dev
   fi
 
+  #jq可以对json数据进行分片、过滤、映射和转换，和sed、awk、grep等命令一样，都可以让你轻松地把玩文本。
   ${INS} jq
-#如不成功，安装备用库里面的jq
+  #如不成功，安装备用库里面的jq
   if ! command -v jq; then
     wget -P /usr/bin https://raw.githubusercontent.com/wulabing/Xray_onekey/${github_branch}/binary/jq && chmod +x /usr/bin/jq
     judge "安装 jq"
