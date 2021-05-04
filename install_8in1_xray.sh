@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# 8合1安装程序
+# 八合一共存脚本+伪装站点
 # 1. VLESS+TCP+TLS
 # 2. VLESS+TCP+xtls-rprx-direct【推荐】
 # 3. VLESS+gRPC+TLS【支持CDN、IPv6】
@@ -36,6 +36,9 @@
 # /etc/nginx/conf.d/alone.conf
 # Nginx伪装站点目录
 # /usr/share/nginx/html
+# 安装最新版本脚本：
+# wget -P /root -N --no-check-certificate "https://raw.githubusercontent.com/linfengzhong/toolbox/main/install_8in1_xray.sh" && chmod 700 /root/install_8in1_xray.sh && /root/install_8in1_xray.sh
+#
 # -------------------------------------------------------------
 # 检测区
 # -------------------------------------------------------------
