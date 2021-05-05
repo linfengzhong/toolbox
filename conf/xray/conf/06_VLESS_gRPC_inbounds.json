@@ -1,0 +1,26 @@
+{
+    "inbounds":[
+    {
+        "port": 31301,
+        "listen": "127.0.0.1",
+        "protocol": "vless",
+        "tag":"VLESSGRPC",
+        "settings": {
+            "clients": [
+                {
+                    "id": "ead3ae26-e2f2-46ef-9e38-1929fd1ea662",
+                    "add": "studyaws.tk",
+                    "email": "studyaws.tk_vless_grpc"
+                }
+            ],
+            "decryption": "none"
+        },
+        "streamSettings": {
+            "network": "grpc",
+            "grpcSettings": {
+                "serviceName": "rrdagrpc"
+            }
+        }
+    }
+]
+}

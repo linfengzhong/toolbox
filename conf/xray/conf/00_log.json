@@ -1,0 +1,6 @@
+{
+  "log": {
+    "error": "/etc/v2ray-agent/xray/error.log",
+    "loglevel": "warning"
+  }
+}

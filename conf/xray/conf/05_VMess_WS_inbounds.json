@@ -1,0 +1,27 @@
+{
+"inbounds":[
+{
+  "port": 31299,
+  "protocol": "vmess",
+  "tag":"VMessWS",
+  "settings": {
+    "clients": [
+      {
+        "id": "ead3ae26-e2f2-46ef-9e38-1929fd1ea662",
+        "alterId": 1,
+        "add": "studyaws.tk",
+        "email": "studyaws.tk_vmess_ws"
+      }
+    ]
+  },
+  "streamSettings": {
+    "network": "ws",
+    "security": "none",
+    "wsSettings": {
+      "acceptProxyProtocol": true,
+      "path": "/rrdavws"
+    }
+  }
+}
+]
+}
