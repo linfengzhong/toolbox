@@ -26,6 +26,8 @@
 # Trojan
 # 目录
 # /etc/v2ray-agent/trojan
+# 配置文件
+# /etc/v2ray-agent/trojan/config_full.json
 # ---------------------------------
 # TLS证书
 # 目录
@@ -3788,7 +3790,7 @@ initMTGSecret() {
 menu() {
 	cd "$HOME" || exit
 	echoContent red "\n=============================================================="
-	echoContent green "当前版本：v0.02"
+	echoContent green "当前版本：v0.03"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "八合一共存脚本\c"
 	showInstallStatus
