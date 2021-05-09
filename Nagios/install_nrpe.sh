@@ -1,6 +1,16 @@
 #!/usr/bin/env bash
 # 安装Nagios NRPE
 # -------------------------------------------------------------
+#*** Configuration summary for nrpe 4.0.3 2020-04-28 ***:
+#
+# General Options:
+# -------------------------
+# NRPE port:    5666
+# NRPE user:    nagios
+# NRPE group:   nagios
+# Nagios user:  nagios
+# Nagios group: nagios
+#
 ###################################################################
 #Security-Enhanced Linux
 #This guide is based on SELinux being disabled or in permissive mode. Steps to do this are as follows.
