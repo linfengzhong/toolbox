@@ -48,8 +48,8 @@ judge() {
 print_ok "开始配置Nagios Plugins -> libexec"
 sleep 2
 #切换root
-sudo su
-print_ok "切换root"
+#sudo su
+#print_ok "切换root"
 
 #切换到临时文件夹
 cd /tmp
