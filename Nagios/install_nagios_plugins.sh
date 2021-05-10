@@ -61,6 +61,7 @@ print_ok "Step2: Prerequisites"
 sleep 2
 yum install -y gcc glibc glibc-common make gettext automake autoconf wget openssl-devel net-snmp net-snmp-utils epel-release
 yum install -y perl-Net-SNMP
+yum install -y sysstat
 if ! command; then print_error "Step2 failed"; exit 1; fi
 print_ok "Step2: Prerequisites   --> DONE"
 sleep 2
