@@ -13,9 +13,9 @@ services:
             - 31299:31299
             - 31301:31301
         volumes: 
-            - ./v2ray-agent/xray/conf:/etc/xray
-            - ./v2ray-agent/xray/log/error.log:/etc/v2ray-agent/xray/error.log
-            - ./v2ray-agent/tls:/home/root/cert
+            - ./xray/conf:/etc/xray/
+            - ./xray/log/error.log:/etc/v2ray-agent/xray/error.log
+            - ./tls:/home/root/cert
         networks: 
             - dockernet
 
@@ -29,12 +29,12 @@ services:
             - 80:80
             - 31300:31300
         volumes: 
-            - ./v2ray-agent/nginx/conf.d:/etc/nginx/conf.d
-            - ./v2ray-agent/nginx/html:/usr/share/nginx/html
-            - ./v2ray-agent/nginx/subscribe:/etc/v2ray-agent/subscribe
-            - ./v2ray-agent/nginx/nginx_logs:/var/log/nginx
-            - ./v2ray-agent/nginx/web_logs:/etc/nginx/logs
-            - ./v2ray-agent/tls:/etc/nginx/ssl
+            - ./nginx/conf.d:/etc/nginx/conf.d
+            - ./nginx/html:/usr/share/nginx/html
+            - ./nginx/subscribe:/etc/v2ray-agent/subscribe
+            - ./nginx/nginx_logs:/var/log/nginx
+            - ./nginx/web_logs:/etc/nginx/logs
+            - ./tls:/etc/nginx/ssl
         networks: 
             - dockernet
 
@@ -47,7 +47,8 @@ services:
         ports:
             - 31296:31296
         volumes:
-            - ./v2ray-agent/trojan:/etc/v2ray-agent/trojan/trojan.log
+            - ./trojan:/etc/v2ray-agent/trojan/
+            - ./trojan:/etc/trojan-go
         networks: 
             - dockernet
         
