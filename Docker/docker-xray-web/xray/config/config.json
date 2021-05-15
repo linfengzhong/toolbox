@@ -34,10 +34,10 @@
             "settings": {
                 "clients": [
                     {
-                        "id": "Your-U-U-ID-HERE",
+                        "id": "ead3ae26-e2f2-46ef-9e38-1929fd1ea662",
                         "flow": "xtls-rprx-direct",
                         "level": 0,
-                        "email": "admin@yourdomain.com"
+                        "email": "admin@shanghai3721.ml"
                     }
                 ],
                 "decryption": "none",

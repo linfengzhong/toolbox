@@ -1,4 +1,4 @@
-version: "3"
+version: "4"
 services: 
     xray:
         image: teddysun/xray
@@ -29,7 +29,7 @@ services:
             - dockernet
 
     web:
-        image: nginx:alpine
+        image: nginx:latest
         container_name: nginx
         restart: always
         environment: 
@@ -48,11 +48,11 @@ services:
             - dockernet
 
     db:
-        image: postgres:alpine
+        image: postgres:latest
         container_name: pgsql
         restart: always
         environment: 
-            # POSTGRES_USER: (Optional)
+# POSTGRES_USER: (Optional)
             POSTGRES_PASSWORD: Your_Password_here
             # POSTGRES_DB: (Optional)
             TZ: Asia/Shanghai
