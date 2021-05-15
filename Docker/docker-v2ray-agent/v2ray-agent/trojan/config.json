@@ -20,8 +20,8 @@
     "websocket": {
         "enabled": true,
         "path": "/rrdatws",
-        "host": "studyaws.tk",
-        "add":"studyaws.tk"
+        "host": "shanghai3721.ml",
+        "add":"shanghai3721.ml"
     },
     "router": {
         "enabled": false

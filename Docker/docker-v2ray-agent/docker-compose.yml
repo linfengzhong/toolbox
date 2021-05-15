@@ -8,9 +8,13 @@ services:
             TZ: Asia/Shanghai
         ports: 
             - 443:443
+            - 31297:31297
+            - 31298:31298
+            - 31299:31299
+            - 31301:31301
         volumes: 
             - ./v2ray-agent/xray/conf:/etc/xray
-            - ./v2ray-agent/xray/log:/var/log/xray
+            - ./v2ray-agent/xray/log/error.log:/etc/v2ray-agent/xray/error.log
             - ./v2ray-agent/tls:/home/root/cert
         networks: 
             - dockernet
@@ -23,9 +27,11 @@ services:
             TZ: Asia/Shanghai
         ports:
             - 80:80
+            - 31300:31300
         volumes: 
             - ./v2ray-agent/nginx/conf.d:/etc/nginx/conf.d
-            - ./v2ray-agent/nginx/html:/var/www
+            - ./v2ray-agent/nginx/html:/usr/share/nginx/html
+            - ./v2ray-agent/nginx/subscribe:/etc/v2ray-agent/subscribe
             - ./v2ray-agent/nginx/nginx_logs:/var/log/nginx
             - ./v2ray-agent/nginx/web_logs:/etc/nginx/logs
             - ./v2ray-agent/tls:/etc/nginx/ssl
@@ -37,12 +43,11 @@ services:
         container_name: trojan-go
         restart: always
         environment: 
-            # POSTGRES_USER: (Optional)
-            POSTGRES_PASSWORD: 840819
-            # POSTGRES_DB: (Optional)
             TZ: Asia/Shanghai
+        ports:
+            - 31296:31296
         volumes:
-            - ./dbdata:/var/lib/postgresql/data
+            - ./v2ray-agent/trojan:/etc/v2ray-agent/trojan/trojan.log
         networks: 
             - dockernet
         
