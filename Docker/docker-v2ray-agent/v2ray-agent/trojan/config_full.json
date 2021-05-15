@@ -1,0 +1,29 @@
+{
+    "run_type": "server",
+    "local_addr": "127.0.0.1",
+    "local_port": 31296,
+    "remote_addr": "127.0.0.1",
+    "remote_port": 31300,
+    "disable_http_check":true,
+    "log_level":3,
+    "log_file":"/etc/v2ray-agent/trojan/trojan.log",
+    "password": [
+        "ead3ae26-e2f2-46ef-9e38-1929fd1ea662"
+    ],
+    "dns":[
+        "localhost"
+    ],
+    "transport_plugin":{
+        "enabled":true,
+        "type":"plaintext"
+    },
+    "websocket": {
+        "enabled": true,
+        "path": "/rrdatws",
+        "host": "studyaws.tk",
+        "add":"studyaws.tk"
+    },
+    "router": {
+        "enabled": false
+    }
+}

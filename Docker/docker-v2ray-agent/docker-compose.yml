@@ -1,0 +1,50 @@
+version: '3'
+services: 
+    xray:
+        image: teddysun/xray
+        container_name: xray
+        restart: always
+        environment: 
+            TZ: Asia/Shanghai
+        ports: 
+            - 443:443
+        volumes: 
+            - ./v2ray-agent/xray/conf:/etc/xray
+            - ./v2ray-agent/xray/log:/var/log/xray
+            - ./v2ray-agent/tls:/home/root/cert
+        networks: 
+            - dockernet
+
+    nginx:
+        image: nginx:latest
+        container_name: nginx
+        restart: always
+        environment: 
+            TZ: Asia/Shanghai
+        ports:
+            - 80:80
+        volumes: 
+            - ./v2ray-agent/nginx/conf.d:/etc/nginx/conf.d
+            - ./v2ray-agent/nginx/html:/var/www
+            - ./v2ray-agent/nginx/nginx_logs:/var/log/nginx
+            - ./v2ray-agent/nginx/web_logs:/etc/nginx/logs
+            - ./v2ray-agent/tls:/etc/nginx/ssl
+        networks: 
+            - dockernet
+
+    trojan-go:
+        image: teddysun/trojan-go:latest
+        container_name: trojan-go
+        restart: always
+        environment: 
+            # POSTGRES_USER: (Optional)
+            POSTGRES_PASSWORD: 840819
+            # POSTGRES_DB: (Optional)
+            TZ: Asia/Shanghai
+        volumes:
+            - ./dbdata:/var/lib/postgresql/data
+        networks: 
+            - dockernet
+        
+networks: 
+    dockernet:
