@@ -1,188 +1,191 @@
 {
-    "log": {
-      "error": "/etc/v2ray-agent/xray/error.log",
-      "loglevel": "warning"
+  "log": {
+    "error": "/etc/v2ray-agent/xray/error.log",
+    "loglevel": "warning"
+  }
+}
+
+{
+  "inbounds":[
+  {
+    "port": 443,
+    "protocol": "vless",
+    "tag":"VLESSTCP",
+    "settings": {
+      "clients": [
+       {
+          "id": "lx421d322d-ead3ae26-e2f2-46ef-9e38-1929fd1ea662-et966",
+          "add":"shanghai3721.ml",
+          "flow":"xtls-rprx-direct",
+          "email": "shanghai3721.ml_VLESS_XTLS/TLS-direct_TCP"
+        }
+      ],
+      "decryption": "none",
+      "fallbacks": [
+          {"dest":31296,"xver":0},
+          {"path":"/rrdaws","dest":31297,"xver":1},
+          {"path":"/rrdatcp","dest":31298,"xver":1},
+          {"path":"/rrdavws","dest":31299,"xver":1},
+          {"alpn":"h2","dest":31301,"xver":0}
+      ]
+    },
+    "streamSettings": {
+      "network": "tcp",
+      "security": "xtls",
+      "xtlsSettings": {
+        "minVersion": "1.2",
+        "alpn": [
+          "http/1.1",
+          "h2"
+        ],
+        "certificates": [
+          {
+            "certificateFile": "/etc/v2ray-agent/tls/shanghai3721.ml.crt",
+            "keyFile": "/etc/v2ray-agent/tls/shanghai3721.ml.key",
+            "ocspStapling": 3600,
+            "usage":"encipherment"
+          }
+        ]
+      }
     }
   }
+  ]
+  }
 
-  {
-    "inbounds":[
+{
+"inbounds":[
     {
-      "port": 443,
-      "protocol": "vless",
-      "tag":"VLESSTCP",
-      "settings": {
-        "clients": [
-         {
-            "id": "lx421d322d-ead3ae26-e2f2-46ef-9e38-1929fd1ea662-et966",
-            "add":"shanghai3721.ml",
-            "flow":"xtls-rprx-direct",
-            "email": "shanghai3721.ml_VLESS_XTLS/TLS-direct_TCP"
-          }
-        ],
-        "decryption": "none",
-        "fallbacks": [
-            {"dest":31296,"xver":0},
-            {"path":"/rrdaws","dest":31297,"xver":1},
-            {"path":"/rrdatcp","dest":31298,"xver":1},
-            {"path":"/rrdavws","dest":31299,"xver":1},
-            {"alpn":"h2","dest":31301,"xver":0}
-        ]
-      },
-      "streamSettings": {
-        "network": "tcp",
-        "security": "xtls",
-        "xtlsSettings": {
-          "minVersion": "1.2",
-          "alpn": [
-            "http/1.1",
-            "h2"
-          ],
-          "certificates": [
-            {
-              "certificateFile": "/etc/v2ray-agent/tls/shanghai3721.ml.crt",
-              "keyFile": "/etc/v2ray-agent/tls/shanghai3721.ml.key",
-              "ocspStapling": 3600,
-              "usage":"encipherment"
-            }
+  "port": 31297,
+  "listen": "127.0.0.1",
+  "protocol": "vless",
+  "tag":"VLESSWS",
+  "settings": {
+    "clients": [
+      {
+        "id": "lx421d322d-ead3ae26-e2f2-46ef-9e38-1929fd1ea662-et966",
+        "email": "shanghai3721.ml_vless_ws"
+      }
+    ],
+    "decryption": "none"
+  },
+  "streamSettings": {
+    "network": "ws",
+    "security": "none",
+    "wsSettings": {
+      "acceptProxyProtocol": true,
+      "path": "/rrdaws"
+    }
+  }
+}
+]
+}
+
+{
+"inbounds":[
+{
+  "port": 31298,
+  "listen": "127.0.0.1",
+  "protocol": "vmess",
+  "tag":"VMessTCP",
+  "settings": {
+    "clients": [
+      {
+        "id": "lx421d322d-ead3ae26-e2f2-46ef-9e38-1929fd1ea662-et966",
+        "alterId": 1,
+        "email": "shanghai3721.ml_vmess_tcp"
+      }
+    ]
+  },
+  "streamSettings": {
+    "network": "tcp",
+    "security": "none",
+    "tcpSettings": {
+      "acceptProxyProtocol": true,
+      "header": {
+        "type": "http",
+        "request": {
+          "path": [
+            "/rrdatcp"
           ]
         }
       }
     }
-    ]
-    }
+  }
+}
+]
+}
 
+{
+"inbounds":[
+{
+  "port": 31299,
+  "protocol": "vmess",
+  "tag":"VMessWS",
+  "settings": {
+    "clients": [
+      {
+        "id": "lx421d322d-ead3ae26-e2f2-46ef-9e38-1929fd1ea662-et966",
+        "alterId": 1,
+        "add": "shanghai3721.ml",
+        "email": "shanghai3721.ml_vmess_ws"
+      }
+    ]
+  },
+  "streamSettings": {
+    "network": "ws",
+    "security": "none",
+    "wsSettings": {
+      "acceptProxyProtocol": true,
+      "path": "/rrdavws"
+    }
+  }
+}
+]
+}
+
+{
+    "inbounds":[
     {
-        "inbounds":[
-            {
-          "port": 31297,
-          "listen": "127.0.0.1",
-          "protocol": "vless",
-          "tag":"VLESSWS",
-          "settings": {
+        "port": 31301,
+        "listen": "127.0.0.1",
+        "protocol": "vless",
+        "tag":"VLESSGRPC",
+        "settings": {
             "clients": [
-              {
-                "id": "lx421d322d-ead3ae26-e2f2-46ef-9e38-1929fd1ea662-et966",
-                "email": "shanghai3721.ml_vless_ws"
-              }
+                {
+                    "id": "lx421d322d-ead3ae26-e2f2-46ef-9e38-1929fd1ea662-et966",
+                    "add": "shanghai3721.ml",
+                    "email": "shanghai3721.ml_vless_grpc"
+                }
             ],
             "decryption": "none"
-          },
-          "streamSettings": {
-            "network": "ws",
-            "security": "none",
-            "wsSettings": {
-              "acceptProxyProtocol": true,
-              "path": "/rrdaws"
+        },
+        "streamSettings": {
+            "network": "grpc",
+            "grpcSettings": {
+                "serviceName": "rrdagrpc"
             }
-          }
         }
-        ]
-        }
-        
+    }
+]
+}
+
+{
+    "outbounds": [
         {
-            "inbounds":[
-            {
-              "port": 31298,
-              "listen": "127.0.0.1",
-              "protocol": "vmess",
-              "tag":"VMessTCP",
-              "settings": {
-                "clients": [
-                  {
-                    "id": "lx421d322d-ead3ae26-e2f2-46ef-9e38-1929fd1ea662-et966",
-                    "alterId": 1,
-                    "email": "shanghai3721.ml_vmess_tcp"
-                  }
-                ]
-              },
-              "streamSettings": {
-                "network": "tcp",
-                "security": "none",
-                "tcpSettings": {
-                  "acceptProxyProtocol": true,
-                  "header": {
-                    "type": "http",
-                    "request": {
-                      "path": [
-                        "/rrdatcp"
-                      ]
-                    }
-                  }
-                }
-              }
-            }
-            ]
-            }
-            {
-                "inbounds":[
-                {
-                  "port": 31299,
-                  "protocol": "vmess",
-                  "tag":"VMessWS",
-                  "settings": {
-                    "clients": [
-                      {
-                        "id": "lx421d322d-ead3ae26-e2f2-46ef-9e38-1929fd1ea662-et966",
-                        "alterId": 1,
-                        "add": "shanghai3721.ml",
-                        "email": "shanghai3721.ml_vmess_ws"
-                      }
-                    ]
-                  },
-                  "streamSettings": {
-                    "network": "ws",
-                    "security": "none",
-                    "wsSettings": {
-                      "acceptProxyProtocol": true,
-                      "path": "/rrdavws"
-                    }
-                  }
-                }
-                ]
-                }
-                {
-                    "inbounds":[
-                    {
-                        "port": 31301,
-                        "listen": "127.0.0.1",
-                        "protocol": "vless",
-                        "tag":"VLESSGRPC",
-                        "settings": {
-                            "clients": [
-                                {
-                                    "id": "lx421d322d-ead3ae26-e2f2-46ef-9e38-1929fd1ea662-et966",
-                                    "add": "shanghai3721.ml",
-                                    "email": "shanghai3721.ml_vless_grpc"
-                                }
-                            ],
-                            "decryption": "none"
-                        },
-                        "streamSettings": {
-                            "network": "grpc",
-                            "grpcSettings": {
-                                "serviceName": "rrdagrpc"
-                            }
-                        }
-                    }
-                ]
-                }
-                {
-                    "outbounds": [
-                        {
-                          "protocol": "freedom",
-                          "settings": {
-                            "domainStrategy": "UseIPv4"
-                          },
-                          "tag": "IPv4-out"
-                        }
-                    ]
-                }
-                {
-                    "dns": {
-                        "servers": [
-                          "localhost"
-                        ]
-                  }
-                }
-                                                                            
+          "protocol": "freedom",
+          "settings": {
+            "domainStrategy": "UseIPv4"
+          },
+          "tag": "IPv4-out"
+        }
+    ]
+}
+
+{
+    "dns": {
+        "servers": [
+          "localhost"
+        ]
+  }
+}

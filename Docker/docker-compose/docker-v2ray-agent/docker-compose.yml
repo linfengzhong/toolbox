@@ -20,7 +20,7 @@ services:
             - dockernet
 
     nginx:
-        image: nginx:latest
+        image: nginx:alpine
         container_name: nginx
         restart: always
         environment: 
@@ -39,7 +39,7 @@ services:
             - dockernet
 
     trojan-go:
-        image: teddysun/trojan-go:latest
+        image: trojan-go:latest
         container_name: trojan-go
         restart: always
         environment: 
