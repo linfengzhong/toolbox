@@ -8,26 +8,26 @@ services:
             TZ: Asia/Shanghai
         ports: 
             - 443:443
-            - 127.0.0.1:31297:31297
-            - 127.0.0.1:31298:31298
-            - 127.0.0.1:31299:31299
-            - 127.0.0.1:31301:31301
+            - 31297:31297
+            - 31298:31298
+            - 31299:31299
+            - 31301:31301
         volumes: 
-            - ./xray/conf.d:/etc/xray/conf.d
+            - ./xray:/etc/xray
             - ./xray/log:/etc/v2ray-agent/xray
             - ./tls:/home/root/cert
         networks: 
             - dockernet
 
     nginx:
-        image: nginx:alpine
+        image: nginx:latest
         container_name: nginx
         restart: always
         environment: 
             TZ: Asia/Shanghai
         ports:
             - 80:80
-            - 127.0.0.1:31300:31300
+            - 31300:31300
         volumes: 
             - ./nginx/conf.d:/etc/nginx/conf.d
             - ./nginx/html:/usr/share/nginx/html
@@ -45,7 +45,7 @@ services:
         environment: 
             TZ: Asia/Shanghai
         ports:
-            - 127.0.0.1:31296:31296
+            - 31296:31296
         volumes:
             - ./trojan:/etc/v2ray-agent/trojan/
             - ./trojan:/etc/trojan-go
