@@ -1,7 +1,7 @@
 version: '3'
 services: 
     xray:
-        image: teddysun/xray
+        image: xray:latest
         container_name: xray
         restart: always
         environment: 
@@ -13,7 +13,7 @@ services:
             - 127.0.0.1:31299:31299
             - 127.0.0.1:31301:31301
         volumes: 
-            - ./xray:/etc/xray
+            - ./xray/conf.d:/etc/xray/conf.d
             - ./xray/log:/etc/v2ray-agent/xray
             - ./tls:/home/root/cert
         networks: 

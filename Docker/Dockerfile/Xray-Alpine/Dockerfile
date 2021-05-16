@@ -1,13 +1,15 @@
 # Dockerfile for xray based alpine
-# Copyright (C) 2019 - 2020 Teddysun <i@teddysun.com>
+# Copyright (C) 2019 - 2021 linfengzhong <linfengzhong@outlook.com>
 # Reference URL:
 # https://github.com/XTLS/Xray-core
 # https://github.com/v2fly/v2ray-core
 # https://github.com/v2fly/geoip
 # https://github.com/v2fly/domain-list-community
 
+## bash -c "$(curl -L https://github.com/XTLS/Xray-install/raw/main/install-release.sh)" @ install
+
 FROM alpine:latest
-LABEL maintainer="Teddysun <i@teddysun.com>"
+LABEL maintainer="linfengzhong <linfengzhong@outlook.com>"
 
 WORKDIR /root
 COPY xray.sh /root/xray.sh
@@ -23,4 +25,4 @@ RUN set -ex \
 
 VOLUME /etc/xray
 ENV TZ=Asia/Shanghai
-CMD [ "/usr/bin/xray", "-config", "/etc/xray/config.json" ]
+CMD [ "/usr/bin/xray", "-config", "/etc/xray/conf.d" ]
