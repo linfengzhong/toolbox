@@ -1,27 +1,27 @@
 version: '3.1'
 services: 
     xray:
-        image: xray:latest
+        build:
+            dockerfile: Dockerfile
+            context: ./Dockerfile/Xray-Alpine
+            labels: xray:latest
         container_name: xray
         restart: always
         environment: 
             TZ: Asia/Shanghai
         ports: 
             - 443:443
-#            - 31297:31297
-#            - 31298:31298
-#            - 31299:31299
-#            - 31301:31301
-#        extra_hosts:
-#            - "nginx.xray:172.18.18.3"
-#            - "trojan-go.xray:172.18.18.4"
+        expose:
+            - 31297
+            - 31298
+            - 31299
+            - 31301
         volumes: 
             - ./xray:/etc/xray
             - ./xray/log:/etc/xray/log
             - ./tls:/home/root/cert
         networks: 
-            xray-net:
-                ipv4_address: 172.18.18.3
+            - xray-net
 
     nginx:
         image: nginx:latest
@@ -31,10 +31,8 @@ services:
             TZ: Asia/Shanghai
         ports:
             - 80:80
-#            - 31300:31300
-#        extra_hosts:
-#            - "xray.xray:172.18.18.2"
-#            - "trojan-go.xray:172.18.18.4"    
+        expose:
+            - 31300 
         volumes: 
             - ./nginx/conf.d:/etc/nginx/conf.d
             - ./nginx/html:/usr/share/nginx/html
@@ -43,8 +41,7 @@ services:
             - ./nginx/web_logs:/etc/nginx/logs
             - ./tls:/etc/nginx/ssl
         networks: 
-            xray-net:
-                ipv4_address: 172.18.18.2
+            - xray-net
 
     trojan-go:
         image: trojan-go:latest
@@ -52,26 +49,22 @@ services:
         restart: always
         environment: 
             TZ: Asia/Shanghai
-#        ports:
-#            - 31296:31296
-#        extra_hosts:
-#            - "nginx.xray:172.18.18.2"  
-#            - "xray.xray:172.18.18.3"
+        expose:
+            - 31296
         volumes:
             - ./trojan:/etc/v2ray-agent/trojan/
             - ./trojan:/etc/trojan-go
         networks: 
-            xray-net:
-                ipv4_address: 172.18.18.4
+            - xray-net
         
 networks: 
     xray-net:
         driver: bridge
         ipam:
             config:
-                - subnet: 172.18.18.0/16
-                  gateway: 172.18.18.1
-                  aux_addresses:
+                subnet: 172.18.18.0/16
+                gateway: 172.18.18.1
+                aux_addresses:
                     nginx: 172.18.18.2
                     xray: 172.18.18.3
                     trojan-go: 172.18.18.4
