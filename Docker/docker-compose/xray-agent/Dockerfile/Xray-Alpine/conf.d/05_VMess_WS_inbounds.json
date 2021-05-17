@@ -1,0 +1,27 @@
+{
+"inbounds":[
+{
+  "port": 31299,
+  "protocol": "vmess",
+  "tag":"VMessWS",
+  "settings": {
+    "clients": [
+      {
+        "id": "14f67e67-e98e-4819-b763-91c18d770711",
+        "alterId": 1,
+        "add": "shanghai3721.ml",
+        "email": "shanghai3721.ml_vmess_ws"
+      }
+    ]
+  },
+  "streamSettings": {
+    "network": "ws",
+    "security": "none",
+    "wsSettings": {
+      "acceptProxyProtocol": true,
+      "path": "/rrdavws"
+    }
+  }
+}
+]
+}

@@ -1,0 +1,26 @@
+{
+    "inbounds":[
+    {
+        "port": 31301,
+        "listen": "127.0.0.1",
+        "protocol": "vless",
+        "tag":"VLESSGRPC",
+        "settings": {
+            "clients": [
+                {
+                    "id": "14f67e67-e98e-4819-b763-91c18d770711",
+                    "add": "shanghai3721.ml",
+                    "email": "shanghai3721.ml_vless_grpc"
+                }
+            ],
+            "decryption": "none"
+        },
+        "streamSettings": {
+            "network": "grpc",
+            "grpcSettings": {
+                "serviceName": "rrdagrpc"
+            }
+        }
+    }
+]
+}
