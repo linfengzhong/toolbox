@@ -14,12 +14,12 @@ services:
         expose:
             - 31300 
         volumes: 
-            - ./nginx/conf.d:/etc/nginx/conf.d
-            - ./nginx/html:/usr/share/nginx/html
-            - ./nginx/subscribe:/etc/v2ray-agent/subscribe
-            - ./nginx/nginx_logs:/var/log/nginx
-            - ./nginx/web_logs:/etc/nginx/logs
-            - ./tls:/etc/nginx/ssl
+            - ./conf.d/nginx/conf.d:/etc/nginx/conf.d
+            - ./conf.d/nginx/html:/usr/share/nginx/html
+            - ./conf.d/nginx/subscribe:/etc/v2ray-agent/subscribe
+            - ./conf.d/nginx/nginx_logs:/var/log/nginx
+            - ./conf.d/nginx/web_logs:/etc/nginx/logs
+            - ./conf.d/tls:/etc/nginx/ssl
         networks: 
             - xray-net
 
@@ -39,8 +39,8 @@ services:
             - 31299
             - 31301
         volumes: 
-            - ./xray:/etc/xray
-            - ./tls:/etc/xray/tls
+            - ./conf.d/xray:/etc/xray
+            - ./conf.d/tls:/etc/xray/tls
         networks: 
             - xray-net
             
@@ -55,7 +55,7 @@ services:
         expose:
             - 31296
         volumes:
-            - ./trojan-go:/etc/trojan-go
+            - ./conf.d/trojan-go:/etc/trojan-go
         networks: 
             - xray-net
         
