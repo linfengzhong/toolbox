@@ -2,7 +2,9 @@ version: '3.1'
 services:
 
     nginx:
-        image: nginx:latest
+        build:
+            dockerfile: Dockerfile
+            context: ./Dockerfile/Nginx-Alpine
         container_name: nginx
         restart: always
         environment: 
@@ -20,12 +22,6 @@ services:
             - ./tls:/etc/nginx/ssl
         networks: 
             - xray-net
-        healthcheck:
-            test: ["CMD", "curl", "-f", "http://localhost"]
-            interval: 1m30s
-            timeout: 10s
-            retries: 3
-            start_period: 40s
 
     xray:
         build:
@@ -49,7 +45,9 @@ services:
             - xray-net
             
     trojan-go:
-        image: trojan-go:latest
+        build:
+            dockerfile: Dockerfile
+            context: ./Dockerfile/Trojan-go-Alpine
         container_name: trojan-go
         restart: always
         environment: 
