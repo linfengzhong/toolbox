@@ -4,7 +4,6 @@ services:
         build:
             dockerfile: Dockerfile
             context: ./Dockerfile/Xray-Alpine
-            labels: xray:latest
         container_name: xray
         restart: always
         environment: 
@@ -42,6 +41,12 @@ services:
             - ./tls:/etc/nginx/ssl
         networks: 
             - xray-net
+        healthcheck:
+            test: ["CMD", "curl", "-f", "http://localhost"]
+            interval: 1m30s
+            timeout: 10s
+            retries: 3
+            start_period: 40s
 
     trojan-go:
         image: trojan-go:latest
