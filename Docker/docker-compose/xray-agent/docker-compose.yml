@@ -12,17 +12,16 @@ services:
 #            - 31298:31298
 #            - 31299:31299
 #            - 31301:31301
-        extra_hosts:
-            - "nginx.xray:172.18.18.3"
-            - "trojan-go.xray:172.18.18.4"
+#        extra_hosts:
+#            - "nginx.xray:172.18.18.3"
+#            - "trojan-go.xray:172.18.18.4"
         volumes: 
             - ./xray:/etc/xray
-            - ./xray/log:/etc/xray
+            - ./xray/log:/etc/xray/log
             - ./tls:/home/root/cert
         networks: 
-            - xray-net
-#            xray-net:
-#                ipv4_address: 11.11.11.10
+            xray-net:
+                ipv4_address: 172.18.18.3
 
     nginx:
         image: nginx:latest
@@ -33,9 +32,9 @@ services:
         ports:
             - 80:80
 #            - 31300:31300
-        extra_hosts:
-            - "xray.xray:172.18.18.2"
-            - "trojan-go.xray:172.18.18.4"    
+#        extra_hosts:
+#            - "xray.xray:172.18.18.2"
+#            - "trojan-go.xray:172.18.18.4"    
         volumes: 
             - ./nginx/conf.d:/etc/nginx/conf.d
             - ./nginx/html:/usr/share/nginx/html
@@ -44,9 +43,8 @@ services:
             - ./nginx/web_logs:/etc/nginx/logs
             - ./tls:/etc/nginx/ssl
         networks: 
-            - xray-net
-#            xray-net:
-#                ipv4_address: 11.11.11.11
+            xray-net:
+                ipv4_address: 172.18.18.2
 
     trojan-go:
         image: trojan-go:latest
@@ -54,18 +52,17 @@ services:
         restart: always
         environment: 
             TZ: Asia/Shanghai
-        ports:
-            - 31296:31296
-        extra_hosts:
-            - "nginx.xray:172.18.18.2"  
-            - "xray.xray:172.18.18.3"
+#        ports:
+#            - 31296:31296
+#        extra_hosts:
+#            - "nginx.xray:172.18.18.2"  
+#            - "xray.xray:172.18.18.3"
         volumes:
             - ./trojan:/etc/v2ray-agent/trojan/
             - ./trojan:/etc/trojan-go
         networks: 
-            - xray-net
-#            xray-net:
-#                ipv4_address: 11.11.11.12
+            xray-net:
+                ipv4_address: 172.18.18.4
         
 networks: 
     xray-net:
