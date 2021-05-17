@@ -1,21 +1,29 @@
 {
     "run_type": "server",
-    "local_addr": "0.0.0.0",
-    "local_port": 443,
-    "remote_addr": "127.0.0.1",
-    "remote_port": 80,
+    "local_addr": "127.0.0.1",
+    "local_port": 31296,
+    "remote_addr": "nginx",
+    "remote_port": 31300,
+    "disable_http_check":true,
+    "log_level":3,
+    "log_file":"/etc/trojan-go/trojan.log",
     "password": [
-        "your_password"
+        "ead3ae26-e2f2-46ef-9e38-1929fd1ea662"
     ],
-    "ssl": {
-        "cert": "your_cert.crt",
-        "key": "your_key.key",
-        "sni": "your-domain-name.com"
+    "dns":[
+        "localhost"
+    ],
+    "transport_plugin":{
+        "enabled":true,
+        "type":"plaintext"
     },
-    "router":{
+    "websocket": {
         "enabled": true,
-        "block": [
-            "geoip:private"
-        ]
+        "path": "/rrdatws",
+        "host": "shanghai3721.ml",
+        "add":"shanghai3721.ml"
+    },
+    "router": {
+        "enabled": false
     }
 }
