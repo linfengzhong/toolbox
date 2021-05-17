@@ -18,7 +18,7 @@ services:
         volumes: 
             - ./xray:/etc/xray
             - ./xray/log:/etc/xray/log
-            - ./tls:/home/root/cert
+            - ./tls:/etc/xray/tls
         networks: 
             - xray-net
 
@@ -67,7 +67,7 @@ networks:
         driver: bridge
         ipam:
             config:
-                subnet: 172.18.18.0/16
+                - subnet: 172.18.18.0/16
                 gateway: 172.18.18.1
                 aux_addresses:
                     nginx: 172.18.18.2

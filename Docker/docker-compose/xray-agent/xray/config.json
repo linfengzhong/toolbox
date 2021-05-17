@@ -40,8 +40,8 @@
         ],
         "certificates": [
           {
-            "certificateFile": "/etc/v2ray-agent/tls/shanghai3721.ml.crt",
-            "keyFile": "/etc/v2ray-agent/tls/shanghai3721.ml.key",
+            "certificateFile": "/etc/xray/tls/shanghai3721.ml.crt",
+            "keyFile": "/etc/xray/tls/shanghai3721.ml.key",
             "ocspStapling": 3600,
             "usage":"encipherment"
           }
