@@ -36,6 +36,8 @@ services:
             - ./conf.d/tls:/etc/xray/tls
         networks: 
             - xray-net
+        depends_on:
+            - nginx
             
     trojan-go:
         build:
@@ -49,6 +51,8 @@ services:
             - ./conf.d/trojan-go:/etc/trojan-go
         networks: 
             - xray-net
+        depends_on:
+            - nginx
 networks: 
     xray-net:
         name: xray-net
