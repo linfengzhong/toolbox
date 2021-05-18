@@ -1,0 +1,64 @@
+version: '3.1'
+services:
+
+    nginx:
+        build:
+            dockerfile: Dockerfile
+            context: ./Dockerfile/Nginx-Alpine
+        container_name: nginx
+        restart: always
+        environment: 
+            TZ: Asia/Shanghai
+        ports:
+            - 80:80
+        expose:
+            - 31300 
+        volumes: 
+            - ./conf.d/nginx/conf.d:/etc/nginx/conf.d
+            - ./conf.d/nginx/html:/usr/share/nginx/html
+            - ./conf.d/nginx/subscribe:/etc/v2ray-agent/subscribe
+            - ./conf.d/nginx/nginx_logs:/var/log/nginx
+            - ./conf.d/nginx/web_logs:/etc/nginx/logs
+            - ./conf.d/tls:/etc/nginx/ssl
+        networks: 
+            - xray-net
+
+    xray:
+        build:
+            dockerfile: Dockerfile
+            context: ./Dockerfile/Xray-Alpine
+        container_name: xray
+        restart: always
+        environment: 
+            TZ: Asia/Shanghai
+        ports: 
+            - 443:443
+        expose:
+            - 31297
+            - 31298
+            - 31299
+            - 31301
+        volumes: 
+            - ./conf.d/xray:/etc/xray
+            - ./conf.d/tls:/etc/xray/tls
+        networks: 
+            - xray-net
+            
+    trojan-go:
+        build:
+            dockerfile: Dockerfile
+            context: ./Dockerfile/Trojan-go-Alpine
+        container_name: trojan-go
+        restart: always
+        environment: 
+            TZ: Asia/Shanghai
+        expose:
+            - 31296
+        volumes:
+            - ./conf.d/trojan-go:/etc/trojan-go
+        networks: 
+            - xray-net
+        
+networks: 
+    xray-net:
+        driver: host
