@@ -3,6 +3,7 @@ local-addr: trojan-go
 local-port: 31296
 remote-addr: nginx
 remote-port: 31300
+disable_http_check: false
 log_level: 3
 log_file: /etc/trojan-go/trojan.log
 password:
@@ -11,6 +12,8 @@ ssl:
   cert: /etc/trojan-go/tls/shanghai3721.ml.crt
   key: /etc/trojan-go/tls/shanghai3721.ml.key
   sni: shanghai3721.ml
+mux:
+  enabled: true
 dns:
   - localhost
 transport_plugin:
@@ -20,7 +23,6 @@ websocket:
   enabled": true
   path": /rrdatws
   host: shanghai3721.ml
-  add: shanghai3721.ml
 router:
   enabled: true
   block:
