@@ -1,0 +1,29 @@
+run-type: server
+local-addr: trojan-go
+local-port: 31296
+remote-addr: nginx
+remote-port: 31300
+log_level: 3
+log_file: /etc/trojan-go/trojan.log
+password:
+  - ead3ae26-e2f2-46ef-9e38-1929fd1ea662
+ssl:
+  cert: /etc/trojan-go/tls/shanghai3721.ml.crt
+  key: /etc/trojan-go/tls/shanghai3721.ml.key
+  sni: shanghai3721.ml
+dns:
+  - localhost
+transport_plugin:
+  enabled: true
+  type: plaintext
+websocket:
+  enabled": true
+  path": /rrdatws
+  host: shanghai3721.ml
+  add: shanghai3721.ml
+router:
+  enabled: true
+  block:
+    - 'geoip:private'
+  geoip: /etc/trojan-go/geoip.dat
+  geosite: /etc/trojan-go/geosite.dat
