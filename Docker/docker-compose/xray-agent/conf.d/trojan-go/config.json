@@ -1,6 +1,6 @@
 {
     "run_type": "server",
-    "local_addr": "127.0.0.1",
+    "local_addr": "trojan-go",
     "local_port": 31296,
     "remote_addr": "nginx",
     "remote_port": 31300,
