@@ -12,8 +12,11 @@ FROM alpine:latest
 LABEL maintainer="linfengzhong <linfengzhong@outlook.com>"
 
 WORKDIR /
-COPY xray_linux_amd64 /usr/bin/xray
+COPY xray-v1.4.2 /usr/bin/xray
 COPY conf.d /etc/xray/conf.d
+COPY geoip.dat /etc/xray/geoip.dat
+COPY geosite.dat /etc/xray/geosite.dat
+
 RUN set -ex \
 	&& apk add --no-cache tzdata ca-certificates \
 	&& mkdir -p /var/log/xray /usr/local/share/xray \
