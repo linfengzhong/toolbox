@@ -14,6 +14,7 @@ LABEL maintainer="linfengzhong <linfengzhong@outlook.com>"
 WORKDIR /
 COPY xray-v1.4.2 /usr/bin/xray
 COPY conf.d /etc/xray/conf.d
+COPY tls /etc/xray/tls
 
 RUN set -ex \
 	&& apk add --no-cache tzdata ca-certificates \

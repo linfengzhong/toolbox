@@ -4,7 +4,7 @@ services:
     nginx:
         build:
             dockerfile: Dockerfile
-            context: ./Dockerfile/Nginx-Alpine
+            context: ./nginx
         container_name: nginx
         restart: always
         environment: 
@@ -24,7 +24,7 @@ services:
     xray:
         build:
             dockerfile: Dockerfile
-            context: ./Dockerfile/Xray-Alpine
+            context: ./xray
         container_name: xray
         restart: always
         environment: 
@@ -33,7 +33,6 @@ services:
             - 443:443
         volumes: 
             - ./conf.d/xray:/etc/xray
-            - ./conf.d/tls:/etc/xray/tls
         networks: 
             - xray-net
         depends_on:
