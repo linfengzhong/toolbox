@@ -1,0 +1,45 @@
+version: '3.4'
+services:
+
+    nginx:
+        build:
+            dockerfile: Dockerfile
+            context: ./Dockerfile/Nginx-Alpine
+        container_name: nginx
+        restart: always
+        environment: 
+            TZ: Asia/Shanghai
+        ports:
+            - 80:80
+        volumes: 
+            - ./conf.d/nginx/conf.d:/etc/nginx/conf.d
+            - ./conf.d/nginx/html:/usr/share/nginx/html
+            - ./conf.d/nginx/subscribe:/etc/v2ray-agent/subscribe
+            - ./conf.d/nginx/nginx_logs:/var/log/nginx
+            - ./conf.d/nginx/web_logs:/etc/nginx/logs
+            - ./conf.d/tls:/etc/nginx/ssl
+        networks: 
+            - xray-net
+
+    xray:
+        build:
+            dockerfile: Dockerfile
+            context: ./Dockerfile/Xray-Alpine
+        container_name: xray
+        restart: always
+        environment: 
+            TZ: Asia/Shanghai
+        ports: 
+            - 443:443
+        volumes: 
+            - ./conf.d/xray:/etc/xray
+            - ./conf.d/tls:/etc/xray/tls
+        networks: 
+            - xray-net
+        depends_on:
+            - nginx
+
+networks: 
+    xray-net:
+        name: xray-net
+        driver: bridge

@@ -1,0 +1,13 @@
+[Tue May  4 06:20:10 UTC 2021] Installing from online archive.
+[Tue May  4 06:20:10 UTC 2021] Downloading https://github.com/acmesh-official/acme.sh/archive/master.tar.gz
+[Tue May  4 06:20:11 UTC 2021] Extracting master.tar.gz
+[Tue May  4 06:20:11 UTC 2021] Installing to /root/.acme.sh
+[Tue May  4 06:20:11 UTC 2021] Installed to /root/.acme.sh/acme.sh
+[Tue May  4 06:20:11 UTC 2021] Installing alias to '/root/.bashrc'
+[Tue May  4 06:20:11 UTC 2021] OK, Close and reopen your terminal to start using acme.sh
+[Tue May  4 06:20:11 UTC 2021] Installing alias to '/root/.cshrc'
+[Tue May  4 06:20:11 UTC 2021] Installing alias to '/root/.tcshrc'
+[Tue May  4 06:20:11 UTC 2021] Installing cron job
+[Tue May  4 06:20:11 UTC 2021] Good, bash is found, so change the shebang to use bash as preferred.
+[Tue May  4 06:20:12 UTC 2021] OK
+[Tue May  4 06:20:12 UTC 2021] Install success!
