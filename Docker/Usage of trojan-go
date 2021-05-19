@@ -1,0 +1,47 @@
+Usage of /usr/bin/trojan-go:
+  -add-profile
+        Add a new profile with API
+  -api string
+        Connect to a Trojan-Go API service. "-api add/get/list"
+  -api-addr string
+        Address of Trojan-Go API service (default "127.0.0.1:10000")
+  -cert string
+        Certificates of the server (default "server.crt")
+  -client
+        Run a trojan-go client
+  -config string
+        Trojan-Go config filename (.yaml/.yml/.json) (default "config.json")
+  -delete-profile
+        Delete an existing profile with API
+  -download-speed-limit int
+        Limit the download speed with API
+  -ip-limit int
+        Limit the number of IP with API
+  -key string
+        Key of the server (default "server.key")
+  -local string
+        Local address, e.g. 127.0.0.1:12345
+  -modify-profile
+        Modify an existing profile with API
+  -password string
+        Password for authentication
+  -remote string
+        Remote address, e.g. 127.0.0.1:12345
+  -server
+        Run a trojan-go server
+  -stdin-format string
+        Read from standard input (yaml/json) (default "disabled")
+  -stdin-suppress-hint
+        Suppress hint text
+  -target-hash string
+        Hash of the target user
+  -target-password string
+        Password of the target user
+  -upload-speed-limit int
+        Limit the upload speed with API
+  -url string
+        Setup trojan-go client with a url link
+  -url-option string
+        URL mode options (default "mux=true;listen=127.0.0.1:1080")
+  -version
+        Display version and help info

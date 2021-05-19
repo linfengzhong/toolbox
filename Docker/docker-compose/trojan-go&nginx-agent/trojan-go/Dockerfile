@@ -11,8 +11,8 @@ LABEL maintainer="Fred <fred.zhong@outlook.com>"
 
 COPY trojan-go-v0.10.0 /usr/bin/trojan-go
 COPY config.yml /etc/trojan-go/config.yml
-COPY shanghai3721.ml.pem /etc/trojan-go/tls/shanghai3721.ml.pem
-COPY shanghai3721.ml.key.pem /etc/trojan-go/tls/shanghai3721.ml.key.pem
+COPY shanghai3721.ml.crt /etc/trojan-go/tls/shanghai3721.ml.crt
+COPY shanghai3721.ml.key /etc/trojan-go/tls/shanghai3721.ml.key
 COPY geoip.dat /etc/trojan-go/geoip.dat
 COPY geosite.dat /etc/trojan-go/geosite.dat
 
