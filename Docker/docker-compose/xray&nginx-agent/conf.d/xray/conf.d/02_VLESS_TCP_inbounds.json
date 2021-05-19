@@ -16,7 +16,7 @@
     "decryption": "none",
     "fallbacks": [
         {"dest":"nginx:80","xver":0},
-        {"path":"/rrdaws","dest":"xray:31297","xver":1}
+        {"path":"/rrdaws","dest":31297,"xver":1}
     ]
   },
   "streamSettings": {
