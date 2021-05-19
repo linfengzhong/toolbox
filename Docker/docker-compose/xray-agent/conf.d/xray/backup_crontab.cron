@@ -1,1 +1,0 @@
-30 1 * * * /bin/bash /etc/v2ray-agent/install.sh RenewTLS
