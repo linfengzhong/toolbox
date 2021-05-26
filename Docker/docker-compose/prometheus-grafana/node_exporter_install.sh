@@ -68,12 +68,12 @@ sleep 2
 #-----------------------------------------------------------------------------
 # Unzip the tarball and move it to /usr/local/node_exporter.
 #-----------------------------------------------------------------------------
-print_ok "Step 3: Unzip the tarball and cd into the directory"
+print_ok "Step 3: Unzip the tarball and move it to /usr/local/node_exporter"
 sleep 2
 tar xvfz node_exporter-1.1.2.linux-amd64.tar.gz
 mv node_exporter-1.1.2.linux-amd64 /usr/local/node_exporter
 if ! command; then print_error "Step 3 failed"; exit 1; fi
-print_ok "Step 3: Unzip the tarball and cd into the directory   --> DONE"
+print_ok "Step 3: Unzip the tarball and move it to /usr/local/node_exporter   --> DONE"
 sleep 2
 #-----------------------------------------------------------------------------
 # Create a node_exporter service.
