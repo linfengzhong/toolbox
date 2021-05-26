@@ -9,6 +9,8 @@ services:
             TZ: Asia/Shanghai
         ports:
             - 9090:9090
+        volumes:
+            - /home/linfengzhong/git/repos/toolbox/Docker/docker-compose/prometheus-grafana/prometheus.yml:/etc/prometheus/prometheus.yml 
         networks: 
             - monitor-net
 
@@ -31,6 +33,12 @@ services:
             TZ: Asia/Shanghai
         ports: 
             - 8080:8080
+        volumes:
+            - /:/rootfs
+            - /var/run:/var/run
+            - /sys:/sys
+            - /var/lib/docker/:/var/lib/docker
+            - /dev/disk/:/dev/disk
         networks: 
             - monitor-net
         
