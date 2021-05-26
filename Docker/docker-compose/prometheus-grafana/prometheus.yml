@@ -31,3 +31,7 @@ scrape_configs:
   - job_name: "docker"
     static_configs:
     - targets: ['cadvisor:8080']
+
+  - job_name: "linux - windthroughgfw.ml"
+    static_configs:
+    - targets: ['35.221.129.5:9100']
