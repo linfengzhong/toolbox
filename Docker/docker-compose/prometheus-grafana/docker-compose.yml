@@ -23,6 +23,17 @@ services:
         networks: 
             - monitor-net
         
+    cadvisor:
+        image: google/cadvisor:latest
+        container_name: cadvisor
+        restart: always
+        environment: 
+            TZ: Asia/Shanghai
+        ports: 
+            - 8080:8080
+        networks: 
+            - monitor-net
+        
 networks: 
     monitor-net:
         driver: bridge
