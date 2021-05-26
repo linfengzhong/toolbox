@@ -71,7 +71,7 @@ sleep 2
 print_ok "Step 3: Unzip the tarball and cd into the directory"
 sleep 2
 tar xvfz node_exporter-1.1.2.linux-amd64.tar.gz
-mv node_exporter-0.17.0.linux-amd64 /usr/local/node_exporter
+mv node_exporter-1.1.2.linux-amd64 /usr/local/node_exporter
 if ! command; then print_error "Step 3 failed"; exit 1; fi
 print_ok "Step 3: Unzip the tarball and cd into the directory   --> DONE"
 sleep 2
