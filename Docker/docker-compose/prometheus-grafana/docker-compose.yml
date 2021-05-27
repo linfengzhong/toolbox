@@ -10,7 +10,22 @@ services:
         ports:
             - 9090:9090
         volumes:
-            - /home/linfengzhong/git/repos/toolbox/Docker/docker-compose/prometheus-grafana/prometheus.yml:/etc/prometheus/prometheus.yml 
+            - ~/prometheus.yml:/etc/prometheus/prometheus.yml 
+            - ~/groups/:/root/prometheus/groups/:/usr/local/prometheus/groups/ 
+            - ~/rules/:/root/prometheus/rules/:/usr/local/prometheus/rules/ 
+        networks: 
+            - monitor-net
+
+    alertmanager:
+        image: prom/alertmanager:latest
+        container_name: alertmanager
+        restart: always
+        environment: 
+            TZ: Asia/Shanghai
+        ports:
+            - 9093:9093
+        volumes:
+            - ~/alertmanager.yml:/etc/alertmanager/alertmanager.yml
         networks: 
             - monitor-net
 
