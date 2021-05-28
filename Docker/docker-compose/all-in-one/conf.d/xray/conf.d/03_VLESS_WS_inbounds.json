@@ -1,0 +1,27 @@
+{
+"inbounds":[
+    {
+  "port": 31297,
+  "listen": "127.0.0.1",
+  "protocol": "vless",
+  "tag":"VLESSWS",
+  "settings": {
+    "clients": [
+      {
+        "id": "14f67e67-e98e-4819-b763-91c18d770711",
+        "email": "shanghai3721.ml_vless_ws"
+      }
+    ],
+    "decryption": "none"
+  },
+  "streamSettings": {
+    "network": "ws",
+    "security": "none",
+    "wsSettings": {
+      "acceptProxyProtocol": true,
+      "path": "/rrdaws"
+    }
+  }
+}
+]
+}

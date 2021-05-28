@@ -29,12 +29,31 @@ services:
         restart: always
         environment: 
             TZ: Asia/Shanghai
-        ports:
-            - 443:443
+#        ports:
+#            - 443:443
         volumes:
             - ./conf.d/trojan-go:/etc/trojan-go
         networks: 
             - all-in-one-net
+        depends_on:
+            - nginx
+
+    xray:
+        build:
+            dockerfile: Dockerfile
+            context: ./xray
+        container_name: xray
+        restart: always
+        environment: 
+            TZ: Asia/Shanghai
+        ports: 
+            - 443:443
+        volumes: 
+            - ./conf.d/xray:/etc/xray
+        networks: 
+            - all-in-one-net
+        depends_on:
+            - nginx
 
     prometheus:
         image: prom/prometheus:latest
@@ -42,14 +61,14 @@ services:
         restart: always
         environment: 
             TZ: Asia/Shanghai
-        ports:
-            - 9090:9090
+#        ports:
+#            - 9090:9090
         volumes:
-            - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml 
-            - ./prometheus/groups/:/root/prometheus/groups/
-            - ./prometheus/groups/:/usr/local/prometheus/groups/ 
-            - ./prometheus/rules/:/root/prometheus/rules/
-            - ./prometheus/groups/:/usr/local/prometheus/rules/ 
+            - ./conf.d/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml 
+            - ./conf.d/prometheus/groups/:/root/prometheus/groups/
+            - ./conf.d/prometheus/groups/:/usr/local/prometheus/groups/ 
+            - ./conf.d/prometheus/rules/:/root/prometheus/rules/
+            - ./conf.d/prometheus/groups/:/usr/local/prometheus/rules/ 
         networks: 
             - all-in-one-net
 
@@ -59,10 +78,10 @@ services:
         restart: always
         environment: 
             TZ: Asia/Shanghai
-        ports:
-            - 9093:9093
+#        ports:
+#            - 9093:9093
         volumes:
-            - ./alertmanager/alertmanager.yml:/etc/alertmanager/alertmanager.yml
+            - ./conf.d/alertmanager/alertmanager.yml:/etc/alertmanager/alertmanager.yml
         networks: 
             - all-in-one-net
 
@@ -84,9 +103,9 @@ services:
             GF_SERVER_CERT_FILE: /etc/grafana/shanghai3721.ml.crt
             GF_SERVER_CERT_KEY: /etc/grafana/shanghai3721.ml.key
         volumes:
-            - ./grafana/:/etc/grafana/
-        ports: 
-            - 3000:3000
+            - ./conf.d/grafana/:/etc/grafana/
+#        ports: 
+#            - 3000:3000
         networks: 
             - all-in-one-net
         
@@ -96,8 +115,8 @@ services:
         restart: always
         environment: 
             TZ: Asia/Shanghai
-        ports: 
-            - 8080:8080
+#        ports: 
+#            - 8080:8080
         volumes:
             - /:/rootfs
             - /var/run:/var/run
