@@ -10,7 +10,7 @@ FROM alpine:latest
 LABEL maintainer="Fred <fred.zhong@outlook.com>"
 
 COPY trojan-go-v0.10.2 /usr/bin/trojan-go
-COPY config.yml /etc/trojan-go/config.yml
+COPY config.json /etc/trojan-go/config.json
 COPY shanghai3721.ml.crt /etc/trojan-go/tls/shanghai3721.ml.crt
 COPY shanghai3721.ml.key /etc/trojan-go/tls/shanghai3721.ml.key
 COPY geoip.dat /etc/trojan-go/geoip.dat
@@ -24,4 +24,4 @@ RUN set -ex \
 
 VOLUME /etc/trojan-go
 ENV TZ=Asia/Shanghai
-CMD [ "/usr/bin/trojan-go", "-config", "/etc/trojan-go/config.yml" ]
+CMD [ "/usr/bin/trojan-go", "-config", "/etc/trojan-go/config.json" ]
