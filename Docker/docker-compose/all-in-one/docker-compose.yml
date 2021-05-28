@@ -99,9 +99,9 @@ services:
         #    GF_PATHS_LOGS: /var/log/grafana
         #    GF_PATHS_PLUGINS: /var/lib/grafana/plugins
         #    GF_PATHS_PROVISIONING: /etc/grafana/provisioning
-            GF_SERVER_PROTOCOL: https
-            GF_SERVER_CERT_FILE: /etc/grafana/shanghai3721.ml.crt
-            GF_SERVER_CERT_KEY: /etc/grafana/shanghai3721.ml.key
+        #    GF_SERVER_PROTOCOL: https
+        #    GF_SERVER_CERT_FILE: /etc/grafana/shanghai3721.ml.crt
+        #    GF_SERVER_CERT_KEY: /etc/grafana/shanghai3721.ml.key
         volumes:
             - ./conf.d/grafana/:/etc/grafana/
 #        ports: 
