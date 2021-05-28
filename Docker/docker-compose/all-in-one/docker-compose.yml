@@ -45,9 +45,9 @@ services:
         ports:
             - 9090:9090
         volumes:
-            - ~/prometheus.yml:/etc/prometheus/prometheus.yml 
-            - ~/groups/:/root/prometheus/groups/:/usr/local/prometheus/groups/ 
-            - ~/rules/:/root/prometheus/rules/:/usr/local/prometheus/rules/ 
+            - ~/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml 
+            - ~/prometheus/groups/:/root/prometheus/groups/:/usr/local/prometheus/groups/ 
+            - ~/prometheus/rules/:/root/prometheus/rules/:/usr/local/prometheus/rules/ 
         networks: 
             - all-in-one-net
 
@@ -60,7 +60,7 @@ services:
         ports:
             - 9093:9093
         volumes:
-            - ~/alertmanager.yml:/etc/alertmanager/alertmanager.yml
+            - ~/alertmanager/alertmanager.yml:/etc/alertmanager/alertmanager.yml
         networks: 
             - all-in-one-net
 
