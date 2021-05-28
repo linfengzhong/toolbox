@@ -1,0 +1,97 @@
+version: '3.8'
+services:
+
+    nginx:
+        build:
+            dockerfile: Dockerfile
+            context: ./nginx
+        container_name: nginx
+        restart: always
+        environment: 
+            TZ: Asia/Shanghai
+        ports:
+            - 80:80
+        volumes: 
+            - ./conf.d/nginx/conf.d:/etc/nginx/conf.d
+            - ./conf.d/nginx/html:/usr/share/nginx/html
+            - ./conf.d/nginx/subscribe:/etc/v2ray-agent/subscribe
+            - ./conf.d/nginx/nginx_logs:/var/log/nginx
+            - ./conf.d/nginx/web_logs:/etc/nginx/logs
+            - ./conf.d/tls:/etc/nginx/ssl
+        networks: 
+            - all-in-one-net
+            
+    trojan-go:
+        build:
+            dockerfile: Dockerfile
+            context: ./trojan-go
+        container_name: trojan-go
+        restart: always
+        environment: 
+            TZ: Asia/Shanghai
+        ports:
+            - 443:443
+        volumes:
+            - ./conf.d/trojan-go:/etc/trojan-go
+        networks: 
+            - all-in-one-net
+
+    prometheus:
+        image: prom/prometheus:latest
+        container_name: prometheus
+        restart: always
+        environment: 
+            TZ: Asia/Shanghai
+        ports:
+            - 9090:9090
+        volumes:
+            - ~/prometheus.yml:/etc/prometheus/prometheus.yml 
+            - ~/groups/:/root/prometheus/groups/:/usr/local/prometheus/groups/ 
+            - ~/rules/:/root/prometheus/rules/:/usr/local/prometheus/rules/ 
+        networks: 
+            - all-in-one-net
+
+    alertmanager:
+        image: prom/alertmanager:latest
+        container_name: alertmanager
+        restart: always
+        environment: 
+            TZ: Asia/Shanghai
+        ports:
+            - 9093:9093
+        volumes:
+            - ~/alertmanager.yml:/etc/alertmanager/alertmanager.yml
+        networks: 
+            - all-in-one-net
+
+    grafana:
+        image: grafana/grafana:latest
+        container_name: grafana
+        restart: always
+        environment: 
+            TZ: Asia/Shanghai
+        ports: 
+            - 3000:3000
+        networks: 
+            - all-in-one-net
+        
+    cadvisor:
+        image: google/cadvisor:latest
+        container_name: cadvisor
+        restart: always
+        environment: 
+            TZ: Asia/Shanghai
+        ports: 
+            - 8080:8080
+        volumes:
+            - /:/rootfs
+            - /var/run:/var/run
+            - /sys:/sys
+            - /var/lib/docker/:/var/lib/docker
+            - /dev/disk/:/dev/disk
+        networks: 
+            - all-in-one-net
+        
+networks: 
+    all-in-one-net:
+        driver: bridge
