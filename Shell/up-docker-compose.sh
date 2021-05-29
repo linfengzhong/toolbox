@@ -8,6 +8,8 @@ sudo chown -R linfengzhong:linfengzhong /home/linfengzhong/all-in-one/
 sleep 1
 cd /home/linfengzhong/all-in-one/
 sleep 1
+sudo docker-compose build
+sleep 1
 sudo docker-compose up -d
 sleep 1
 sudo cp -f /home/linfengzhong/git/repos/toolbox/Shell/delete-all-in-one.sh /home/linfengzhong/delete-all-in-one.sh
