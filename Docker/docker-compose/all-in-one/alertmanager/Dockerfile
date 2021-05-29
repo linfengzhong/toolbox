@@ -6,6 +6,6 @@
 FROM prom/alertmanager:latest
 LABEL maintainer="Fred <fred.zhong@outlook.com>"
 
-COPY alertmanager.yml /etc/alertmanager/alertmanager.yml
+#COPY alertmanager.yml /etc/alertmanager/alertmanager.yml
 
 #RUN chmod 666 /etc/alertmanager/alertmanager.yml

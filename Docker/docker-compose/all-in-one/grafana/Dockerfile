@@ -6,10 +6,10 @@
 FROM grafana/grafana:latest
 LABEL maintainer="Fred <fred.zhong@outlook.com>"
 
-COPY ./data/ /var/lib/grafana/
+#COPY ./data/ /var/lib/grafana/
 
-RUN sudo chmod -R 777 /var/lib/grafana/
+#RUN sudo chmod -R 777 /var/lib/grafana/
 
-USER grafana
-WORKDIR /
-ENTRYPOINT [ "/run.sh" ]
+#USER grafana
+#WORKDIR /
+#ENTRYPOINT [ "/run.sh" ]
