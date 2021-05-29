@@ -95,54 +95,76 @@ sleep 1
 judge "Step 2: Install Docker CE"
 sleep 1
 #-----------------------------------------------------------------------------
+# Install Docker Compose
+# https://docs.docker.com/compose/install/
+#-----------------------------------------------------------------------------
+print_info "Step 3: Install Docker Compose"
+sleep 1
+sudo rm /usr/local/bin/docker-compose
+judge "Step 3: 1/3 Uninstallation"
+sleep 1
+
+sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" \
+          -o /usr/local/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
+sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+judge "Step 3: 2/3 Install Compose on Linux systems"
+sleep 1
+
+sudo docker-compose --version
+judge "Step 3: 3/3 Show docker-compose version"
+sleep 3
+
+judge "Step 3: Install Docker Compose"
+#-----------------------------------------------------------------------------
 # Install Git
 # https://git-scm.com
 #-----------------------------------------------------------------------------
 sudo yum -y install git
-judge "Step 3: Install Git"
+judge "Step 4: Install Git"
 sleep 1
 #-----------------------------------------------------------------------------
 # Install Python3
 # https://git-scm.com
 #-----------------------------------------------------------------------------
-print_info "Step 4: Install Python3"
+print_info "Step 5: Install Python3"
 sudo yum -y install gcc libffi-devel python-devel python3-devel \
                     openssl-devel wget curl \
                     automake autoconf libtool make
-judge "Step 4: 1/5 Install Prerequisites for Python3"
+judge "Step 5: 1/5 Install Prerequisites for Python3"
 sleep 1
 
 sudo wget https://www.python.org/ftp/python/3.9.5/Python-3.9.5.tar.xz
-judge "Step 4: 2/5 Download Python3.9.5.tar.xz"
+judge "Step 5: 2/5 Download Python3.9.5.tar.xz"
 sleep 1
 
 sudo tar -xvf Python-3.9.5.tar.xz
-judge "Step 4: 3/5 Unzip Python3.9.5.tar.xz"
+judge "Step 5: 3/5 Unzip Python3.9.5.tar.xz"
 cd Python-3.9.5
 ./configure --prefix=/usr/local/python3
-judge "Step 4: 4/5 configure"
+judge "Step 5: 4/5 configure"
 sleep 1
 
 sudo make && make install
-judge "Step 4: 5/5 Make & Make install"
+judge "Step 5: 5/5 Make & Make install"
 sleep 3
 
 sudo rm -f ~/Python-3.9.5.tar.xz
 sudo rm -rf ~/Python-3.9.5
-judge "Step 4: Install Python3"
+judge "Step 5: Install Python3"
 #-----------------------------------------------------------------------------
 # Install bpytop
 # https://github.com/aristocratos/bpytop
 #-----------------------------------------------------------------------------
 #PyPi (will always have latest version)
 #Install or update to latest version
-print_info "Step 5: Install bpytop"
+print_info "Step 6: Install bpytop"
 sudo pip3 install bpytop --upgrade
-judge "Step 5: 1/2 Install bpytop"
+judge "Step 6: 1/2 Install bpytop"
 sleep 1
 
 echo 'alias bpytop=/usr/local/bin/bpytop'>>~/.bash_profile
 source ~/.bash_profile 
-judge "Step 5: 2/2 添加 bpytop 命令到.bash_profile"
+judge "Step 6: 2/2 添加 bpytop 命令到.bash_profile"
 sleep 1
-judge "Step 5: Install bpytop"
+judge "Step 6: Install bpytop"
