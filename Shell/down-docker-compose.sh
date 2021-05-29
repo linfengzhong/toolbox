@@ -1,4 +1,4 @@
-cd /home/linfengzhong/all-in-one/
+cd ~/all-in-one/
 sleep 1
 sudo docker-compose down
 sleep 1
