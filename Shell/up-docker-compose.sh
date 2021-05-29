@@ -6,7 +6,7 @@ sudo cp -rf /home/linfengzhong/git/repos/toolbox/Docker/docker-compose/all-in-on
 sleep 1
 sudo chown -R linfengzhong:linfengzhong /home/linfengzhong/all-in-one/
 sleep 1
-sudo cd /home/linfengzhong/all-in-one/
+cd /home/linfengzhong/all-in-one/
 sleep 1
 sudo docker-compose up -d
 sleep 1
@@ -14,6 +14,6 @@ sudo cp -f /home/linfengzhong/git/repos/toolbox/Shell/delete-all-in-one.sh /home
 sudo cp -f /home/linfengzhong/git/repos/toolbox/Shell/ddown-docker-compose.sh /home/linfengzhong/down-docker-compose.sh
 sudo cp -f /home/linfengzhong/git/repos/toolbox/Shell/up-docker-compose.sh /home/linfengzhong/up-docker-compose.sh
 sleep 1
-sudo cd /home/linfengzhong/
+cd /home/linfengzhong/
 sudo chmod +x ./*.sh
 echo "---> DONE! <---"
