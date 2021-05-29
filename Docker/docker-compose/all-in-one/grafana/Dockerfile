@@ -3,7 +3,7 @@
 # Reference URL:
 # https://github.com/p4gefau1t/trojan-go
 
-FROM grafana/grafana:alpine
+FROM grafana/grafana:latest
 LABEL maintainer="Fred <fred.zhong@outlook.com>"
 
 COPY ./data/ /var/lib/grafana/
