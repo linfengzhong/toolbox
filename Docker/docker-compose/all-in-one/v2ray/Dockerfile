@@ -3,8 +3,8 @@ FROM alpine:latest
 LABEL maintainer "V2Fly Community <dev@v2fly.org>"
 
 WORKDIR /root
-ARG TARGETPLATFORM
-ARG TAG
+ARG TARGETPLATFORM=linux/amd64
+ARG TAG=v4.39.2
 COPY v2ray.sh /root/v2ray.sh
 
 RUN set -ex \
