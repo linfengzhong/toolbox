@@ -3,6 +3,10 @@
 # Reference URL:
 # https://hub.docker.com/r/grafana/grafana
 # https://grafana.com
+# Docker(Alpine base image)
+# Lightweight Docker container image using an Alpine base image.
+# docker run -d --name=grafana -p 3000:3000 grafana/grafana
+# Note: If you are on a Linux system, you might need to add sudo before the command.
 
 FROM grafana/grafana:latest
 LABEL maintainer="Fred <fred.zhong@outlook.com>"
