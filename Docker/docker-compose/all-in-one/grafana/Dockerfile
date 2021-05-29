@@ -1,7 +1,8 @@
-# Dockerfile for trojan-go based alpine
+# Dockerfile for grafana based alpine
 # Copyright (C) 2019 - 2021 Fred <fred.zhong@outlook.com>
 # Reference URL:
-# https://github.com/p4gefau1t/trojan-go
+# https://hub.docker.com/r/grafana/grafana
+# https://grafana.com
 
 FROM grafana/grafana:latest
 LABEL maintainer="Fred <fred.zhong@outlook.com>"

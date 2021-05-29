@@ -11,6 +11,8 @@ services:
             TZ: Asia/Shanghai
 #        ports: 
 #            - 80
+        expose: 
+            - 80
         volumes: 
             - ./conf.d/httpd/conf/httpd.conf:/usr/local/apache2/conf/httpd.conf
         networks:
@@ -52,8 +54,8 @@ services:
             - ./conf.d/trojan-go:/etc/trojan-go
         networks: 
             - all-in-one-net
-        depends_on:
-            - nginx
+#        depends_on:
+#            - nginx
 
     xray:
         build:
@@ -69,8 +71,8 @@ services:
             - ./conf.d/xray:/etc/xray
         networks: 
             - all-in-one-net
-        depends_on:
-            - nginx
+#        depends_on:
+#            - nginx
 
     v2ray:
         build:
@@ -88,17 +90,21 @@ services:
             - ./conf.d/v2ray:/etc/v2ray
         networks: 
             - all-in-one-net
-        depends_on:
-            - nginx
+#        depends_on:
+#            - nginx
 
     prometheus:
-        image: prom/prometheus:latest
+        build:
+            dockerfile: Dockerfile
+            context: ./prometheus
         container_name: prometheus
         restart: always
         environment: 
             TZ: Asia/Shanghai
 #        ports:
 #            - 9090:9090
+        expose: 
+            - 9090
         volumes:
             - ./conf.d/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml 
             - ./conf.d/prometheus/groups/:/root/prometheus/groups/
@@ -154,17 +160,23 @@ services:
 #            - ./conf.d/grafana/data/:/var/lib/grafana/
 #        ports: 
 #            - 3000:3000
+        expose:
+            - 3000
         networks: 
             - all-in-one-net
         
     cadvisor:
-        image: google/cadvisor:latest
+        build:
+            dockerfile: Dockerfile
+            context: ./cadvisor
         container_name: cadvisor
         restart: always
         environment: 
             TZ: Asia/Shanghai
 #        ports: 
 #            - 8080:8080
+        expose: 
+            - 8080
         volumes:
             - /:/rootfs
             - /var/run:/var/run
