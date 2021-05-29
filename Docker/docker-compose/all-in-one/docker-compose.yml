@@ -151,7 +151,7 @@ services:
         #    GF_SERVER_CERT_KEY: /etc/grafana/shanghai3721.ml.key
         volumes:
             - ./conf.d/grafana/:/etc/grafana/
-            - ./conf.d/grafana/data/:/var/lib/grafana/
+#            - ./conf.d/grafana/data/:/var/lib/grafana/
 #        ports: 
 #            - 3000:3000
         networks: 
