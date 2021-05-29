@@ -8,8 +8,8 @@ LABEL maintainer="Fred <fred.zhong@outlook.com>"
 
 COPY ./data/ /var/lib/grafana/
 
-RUN set -ex \
-	&& apk add --no-cache tzdata ca-certificates
+RUN sudo set -ex \
+	&& sudo apk add --no-cache tzdata ca-certificates
 
 USER grafana
 WORKDIR /
