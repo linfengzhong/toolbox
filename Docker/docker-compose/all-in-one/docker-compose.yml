@@ -55,6 +55,23 @@ services:
         depends_on:
             - nginx
 
+    v2ray:
+        build:
+            dockerfile: Dockerfile
+            context: ./v2ray
+        container_name: v2ray
+        restart: always
+        environment: 
+            TZ: Asia/Shanghai
+        ports: 
+            - 1080
+        volumes: 
+            - ./conf.d/v2ray:/etc/v2ray
+        networks: 
+            - all-in-one-net
+        depends_on:
+            - nginx
+
     prometheus:
         image: prom/prometheus:latest
         container_name: prometheus
