@@ -13,4 +13,6 @@ sleep 1
 sudo cp -f /home/linfengzhong/git/repos/toolbox/Shell/delete-all-in-one.sh /home/linfengzhong/delete-all-in-one.sh
 sudo cp -f /home/linfengzhong/git/repos/toolbox/Shell/ddown-docker-compose.sh /home/linfengzhong/down-docker-compose.sh
 sudo cp -f /home/linfengzhong/git/repos/toolbox/Shell/up-docker-compose.sh /home/linfengzhong/up-docker-compose.sh
+sleep 1
+sudo chmod +x ./*.sh
 echo "---> DONE! <---"
