@@ -1,6 +1,21 @@
 version: '3.8'
 services:
 
+    httpd:
+        build:
+            dockerfile: Dockerfile
+            context: ./httpd
+        container_name: httpd
+        restart: always
+        environment: 
+            TZ: Asia/Shanghai
+        ports: 
+            - 80
+#        volumes: 
+#            - ./conf.d/httpd/:/usr/local/apache2/conf/httpd.conf
+        networks: 
+            - all-in-one-net
+
     nginx:
         build:
             dockerfile: Dockerfile
