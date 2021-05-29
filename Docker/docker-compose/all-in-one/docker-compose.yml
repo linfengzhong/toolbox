@@ -119,7 +119,7 @@ services:
 #        ports:
 #            - 9093:9093
         expose:
-            - 90933
+            - 9093
         volumes:
             - ./conf.d/alertmanager/alertmanager.yml:/etc/alertmanager/alertmanager.yml
         networks: 
