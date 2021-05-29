@@ -79,7 +79,7 @@ services:
         environment: 
             TZ: Asia/Shanghai
             TARGETPLATFORM: linux/amd64
-            TAG: v4.39.2
+            TAG: 'v4.39.2'
         ports: 
             - 1080
         volumes: 
