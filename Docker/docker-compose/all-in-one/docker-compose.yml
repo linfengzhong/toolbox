@@ -9,11 +9,11 @@ services:
         restart: always
         environment: 
             TZ: Asia/Shanghai
-        ports: 
-            - 80
-#        volumes: 
-#            - ./conf.d/httpd/:/usr/local/apache2/conf/httpd.conf
-        networks: 
+#        ports: 
+#            - 80
+        volumes: 
+            - ./conf.d/httpd/conf/httpd.conf:/usr/local/apache2/conf/httpd.conf
+        networks:
             - all-in-one-net
 
     nginx:
@@ -120,7 +120,9 @@ services:
             - all-in-one-net
 
     grafana:
-        image: grafana/grafana:latest
+        build:
+            dockerfile: Dockerfile
+            context: ./grafana
         container_name: grafana
         restart: always
         environment: 
@@ -143,6 +145,7 @@ services:
         #    GF_SERVER_CERT_KEY: /etc/grafana/shanghai3721.ml.key
         volumes:
             - ./conf.d/grafana/:/etc/grafana/
+            - ./conf.d/grafana/data/:/var/lib/grafana/
 #        ports: 
 #            - 3000:3000
         networks: 

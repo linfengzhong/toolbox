@@ -3,17 +3,13 @@
 # Reference URL:
 # https://github.com/p4gefau1t/trojan-go
 
-FROM grafana/grafana:latest
+FROM grafana/grafana:alpine
 LABEL maintainer="Fred <fred.zhong@outlook.com>"
 
-COPY grafana.ini /etc/grafana/grafana.ini
-COPY shanghai3721.ml.crt /etc/grafana/shanghai3721.ml.crt
-COPY shanghai3721.ml.key /etc/grafana/shanghai3721.ml.key
+COPY ./data/ /var/lib/grafana/
 
 RUN set -ex \
-	&& apk add --no-cache tzdata ca-certificates \
-	&& chmod 644 /etc/grafana/shanghai3721.ml.crt \
-	&& chmod 644 /etc/grafana/shanghai3721.ml.key
+	&& apk add --no-cache tzdata ca-certificates
 
 USER grafana
 WORKDIR /
