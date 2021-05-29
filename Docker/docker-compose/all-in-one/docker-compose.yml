@@ -46,6 +46,8 @@ services:
             TZ: Asia/Shanghai
 #        ports:
 #            - 443:443
+        expose:
+            - 31296
         volumes:
             - ./conf.d/trojan-go:/etc/trojan-go
         networks: 
@@ -80,7 +82,7 @@ services:
             TZ: Asia/Shanghai
 #            TARGETPLATFORM: linux/amd64
 #            TAG: 'v4.39.2'
-        ports: 
+        expose: 
             - 1080
         volumes: 
             - ./conf.d/v2ray:/etc/v2ray
@@ -107,13 +109,17 @@ services:
             - all-in-one-net
 
     alertmanager:
-        image: prom/alertmanager:latest
+        build:
+            dockerfile: Dockerfile
+            context: ./alertmanager
         container_name: alertmanager
         restart: always
         environment: 
             TZ: Asia/Shanghai
 #        ports:
 #            - 9093:9093
+        expose:
+            - 90933
         volumes:
             - ./conf.d/alertmanager/alertmanager.yml:/etc/alertmanager/alertmanager.yml
         networks: 
