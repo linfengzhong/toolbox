@@ -78,6 +78,8 @@ services:
         restart: always
         environment: 
             TZ: Asia/Shanghai
+            TARGETPLATFORM: linux/amd64
+            TAG: latest
         ports: 
             - 1080
         volumes: 
