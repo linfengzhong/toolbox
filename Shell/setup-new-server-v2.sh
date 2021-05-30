@@ -44,6 +44,152 @@ judge() {
   fi
 }
 #-----------------------------------------------------------------------------
+# 检查系统
+function checkSystem() {
+	if [[ -n $(find /etc -name "redhat-release") ]] || grep </proc/version -q -i "centos"; then
+		centosVersion=$(rpm -q centos-release | awk -F "[-]" '{print $3}' | awk -F "[.]" '{print $1}')
+
+		if [[ -z "${centosVersion}" ]] && grep </etc/centos-release "release 8"; then
+			centosVersion=8
+		fi
+		release="centos"
+		installType='yum -y install'
+		# removeType='yum -y remove'
+		upgrade="yum update -y --skip-broken"
+
+	elif grep </etc/issue -q -i "debian" && [[ -f "/etc/issue" ]] || grep </etc/issue -q -i "debian" && [[ -f "/proc/version" ]]; then
+		if grep </etc/issue -i "8"; then
+			debianVersion=8
+		fi
+		release="debian"
+		installType='apt -y install'
+		upgrade="apt update -y"
+		# removeType='apt -y autoremove'
+
+	elif grep </etc/issue -q -i "ubuntu" && [[ -f "/etc/issue" ]] || grep </etc/issue -q -i "ubuntu" && [[ -f "/proc/version" ]]; then
+		release="ubuntu"
+		installType='apt-get -y install'
+		upgrade="apt-get update -y"
+		# removeType='apt-get --purge remove'
+	fi
+
+	if [[ -z ${release} ]]; then
+		echo "本脚本不支持此系统，请将下方日志反馈给开发者"
+		cat /etc/issue
+		cat /proc/version
+		exit 0
+	fi
+}
+
+# 初始化全局变量
+initVar() {
+	installType='yum -y install'
+	removeType='yum -y remove'
+	upgrade="yum -y update"
+	echoType='echo -e'
+
+	# 域名
+	domain=
+
+	# CDN节点的address
+	add=
+
+	# 安装总进度
+	totalProgress=1
+
+	# 1.xray-core安装
+	# 2.v2ray-core 安装
+	# 3.v2ray-core[xtls] 安装
+	coreInstallType=
+
+	# 核心安装path
+	# coreInstallPath=
+
+	# v2ctl Path
+	ctlPath=
+	# 1.全部安装
+	# 2.个性化安装
+	# v2rayAgentInstallType=
+
+	# 当前的个性化安装方式 01234
+	currentInstallProtocolType=
+
+	# 选择的个性化安装方式
+	selectCustomInstallType=
+
+	# v2ray-core、xray-core配置文件的路径
+	configPath=
+
+	# 配置文件的path
+	currentPath=
+
+	# 配置文件的host
+	currentHost=
+
+	# 安装时选择的core类型
+	selectCoreType=
+
+	# 默认core版本
+	v2rayCoreVersion=
+
+	# 随机路径
+	customPath=
+
+	# centos version
+	centosVersion=
+
+	# UUID
+	currentUUID=
+
+	# pingIPv6 pingIPv4
+	# pingIPv4=
+	pingIPv6=
+
+	# 集成更新证书逻辑不再使用单独的脚本--RenewTLS
+	renewTLS=$1
+}
+
+# 检测安装方式
+readInstallType() {
+	coreInstallType=
+	configPath=
+
+	# 1.检测安装目录
+	if [[ -d "/etc/v2ray-agent" ]]; then
+		# 检测安装方式 v2ray-core
+		if [[ -d "/etc/v2ray-agent/v2ray" && -f "/etc/v2ray-agent/v2ray/v2ray" && -f "/etc/v2ray-agent/v2ray/v2ctl" ]]; then
+			if [[ -d "/etc/v2ray-agent/v2ray/conf" && -f "/etc/v2ray-agent/v2ray/conf/02_VLESS_TCP_inbounds.json" ]]; then
+				configPath=/etc/v2ray-agent/v2ray/conf/
+
+				if ! grep </etc/v2ray-agent/v2ray/conf/02_VLESS_TCP_inbounds.json -q xtls; then
+					# 不带XTLS的v2ray-core
+					coreInstallType=2
+					# coreInstallPath=/etc/v2ray-agent/v2ray/v2ray
+					ctlPath=/etc/v2ray-agent/v2ray/v2ctl
+				elif grep </etc/v2ray-agent/v2ray/conf/02_VLESS_TCP_inbounds.json -q xtls; then
+					# 带XTLS的v2ray-core
+					# coreInstallPath=/etc/v2ray-agent/v2ray/v2ray
+					ctlPath=/etc/v2ray-agent/v2ray/v2ctl
+					coreInstallType=3
+				fi
+			fi
+		fi
+
+		if [[ -d "/etc/v2ray-agent/xray" && -f "/etc/v2ray-agent/xray/xray" ]]; then
+			# 这里检测xray-core
+			if [[ -d "/etc/v2ray-agent/xray/conf" && -f "/etc/v2ray-agent/xray/conf/02_VLESS_TCP_inbounds.json" ]]; then
+				# xray-core
+				configPath=/etc/v2ray-agent/xray/conf/
+				# coreInstallPath=/etc/v2ray-agent/xray/xray
+				ctlPath=/etc/v2ray-agent/xray/xray
+				coreInstallType=1
+			fi
+		fi
+	fi
+}
+
+
+#-----------------------------------------------------------------------------
 # Installing and running the Node Exporter
 #-----------------------------------------------------------------------------
 #===== RHEL 7/8 | CentOS 7/8 | Oracle Linux 7/8 =====
