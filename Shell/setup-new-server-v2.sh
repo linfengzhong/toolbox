@@ -188,6 +188,33 @@ readInstallType() {
 	fi
 }
 
+function install_bash_5.1 {
+
+	sudo yum -y install gcc
+
+	wget https://ftp.gnu.org/gnu/bash/bash-5.1.tar.gz
+
+	tar -xvf bash-5.1.tar.gz
+
+	cd bash-5.1
+
+	./configure
+
+	make & make install
+
+}
+
+function install_java_jdk {
+	yum install java-1.8.0-openjdk.x86_64
+
+}
+
+function install_normal_sf {
+	# socat是一个多功能的网络工具，名字来由是” Socket CAT”，可以看作是netcat的N倍加强版
+	# nmap是一个网络连接端扫描软件，用来扫描网上电脑开放的网络连接端。
+	# sysstat 
+	sudo yum -y install socat openssl wget curl sysstat nmap lsof
+}
 
 #-----------------------------------------------------------------------------
 # Installing and running the Node Exporter
