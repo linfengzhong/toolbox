@@ -21,3 +21,6 @@ cd ~
 sudo chmod +x ./*.sh
 sudo chmod 777 -R ~/all-in-one/jenkins
 echo "---> DONE! <---"
+sleep 3
+sudo docker ps
+echo "Docker Container -> Running list "
