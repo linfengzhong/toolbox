@@ -153,7 +153,7 @@ services:
             GF_SERVER_DOMAIN: shanghai3721.ml
             GF_SERVER_ROOT_URL: "%(protocol)s://%(domain)s:%(http_port)s/grafana/"
             GF_SERVER_SERVE_FROM_SUB_PATH: "true"
-            GF_SECURITY_ADMIN_PASSWORD: "etL#flk*r4KDo$32Ulfe$%3"        
+            GF_SECURITY_ADMIN_PASSWORD: etL#flk*r4KDo$32Ulfe$%3
         #    GF_SERVER_CERT_FILE: /etc/grafana/shanghai3721.ml.crt
         #    GF_SERVER_CERT_KEY: /etc/grafana/shanghai3721.ml.key
         volumes:
