@@ -1,6 +1,6 @@
 version: '3.8'
 services:
-
+#1. httpd -> apache for mock website http://shanghai3721.ml/httpd/
     httpd:
         build:
             dockerfile: Dockerfile
@@ -9,15 +9,21 @@ services:
         restart: always
         environment: 
             TZ: Asia/Shanghai
-#        ports: 
-#            - 80
         expose: 
             - 80
         volumes: 
             - ./conf.d/httpd/conf/httpd.conf:/usr/local/apache2/conf/httpd.conf
         networks:
-            - all-in-one-net
-
+            - net
+#2. Nginx -> proxy server
+# listen 80, 31300 --> Mock website https://shanghai3721.ml
+# proxy pass
+# /grafana/ --> proxy_pass http://grafana:3000/;
+# /httpd/ --> proxy_pass http://httpd:80/;
+# /portainer/ --> proxy_pass http://portainer:9000/;
+# /jenkins/ --> proxy_pass http://jenkins:8080/jenkins/;
+# /tomcat/ --> proxy_pass http://tomcat:8080/;
+# /adminer/ --> proxy_pass http://adminer:8080/;
     nginx:
         build:
             dockerfile: Dockerfile
@@ -36,8 +42,8 @@ services:
             - ./conf.d/nginx/web_logs:/etc/nginx/logs
             - ./conf.d/tls:/etc/nginx/ssl
         networks: 
-            - all-in-one-net
-            
+            - net
+#3. trojan go -> fuck GFW      
     trojan-go:
         build:
             dockerfile: Dockerfile
@@ -46,17 +52,15 @@ services:
         restart: always
         environment: 
             TZ: Asia/Shanghai
-#        ports:
-#            - 443:443
         expose:
             - 31296
         volumes:
             - ./conf.d/trojan-go:/etc/trojan-go
         networks: 
-            - all-in-one-net
+            - net
 #        depends_on:
 #            - nginx
-
+#4. xray -> fuck GFW
     xray:
         build:
             dockerfile: Dockerfile
@@ -70,10 +74,10 @@ services:
         volumes: 
             - ./conf.d/xray:/etc/xray
         networks: 
-            - all-in-one-net
+            - net
 #        depends_on:
 #            - nginx
-
+#5. v2ray -> fuck GFW
     v2ray:
         build:
             dockerfile: Dockerfile
@@ -89,10 +93,10 @@ services:
         volumes: 
             - ./conf.d/v2ray:/etc/v2ray
         networks: 
-            - all-in-one-net
+            - net
 #        depends_on:
 #            - nginx
-
+#6. prometheus -> monitor virtual machines
     prometheus:
         build:
             dockerfile: Dockerfile
@@ -101,8 +105,6 @@ services:
         restart: always
         environment: 
             TZ: Asia/Shanghai
-#        ports:
-#            - 9090:9090
         expose: 
             - 9090
         volumes:
@@ -112,8 +114,8 @@ services:
             - ./conf.d/prometheus/rules/:/root/prometheus/rules/
             - ./conf.d/prometheus/groups/:/usr/local/prometheus/rules/ 
         networks: 
-            - all-in-one-net
-
+            - net
+#7. alertmanager -> alter users
     alertmanager:
         build:
             dockerfile: Dockerfile
@@ -122,15 +124,13 @@ services:
         restart: always
         environment: 
             TZ: Asia/Shanghai
-#        ports:
-#            - 9093:9093
         expose:
             - 9093
         volumes:
             - ./conf.d/alertmanager/alertmanager.yml:/etc/alertmanager/alertmanager.yml
         networks: 
-            - all-in-one-net
-
+            - net
+#8. grafana -> monitor UI
     grafana:
         build:
             dockerfile: Dockerfile
@@ -179,13 +179,11 @@ services:
 #            - ./conf.d/grafana/data/:/var/lib/grafana/
 
 #            - grafana-config:/etc/grafana
-#        ports: 
-#            - 3000:3000
         expose:
             - 3000
         networks: 
-            - all-in-one-net
-        
+            - net
+#9. cadvisor -> container advisor / monitor        
     cadvisor:
         build:
             dockerfile: Dockerfile
@@ -194,8 +192,6 @@ services:
         restart: always
         environment: 
             TZ: Asia/Shanghai
-#        ports: 
-#            - 8080:8080
         expose: 
             - 8080
         volumes:
@@ -205,8 +201,8 @@ services:
             - /var/lib/docker/:/var/lib/docker
             - /dev/disk/:/dev/disk
         networks: 
-            - all-in-one-net
-
+            - net
+#10. Jenkins -> CI/CD
     jenkins:
         build:
             dockerfile: Dockerfile
@@ -215,14 +211,15 @@ services:
         restart: always
         environment: 
             TZ: Asia/Shanghai
+        ports: 
+            - 8080:8080
         expose: 
-            - 8080
             - 50000
         volumes:
             - ./jenkins/jenkins_home:/var/jenkins_home
         networks: 
-            - all-in-one-net        
-
+            - net        
+#11. Portainer -> Docker UI
     portainer:
         build:
             dockerfile: Dockerfile
@@ -238,8 +235,8 @@ services:
             - /var/run/docker.sock:/var/run/docker.sock
             - portainer_data:/data
         networks: 
-            - all-in-one-net     
-
+            - net     
+#12. Tomcat -> JSP Server
     tomcat:
         build:
             dockerfile: Dockerfile
@@ -251,8 +248,8 @@ services:
         expose: 
             - 8080
         networks: 
-            - all-in-one-net
-
+            - net
+#13. mysql ->  Relational Database
     mysql:
         build:
             dockerfile: Dockerfile
@@ -265,8 +262,8 @@ services:
             # root
             MYSQL_ROOT_PASSWORD: ABC123abc
         networks: 
-            - all-in-one-net
-
+            - net
+#14. Adminer -> Database UI
     adminer:
         build:
             dockerfile: Dockerfile
@@ -278,10 +275,10 @@ services:
         expose: 
             - 8080
         networks: 
-            - all-in-one-net
+            - net
 
 networks: 
-    all-in-one-net:
+    net:
         driver: bridge
 
 volumes:
@@ -290,7 +287,6 @@ volumes:
     portainer_data:
 #  grafana-config:
 #    external: true
-
 
 secrets:
     grafana_admin_password:
