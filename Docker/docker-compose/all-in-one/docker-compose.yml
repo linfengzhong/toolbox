@@ -229,7 +229,7 @@ networks:
 
 volumes:
   grafana-storage:
-    external: true
+#    external: true
 #  grafana-config:
 #    external: true
 
