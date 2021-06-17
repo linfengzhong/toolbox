@@ -262,6 +262,7 @@ services:
         restart: always
         environment: 
             TZ: Asia/Shanghai
+            # root
             MYSQL_ROOT_PASSWORD: ABC123abc
         networks: 
             - all-in-one-net
