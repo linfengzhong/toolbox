@@ -190,7 +190,9 @@ services:
             - all-in-one-net
 
     jenkins:
-        image: jenkins:2.60.3-alpine
+        build:
+            dockerfile: Dockerfile
+            context: ./jenkins
         container_name: jenkins
         restart: always
         environment: 
