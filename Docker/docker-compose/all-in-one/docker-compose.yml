@@ -240,6 +240,45 @@ services:
         networks: 
             - all-in-one-net     
 
+    tomcat:
+        build:
+            dockerfile: Dockerfile
+            context: ./tomcat
+        container_name: tomcat
+        restart: always
+        environment: 
+            TZ: Asia/Shanghai
+        expose: 
+            - 8080
+        networks: 
+            - all-in-one-net
+
+    mysql:
+        build:
+            dockerfile: Dockerfile
+            context: ./mysql
+        container_name: mysql
+        command: --default-authentication-plugin=mysql_native_password
+        restart: always
+        environment: 
+            TZ: Asia/Shanghai
+            MYSQL_ROOT_PASSWORD: ABC123abc
+        networks: 
+            - all-in-one-net
+
+    adminer:
+        build:
+            dockerfile: Dockerfile
+            context: ./adminer
+        container_name: adminer
+        restart: always
+        environment: 
+            TZ: Asia/Shanghai
+        expose: 
+            - 8080
+        networks: 
+            - all-in-one-net
+
 networks: 
     all-in-one-net:
         driver: bridge
