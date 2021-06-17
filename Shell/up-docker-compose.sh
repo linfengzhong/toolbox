@@ -19,5 +19,5 @@ sudo cp -f ~/git/toolbox/Shell/setup-new-server.sh ~/setup-new-server.sh
 sleep 1
 cd ~
 sudo chmod +x ./*.sh
-sudo chmod 666 -R ~/all-in-one/jenkins
+sudo chmod 777 -R ~/all-in-one/jenkins
 echo "---> DONE! <---"
