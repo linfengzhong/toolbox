@@ -185,7 +185,21 @@ services:
             - /dev/disk/:/dev/disk
         networks: 
             - all-in-one-net
-        
+
+    jenkins:
+        image: jenkins:2.60.3-alpine
+        container_name: jenkins
+        restart: always
+        environment: 
+            TZ: Asia/Shanghai
+        ports: 
+            - 8088:8080
+        expose: 
+            - 50000
+        volumes:
+            - ./jenkins/jenkins_home:/var/jenkins_home
+        networks: 
+            - all-in-one-net        
 networks: 
     all-in-one-net:
         driver: bridge
