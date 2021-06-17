@@ -19,4 +19,5 @@ sudo cp -f ~/git/toolbox/Shell/setup-new-server.sh ~/setup-new-server.sh
 sleep 1
 cd ~
 sudo chmod +x ./*.sh
+sudo chmod 666 -R ~/git/toolbox/Docker/docker-compose/all-in-one/jenkins/jenkins_home
 echo "---> DONE! <---"
