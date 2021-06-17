@@ -20,9 +20,6 @@ sleep 1
 cd ~
 sudo chmod +x ./*.sh
 sudo chmod 777 -R ~/all-in-one/jenkins
-sudo docker run -d -p 8000:8000 -p 9000:9000 --name=portainer --restart=always \
--v /var/run/docker.sock:/var/run/docker.sock \
--v portainer_data:/data portainer/portainer-ce
 echo "---> DONE! <---"
 sleep 3
 sudo docker ps

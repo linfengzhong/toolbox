@@ -223,21 +223,40 @@ services:
             - ./jenkins/jenkins_home:/var/jenkins_home
         networks: 
             - all-in-one-net        
+
+    portainer:
+        build:
+            dockerfile: Dockerfile
+            context: ./portainer
+        container_name: portainer
+        restart: always
+        environment: 
+            TZ: Asia/Shanghai
+        expose: 
+            - 8000
+            - 9000
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock
+            - portainer_data:/data
+        networks: 
+            - all-in-one-net     
+
 networks: 
     all-in-one-net:
         driver: bridge
 
 volumes:
-  grafana-storage:
+    grafana-storage:
 #    external: true
+    portainer_data:
 #  grafana-config:
 #    external: true
 
 
 secrets:
-  grafana_admin_password:
-    file: ./secrets/grafana_admin_password.txt
-  postgres_postgres_password:
-    file: ./secrets/postgres_postgres_password.txt
-  postgres_ro_password:
-    file: ./secrets/postgres_ro_password.txt
+    grafana_admin_password:
+        file: ./secrets/grafana_admin_password.txt
+    postgres_postgres_password:
+        file: ./secrets/postgres_postgres_password.txt
+    postgres_ro_password:
+        file: ./secrets/postgres_ro_password.txt
