@@ -44,18 +44,10 @@ judge() {
   fi
 }
 #-----------------------------------------------------------------------------#
-# Installing and running the Node Exporter
-#-----------------------------------------------------------------------------#
-#===== RHEL 7/8 | CentOS 7/8 | Oracle Linux 7/8 =====
-#-----------------------------------------------------------------------------#
-# Security-Enhanced Linux
-# This guide is based on SELinux being disabled or in permissive mode. 
-# Steps to do this are as follows.
 #-----------------------------------------------------------------------------#
 print_info "Shutdown Docker Compose, Delete All-In-One folder & Docker Compose Up "
 print_info "Step 1: 关闭 Docker Compose VM "
 sleep 1
-
 cd ~/all-in-one/
 sleep 1
 sudo docker-compose down
