@@ -1,6 +1,7 @@
 version: '3.8'
 services:
 #1. httpd -> apache for mock website http://shanghai3721.ml/httpd/
+#--> Working
     httpd:
         build:
             dockerfile: Dockerfile
@@ -16,6 +17,7 @@ services:
         networks:
             - net
 #2. Nginx -> proxy server
+#--> Working
 # listen 80, 31300 --> Mock website https://shanghai3721.ml
 # proxy pass
 # /grafana/ --> proxy_pass http://grafana:3000/;
@@ -43,7 +45,8 @@ services:
             - ./conf.d/tls:/etc/nginx/ssl
         networks: 
             - net
-#3. trojan go -> fuck GFW      
+#3. trojan go -> fuck GFW
+#--> Working
     trojan-go:
         build:
             dockerfile: Dockerfile
@@ -60,7 +63,10 @@ services:
             - net
 #        depends_on:
 #            - nginx
-#4. xray -> fuck GFW
+#4. xray -> fuck GFW * Proxy Server
+# VLESS_XTLS/TLS-direct_TCP
+# VLESS_WS
+#--> Working
     xray:
         build:
             dockerfile: Dockerfile
@@ -78,6 +84,7 @@ services:
 #        depends_on:
 #            - nginx
 #5. v2ray -> fuck GFW
+#--> NOT working
     v2ray:
         build:
             dockerfile: Dockerfile
@@ -97,6 +104,7 @@ services:
 #        depends_on:
 #            - nginx
 #6. prometheus -> monitor virtual machines
+#--> Working
     prometheus:
         build:
             dockerfile: Dockerfile
@@ -116,6 +124,7 @@ services:
         networks: 
             - net
 #7. alertmanager -> alter users
+#--> NOT working
     alertmanager:
         build:
             dockerfile: Dockerfile
@@ -131,6 +140,7 @@ services:
         networks: 
             - net
 #8. grafana -> monitor UI
+#--> Working
     grafana:
         build:
             dockerfile: Dockerfile
@@ -183,7 +193,8 @@ services:
             - 3000
         networks: 
             - net
-#9. cadvisor -> container advisor / monitor        
+#9. cadvisor -> container advisor / monitor  
+#--> Working      
     cadvisor:
         build:
             dockerfile: Dockerfile
@@ -203,6 +214,7 @@ services:
         networks: 
             - net
 #10. Jenkins -> CI/CD
+#--> Working
     jenkins:
         build:
             dockerfile: Dockerfile
@@ -220,6 +232,7 @@ services:
         networks: 
             - net        
 #11. Portainer -> Docker UI
+#--> Working
     portainer:
         build:
             dockerfile: Dockerfile
@@ -237,6 +250,7 @@ services:
         networks: 
             - net     
 #12. Tomcat -> JSP Server
+#--> NOT working
     tomcat:
         build:
             dockerfile: Dockerfile
@@ -250,6 +264,7 @@ services:
         networks: 
             - net
 #13. mysql ->  Relational Database
+#--> Working
     mysql:
         build:
             dockerfile: Dockerfile
@@ -264,6 +279,7 @@ services:
         networks: 
             - net
 #14. Adminer -> Database UI
+#--> Working
     adminer:
         build:
             dockerfile: Dockerfile
