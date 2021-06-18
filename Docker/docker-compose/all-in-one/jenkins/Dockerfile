@@ -5,5 +5,5 @@
 # https://github.com/jenkinsci/docker
 # https://plugins.jenkins.io/cloudbees-folder/
 
-FROM jenkins:2.60.3-alpine
+FROM jenkins/jenkins:2.289.1-lts-centos7
 LABEL maintainer="Fred <fred.zhong@outlook.com>"
