@@ -326,6 +326,7 @@ services:
 networks: 
     net:
         driver: bridge
+        enable_ipv6: false
 
 volumes:
     grafana-storage:
