@@ -228,7 +228,8 @@ services:
         expose: 
             - 50000
         volumes:
-            - ./jenkins/jenkins_home:/var/jenkins_home
+            # 持久化配置文件
+            - jenkins-storage:/var/jenkins_home
         networks: 
             - net        
 #11. Portainer -> Docker UI
@@ -332,6 +333,7 @@ volumes:
     portainer_data:
 #  grafana-config:
 #    external: true
+    jenkins-storage:
 
 secrets:
     grafana_admin_password:
