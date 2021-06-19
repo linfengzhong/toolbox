@@ -294,33 +294,33 @@ services:
             - net
 #15. GitLab -> source code control
 #--> Unknown
-    gitlab:
-        build:
-            dockerfile: Dockerfile
-            context: ./gitlab
-        container_name: gitlab
-        hostname: 'shanghai3721.ml'
-        restart: always
-        volumes:
+#    gitlab:
+#        build:
+#            dockerfile: Dockerfile
+#            context: ./gitlab
+#        container_name: gitlab
+#        hostname: 'shanghai3721.ml'
+#        restart: always
+#        volumes:
         # For storing application data.
-          - $GITLAB_HOME/data:/var/opt/gitlab
+#          - $GITLAB_HOME/data:/var/opt/gitlab
         # For storing logs.
-          - $GITLAB_HOME/logs:/var/log/gitlab
+#          - $GITLAB_HOME/logs:/var/log/gitlab
         # For storing the GitLab configuration files.
-          - $GITLAB_HOME/config:/etc/gitlab
-        restart: always
-        environment:
+#          - $GITLAB_HOME/config:/etc/gitlab
+#        restart: always
+#        environment:
         # Add any other gitlab.rb configuration here, each on its own line
-            GITLAB_OMNIBUS_CONFIG: external_url 'https://shanghai3721.ml/gitlab/'
+#            GITLAB_OMNIBUS_CONFIG: external_url 'https://shanghai3721.ml/gitlab/'
 #            gitlab_rails['initial_root_password'] = File.read('/run/secrets/gitlab_root_password')
-        secrets:
-          - gitlab_root_password
-        expose:
-          - 22
-          - 80
-          - 443
-        networks: 
-          - net          
+#        secrets:
+#          - gitlab_root_password
+#        expose:
+#          - 22
+#          - 80
+#          - 443
+#        networks: 
+#          - net          
 
 networks: 
     net:
@@ -340,5 +340,5 @@ secrets:
         file: ./secrets/postgres_postgres_password.txt
     postgres_ro_password:
         file: ./secrets/postgres_ro_password.txt
-    gitlab_root_password:
-        file: ./secrets/root_password.txt
+#    gitlab_root_password:
+#        file: ./secrets/root_password.txt
