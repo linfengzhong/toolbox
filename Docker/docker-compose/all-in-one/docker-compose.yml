@@ -299,6 +299,7 @@ services:
             dockerfile: Dockerfile
             context: ./gitlab
         container_name: gitlab
+        hostname: 'shanghai3721.ml'
         restart: always
         volumes:
         # For storing application data.
@@ -310,10 +311,9 @@ services:
         restart: always
         environment:
         # Add any other gitlab.rb configuration here, each on its own line
-            GITLAB_OMNIBUS_CONFIG: "from_file('/omnibus_config.rb')"
-        configs:
-          - source: gitlab
-            target: /omnibus_config.rb
+            GITLAB_OMNIBUS_CONFIG: |
+            external_url 'http://shanghai3721.ml/gitlab/'
+            gitlab_rails['initial_root_password'] = File.read('/run/secrets/gitlab_root_password')
         secrets:
           - gitlab_root_password
         expose:
@@ -321,17 +321,7 @@ services:
           - 80
           - 443
         networks: 
-          - net        
-#    gitlab-runner:
-#        image: gitlab/gitlab-runner:alpine
-#        deploy:
-#            mode: replicated
-#        replicas: 4
-#        networks: 
-#            - net      
-configs:
-  gitlab:
-    file: ./gitlab.rb
+          - net          
 
 networks: 
     net:
