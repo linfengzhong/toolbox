@@ -153,3 +153,7 @@ sudo sh /root/.acme.sh/acme.sh  --issue  -d k8s-master.ml --standalone
 print_info "----- 网站证书 ----"
 sleep 1
 judge "Step 6: Install acme.sh"
+
+print_info "服务器外部 IP："
+sudo curl https://ipinfo.io/ip
+sleep 1
