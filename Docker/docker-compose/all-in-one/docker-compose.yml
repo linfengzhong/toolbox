@@ -345,6 +345,19 @@ services:
             - DEPLOY_DOCKER_CONTAINER_RELOAD_CMD="service nginx force-reload"        
         networks: 
             - net
+#17. Maven -> Apache Maven is a software project management and comprehension tool.
+#--> Working
+    maven:
+        build:
+            dockerfile: Dockerfile
+            context: ./maven
+        container_name: maven
+        restart: always
+        environment: 
+            TZ: Asia/Shanghai
+        networks: 
+            - net
+
 networks: 
     net:
         driver: bridge
