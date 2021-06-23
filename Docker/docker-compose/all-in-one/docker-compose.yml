@@ -31,6 +31,8 @@ services:
             dockerfile: Dockerfile
             context: ./nginx
         container_name: nginx
+        labels:
+            - sh.acme.autoload.domain=shanghai3721.ml
         restart: always
         environment: 
             TZ: Asia/Shanghai
@@ -322,7 +324,27 @@ services:
 #          - 443
 #        networks: 
 #          - net          
-
+#16. acme.sh ->  Full ACME protocol implementation
+#--> Working
+    acme.sh:
+        build:
+            dockerfile: Dockerfile
+            context: ./acme.sh
+        container_name: acme.sh
+        restart: always
+        command: daemon
+        volumes:
+            - ./acmeout:/acme.sh
+            - /var/run/docker.sock:/var/run/docker.sock
+        environment:
+            - DEPLOY_DOCKER_CONTAINER_LABEL=sh.acme.autoload.domain=shanghai3721.ml
+            - DEPLOY_DOCKER_CONTAINER_KEY_FILE=/etc/nginx/ssl/shanghai3721.ml/key.pem
+            - DEPLOY_DOCKER_CONTAINER_CERT_FILE="/etc/nginx/ssl/shanghai3721.ml/cert.pem"
+            - DEPLOY_DOCKER_CONTAINER_CA_FILE="/etc/nginx/ssl/shanghai3721.ml/ca.pem"
+            - DEPLOY_DOCKER_CONTAINER_FULLCHAIN_FILE="/etc/nginx/ssl/shanghai3721.ml/full.pem"
+            - DEPLOY_DOCKER_CONTAINER_RELOAD_CMD="service nginx force-reload"        
+        networks: 
+            - net
 networks: 
     net:
         driver: bridge
