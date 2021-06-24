@@ -1,7 +1,7 @@
 {
   "log": {
     "error": "/etc/xray/log/error.log",
-    "loglevel": "warning"
+    "loglevel": "debug"
   },
 
   "inbounds": [
@@ -74,7 +74,7 @@
         }
       }
     }
-  ],
+     ],
   "outbounds": [
     {
       "protocol": "freedom",
