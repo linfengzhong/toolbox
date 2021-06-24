@@ -51,7 +51,7 @@ judge() {
 # This guide is based on SELinux being disabled or in permissive mode. 
 # Steps to do this are as follows.
 #-----------------------------------------------------------------------------
-print_info "开始配置 Linux Rocky 8.4 服务器"
+print_info "开始配置 Linux Rocky 8.4 / CentOS 8 服务器"
 sleep 1
 sed -i 's/SELINUX=.*/SELINUX=disabled/g' /etc/selinux/config
 setenforce 0
