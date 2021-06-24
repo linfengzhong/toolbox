@@ -2,7 +2,7 @@
   "log": {
     "error": "/etc/xray/log/error.log",
     "loglevel": "warning"
-  }
+  },
 
   "inbounds": [
     {
