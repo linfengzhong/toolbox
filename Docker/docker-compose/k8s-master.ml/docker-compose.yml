@@ -18,6 +18,8 @@ services:
         restart: always
         environment: 
             TZ: Asia/Shanghai
+        expose:
+            - 31300
         ports:
             - 80:80
         volumes: 
