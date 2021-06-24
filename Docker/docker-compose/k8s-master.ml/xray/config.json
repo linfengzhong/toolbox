@@ -42,7 +42,7 @@
           ],
           "certificates": [
             {
-              "certificateFile": "/etc/xray/k8s-master.ml/k8s-master.ml.cer",
+              "certificateFile": "/etc/xray/k8s-master.ml/fullchain.cer",
               "keyFile": "/etc/xray/k8s-master.ml/k8s-master.ml.key",
               "ocspStapling": 3600,
               "usage": "encipherment"
