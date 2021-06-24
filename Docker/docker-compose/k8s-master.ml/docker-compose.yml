@@ -28,7 +28,7 @@ services:
 #3. trojan go -> fuck GFW
 #--> Working
     trojan-go:
-        immage: p4gefau1t/trojan-go:latest
+        image: p4gefau1t/trojan-go:latest
         container_name: trojan-go
         restart: always
         environment: 
