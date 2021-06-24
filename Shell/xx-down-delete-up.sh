@@ -52,6 +52,12 @@ cd ~/all-in-one/
 sleep 1
 sudo docker-compose down
 sleep 1
+
+cd ~/k8s-master.ml/
+sleep 1
+sudo docker-compose down
+sleep 1
+
 #sudo docker image rm -f all-in-one_*
 #sleep 1
 sudo docker images
@@ -61,6 +67,8 @@ print_info "Step 2: 删除 All-In-One 文件夹 "
 cd ~
 sleep 1
 sudo rm -rf all-in-one/
+
+sudo rm -rf k8s-master.ml/
 ls -l
 sleep 1
 judge "Step 2: 删除 All-In-One 文件夹 "
@@ -72,9 +80,12 @@ git pull
 sleep 1
 sudo cp -rf ~/git/toolbox/Docker/docker-compose/all-in-one/ ~/
 sleep 1
+sudo cp -rf ~/git/toolbox/Docker/docker-compose/k8s-master.ml/ ~/
+
 sudo chown -R root:root ~/all-in-one/
+sudo chown -R root:root ~/k8s-master.ml/
 sleep 1
-cd ~/all-in-one/
+cd ~/k8s-master.ml/
 judge "Step 3: 更新同步GitHub文件 -> All-In-One 文件夹 "
 sleep 1
 #-----------------------------------------------------------------------------#
