@@ -1,5 +1,20 @@
 version: '3.8'
 services:
+#1. httpd -> apache for mock website http://shanghai3721.ml/httpd/
+#--> Working
+    httpd:
+        image: httpd:alpine
+        container_name: httpd
+        restart: always
+        environment: 
+            TZ: Asia/Shanghai
+        expose:
+            - 80
+        volumes: 
+            - ./httpd/html6/:/usr/local/apache2/htdocs/
+            - ./httpd/conf/:/usr/local/apache2/conf/
+        networks:
+            - net
 #2. Nginx -> proxy server
 #--> Working
 # listen 80, 31300 --> Mock website https://shanghai3721.ml
@@ -83,6 +98,3 @@ services:
 networks: 
     net:
         driver: bridge
-
-volumes:
-    portainer_data:
