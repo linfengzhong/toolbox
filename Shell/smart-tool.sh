@@ -147,7 +147,7 @@ case "x$1" in
   "xdelete")
     delete_docker_compose_folder
     ;;
-  "xgithub-push")
+  "xgit-push")
     github_push ;;
   "xgit-pull")
     git_pull
