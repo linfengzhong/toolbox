@@ -207,7 +207,7 @@ services:
     #14. Adminer -> Database UI
     #--> Working
     adminer:
-        image: adminer:alpine
+        image: adminer:latest
         container_name: adminer
         restart: always
         environment: 
