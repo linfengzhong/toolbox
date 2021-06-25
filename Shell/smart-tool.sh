@@ -96,7 +96,6 @@ function show_docker_container () {
 function delete_docker_compose_folder () {
   print_info "删除文件夹 "
   cd ~
-  sudo rm -rf all-in-one/
   sudo rm -rf k8s-master.ml/
   judge "删除文件夹 "
 }
@@ -284,7 +283,7 @@ case "x$1" in
     install_acme
     ;;
   "xgenerate-CA")
-    generate_CA
+    generate_ca
     ;;
   "xinstall-webmin")
     install_webmin
@@ -299,7 +298,7 @@ case "x$1" in
     turn_off_selinux
     install_prerequisite
     install_acme
-    generate_CA
+    generate_ca
     install_webmin
     install_git
     install_docker
