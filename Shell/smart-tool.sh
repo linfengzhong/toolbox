@@ -150,7 +150,7 @@ case "x$1" in
   "xgit-push")
     github_push ;;
   "xgit-pull")
-    git_pull
+    github_pull
     ;;
   "xstatus")
     show_docker_images
