@@ -52,7 +52,7 @@ GITHUB_REPO="/root/git/toolbox/"
 function shutdown_docker_compose () {
 print_info "Shutdown Docker Compose "
 print_info "关闭 Docker Compose VM "
-sudo cd $WORKDIR
+cd $WORKDIR
 sudo docker-compose down
 judge "关闭 Docker Compose VM "
 }
@@ -70,7 +70,7 @@ sudo docker container ps
 # 删除文件夹
 function delete_docker_compose_folder () {
 print_info "删除文件夹 "
-sudo cd ~
+cd ~
 sudo rm -rf all-in-one/
 sudo rm -rf k8s-master.ml/
 judge "删除文件夹 "
@@ -79,7 +79,7 @@ judge "删除文件夹 "
 # 同步下载Git文件夹
 function github_pull () {
 print_info "更新同步 下载GitHub文件 -> Local Github Repo "
-sudo cd $GITHUB_REPO
+cd $GITHUB_REPO
 sudo git pull
 #sleep 1
 #sudo cp -rf ~/git/toolbox/Docker/docker-compose/all-in-one/ ~/
@@ -93,7 +93,7 @@ judge "更新同步 下载GitHub文件 -> Local Github Repo "
 # 同步上传Git文件夹
 function github_push () {
 print_info "更新同步 上传Local Github Repo -> GitHub文件 "
-sudo cd $GITHUB-REPO
+cd $GITHUB-REPO
 sudo git add .
 sudo git commit -m "sync_all_config_log_data"
 sudo git push
@@ -109,7 +109,7 @@ judge "更新同步 上传Local Github Repo -> GitHub文件 "
 # 启动docker-compose
 function start_docker_compose () {
 print_info "启动 Docker Compose "
-sudo cd $WORKDIR
+cd $WORKDIR
 sudo docker-compose build
 sudo docker-compose up -d
 
