@@ -148,6 +148,13 @@ function install_prerequisite () {
   judge "安装 wget lsof tar unzip curl socat "
 }
 #-----------------------------------------------------------------------------#
+# Show IP
+#-----------------------------------------------------------------------------#
+# 外部IP
+function show_ip () {
+  print_info "服务器外部 IP：" & sudo curl https://ipinfo.io/ip
+}
+#-----------------------------------------------------------------------------#
 # Install acme.sh
 #-----------------------------------------------------------------------------#
 function install_acme () {
@@ -165,8 +172,6 @@ function generate_ca () {
   sudo sh /root/.acme.sh/acme.sh  --issue  -d $WEBSITE --standalone
   print_info "----- 网站证书 ----"
   judge "生成网站证书 "
-print_info "服务器外部 IP："
-sudo curl https://ipinfo.io/ip
 }
 #-----------------------------------------------------------------------------#
 # Install webmin
@@ -228,6 +233,7 @@ function usage () {
     echo "
 Usage: smart-tool.sh 
               refresh
+              show-ip
               down | up
               all
               delete
@@ -248,6 +254,9 @@ case "x$1" in
   "xrefresh")
     github_pull
     refresh_smart_tool
+    ;;
+  "xshow-ip")
+    show_ip
     ;;
   "xdown")
     shutdown_docker_compose
