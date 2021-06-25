@@ -152,7 +152,7 @@ function install_prerequisite () {
 #-----------------------------------------------------------------------------#
 # 外部IP
 function show_ip () {
-  print_info "服务器外部 IP：" & sudo curl https://ipinfo.io/ip
+  print_info "服务器外部 IP：" && sudo curl https://ipinfo.io/ip
 }
 #-----------------------------------------------------------------------------#
 # Install acme.sh
