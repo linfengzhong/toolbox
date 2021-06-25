@@ -134,6 +134,7 @@ function github_push () {
 function start_docker_compose () {
   print_info "启动 Docker Compose "
   cd $WORKDIR
+  sudo chmod 777 -R grafana
   sudo docker-compose build
   sudo docker-compose up -d
   judge "启动 Docker Compose "
