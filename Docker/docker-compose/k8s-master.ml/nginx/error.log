@@ -188,3 +188,28 @@
 2021/06/25 17:34:37 [notice] 1#1: signal 17 (SIGCHLD) received from 23
 2021/06/25 17:34:37 [notice] 1#1: worker process 23 exited with code 0
 2021/06/25 17:34:37 [notice] 1#1: exit
+2021/06/25 17:34:48 [notice] 1#1: using the "epoll" event method
+2021/06/25 17:34:48 [notice] 1#1: nginx/1.21.0
+2021/06/25 17:34:48 [notice] 1#1: built by gcc 10.2.1 20201203 (Alpine 10.2.1_pre1) 
+2021/06/25 17:34:48 [notice] 1#1: OS: Linux 4.18.0-305.3.1.el8.x86_64
+2021/06/25 17:34:48 [notice] 1#1: getrlimit(RLIMIT_NOFILE): 1048576:1048576
+2021/06/25 17:34:48 [notice] 1#1: start worker processes
+2021/06/25 17:34:48 [notice] 1#1: start worker process 22
+2021/06/25 17:34:48 [notice] 1#1: start worker process 23
+2021/06/25 18:06:04 [error] 22#22: *100 open() "/usr/share/nginx/html/sdk" failed (2: No such file or directory), client: 192.168.0.3, server: k8s-master.ml, request: "POST /sdk HTTP/1.1", host: "107.167.188.105"
+2021/06/25 18:06:08 [error] 22#22: *101 open() "/usr/share/nginx/html/nmaplowercheck1624615547" failed (2: No such file or directory), client: 192.168.0.3, server: k8s-master.ml, request: "GET /nmaplowercheck1624615547 HTTP/1.1", host: "107.167.188.105"
+2021/06/25 18:06:08 [error] 22#22: *102 open() "/usr/share/nginx/html/HNAP1" failed (2: No such file or directory), client: 192.168.0.3, server: k8s-master.ml, request: "GET /HNAP1 HTTP/1.1", host: "107.167.188.105"
+2021/06/25 18:06:25 [error] 22#22: *104 open() "/usr/share/nginx/html/evox/about" failed (2: No such file or directory), client: 192.168.0.3, server: k8s-master.ml, request: "GET /evox/about HTTP/1.1", host: "107.167.188.105"
+2021/06/25 18:14:09 [notice] 1#1: signal 3 (SIGQUIT) received, shutting down
+2021/06/25 18:14:09 [notice] 23#23: gracefully shutting down
+2021/06/25 18:14:09 [notice] 23#23: exiting
+2021/06/25 18:14:09 [notice] 23#23: exit
+2021/06/25 18:14:09 [notice] 22#22: gracefully shutting down
+2021/06/25 18:14:09 [notice] 22#22: exiting
+2021/06/25 18:14:09 [notice] 22#22: exit
+2021/06/25 18:14:09 [notice] 1#1: signal 17 (SIGCHLD) received from 22
+2021/06/25 18:14:09 [notice] 1#1: worker process 22 exited with code 0
+2021/06/25 18:14:09 [notice] 1#1: signal 29 (SIGIO) received
+2021/06/25 18:14:09 [notice] 1#1: signal 17 (SIGCHLD) received from 23
+2021/06/25 18:14:09 [notice] 1#1: worker process 23 exited with code 0
+2021/06/25 18:14:09 [notice] 1#1: exit

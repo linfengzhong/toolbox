@@ -614,3 +614,24 @@
 [ERROR] 2021/06/25 17:22:38 github.com/p4gefau1t/trojan-go/proxy.(*Proxy).relayConnLoop.func1.1:proxy.go:80 read tcp 172.30.0.4:60716->13.67.9.5:443: read: connection reset by peer
 [ERROR] 2021/06/25 17:24:48 github.com/p4gefau1t/trojan-go/proxy.(*Proxy).relayConnLoop.func1.1:proxy.go:80 read tcp 172.30.0.4:57918->52.109.52.26:443: read: connection reset by peer
 [ERROR] 2021/06/25 17:27:38 github.com/p4gefau1t/trojan-go/proxy.(*Proxy).relayConnLoop.func1.1:proxy.go:80 read tcp 172.30.0.4:60820->13.67.9.5:443: read: connection reset by peer
+[ERROR] 2021/06/25 17:37:47 github.com/p4gefau1t/trojan-go/tunnel/trojan.(*Server).acceptLoop:server.go:130 trojan failed to accept conn | not a valid websocket handshake request: 192.168.0.2:52154
+[ERROR] 2021/06/25 17:40:38 github.com/p4gefau1t/trojan-go/tunnel/trojan.(*Server).acceptLoop:server.go:130 trojan failed to accept conn | not a valid websocket handshake request: 192.168.0.2:52162
+[ERROR] 2021/06/25 18:03:31 github.com/p4gefau1t/trojan-go/tunnel/trojan.(*Server).acceptLoop:server.go:130 trojan failed to accept conn | not a valid websocket handshake request: 192.168.0.2:52240
+[ERROR] 2021/06/25 18:04:05 github.com/p4gefau1t/trojan-go/tunnel/trojan.(*Server).acceptLoop:server.go:130 trojan failed to accept conn | not a valid websocket handshake request: 192.168.0.2:52432
+[ERROR] 2021/06/25 18:04:09 github.com/p4gefau1t/trojan-go/tunnel/trojan.(*Server).acceptLoop:server.go:130 trojan failed to accept conn | not a valid websocket handshake request: 192.168.0.2:52452
+[ERROR] 2021/06/25 18:04:10 github.com/p4gefau1t/trojan-go/tunnel/trojan.(*Server).acceptLoop:server.go:130 trojan failed to accept conn | not a valid websocket handshake request: 192.168.0.2:52478
+[ERROR] 2021/06/25 18:04:10 github.com/p4gefau1t/trojan-go/tunnel/trojan.(*Server).acceptLoop:server.go:130 trojan failed to accept conn | not a valid websocket handshake request: 192.168.0.2:52484
+[ERROR] 2021/06/25 18:04:19 github.com/p4gefau1t/trojan-go/tunnel/trojan.(*Server).acceptLoop:server.go:130 trojan failed to accept conn | not a valid websocket handshake request: 192.168.0.2:52584
+[ERROR] 2021/06/25 18:04:19 github.com/p4gefau1t/trojan-go/tunnel/trojan.(*Server).acceptLoop:server.go:130 trojan failed to accept conn | not a valid websocket handshake request: 192.168.0.2:52590
+[ERROR] 2021/06/25 18:05:37 github.com/p4gefau1t/trojan-go/tunnel/trojan.(*Server).acceptLoop:server.go:130 trojan failed to accept conn | not a valid websocket handshake request: 192.168.0.2:52694
+[ERROR] 2021/06/25 18:06:03 github.com/p4gefau1t/trojan-go/proxy.(*Proxy).relayConnLoop.func1.1:proxy.go:80 read tcp 192.168.0.3:38186->13.107.42.23:443: read: connection reset by peer
+[ERROR] 2021/06/25 18:06:04 github.com/p4gefau1t/trojan-go/tunnel/trojan.(*Server).acceptLoop:server.go:130 trojan failed to accept conn | not a valid websocket handshake request: 192.168.0.2:52716
+[ERROR] 2021/06/25 18:06:08 github.com/p4gefau1t/trojan-go/tunnel/trojan.(*Server).acceptLoop:server.go:130 trojan failed to accept conn | not a valid websocket handshake request: 192.168.0.2:52720
+[ERROR] 2021/06/25 18:06:08 github.com/p4gefau1t/trojan-go/tunnel/trojan.(*Server).acceptLoop:server.go:130 trojan failed to accept conn | not a valid websocket handshake request: 192.168.0.2:52724
+[ERROR] 2021/06/25 18:06:14 github.com/p4gefau1t/trojan-go/proxy.(*Proxy).relayConnLoop.func1.1:proxy.go:80 read tcp 192.168.0.3:48902->52.108.46.8:443: read: connection reset by peer
+[ERROR] 2021/06/25 18:06:19 github.com/p4gefau1t/trojan-go/proxy.(*Proxy).relayConnLoop.func1.1:proxy.go:80 read tcp 192.168.0.3:57424->13.107.6.171:443: read: connection reset by peer
+[ERROR] 2021/06/25 18:06:25 github.com/p4gefau1t/trojan-go/tunnel/trojan.(*Server).acceptLoop:server.go:130 trojan failed to accept conn | not a valid websocket handshake request: 192.168.0.2:52734
+[ERROR] 2021/06/25 18:06:42 github.com/p4gefau1t/trojan-go/tunnel/trojan.(*Server).acceptLoop:server.go:130 trojan failed to accept conn | not a valid websocket handshake request: 192.168.0.2:52738
+[ERROR] 2021/06/25 18:06:42 github.com/p4gefau1t/trojan-go/tunnel/trojan.(*Server).acceptLoop:server.go:130 trojan failed to accept conn | not a valid websocket handshake request: 192.168.0.2:52742
+[ERROR] 2021/06/25 18:07:56 github.com/p4gefau1t/trojan-go/proxy.(*Proxy).relayConnLoop.func1.1:proxy.go:80 read tcp 192.168.0.3:35144->13.67.9.5:443: read: connection reset by peer
+[ERROR] 2021/06/25 18:12:57 github.com/p4gefau1t/trojan-go/proxy.(*Proxy).relayConnLoop.func1.1:proxy.go:80 read tcp 192.168.0.3:35214->13.67.9.5:443: read: connection reset by peer
