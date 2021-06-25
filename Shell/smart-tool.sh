@@ -52,8 +52,9 @@ GITHUB_REPO="/root/git/toolbox/"
 function shutdown_docker_compose () {
 print_info "Shutdown Docker Compose "
 print_info "关闭 Docker Compose VM "
-cd $WORKDIR
+sudo cd $WORKDIR
 sudo docker-compose down
+judge "关闭 Docker Compose VM "
 }
 #-----------------------------------------------------------------------------#
 # 查看Docker Images
@@ -68,33 +69,35 @@ sudo docker container ps
 #-----------------------------------------------------------------------------#
 # 删除文件夹
 function delete_docker_compose_folder () {
-print_info "删除 All-In-One 文件夹 "
-cd ~
+print_info "删除文件夹 "
+sudo cd ~
 sudo rm -rf all-in-one/
 sudo rm -rf k8s-master.ml/
-ls -l
+judge "删除文件夹 "
 }
 #-----------------------------------------------------------------------------#
 # 同步下载Git文件夹
 function github_pull () {
 print_info "更新同步 下载GitHub文件 -> Local Github Repo "
-cd $GITHUB_REPO
-git pull
+sudo cd $GITHUB_REPO
+sudo git pull
 #sleep 1
 #sudo cp -rf ~/git/toolbox/Docker/docker-compose/all-in-one/ ~/
 #sleep 1
 #sudo cp -rf ~/git/toolbox/Docker/docker-compose/k8s-master.ml/ ~/
 #sudo chown -R root:root ~/all-in-one/
 #sudo chown -R root:root ~/k8s-master.ml/
+judge "更新同步 下载GitHub文件 -> Local Github Repo "
 }
 #-----------------------------------------------------------------------------#
 # 同步上传Git文件夹
 function github_push () {
 print_info "更新同步 上传Local Github Repo -> GitHub文件 "
-cd $GITHUB-REPO
-git add .
-git commit -m "sync_all_config_log_data"
-git push
+sudo cd $GITHUB-REPO
+sudo git add .
+sudo git commit -m "sync_all_config_log_data"
+sudo git push
+judge "更新同步 上传Local Github Repo -> GitHub文件 "
 #sleep 1
 #sudo cp -rf ~/git/toolbox/Docker/docker-compose/all-in-one/ ~/
 #sleep 1
@@ -106,23 +109,17 @@ git push
 # 启动docker-compose
 function start_docker_compose () {
 print_info "启动 Docker Compose "
-cd $WORKDIR
+sudo cd $WORKDIR
 sudo docker-compose build
 sudo docker-compose up -d
 
 sudo rm -f /root/*.sh
 sudo cp -f /root/git/toolbox/Shell/smart-tool.sh /root/smart-tool.sh
 sudo chmod +x /root/*.sh
-
-print_ok "Docker Container -> Running list "
-}
-
-
-judge "关闭 Docker Compose VM "
-judge "删除 All-In-One 文件夹 "
-judge "更新同步GitHub文件 -> All-In-One 文件夹 "
 judge "启动 Docker Compose "
-
+}
+#-----------------------------------------------------------------------------#
+# 展示命令选项
 function usage () {
     echo "
 Usage: smart-tool.sh down|up
