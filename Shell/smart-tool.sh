@@ -159,11 +159,12 @@ function install_acme () {
 # Generate CA
 #-----------------------------------------------------------------------------#
 function generate_ca () {
-  local WEBSITE=$1
+#  local WEBSITE=$1
+  print_info "生成网站证书 "
   print_info "----- 网站证书 ----"
   sudo sh /root/.acme.sh/acme.sh  --issue  -d $WEBSITE --standalone
   print_info "----- 网站证书 ----"
-  judge "Step 6: Install acme.sh"
+  judge "生成网站证书 "
 print_info "服务器外部 IP："
 sudo curl https://ipinfo.io/ip
 }
@@ -234,7 +235,7 @@ Usage: smart-tool.sh
               status
               turn-off-selinux
               install-prerequisite
-              install-acme | generate-CA
+              install-acme | generate-ca
               install-webmin
               install-git
               install-docker
@@ -282,7 +283,7 @@ case "x$1" in
   "xinstall-acme")
     install_acme
     ;;
-  "xgenerate-CA")
+  "xgenerate-ca")
     generate_ca
     ;;
   "xinstall-webmin")
