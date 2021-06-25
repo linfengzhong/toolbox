@@ -191,7 +191,31 @@ services:
             - ./portainer/data:/data
         networks: 
             - net     
-
+    #13. mysql ->  Relational Database
+    #--> Working
+    db:
+        image: mysql:alpine
+        container_name: mysql
+        command: --default-authentication-plugin=mysql_native_password
+        restart: always
+        environment: 
+            TZ: Asia/Shanghai
+            # root
+            MYSQL_ROOT_PASSWORD: ABC123abc
+        networks: 
+            - net
+    #14. Adminer -> Database UI
+    #--> Working
+    adminer:
+        image: adminer:alpine
+        container_name: adminer
+        restart: always
+        environment: 
+            TZ: Asia/Shanghai
+        expose: 
+            - 8080
+        networks: 
+            - net
 networks: 
     net:
         driver: bridge
