@@ -144,8 +144,9 @@ function start_docker_compose () {
 #-----------------------------------------------------------------------------#
 # 安装必要程序
 function install_prerequisite () {
+  print_info "安装 wget lsof tar unzip curl socat "
   yum -y install wget lsof tar unzip curl socat
-  judge "安装 wget lsof tar unzip curl socat"
+  judge "安装 wget lsof tar unzip curl socat "
 }
 #-----------------------------------------------------------------------------#
 # Install acme.sh
