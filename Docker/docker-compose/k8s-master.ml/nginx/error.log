@@ -350,3 +350,25 @@
 2021/06/25 19:38:57 [notice] 1#1: signal 17 (SIGCHLD) received from 22
 2021/06/25 19:38:57 [notice] 1#1: worker process 22 exited with code 0
 2021/06/25 19:38:57 [notice] 1#1: exit
+2021/06/25 19:39:16 [notice] 1#1: using the "epoll" event method
+2021/06/25 19:39:16 [notice] 1#1: nginx/1.21.0
+2021/06/25 19:39:16 [notice] 1#1: built by gcc 10.2.1 20201203 (Alpine 10.2.1_pre1) 
+2021/06/25 19:39:16 [notice] 1#1: OS: Linux 4.18.0-305.3.1.el8.x86_64
+2021/06/25 19:39:16 [notice] 1#1: getrlimit(RLIMIT_NOFILE): 1048576:1048576
+2021/06/25 19:39:16 [notice] 1#1: start worker processes
+2021/06/25 19:39:16 [notice] 1#1: start worker process 22
+2021/06/25 19:39:16 [notice] 1#1: start worker process 23
+2021/06/25 19:39:18 [error] 22#22: *1 connect() failed (111: Connection refused) while connecting to upstream, client: 192.168.208.3, server: k8s-master.ml, request: "GET /grafana/api/live/ws HTTP/1.1", upstream: "http://192.168.208.12:3000/api/live/ws", host: "k8s-master.ml"
+2021/06/25 19:53:15 [notice] 1#1: signal 3 (SIGQUIT) received, shutting down
+2021/06/25 19:53:15 [notice] 23#23: gracefully shutting down
+2021/06/25 19:53:15 [notice] 23#23: exiting
+2021/06/25 19:53:15 [notice] 23#23: exit
+2021/06/25 19:53:15 [notice] 22#22: gracefully shutting down
+2021/06/25 19:53:15 [notice] 22#22: exiting
+2021/06/25 19:53:15 [notice] 22#22: exit
+2021/06/25 19:53:15 [notice] 1#1: signal 17 (SIGCHLD) received from 23
+2021/06/25 19:53:15 [notice] 1#1: worker process 23 exited with code 0
+2021/06/25 19:53:15 [notice] 1#1: signal 29 (SIGIO) received
+2021/06/25 19:53:15 [notice] 1#1: signal 17 (SIGCHLD) received from 22
+2021/06/25 19:53:15 [notice] 1#1: worker process 22 exited with code 0
+2021/06/25 19:53:15 [notice] 1#1: exit
