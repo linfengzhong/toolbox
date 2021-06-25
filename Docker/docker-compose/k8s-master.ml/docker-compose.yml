@@ -178,7 +178,7 @@ services:
     #10. Jenkins -> CI/CD
     #--> Working
     jenkins:
-        image: jenkins:alpine
+        image: jenkins/jenkins:alpine
         container_name: jenkins
         restart: always
         environment: 
