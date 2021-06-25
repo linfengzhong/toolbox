@@ -226,7 +226,8 @@ function install_docker () {
 # 展示命令选项
 function usage () {
     echo "
-Usage: smart-tool.sh refresh-smart-tool
+Usage: smart-tool.sh 
+              refresh
               down | up
               all
               delete
@@ -244,7 +245,7 @@ Usage: smart-tool.sh refresh-smart-tool
 RC=0
 
 case "x$1" in 
-  "xrefresh-smart-tool")
+  "xrefresh")
     github_pull
     refresh_smart_tool
     ;;
