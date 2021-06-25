@@ -193,9 +193,9 @@ services:
             - net     
     #13. mysql ->  Relational Database
     #--> Working
-    db:
+    mysql:
         image: mysql:latest
-        container_name: mysql
+        container_name: db
         command: --default-authentication-plugin=mysql_native_password
         restart: always
         environment: 
