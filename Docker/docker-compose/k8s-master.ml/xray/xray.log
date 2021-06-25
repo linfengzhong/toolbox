@@ -1,0 +1,14 @@
+2021/06/25 16:17:29 [Debug] app/log: Logger started
+2021/06/25 16:17:29 [Info] app/dns: DNS: created localhost client
+2021/06/25 16:17:29 [Debug] app/proxyman/inbound: creating stream worker on 0.0.0.0:443
+2021/06/25 16:17:29 [Debug] app/proxyman/inbound: creating stream worker on 127.0.0.1:31297
+2021/06/25 16:17:29 [Info] transport/internet/tcp: listening TCP on 0.0.0.0:443
+2021/06/25 16:17:30 [Info] transport/internet/websocket: listening TCP(for WS) on 127.0.0.1:31297
+2021/06/25 16:17:30 [Warning] transport/internet/websocket: accepting PROXY protocol
+2021/06/25 16:17:30 [Warning] core: Xray 1.4.2 started
+2021/06/25 16:18:41 [Info] [3031330615] proxy/vless/inbound: firstLen = 82
+2021/06/25 16:18:41 [Info] [3031330615] proxy/vless/inbound: fallback starts > proxy/vless/encoding: invalid request version
+2021/06/25 16:18:41 [Info] [3031330615] proxy/vless/inbound: realName = k8s-master.ml
+2021/06/25 16:18:41 [Info] [3031330615] proxy/vless/inbound: realAlpn = http/1.1
+2021/06/25 16:18:42 [Info] [3031330615] app/proxyman/inbound: connection ends > proxy/vless/inbound: fallback ends > context canceled
+2021/06/25 16:20:04 [Debug] app/log: Logger closing
