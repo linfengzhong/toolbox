@@ -81,7 +81,7 @@ services:
     #6. prometheus -> monitor virtual machines
     #--> Working
     prometheus:
-        image: prom/prometheus:alpine
+        image: prom/prometheus:latest
         container_name: prometheus
         restart: always
         environment: 
@@ -99,7 +99,7 @@ services:
     #7. alertmanager -> alter users
     #--> NOT working
     alertmanager:
-        image: prom/alertmanager:alpine
+        image: prom/alertmanager:latest
         container_name: alertmanager
         restart: always
         environment: 
