@@ -867,3 +867,10 @@
 [ERROR] 2021/06/25 19:59:29 github.com/p4gefau1t/trojan-go/tunnel/trojan.(*Server).acceptLoop:server.go:130 trojan failed to accept conn | not a valid websocket handshake request: 192.168.224.10:36544
 [ERROR] 2021/06/25 19:59:49 github.com/p4gefau1t/trojan-go/tunnel/trojan.(*Server).acceptLoop:server.go:130 trojan failed to accept conn | not a valid websocket handshake request: 192.168.224.10:36554
 [ERROR] 2021/06/25 20:00:08 github.com/p4gefau1t/trojan-go/tunnel/trojan.(*Server).acceptLoop:server.go:130 trojan failed to accept conn | not a valid websocket handshake request: 192.168.224.10:36564
+[ERROR] 2021/06/25 20:03:25 github.com/p4gefau1t/trojan-go/tunnel/trojan.(*Server).acceptLoop:server.go:130 trojan failed to accept conn | not a valid websocket handshake request: 172.18.0.7:42792
+[ERROR] 2021/06/25 20:03:44 github.com/p4gefau1t/trojan-go/tunnel/trojan.(*Server).acceptLoop:server.go:130 trojan failed to accept conn | not a valid websocket handshake request: 172.18.0.7:42810
+[ERROR] 2021/06/25 20:04:00 github.com/p4gefau1t/trojan-go/tunnel/trojan.(*Server).acceptLoop:server.go:130 trojan failed to accept conn | not a valid websocket handshake request: 172.18.0.7:42820
+[ERROR] 2021/06/25 20:04:13 github.com/p4gefau1t/trojan-go/tunnel/trojan.(*Server).acceptLoop:server.go:130 trojan failed to accept conn | not a valid websocket handshake request: 172.18.0.7:42828
+[ERROR] 2021/06/25 20:04:30 github.com/p4gefau1t/trojan-go/tunnel/trojan.(*Server).acceptLoop:server.go:130 trojan failed to accept conn | not a valid websocket handshake request: 172.18.0.7:42836
+[ERROR] 2021/06/25 20:04:49 github.com/p4gefau1t/trojan-go/tunnel/trojan.(*Server).acceptLoop:server.go:130 trojan failed to accept conn | not a valid websocket handshake request: 172.18.0.7:42844
+[ERROR] 2021/06/25 20:05:03 github.com/p4gefau1t/trojan-go/tunnel/trojan.(*Server).acceptLoop:server.go:130 trojan failed to accept conn | not a valid websocket handshake request: 172.18.0.7:42852
