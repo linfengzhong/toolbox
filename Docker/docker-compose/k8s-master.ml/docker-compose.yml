@@ -175,6 +175,23 @@ services:
             - /dev/disk/:/dev/disk
         networks: 
             - net
+    #10. Jenkins -> CI/CD
+    #--> Working
+    jenkins:
+        image: jenkins:alpine
+        container_name: jenkins
+        restart: always
+        environment: 
+            TZ: Asia/Shanghai
+        ports: 
+            - 8088:8080
+        expose: 
+            - 50000
+        volumes:
+            # 持久化配置文件
+            - ./jenkins/:/var/jenkins_home/
+        networks: 
+            - net       
     #11. Portainer -> Docker UI
     #--> Working
     portainer:
