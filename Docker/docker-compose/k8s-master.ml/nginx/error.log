@@ -255,3 +255,15 @@
 2021/06/25 18:16:48 [notice] 1#1: signal 17 (SIGCHLD) received from 23
 2021/06/25 18:16:48 [notice] 1#1: worker process 23 exited with code 0
 2021/06/25 18:16:48 [notice] 1#1: exit
+2021/06/25 18:17:00 [emerg] 1#1: host not found in upstream "https" in /etc/nginx/conf.d/k8s-master.ml.conf:20
+2021/06/25 18:17:01 [emerg] 1#1: host not found in upstream "https" in /etc/nginx/conf.d/k8s-master.ml.conf:20
+2021/06/25 18:17:02 [emerg] 1#1: host not found in upstream "https" in /etc/nginx/conf.d/k8s-master.ml.conf:20
+2021/06/25 18:17:03 [emerg] 1#1: host not found in upstream "https" in /etc/nginx/conf.d/k8s-master.ml.conf:20
+2021/06/25 18:17:04 [emerg] 1#1: host not found in upstream "https" in /etc/nginx/conf.d/k8s-master.ml.conf:20
+2021/06/25 18:17:07 [emerg] 1#1: host not found in upstream "https" in /etc/nginx/conf.d/k8s-master.ml.conf:20
+2021/06/25 18:17:10 [emerg] 1#1: host not found in upstream "https" in /etc/nginx/conf.d/k8s-master.ml.conf:20
+2021/06/25 18:17:17 [emerg] 1#1: host not found in upstream "https" in /etc/nginx/conf.d/k8s-master.ml.conf:20
+2021/06/25 18:17:31 [emerg] 1#1: host not found in upstream "https" in /etc/nginx/conf.d/k8s-master.ml.conf:20
+2021/06/25 18:17:57 [emerg] 1#1: host not found in upstream "https" in /etc/nginx/conf.d/k8s-master.ml.conf:20
+2021/06/25 18:18:49 [emerg] 1#1: host not found in upstream "https" in /etc/nginx/conf.d/k8s-master.ml.conf:20
+2021/06/25 18:19:50 [emerg] 1#1: host not found in upstream "https" in /etc/nginx/conf.d/k8s-master.ml.conf:20
