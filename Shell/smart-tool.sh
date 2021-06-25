@@ -126,7 +126,7 @@ Usage: smart-tool.sh down|up
               all
               delete
               git-push|git-pull
-              docker-status"
+              status"
 }
 
 RC=0
