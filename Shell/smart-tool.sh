@@ -93,7 +93,7 @@ judge "更新同步 下载GitHub文件 -> Local Github Repo "
 # 同步上传Git文件夹
 function github_push () {
 print_info "更新同步 上传Local Github Repo -> GitHub文件 "
-cd $GITHUB-REPO
+cd $GITHUB_REPO
 sudo git add .
 sudo git commit -m "sync_all_config_log_data"
 sudo git push
@@ -140,8 +140,8 @@ case "x$1" in
     ;;
   "xall")
     shutdown_docker_compose
-    github_push
     github_pull
+    github_push
     start_docker_compose
     ;;
   "xdelete")
