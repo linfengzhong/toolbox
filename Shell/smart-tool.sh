@@ -51,9 +51,11 @@ WEBSITE="k8s-master.ml"
 #-----------------------------------------------------------------------------#
 #更新脚本
 function refresh_smart_tool () {
+  print_info "更新smart tool脚本 "
   sudo rm -f /root/*.sh
   sudo cp -f /root/git/toolbox/Shell/smart-tool.sh /root/smart-tool.sh
   sudo chmod +x /root/*.sh
+  judge "更新smart tool脚本 "
 }
 #-----------------------------------------------------------------------------#
 #===== RHEL 7/8 | CentOS 7/8 | Rocky Linux 8 =====
