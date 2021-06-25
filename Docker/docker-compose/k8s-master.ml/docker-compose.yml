@@ -1,7 +1,7 @@
 version: '3.8'
 services:
-#1. httpd -> apache for mock website http://shanghai3721.ml/httpd/
-#--> Working
+    #1. httpd -> apache for mock website http://shanghai3721.ml/httpd/
+    #--> Working
     httpd:
         image: httpd:alpine
         container_name: httpd
@@ -15,16 +15,16 @@ services:
             - ./httpd/conf/:/usr/local/apache2/conf/
         networks:
             - net
-#2. Nginx -> proxy server
-#--> Working
-# listen 80, 31300 --> Mock website https://shanghai3721.ml
-# proxy pass
-# /grafana/ --> proxy_pass http://grafana:3000/;
-# /httpd/ --> proxy_pass http://httpd:80/;
-# /portainer/ --> proxy_pass http://portainer:9000/;
-# /jenkins/ --> proxy_pass http://jenkins:8080/jenkins/;
-# /tomcat/ --> proxy_pass http://tomcat:8080/;
-# /adminer/ --> proxy_pass http://adminer:8080/;
+    #2. Nginx -> proxy server
+    #--> Working
+    # listen 80, 31300 --> Mock website https://shanghai3721.ml
+    # proxy pass
+    # /grafana/ --> proxy_pass http://grafana:3000/;
+    # /httpd/ --> proxy_pass http://httpd:80/;
+    # /portainer/ --> proxy_pass http://portainer:9000/;
+    # /jenkins/ --> proxy_pass http://jenkins:8080/jenkins/;
+    # /tomcat/ --> proxy_pass http://tomcat:8080/;
+    # /adminer/ --> proxy_pass http://adminer:8080/;
     nginx:
         image: nginx:alpine
         container_name: nginx
@@ -44,8 +44,8 @@ services:
             - ./nginx/access.log:/var/log/nginx/access.log
         networks: 
             - net
-#3. trojan go -> fuck GFW
-#--> Working
+    #3. trojan go -> fuck GFW
+    #--> Working
     trojan-go:
         image: p4gefau1t/trojan-go:latest
         container_name: trojan-go
@@ -58,12 +58,12 @@ services:
             - ./trojan-go:/etc/trojan-go
         networks: 
             - net
-#        depends_on:
-#            - nginx
-#4. xray -> fuck GFW * Proxy Server
-# VLESS_XTLS/TLS-direct_TCP
-# VLESS_WS
-#--> Working
+    #        depends_on:
+    #            - nginx
+    #4. xray -> fuck GFW * Proxy Server
+    # VLESS_XTLS/TLS-direct_TCP
+    # VLESS_WS
+    #--> Working
     xray:
         image: teddysun/xray:latest
         container_name: xray
@@ -76,8 +76,8 @@ services:
             - ./xray:/etc/xray
         networks: 
             - net
-#        depends_on:
-#            - nginx
+    #        depends_on:
+    #            - nginx
     #6. prometheus -> monitor virtual machines
     #--> Working
     prometheus:
@@ -175,8 +175,8 @@ services:
             - /dev/disk/:/dev/disk
         networks: 
             - net
-#11. Portainer -> Docker UI
-#--> Working
+    #11. Portainer -> Docker UI
+    #--> Working
     portainer:
         image: portainer/portainer-ce:alpine
         container_name: portainer
