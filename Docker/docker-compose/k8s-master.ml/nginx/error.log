@@ -111,3 +111,16 @@
 2021/06/25 16:28:40 [notice] 1#1: start worker processes
 2021/06/25 16:28:40 [notice] 1#1: start worker process 22
 2021/06/25 16:28:40 [notice] 1#1: start worker process 23
+2021/06/25 16:31:04 [notice] 1#1: signal 3 (SIGQUIT) received, shutting down
+2021/06/25 16:31:04 [notice] 22#22: gracefully shutting down
+2021/06/25 16:31:04 [notice] 22#22: exiting
+2021/06/25 16:31:04 [notice] 23#23: gracefully shutting down
+2021/06/25 16:31:04 [notice] 23#23: exiting
+2021/06/25 16:31:04 [notice] 22#22: exit
+2021/06/25 16:31:04 [notice] 23#23: exit
+2021/06/25 16:31:04 [notice] 1#1: signal 17 (SIGCHLD) received from 22
+2021/06/25 16:31:04 [notice] 1#1: worker process 22 exited with code 0
+2021/06/25 16:31:04 [notice] 1#1: signal 29 (SIGIO) received
+2021/06/25 16:31:04 [notice] 1#1: signal 17 (SIGCHLD) received from 23
+2021/06/25 16:31:04 [notice] 1#1: worker process 23 exited with code 0
+2021/06/25 16:31:04 [notice] 1#1: exit
