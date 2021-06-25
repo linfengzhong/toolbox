@@ -227,14 +227,14 @@ function install_docker () {
 function usage () {
     echo "
 Usage: smart-tool.sh refresh-smart-tool
-              down|up
+              down | up
               all
               delete
-              git-push|git-pull
+              git-pull | git-push
               status
               turn-off-selinux
               install-prerequisite
-              install-acme|generate-CA
+              install-acme | generate-CA
               install-webmin
               install-git
               install-docker
