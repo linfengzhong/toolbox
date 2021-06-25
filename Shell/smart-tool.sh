@@ -169,7 +169,7 @@ function generate_ca () {
 #  local WEBSITE=$1
   print_info "生成网站证书 "
   print_info "----- 网站证书 ----"
-  sudo sh /root/.acme.sh/acme.sh  --issue  -d $WEBSITE --standalone
+  sudo sh /root/.acme.sh/acme.sh  --issue  -d $WEBSITE --standalone --force
   print_info "----- 网站证书 ----"
   judge "生成网站证书 "
 }
