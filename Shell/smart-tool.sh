@@ -48,13 +48,20 @@ WORKDIR="/root/git/toolbox/Docker/docker-compose/k8s-master.ml/"
 GITHUB_REPO="/root/git/toolbox/"
 EMAIL="fred.zhong@outlook.com"
 WEBSITE="k8s-master.ml"
-#-----------------------------------------------------------------------------
+#-----------------------------------------------------------------------------#
+#更新脚本
+function refresh_smart_tool () {
+  sudo rm -f /root/*.sh
+  sudo cp -f /root/git/toolbox/Shell/smart-tool.sh /root/smart-tool.sh
+  sudo chmod +x /root/*.sh
+}
+#-----------------------------------------------------------------------------#
 #===== RHEL 7/8 | CentOS 7/8 | Rocky Linux 8 =====
-#-----------------------------------------------------------------------------
+#-----------------------------------------------------------------------------#
 # Security-Enhanced Linux
 # This guide is based on SELinux being disabled or in permissive mode. 
 # Steps to do this are as follows.
-#-----------------------------------------------------------------------------
+#-----------------------------------------------------------------------------#
 function turn_off_selinux () {
   print_info "开始配置 Linux Rocky 8.4 / CentOS 8 服务器"
   sed -i 's/SELINUX=.*/SELINUX=disabled/g' /etc/selinux/config
@@ -128,10 +135,6 @@ function start_docker_compose () {
   cd $WORKDIR
   sudo docker-compose build
   sudo docker-compose up -d
-
-  sudo rm -f /root/*.sh
-  sudo cp -f /root/git/toolbox/Shell/smart-tool.sh /root/smart-tool.sh
-  sudo chmod +x /root/*.sh
   judge "启动 Docker Compose "
 }
 #-----------------------------------------------------------------------------#
@@ -220,7 +223,8 @@ function install_docker () {
 # 展示命令选项
 function usage () {
     echo "
-Usage: smart-tool.sh down|up
+Usage: smart-tool.sh refresh-smart-tool
+              down|up
               all
               delete
               git-push|git-pull
@@ -237,6 +241,10 @@ Usage: smart-tool.sh down|up
 RC=0
 
 case "x$1" in 
+  "xrefresh-smart-tool")
+    github_pull
+    refresh_smart_tool
+    ;;
   "xdown")
     shutdown_docker_compose
     ;;
@@ -248,6 +256,7 @@ case "x$1" in
     github_pull
     github_push
     start_docker_compose
+    refresh_smart_tool
     ;;
   "xdelete")
     delete_docker_compose_folder
