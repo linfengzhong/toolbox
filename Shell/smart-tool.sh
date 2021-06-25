@@ -45,11 +45,11 @@ judge() {
 #-----------------------------------------------------------------------------#
 #定义变量
 WORKDIR="/root/git/toolbox/Docker/docker-compose/k8s-master.ml/"
-GITHUB-REPO="/root/git/toolbox/"
+GITHUB_REPO="/root/git/toolbox/"
 #-----------------------------------------------------------------------------#
 # Shutdown Docker Compose, Delete All-In-One folder & Docker Compose Up
 # 关闭docker-compose
-function shutdown-docker-compose () {
+function shutdown_docker_compose () {
 print_info "Shutdown Docker Compose "
 print_info "关闭 Docker Compose VM "
 cd $WORKDIR
@@ -57,17 +57,17 @@ sudo docker-compose down
 }
 #-----------------------------------------------------------------------------#
 # 查看Docker Images
-function show-docker-images () {
+function show_docker_images () {
 sudo docker images
 }
 #-----------------------------------------------------------------------------#
 # 列出所有运行的docker container
-function show-docker-container () {
+function show_docker_container () {
 sudo docker container ps
 }
 #-----------------------------------------------------------------------------#
 # 删除文件夹
-function delete-docker-compose-folder () {
+function delete_docker_compose_folder () {
 print_info "删除 All-In-One 文件夹 "
 cd ~
 sudo rm -rf all-in-one/
@@ -76,9 +76,9 @@ ls -l
 }
 #-----------------------------------------------------------------------------#
 # 同步下载Git文件夹
-function github-pull () {
+function github_pull () {
 print_info "更新同步 下载GitHub文件 -> Local Github Repo "
-cd $GITHUB-REPO
+cd $GITHUB_REPO
 git pull
 #sleep 1
 #sudo cp -rf ~/git/toolbox/Docker/docker-compose/all-in-one/ ~/
@@ -89,7 +89,7 @@ git pull
 }
 #-----------------------------------------------------------------------------#
 # 同步上传Git文件夹
-function github-push () {
+function github_push () {
 print_info "更新同步 上传Local Github Repo -> GitHub文件 "
 cd $GITHUB-REPO
 git add .
@@ -104,7 +104,7 @@ git push
 }
 #-----------------------------------------------------------------------------#
 # 启动docker-compose
-function start-docker-compose () {
+function start_docker_compose () {
 print_info "启动 Docker Compose "
 cd $WORKDIR
 sudo docker-compose build
@@ -121,7 +121,7 @@ print_ok "Docker Container -> Running list "
 judge "关闭 Docker Compose VM "
 judge "删除 All-In-One 文件夹 "
 judge "更新同步GitHub文件 -> All-In-One 文件夹 "
-judge "Step 4: 启动 Docker Compose "
+judge "启动 Docker Compose "
 
 function usage () {
     echo "
@@ -136,28 +136,28 @@ RC=0
 
 case "x$1" in 
   "xdown")
-    shutdown-docker-compose
+    shutdown_docker_compose
     ;;
   "xup")
-    start-docker-compose
+    start_docker_compose
     ;;
   "xall")
-    shutdown-docker-compose
-    github-push
-    github-pull
-    start-docker-compose
+    shutdown_docker_compose
+    github_push
+    github_pull
+    start_docker_compose
     ;;
   "xdelete")
-    delete-docker-compose-folder
+    delete_docker_compose_folder
     ;;
   "xgithub-push")
-    github-push ;;
+    github_push ;;
   "xgit-pull")
-    git-pull
+    git_pull
     ;;
   "xstatus")
-    show-docker-images
-    show-docker-container
+    show_docker_images
+    show_docker_container
     ;;
   *)
     usage
