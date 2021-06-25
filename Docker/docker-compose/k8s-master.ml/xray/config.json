@@ -1,6 +1,6 @@
 {
   "log": {
-    "error": "/etc/xray/log/error.log",
+    "error": "/etc/xray/xray.log",
     "loglevel": "debug"
   },
 

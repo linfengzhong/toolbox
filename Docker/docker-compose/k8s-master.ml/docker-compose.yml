@@ -25,6 +25,8 @@ services:
         volumes: 
             - ./nginx/conf.d:/etc/nginx/conf.d
             - ./nginx/html:/usr/share/nginx/html
+            - ./nginx/error.log:/var/log/nginx/error.log
+            - ./nginx/access.log:/var/log/nginx/access.log
         networks: 
             - net
 #3. trojan go -> fuck GFW
@@ -74,7 +76,7 @@ services:
             - 9000
         volumes:
             - /var/run/docker.sock:/var/run/docker.sock
-            - portainer_data:/data
+            - ./portainer/data:/data
         networks: 
             - net     
 
