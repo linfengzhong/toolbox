@@ -512,3 +512,4 @@
 2021/06/26 08:18:08 [notice] 1#1: start worker processes
 2021/06/26 08:18:08 [notice] 1#1: start worker process 22
 2021/06/26 08:18:08 [notice] 1#1: start worker process 23
+2021/06/26 09:58:36 [error] 22#22: *1464 open() "/usr/share/nginx/html/GponForm/diag_Form" failed (2: No such file or directory), client: 172.21.0.6, server: k8s-master.ml, request: "POST /GponForm/diag_Form?style/ HTTP/1.1", host: "192.168.0.1:443"
