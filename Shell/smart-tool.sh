@@ -137,6 +137,8 @@ function github_pull () {
 function github_push () {
   print_info "更新同步 上传Local Github Repo -> GitHub文件 "
   cd $GITHUB_REPO
+  # 查询git repo状态
+  sudo git status
   sudo git add .
   sudo git commit -m "sync_all_config_log_data"
   sudo git push
