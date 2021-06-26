@@ -115,6 +115,7 @@ function git-init () {
 function github_pull () {
   print_info "更新同步 下载GitHub文件 -> Local Github Repo "
   cd $GITHUB_REPO
+  sudo git status
   sudo git git stash
   sudo git pull
   #sudo git pull --rebase
