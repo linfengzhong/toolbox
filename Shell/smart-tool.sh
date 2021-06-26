@@ -208,6 +208,7 @@ function git-init () {
   print_info "初始化 Git "
   git config --global user.name "root" 
   git config --global user.email "root@k8s-master.ml"
+  git config --global config pull.rebase true
   judge "初始化 Git "
 }
 #-----------------------------------------------------------------------------#
