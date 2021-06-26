@@ -1615,6 +1615,8 @@
 [ERROR] 2021/06/26 10:29:58 github.com/p4gefau1t/trojan-go/tunnel/trojan.(*Server).acceptLoop:server.go:130 trojan failed to accept conn | not a valid websocket handshake request: 172.21.0.8:49484
 [ERROR] 2021/06/26 10:30:16 github.com/p4gefau1t/trojan-go/tunnel/trojan.(*Server).acceptLoop:server.go:130 trojan failed to accept conn | not a valid websocket handshake request: 172.21.0.8:49492
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
 [ERROR] 2021/06/26 10:46:35 github.com/p4gefau1t/trojan-go/tunnel/trojan.(*Server).acceptLoop:server.go:130 trojan failed to accept conn | not a valid websocket handshake request: 172.18.0.5:44558
 [ERROR] 2021/06/26 10:46:52 github.com/p4gefau1t/trojan-go/tunnel/trojan.(*Server).acceptLoop:server.go:130 trojan failed to accept conn | not a valid websocket handshake request: 172.18.0.5:44576
 [ERROR] 2021/06/26 10:47:09 github.com/p4gefau1t/trojan-go/tunnel/trojan.(*Server).acceptLoop:server.go:130 trojan failed to accept conn | not a valid websocket handshake request: 172.18.0.5:44584
@@ -1635,6 +1637,12 @@
 [ERROR] 2021/06/26 10:50:31 github.com/p4gefau1t/trojan-go/tunnel/trojan.(*Server).acceptLoop:server.go:130 trojan failed to accept conn | not a valid websocket handshake request: 172.18.0.5:44696
 [ERROR] 2021/06/26 10:50:49 github.com/p4gefau1t/trojan-go/tunnel/trojan.(*Server).acceptLoop:server.go:130 trojan failed to accept conn | not a valid websocket handshake request: 172.18.0.5:44704
 [ERROR] 2021/06/26 10:51:06 github.com/p4gefau1t/trojan-go/tunnel/trojan.(*Server).acceptLoop:server.go:130 trojan failed to accept conn | not a valid websocket handshake request: 172.18.0.5:44714
+=======
+[ERROR] 2021/06/26 10:30:33 github.com/p4gefau1t/trojan-go/tunnel/trojan.(*Server).acceptLoop:server.go:130 trojan failed to accept conn | not a valid websocket handshake request: 172.21.0.8:49502
+>>>>>>> Stashed changes
+=======
+[ERROR] 2021/06/26 10:30:33 github.com/p4gefau1t/trojan-go/tunnel/trojan.(*Server).acceptLoop:server.go:130 trojan failed to accept conn | not a valid websocket handshake request: 172.21.0.8:49502
+>>>>>>> Stashed changes
 =======
 [ERROR] 2021/06/26 10:30:33 github.com/p4gefau1t/trojan-go/tunnel/trojan.(*Server).acceptLoop:server.go:130 trojan failed to accept conn | not a valid websocket handshake request: 172.21.0.8:49502
 >>>>>>> Stashed changes
