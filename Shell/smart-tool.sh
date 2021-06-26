@@ -121,8 +121,6 @@ function github_pull () {
   sudo git stash
   # 抽取数据
   sudo git pull
-  # 从Git栈中读取最近一次保存的内容
-  sudo git stash pop
   #sudo git pull --rebase
   #sleep 1
   #sudo cp -rf ~/git/toolbox/Docker/docker-compose/all-in-one/ ~/
@@ -139,6 +137,8 @@ function github_push () {
   cd $GITHUB_REPO
   # 查询git repo状态
   sudo git status
+  # 从Git栈中读取最近一次保存的内容
+  sudo git stash pop
   sudo git add .
   sudo git commit -m "sync_all_config_log_data"
   sudo git push
