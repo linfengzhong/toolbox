@@ -239,7 +239,7 @@ services:
             - MYSQL_DATABASE: gitea
             - MYSQL_USER: gitea
             - MYSQL_PASSWORD: changeme
-          volumes:
+        volumes:
             - ./gitea/data/:/var/lib/mysql
         networks: 
             - net
