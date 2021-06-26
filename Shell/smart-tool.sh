@@ -100,10 +100,22 @@ function delete_docker_compose_folder () {
   judge "删除文件夹 "
 }
 #-----------------------------------------------------------------------------#
+# Git global configuration
+# https://git-scm.com
+#-----------------------------------------------------------------------------#
+function git-init () {
+  print_info "初始化 Git "
+  git config --global user.name "root" 
+  git config --global user.email "root@k8s-master.ml"
+  git config --global pull.rebase true
+  judge "初始化 Git "
+}
+#-----------------------------------------------------------------------------#
 # 同步下载Git文件夹
 function github_pull () {
   print_info "更新同步 下载GitHub文件 -> Local Github Repo "
   cd $GITHUB_REPO
+  sudo git git stash
   sudo git pull
   #sudo git pull --rebase
   #sleep 1
@@ -200,17 +212,6 @@ function install_git () {
   print_info "Install Git "
   sudo yum -y install git
   judge "Install Git "
-}
-#-----------------------------------------------------------------------------#
-# Install Git
-# https://git-scm.com
-#-----------------------------------------------------------------------------#
-function git-init () {
-  print_info "初始化 Git "
-  git config --global user.name "root" 
-  git config --global user.email "root@k8s-master.ml"
-  git config --global pull.rebase true
-  judge "初始化 Git "
 }
 #-----------------------------------------------------------------------------#
 # Install Docker CE
