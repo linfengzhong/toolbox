@@ -104,7 +104,8 @@ function delete_docker_compose_folder () {
 function github_pull () {
   print_info "更新同步 下载GitHub文件 -> Local Github Repo "
   cd $GITHUB_REPO
-  sudo git pull --rebase
+  sudo git pull
+  #sudo git pull --rebase
   #sleep 1
   #sudo cp -rf ~/git/toolbox/Docker/docker-compose/all-in-one/ ~/
   #sleep 1
@@ -208,6 +209,7 @@ function git-init () {
   print_info "初始化 Git "
   git config --global user.name "root" 
   git config --global user.email "root@k8s-master.ml"
+  git config --global config pull.rebase true
   judge "初始化 Git "
 }
 #-----------------------------------------------------------------------------#
