@@ -201,6 +201,16 @@ function install_git () {
   judge "Install Git "
 }
 #-----------------------------------------------------------------------------#
+# Install Git
+# https://git-scm.com
+#-----------------------------------------------------------------------------#
+function git-init () {
+  print_info "初始化 Git "
+  git config --global user.name "root" 
+  git config --global user.email "root@k8s-master.ml"
+  judge "初始化 Git "
+}
+#-----------------------------------------------------------------------------#
 # Install Docker CE
 # https://docs.docker.com/engine/install/centos/
 #-----------------------------------------------------------------------------#
@@ -239,7 +249,7 @@ Usage: smart-tool.sh
               down | up
               all
               delete
-              git-pull | git-push
+              git-pull | git-push ｜ git-init
               status
               turn-off-selinux
               install-prerequisite
@@ -277,9 +287,13 @@ case "x$1" in
     delete_docker_compose_folder
     ;;
   "xgit-push")
-    github_push ;;
+    github_push 
+    ;;
   "xgit-pull")
     github_pull
+    ;;
+  "xgit-init")
+    git-init
     ;;
   "xstatus")
     show_docker_images
