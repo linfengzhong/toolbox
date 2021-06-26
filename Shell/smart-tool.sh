@@ -107,7 +107,7 @@ function git-init () {
   print_info "初始化 Git "
   git config --global user.name "root" 
   git config --global user.email "root@k8s-master.ml"
-  git config --global pull.rebase true
+  git config --global pull.rebase false
   judge "初始化 Git "
 }
 #-----------------------------------------------------------------------------#
@@ -138,7 +138,7 @@ function github_push () {
   # 查询git repo状态
   sudo git status
   # 从Git栈中读取最近一次保存的内容
-  sudo git stash pop
+  # sudo git stash pop
   sudo git add .
   sudo git commit -m "sync_all_config_log_data"
   sudo git push
