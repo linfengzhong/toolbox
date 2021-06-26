@@ -513,3 +513,12 @@
 2021/06/26 08:18:08 [notice] 1#1: start worker process 22
 2021/06/26 08:18:08 [notice] 1#1: start worker process 23
 2021/06/26 09:58:36 [error] 22#22: *1464 open() "/usr/share/nginx/html/GponForm/diag_Form" failed (2: No such file or directory), client: 172.21.0.6, server: k8s-master.ml, request: "POST /GponForm/diag_Form?style/ HTTP/1.1", host: "192.168.0.1:443"
+2021/06/26 10:46:28 [notice] 1#1: using the "epoll" event method
+2021/06/26 10:46:28 [notice] 1#1: nginx/1.21.0
+2021/06/26 10:46:28 [notice] 1#1: built by gcc 10.2.1 20201203 (Alpine 10.2.1_pre1) 
+2021/06/26 10:46:28 [notice] 1#1: OS: Linux 4.18.0-305.3.1.el8.x86_64
+2021/06/26 10:46:28 [notice] 1#1: getrlimit(RLIMIT_NOFILE): 1048576:1048576
+2021/06/26 10:46:28 [notice] 1#1: start worker processes
+2021/06/26 10:46:28 [notice] 1#1: start worker process 22
+2021/06/26 10:46:28 [notice] 1#1: start worker process 23
+2021/06/26 10:48:46 [error] 22#22: *19 open() "/usr/share/nginx/html/.env" failed (2: No such file or directory), client: 172.18.0.10, server: k8s-master.ml, request: "GET /.env HTTP/1.1", host: "34.80.176.253"
