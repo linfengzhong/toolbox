@@ -212,14 +212,19 @@ services:
     # Gitea
     gitea:
         image: gitea/gitea:latest
-        volumes:
-          - ./gitea/data:/data
+        container_name: gitea
+        restart: always
+        environment: 
+            TZ: Asia/Shanghai
         expose:
           - 3000
           - 22
+        volumes:
+          - ./gitea/data:/data
+        networks: 
+            - net
         depends_on:
-          - mysql
-        restart: always
+            - mysql
     #13. mysql ->  Relational Database
     #--> Working
     mysql:
