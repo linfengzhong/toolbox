@@ -118,7 +118,9 @@ function github_pull () {
   # 查询git repo状态
   sudo git status
   # 暂存未提交的变更 可用来暂存当前正在进行的工作
-  sudo git stash
+  # sudo git stash
+  # Commit
+  sudo git commit -am "update logs"
   # 抽取数据
   sudo git pull
   #sudo git pull --rebase
