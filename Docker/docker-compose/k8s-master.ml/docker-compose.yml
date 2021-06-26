@@ -224,10 +224,10 @@ services:
         networks: 
             - net
         depends_on:
-            - mysql
+            - db
     #13. mysql ->  Relational Database
     #--> Working
-    mysql:
+    db:
         image: mysql:latest
         container_name: db
         command: --default-authentication-plugin=mysql_native_password

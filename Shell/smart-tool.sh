@@ -159,6 +159,7 @@ function start_docker_compose () {
   cd $WORKDIR
   sudo chmod 777 -R grafana
   sudo chmod 777 -R jenkins
+  sudo chmod 777 -R gitea
   sudo docker-compose build
   sudo docker-compose up -d
   judge "启动 Docker Compose "
