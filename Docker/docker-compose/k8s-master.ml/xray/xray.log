@@ -528,3 +528,33 @@
 2021/06/25 20:05:28 [Warning] core: Xray 1.4.2 started
 2021/06/25 20:11:42 [Warning] transport/internet/websocket: accepting PROXY protocol
 2021/06/25 20:11:42 [Warning] core: Xray 1.4.2 started
+2021/06/25 20:24:22 [Warning] transport/internet/websocket: accepting PROXY protocol
+2021/06/25 20:24:22 [Warning] core: Xray 1.4.2 started
+2021/06/25 22:11:26 [Warning] [2796608835] app/proxyman/inbound: connection ends > proxy/vless/inbound: failed to dial to trojan-go:31296 > common/retry: [dial tcp: operation was canceled] > common/retry: all retry attempts failed
+2021/06/25 22:11:27 [Warning] [970575214] app/proxyman/inbound: connection ends > proxy/vless/inbound: failed to dial to trojan-go:31296 > common/retry: [dial tcp: operation was canceled] > common/retry: all retry attempts failed
+2021/06/25 22:11:27 [Warning] [2430673235] app/proxyman/inbound: connection ends > proxy/vless/inbound: failed to dial to trojan-go:31296 > common/retry: [dial tcp: operation was canceled] > common/retry: all retry attempts failed
+2021/06/25 22:11:27 [Warning] [1654785334] app/proxyman/inbound: connection ends > proxy/vless/inbound: failed to dial to trojan-go:31296 > common/retry: [dial tcp: operation was canceled] > common/retry: all retry attempts failed
+2021/06/25 22:11:27 [Warning] [459165007] app/proxyman/inbound: connection ends > proxy/vless/inbound: failed to dial to trojan-go:31296 > common/retry: [dial tcp: operation was canceled] > common/retry: all retry attempts failed
+2021/06/25 22:11:27 [Warning] [2603354962] app/proxyman/inbound: connection ends > proxy/vless/inbound: failed to dial to trojan-go:31296 > common/retry: [dial tcp: operation was canceled] > common/retry: all retry attempts failed
+2021/06/25 22:11:27 [Warning] [1641992057] app/proxyman/inbound: connection ends > proxy/vless/inbound: failed to dial to trojan-go:31296 > common/retry: [dial tcp: operation was canceled] > common/retry: all retry attempts failed
+2021/06/25 22:11:27 [Warning] [4057630642] app/proxyman/inbound: connection ends > proxy/vless/inbound: failed to dial to trojan-go:31296 > common/retry: [dial tcp: operation was canceled] > common/retry: all retry attempts failed
+2021/06/25 22:11:27 [Warning] [907480064] app/proxyman/inbound: connection ends > proxy/vless/inbound: failed to dial to trojan-go:31296 > common/retry: [dial tcp: operation was canceled] > common/retry: all retry attempts failed
+2021/06/25 22:11:27 [Warning] [2643264430] app/proxyman/inbound: connection ends > proxy/vless/inbound: failed to dial to trojan-go:31296 > common/retry: [dial tcp: operation was canceled] > common/retry: all retry attempts failed
+2021/06/25 22:11:27 [Warning] [4263274591] app/proxyman/inbound: connection ends > proxy/vless/inbound: failed to dial to trojan-go:31296 > common/retry: [dial tcp: operation was canceled] > common/retry: all retry attempts failed
+2021/06/25 22:11:27 [Warning] [3838198298] app/proxyman/inbound: connection ends > proxy/vless/inbound: failed to dial to trojan-go:31296 > common/retry: [dial tcp: operation was canceled] > common/retry: all retry attempts failed
+2021/06/25 22:11:27 [Warning] [506369789] app/proxyman/inbound: connection ends > proxy/vless/inbound: failed to dial to trojan-go:31296 > common/retry: [dial tcp: operation was canceled] > common/retry: all retry attempts failed
+2021/06/25 22:11:27 [Warning] [1422643898] app/proxyman/inbound: connection ends > proxy/vless/inbound: failed to dial to trojan-go:31296 > common/retry: [dial tcp: operation was canceled] > common/retry: all retry attempts failed
+2021/06/25 22:11:27 [Warning] [3687068433] app/proxyman/inbound: connection ends > proxy/vless/inbound: failed to dial to trojan-go:31296 > common/retry: [dial tcp: operation was canceled] > common/retry: all retry attempts failed
+2021/06/25 22:11:27 [Warning] [1974269178] app/proxyman/inbound: connection ends > proxy/vless/inbound: failed to dial to trojan-go:31296 > common/retry: [dial tcp: operation was canceled] > common/retry: all retry attempts failed
+2021/06/25 23:00:08 [Warning] transport/internet/xtls: ignoring invalid OCSP > common/ocsp: Post "http://zerossl.ocsp.sectigo.com": dial tcp: i/o timeout
+2021/06/25 23:00:31 [Warning] [2340922506] app/proxyman/inbound: connection ends > proxy/vless/inbound: failed to dial to trojan-go:31296 > common/retry: [dial tcp: operation was canceled] > common/retry: all retry attempts failed
+2021/06/25 23:31:50 [Warning] transport/internet/xtls: ignoring invalid OCSP > common/ocsp: Post "http://zerossl.ocsp.sectigo.com": dial tcp: i/o timeout
+2021/06/25 23:35:20 [Warning] [3334164730] app/proxyman/inbound: connection ends > proxy/vless/inbound: failed to dial to trojan-go:31296 > common/retry: [dial tcp: lookup trojan-go on 127.0.0.11:53: dial udp 127.0.0.11:53: i/o timeout dial tcp: operation was canceled] > common/retry: all retry attempts failed
+2021/06/26 00:31:59 [Warning] [2502087770] app/proxyman/inbound: connection ends > proxy/vless/inbound: failed to dial to trojan-go:31296 > common/retry: [dial tcp: operation was canceled] > common/retry: all retry attempts failed
+2021/06/26 00:35:15 [Warning] [2859584756] app/proxyman/inbound: connection ends > proxy/vless/inbound: failed to dial to trojan-go:31296 > common/retry: [dial tcp: operation was canceled] > common/retry: all retry attempts failed
+2021/06/26 08:04:19 [Warning] transport/internet/websocket: accepting PROXY protocol
+2021/06/26 08:04:19 [Warning] core: Xray 1.4.2 started
+2021/06/26 08:15:52 [Warning] transport/internet/websocket: accepting PROXY protocol
+2021/06/26 08:15:59 [Warning] core: Xray 1.4.2 started
+2021/06/26 08:18:13 [Warning] transport/internet/websocket: accepting PROXY protocol
+2021/06/26 08:18:13 [Warning] core: Xray 1.4.2 started

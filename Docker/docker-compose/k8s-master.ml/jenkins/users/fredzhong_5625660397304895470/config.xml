@@ -45,5 +45,12 @@
         <tokenList/>
       </tokenStore>
     </jenkins.security.ApiTokenProperty>
+    <io.jenkins.plugins.thememanager.ThemeUserProperty plugin="theme-manager@0.6"/>
+    <jenkins.security.LastGrantedAuthoritiesProperty>
+      <roles>
+        <string>authenticated</string>
+      </roles>
+      <timestamp>1624623931591</timestamp>
+    </jenkins.security.LastGrantedAuthoritiesProperty>
   </properties>
 </user>
