@@ -3374,3 +3374,5 @@
 172.21.0.6 - - [26/Jun/2021:10:12:42 +0800] "GET /grafana/api/live/ws HTTP/1.1" 400 12 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.1 Safari/605.1.15" "-"
 172.21.0.6 - - [26/Jun/2021:10:13:01 +0800] "GET /grafana/api/live/ws HTTP/1.1" 400 12 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.1 Safari/605.1.15" "-"
 172.21.0.6 - - [26/Jun/2021:10:13:20 +0800] "GET /grafana/api/live/ws HTTP/1.1" 400 12 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.1 Safari/605.1.15" "-"
+172.21.0.6 - - [26/Jun/2021:10:13:37 +0800] "GET /grafana/api/live/ws HTTP/1.1" 400 12 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.1 Safari/605.1.15" "-"
+172.21.0.6 - - [26/Jun/2021:10:13:54 +0800] "GET /grafana/api/live/ws HTTP/1.1" 400 12 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.1 Safari/605.1.15" "-"
