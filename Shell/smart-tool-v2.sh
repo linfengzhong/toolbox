@@ -101,7 +101,7 @@ function git-init () {
 }
 function git-clone-tool-box () {
   print_info "Git clone ToolBox "
-  cd ～/git
+  cd  $HOME/git/
   git clone git@github.com:linfengzhong/toolbox.git
   judge "Git clone ToolBox "
 }
