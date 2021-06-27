@@ -306,4 +306,4 @@ checkSystem
 #readInstallType
 #readInstallProtocolType
 #readConfigHostPathUUID
-
+menu
