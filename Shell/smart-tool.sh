@@ -211,6 +211,7 @@ function generate_ca () {
 # https://webmin.com
 #-----------------------------------------------------------------------------#
 function install_webmin () {
+  # https://doxfer.webmin.com/Webmin/Installation
   print_info "Install webmin "
   (echo "[Webmin]
   name=Webmin Distribution Neutral
