@@ -250,7 +250,7 @@ updateSmartTool() {
 	sudo chmod 700 /etc/smart-tool/smart-tool-v2.sh
 	local version=$(cat /etc/smart-tool/smart-tool-v2.sh | grep '当前版本：v' | awk -F "[v]" '{print $2}' | tail -n +2 | head -n 1 | awk -F "[\"]" '{print $1}')
 
-	print_info "\n ---> 更新完毕"
+	print_info "---> 更新完毕"
 	echoContent yellow " ---> 请手动执行[st]打开脚本"
 	echoContent green " ---> 当前版本:${version}\n"
 	echoContent yellow "如更新不成功，请手动执行下面命令\n"
@@ -283,16 +283,48 @@ function install_webmin () {
   judge "Install webmin "
 }
 #-----------------------------------------------------------------------------#
+# Install Docker CE
+# https://docs.docker.com/engine/install/centos/
+#-----------------------------------------------------------------------------#
+function install_docker () {
+  print_info "Install Docker CE "
+  sudo yum -y remove docker \
+                  docker-client \
+                  docker-client-latest \
+                  docker-common \
+                  docker-latest \
+                  docker-latest-logrotate \
+                  docker-logrotate \
+                  docker-engine
+  judge "1/3 Uninstall old versions of Docker CE "
+  sudo yum -y install yum-utils
+  sudo yum-config-manager \
+        --add-repo \
+        https://download.docker.com/linux/centos/docker-ce.repo
+
+  judge "2/3 Set up the repository for Docker "
+
+  sudo yum -y install docker-ce docker-ce-cli containerd.io
+  sudo systemctl start docker
+  sudo systemctl enable docker
+
+  judge "3/3 Install Docker Engine "
+  judge "Install Docker CE "
+}
+#-----------------------------------------------------------------------------#
 # 主菜单
 menu() {
 	cd "$HOME" || exit
 	echoContent red "\n=============================================================="
 	echoContent green "SmartTool：v0.02"
-	echoContent green "当前版本：v0.04"
+	echoContent green "当前版本：v0.05"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "初始化服务器、安装Docker、执行容器\c"
 	echoContent red "\n=============================================================="
 	echoContent yellow "2.任意组合安装"
+	echoContent skyBlue "-------------------------安装软件-----------------------------"
+	echoContent yellow "16.安装 Webmin"
+	echoContent yellow "17.安装 Docker"
 	echoContent skyBlue "-------------------------工具管理-----------------------------"
 	echoContent yellow "3.账号管理"
 	echoContent yellow "4.更换伪装站"
@@ -309,7 +341,6 @@ menu() {
 	echoContent skyBlue "-------------------------脚本管理-----------------------------"
 	echoContent yellow "14.查看日志"
 	echoContent yellow "15.卸载脚本"
-	echoContent yellow "16.安装 Webmin"
 	echoContent red "=============================================================="
 	mkdirTools
 	aliasInstall
@@ -362,6 +393,9 @@ menu() {
 		;;
   16)
     install_webmin
+    ;;
+  17)
+    install_docker
     ;;
 	esac
 }
