@@ -212,7 +212,9 @@ updateSmartTool() {
 	echoContent yellow " ---> 请手动执行[st]打开脚本"
 	echoContent green " ---> 当前版本:${version}\n"
 	echoContent yellow "如更新不成功，请手动执行下面命令\n"
-	echoContent skyBlue "wget -P /root -N --no-check-certificate "https://raw.githubusercontent.com/linfengzhong/toolbox/main/Shell/smart-tool-v2.sh" && chmod 700 /root/smart-tool-v2.sh && /root/smart-tool-v2.sh"
+	echoContent skyBlue "wget -P /root -N --no-check-certificate \
+  "https://raw.githubusercontent.com/linfengzhong/toolbox/main/Shell/smart-tool-v2.sh" && \
+  chmod 700 /root/smart-tool-v2.sh && /root/smart-tool-v2.sh"
 	echo
 	exit 0
 }
