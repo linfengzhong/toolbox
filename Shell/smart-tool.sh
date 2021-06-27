@@ -108,6 +108,13 @@ function git-init () {
   git config --global user.name "root" 
   git config --global user.email "root@k8s-master.ml"
   git config --global pull.rebase false
+  cd ~
+  mkdir git
+  cd git
+  # /root/.ssh/id_rsa
+  # /root/.ssh/id_rsa.pub
+  ssh-keygen -t rsa -C fred.zhong@outlook.com  
+  cat ~/.ssh/id_rsa.pub
   judge "初始化 Git "
 }
 #-----------------------------------------------------------------------------#
@@ -260,7 +267,8 @@ function init_smart_tool () {
   print_info "Initialize smart-tool "
   sudo chmod 777 smart-tool.sh
 
-  if [ -z (grep </root/.bashrc -q -i "smart-tool.sh") ]; then
+#  if [[ -n grep </root/.bashrc -q -i "smart-tool.sh" ]]; then
+  if [[ ! -z $(grep </root/.bashrc -q -i "smart-tool.sh") ]]; then
     print_info "未发现配置 alias st "
     sudo cat << EOF >> /root/.bashrc
 alias st='/root/smart-tool.sh'
@@ -361,8 +369,9 @@ case "x$1" in
     install_acme
     generate_ca
     install_webmin
-    install_git
     install_docker
+    install_git
+    git-init
     ;;
   *)
     usage
