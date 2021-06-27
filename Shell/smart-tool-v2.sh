@@ -374,55 +374,67 @@ mkdirTools() {
 # https://git-scm.com
 #-----------------------------------------------------------------------------#
 function install_git () {
-  print_info "Install Git "
-  sudo yum -y install git
-  judge "Install Git "
+	print_info "Install Git "
+	sudo yum -y install git
+	judge "Install Git "
 }
 #-----------------------------------------------------------------------------#
 # Install webmin
 # https://webmin.com
 #-----------------------------------------------------------------------------#
 function install_webmin () {
-  # https://doxfer.webmin.com/Webmin/Installation
-  print_info "Install webmin "
-  (echo "[Webmin]
-  name=Webmin Distribution Neutral
-  baseurl=http://download.webmin.com/download/yum
-  enabled=1
-  gpgcheck=1
-  gpgkey=http://www.webmin.com/jcameron-key.asc" >/etc/yum.repos.d/webmin.repo;)
-  sleep 1
-  sudo yum -y install webmin
-  judge "Install webmin "
+	# https://doxfer.webmin.com/Webmin/Installation
+	print_info "Install webmin "
+	(echo "[Webmin]
+	name=Webmin Distribution Neutral
+	baseurl=http://download.webmin.com/download/yum
+	enabled=1
+	gpgcheck=1
+	gpgkey=http://www.webmin.com/jcameron-key.asc" >/etc/yum.repos.d/webmin.repo;)
+	sleep 1
+	sudo yum -y install webmin
+	judge "Install webmin "
 }
 #-----------------------------------------------------------------------------#
 # Install Docker CE
 # https://docs.docker.com/engine/install/centos/
 #-----------------------------------------------------------------------------#
 function install_docker () {
-  print_info "Install Docker CE "
-  sudo yum -y remove docker \
-                  docker-client \
-                  docker-client-latest \
-                  docker-common \
-                  docker-latest \
-                  docker-latest-logrotate \
-                  docker-logrotate \
-                  docker-engine
-  judge "1/3 Uninstall old versions of Docker CE "
-  sudo yum -y install yum-utils
-  sudo yum-config-manager \
-        --add-repo \
-        https://download.docker.com/linux/centos/docker-ce.repo
+	print_info "Install Docker CE "
+	sudo yum -y remove docker \
+					docker-client \
+					docker-client-latest \
+					docker-common \
+					docker-latest \
+					docker-latest-logrotate \
+					docker-logrotate \
+					docker-engine
+	judge "1/3 Uninstall old versions of Docker CE "
+	sudo yum -y install yum-utils
+	sudo yum-config-manager \
+			--add-repo \
+			https://download.docker.com/linux/centos/docker-ce.repo
 
-  judge "2/3 Set up the repository for Docker "
+	judge "2/3 Set up the repository for Docker "
 
-  sudo yum -y install docker-ce docker-ce-cli containerd.io
-  sudo systemctl start docker
-  sudo systemctl enable docker
+	sudo yum -y install docker-ce docker-ce-cli containerd.io
+	sudo systemctl start docker
+	sudo systemctl enable docker
 
-  judge "3/3 Install Docker Engine "
-  judge "Install Docker CE "
+	judge "3/3 Install Docker Engine "
+	judge "Install Docker CE "
+}
+#-----------------------------------------------------------------------------#
+# Install Docker Compose
+# https://docs.docker.com/compose/install/#install-compose
+#-----------------------------------------------------------------------------#
+function install_docker_compose () {
+	print_info "Install docker compose "
+	sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+	sudo chmod +x /usr/local/bin/docker-compose
+	sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+	docker-compose --version
+	judge "Install docker compose "
 }
 #-----------------------------------------------------------------------------#
 # 主菜单
@@ -437,12 +449,13 @@ menu() {
 	echoContent skyBlue "-------------------------安装软件-----------------------------"
 	echoContent yellow "16.安装 Webmin"
 	echoContent yellow "17.安装 Docker"
-	echoContent yellow "18.安装 Git"
+	echoContent yellow "18.安装 docker compose"
+	echoContent yellow "19.安装 Git"
 	echoContent skyBlue "-------------------------Git--------------------------------"  
 	echoContent yellow "21.git-init"
 	echoContent yellow "22.git-pull"
 	echoContent yellow "23.git-push"
-  echoContent yellow "24.git-clone"
+	echoContent yellow "24.git-clone"
 	echoContent skyBlue "---------------------Docker Container-----------------------"
 	echoContent yellow "31.docker-compose up"
 	echoContent yellow "32.docker-compose down"
@@ -504,44 +517,47 @@ menu() {
 	15)
 		unInstall 1
 		;;
-  16)
-    install_webmin
-    ;;
-  17)
-    install_docker
-    ;;
-  18)
-    install_git
-    ;;
-  21)
-    git-init
-    ;;
-  22)
-    github_pull
-    ;;
-  23)
-    github_push
-    ;;
-  24)
-    git-clone-tool-box
-    ;;
-  31)
-    start_docker_compose
-    ;;
-  32)
-    shutdown_docker_compose
-    ;;
-  33)
-    shutdown_docker_compose
-    github_pull
-    github_push
-    start_docker_compose
-    ;;
-  34)
-    show_docker_images
-    show_docker_container
-    ;;
-	esac
+	16)
+		install_webmin
+		;;
+	17)
+		install_docker
+		;;
+	18)
+		install_docker_compose
+		;;
+	19)
+		install_git
+		;;	
+	21)
+		git-init
+		;;
+	22)
+		github_pull
+		;;
+	23)
+		github_push
+		;;
+	24)
+		git-clone-tool-box
+		;;
+	31)
+		start_docker_compose
+		;;
+	32)
+		shutdown_docker_compose
+		;;
+	33)
+		shutdown_docker_compose
+		github_pull
+		github_push
+		start_docker_compose
+		;;
+	34)
+		show_docker_images
+		show_docker_container
+		;;
+		esac
 }
 
 initVar $1
