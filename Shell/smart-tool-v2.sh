@@ -4,6 +4,45 @@
 # 2021-May-26 [Initial Version] - Shell Script for setup new server
 # 2021-June-25 [Add new functions] - Stop/Start docker-compose
 #-----------------------------------------------------------------------------#
+#-----------------------------------------------------------------------------#
+#fonts color 字体颜色配置
+Red="\033[31m"
+Yellow="\033[33m"
+Blue="\033[36m"
+Green="\033[32m"
+RedBG="\033[41;37m"
+GreenBG="\033[42;37m"
+Font="\033[0m"
+#-----------------------------------------------------------------------------#
+#notification information 通知信息
+Info="${Green}[Message信息]${Font}"
+OK="${Green}[OK正常]${Font}"
+Error="${Red}[ERROR错误]${Font}"
+#-----------------------------------------------------------------------------#
+#打印Info
+function print_info() {
+  echo -e "${Info} ${Blue} $1 ${Font}"
+}
+#-----------------------------------------------------------------------------#
+#打印OK
+function print_ok() {
+  echo -e "${OK} ${Blue} $1 ${Font}"
+}
+#-----------------------------------------------------------------------------#
+#打印错误
+function print_error() {
+  echo -e "${ERROR} ${RedBG} $1 ${Font}"
+}
+#-----------------------------------------------------------------------------#
+#判定 成功 or 失败
+judge() {
+  if [[ 0 -eq $? ]]; then
+    print_ok "$1 <--- 完成"
+  else
+    print_error "$1 <--- 失败"
+    exit 1
+  fi
+}
 # 检查系统
 checkSystem() {
 	if [[ -n $(find /etc -name "redhat-release") ]] || grep </proc/version -q -i "centos"; then
@@ -211,7 +250,7 @@ updateSmartTool() {
 	sudo chmod 700 /etc/smart-tool/smart-tool-v2.sh
 	local version=$(cat /etc/smart-tool/smart-tool-v2.sh | grep '当前版本：v' | awk -F "[v]" '{print $2}' | tail -n +2 | head -n 1 | awk -F "[\"]" '{print $1}')
 
-	echoContent green "\n ---> 更新完毕"
+	print_info "\n ---> 更新完毕"
 	echoContent yellow " ---> 请手动执行[st]打开脚本"
 	echoContent green " ---> 当前版本:${version}\n"
 	echoContent yellow "如更新不成功，请手动执行下面命令\n"
