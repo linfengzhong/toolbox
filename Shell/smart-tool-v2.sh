@@ -475,6 +475,7 @@ menu() {
 	echoContent skyBlue "-------------------------脚本管理-----------------------------"
 	echoContent yellow "14.查看日志"
 	echoContent yellow "15.卸载脚本"
+	echoContent yellow "99.退出"
 	echoContent red "=============================================================="
 	mkdirTools
 	aliasInstall
@@ -568,7 +569,13 @@ menu() {
 	41)
 		show_ip
 		;;
-		esac
+	99)
+	    exit 0
+		;;
+	*)
+		print_error "请输入正确的数字"
+		;;
+	esac
 }
 
 initVar $1
@@ -576,4 +583,4 @@ checkSystem
 #readInstallType
 #readInstallProtocolType
 #readConfigHostPathUUID
-menu
+menu "$@"
