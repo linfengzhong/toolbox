@@ -444,7 +444,7 @@ function install_docker_compose () {
 # 外部IP
 function show_ip () {
   print_info "服务器外部 IP：\n"
-  zIP=curl https://ipinfo.io/ip
+  zIP=$(curl https://ipinfo.io/ip)
   print_info $zIP
 }
 #-----------------------------------------------------------------------------#
@@ -454,7 +454,7 @@ menu() {
 	cd "$HOME" || exit
 	echoContent red "\n=============================================================="
 	echoContent green "SmartTool：v0.02"
-	echoContent green "当前版本：v0.18"
+	echoContent green "当前版本：v0.19"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "初始化服务器、安装Docker、执行容器\c"
 	echoContent red "\n=============================================================="
