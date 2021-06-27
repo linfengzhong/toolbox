@@ -454,7 +454,7 @@ menu() {
 	cd "$HOME" || exit
 	echoContent red "\n=============================================================="
 	echoContent green "SmartTool：v0.02"
-	echoContent green "当前版本：v0.13"
+	echoContent green "当前版本：v0.14"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "初始化服务器、安装Docker、执行容器\c"
 	echoContent red "\n=============================================================="
@@ -579,7 +579,7 @@ menu() {
 		;;
 	*)
 		print_error "请输入正确的数字"
-		menu "$@"
+#		menu "$@"
 		;;
 	esac
 }
