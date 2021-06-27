@@ -43,6 +43,104 @@ judge() {
     exit 1
   fi
 }
+#-----------------------------------------------------------------------------#
+#定义变量
+WORKDIR="/root/git/toolbox/Docker/docker-compose/k8s-master.ml/"
+GITHUB_REPO="/root/git/toolbox/"
+EMAIL="fred.zhong@outlook.com"
+WEBSITE="k8s-master.ml"
+#-----------------------------------------------------------------------------#
+# Shutdown Docker Compose, Delete All-In-One folder & Docker Compose Up
+# 关闭docker-compose
+function shutdown_docker_compose () {
+  print_info "Shutdown Docker Compose "
+  print_info "关闭 Docker Compose VM "
+  cd $WORKDIR
+  sudo docker-compose down
+  judge "关闭 Docker Compose VM "
+}
+#-----------------------------------------------------------------------------#
+# 启动docker-compose
+function start_docker_compose () {
+  print_info "启动 Docker Compose "
+  cd $WORKDIR
+  sudo chmod 777 -R grafana
+  sudo chmod 777 -R jenkins
+  sudo chmod 777 -R gitea
+  sudo docker-compose build
+  sudo docker-compose up -d
+  judge "启动 Docker Compose "
+}
+#-----------------------------------------------------------------------------#
+# 查看Docker Images
+function show_docker_images () {
+  sudo docker images
+}
+#-----------------------------------------------------------------------------#
+# 列出所有运行的docker container
+function show_docker_container () {
+  sudo docker container ps
+}
+#-----------------------------------------------------------------------------#
+# Git global configuration
+# https://git-scm.com
+#-----------------------------------------------------------------------------#
+function git-init () {
+  print_info "初始化 Git "
+  git config --global user.name "root" 
+  git config --global user.email "root@k8s-master.ml"
+  git config --global pull.rebase false
+  cd ~
+  mkdir git
+  cd git
+  # /root/.ssh/id_rsa
+  # /root/.ssh/id_rsa.pub
+  ssh-keygen -t rsa -C fred.zhong@outlook.com  
+  cat ~/.ssh/id_rsa.pub
+  judge "初始化 Git "
+}
+#-----------------------------------------------------------------------------#
+# 同步下载Git文件夹
+function github_pull () {
+  print_info "更新同步 下载GitHub文件 -> Local Github Repo "
+  cd $GITHUB_REPO
+  # 查询git repo状态
+  sudo git status
+  # 暂存未提交的变更 可用来暂存当前正在进行的工作
+  # sudo git stash
+  # Commit
+  sudo git commit -am "update logs"
+  # 抽取数据
+  sudo git pull
+  #sudo git pull --rebase
+  #sleep 1
+  #sudo cp -rf ~/git/toolbox/Docker/docker-compose/all-in-one/ ~/
+  #sleep 1
+  #sudo cp -rf ~/git/toolbox/Docker/docker-compose/k8s-master.ml/ ~/
+  #sudo chown -R root:root ~/all-in-one/
+  #sudo chown -R root:root ~/k8s-master.ml/
+  judge "更新同步 下载GitHub文件 -> Local Github Repo "
+}
+#-----------------------------------------------------------------------------#
+# 同步上传Git文件夹
+function github_push () {
+  print_info "更新同步 上传Local Github Repo -> GitHub文件 "
+  cd $GITHUB_REPO
+  # 查询git repo状态
+  sudo git status
+  # 从Git栈中读取最近一次保存的内容
+  # sudo git stash pop
+  sudo git add .
+  sudo git commit -m "sync_all_config_log_data"
+  sudo git push
+  judge "更新同步 上传Local Github Repo -> GitHub文件 "
+  #sleep 1
+  #sudo cp -rf ~/git/toolbox/Docker/docker-compose/all-in-one/ ~/
+  #sleep 1
+  #sudo cp -rf ~/git/toolbox/Docker/docker-compose/k8s-master.ml/ ~/
+  #sudo chown -R root:root ~/all-in-one/
+  #sudo chown -R root:root ~/k8s-master.ml/
+}
 # 检查系统
 checkSystem() {
 	if [[ -n $(find /etc -name "redhat-release") ]] || grep </proc/version -q -i "centos"; then
@@ -326,7 +424,7 @@ menu() {
 	cd "$HOME" || exit
 	echoContent red "\n=============================================================="
 	echoContent green "SmartTool：v0.02"
-	echoContent green "当前版本：v0.07"
+	echoContent green "当前版本：v0.08"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "初始化服务器、安装Docker、执行容器\c"
 	echoContent red "\n=============================================================="
@@ -342,7 +440,8 @@ menu() {
 	echoContent skyBlue "---------------------Docker Container-----------------------"
 	echoContent yellow "31.docker-compose up"
 	echoContent yellow "32.docker-compose down"
-	echoContent yellow "33.One-key"  
+	echoContent yellow "33.One-key"
+	echoContent yellow "34.docker status"
 	echoContent skyBlue "-------------------------工具管理-----------------------------"
 	echoContent yellow "3.账号管理"
 	echoContent yellow "4.更换伪装站"
@@ -417,6 +516,31 @@ menu() {
     ;;
   18)
     install_git
+    ;;
+  21)
+    git-init
+    ;;
+  22)
+    github_pull
+    ;;
+  23)
+    github_push
+    ;;
+  31)
+    start_docker_compose
+    ;;
+  32)
+    shutdown_docker_compose
+    ;;
+  33)
+    shutdown_docker_compose
+    github_pull
+    github_push
+    start_docker_compose
+    ;;
+  34)
+    show_docker_images
+    show_docker_container
     ;;
 	esac
 }
