@@ -254,11 +254,22 @@ function install_docker () {
   judge "Install Docker CE "
 }
 #-----------------------------------------------------------------------------#
+# Initialization
+#-----------------------------------------------------------------------------#
+function init_smart_tool () {
+  print_info "Initialize smart-tool "
+  sudo chmod 777 smart-tool.sh
+  sudo cat << EOF >> /root/.bashrc
+alias st='/root/smart-tool.sh'
+EOF
+  sudo source .bashrc
+}
+#-----------------------------------------------------------------------------#
 # 展示命令选项
 function usage () {
     echo "
 Usage: smart-tool.sh 
-              refresh
+              refresh | init
               show-ip
               down | up
               all
@@ -280,6 +291,9 @@ case "x$1" in
   "xrefresh")
     github_pull
     refresh_smart_tool
+    ;;
+  "xinit")  
+    init_smart_tool
     ;;
   "xshow-ip")
     show_ip
