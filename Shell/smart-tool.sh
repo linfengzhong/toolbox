@@ -261,12 +261,15 @@ function init_smart_tool () {
   sudo chmod 777 smart-tool.sh
 
   if [ -z $(grep </root/.bashrc -q -i "smart-tool.sh") ]; then
-  sudo cat << EOF >> /root/.bashrc
+    print_info "未发现配置 alias st "
+    sudo cat << EOF >> /root/.bashrc
 alias st='/root/smart-tool.sh'
 EOF
+  elif 
+    print_info "发现配置 "
   fi
 
-  sudo source .bashrc
+  source .bashrc
 }
 #-----------------------------------------------------------------------------#
 # 展示命令选项
