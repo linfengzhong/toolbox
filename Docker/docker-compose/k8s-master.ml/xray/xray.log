@@ -568,3 +568,5 @@
 2021/06/26 21:29:18 [Warning] core: Xray 1.4.2 started
 2021/06/27 09:00:25 [Warning] transport/internet/websocket: accepting PROXY protocol
 2021/06/27 09:00:26 [Warning] core: Xray 1.4.2 started
+2021/06/27 09:58:43 [Warning] transport/internet/websocket: accepting PROXY protocol
+2021/06/27 09:58:43 [Warning] core: Xray 1.4.2 started
