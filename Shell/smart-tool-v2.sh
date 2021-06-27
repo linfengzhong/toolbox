@@ -357,9 +357,9 @@ updateSmartTool() {
 	local version=$(cat /etc/smart-tool/smart-tool-v2.sh | grep '当前版本：v' | awk -F "[v]" '{print $2}' | tail -n +2 | head -n 1 | awk -F "[\"]" '{print $1}')
 
 	print_info "---> 更新完毕"
-	echoContent yellow " ---> 请手动执行[st]打开脚本"
-	echoContent green " ---> 当前版本:${version}\n"
-	echoContent yellow "如更新不成功，请手动执行下面命令\n"
+	print_info "---> 请手动执行[st]打开脚本"
+	print_info "---> 当前版本:${version}\n"
+	echoContent yellow "如更新不成功，请手动执行下面命令"
 	echoContent skyBlue "wget -P /root -N --no-check-certificate\
   "https://raw.githubusercontent.com/linfengzhong/toolbox/main/Shell/smart-tool-v2.sh" &&\
   chmod 700 /root/smart-tool-v2.sh && /root/smart-tool-v2.sh"
@@ -454,7 +454,7 @@ menu() {
 	cd "$HOME" || exit
 	echoContent red "\n=============================================================="
 	echoContent green "SmartTool：v0.02"
-	echoContent green "当前版本：v0.17"
+	echoContent green "当前版本：v0.18"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "初始化服务器、安装Docker、执行容器\c"
 	echoContent red "\n=============================================================="
