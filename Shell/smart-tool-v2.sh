@@ -479,7 +479,7 @@ menu() {
 	echoContent red "=============================================================="
 	mkdirTools
 	aliasInstall
-	read -r -p "请选择:" selectInstallType
+	read -r -p "Choose the function 请选择:" selectInstallType
 	case ${selectInstallType} in
 	1)
 		selectCoreInstall
