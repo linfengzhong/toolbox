@@ -260,7 +260,7 @@ function init_smart_tool () {
   print_info "Initialize smart-tool "
   sudo chmod 777 smart-tool.sh
 
-  if [[-z $(grep </root/.bashrc -q -i "smart-tool.sh")]]; then
+  if [ -z $(grep </root/.bashrc -q -i "smart-tool.sh") ]; then
   sudo cat << EOF >> /root/.bashrc
 alias st='/root/smart-tool.sh'
 EOF
