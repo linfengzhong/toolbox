@@ -227,12 +227,29 @@ mkdirTools() {
 	mkdir -p /etc/smart-tool
 }
 #-----------------------------------------------------------------------------#
+# Install webmin
+# https://webmin.com
+#-----------------------------------------------------------------------------#
+function install_webmin () {
+  # https://doxfer.webmin.com/Webmin/Installation
+  print_info "Install webmin "
+  (echo "[Webmin]
+  name=Webmin Distribution Neutral
+  baseurl=http://download.webmin.com/download/yum
+  enabled=1
+  gpgcheck=1
+  gpgkey=http://www.webmin.com/jcameron-key.asc" >/etc/yum.repos.d/webmin.repo;)
+  sleep 1
+  sudo yum -y install webmin
+  judge "Install webmin "
+}
+#-----------------------------------------------------------------------------#
 # 主菜单
 menu() {
 	cd "$HOME" || exit
 	echoContent red "\n=============================================================="
 	echoContent green "SmartTool：v0.02"
-	echoContent green "当前版本：v0.03"
+	echoContent green "当前版本：v0.04"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "初始化服务器、安装Docker、执行容器\c"
 	echoContent red "\n=============================================================="
@@ -253,6 +270,7 @@ menu() {
 	echoContent skyBlue "-------------------------脚本管理-----------------------------"
 	echoContent yellow "14.查看日志"
 	echoContent yellow "15.卸载脚本"
+	echoContent yellow "16.安装 Webmin"
 	echoContent red "=============================================================="
 	mkdirTools
 	aliasInstall
@@ -303,6 +321,9 @@ menu() {
 	15)
 		unInstall 1
 		;;
+  16)
+    install_webmin
+    ;;
 	esac
 }
 
