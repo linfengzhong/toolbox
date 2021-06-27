@@ -228,7 +228,7 @@ mkdirTools() {
 menu() {
 	cd "$HOME" || exit
 	echoContent red "\n=============================================================="
-	echoContent green "SmartTool：v0.01"
+	echoContent green "SmartTool：v0.02"
 	echoContent green "当前版本：v0.02"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "初始化服务器、安装Docker、执行容器\c"
