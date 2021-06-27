@@ -240,7 +240,7 @@ services:
             MYSQL_USER: gitea
             MYSQL_PASSWORD: changeme
         volumes:
-            - ./gitea/data/:/var/lib/mysql
+            - ./mysql/db/:/var/lib/mysql
         networks: 
             - net
     #14. Adminer -> Database UI
