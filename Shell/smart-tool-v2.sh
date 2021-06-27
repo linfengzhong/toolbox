@@ -266,6 +266,15 @@ mkdirTools() {
 	mkdir -p /etc/smart-tool
 }
 #-----------------------------------------------------------------------------#
+# Install Git
+# https://git-scm.com
+#-----------------------------------------------------------------------------#
+function install_git () {
+  print_info "Install Git "
+  sudo yum -y install git
+  judge "Install Git "
+}
+#-----------------------------------------------------------------------------#
 # Install webmin
 # https://webmin.com
 #-----------------------------------------------------------------------------#
@@ -317,7 +326,7 @@ menu() {
 	cd "$HOME" || exit
 	echoContent red "\n=============================================================="
 	echoContent green "SmartTool：v0.02"
-	echoContent green "当前版本：v0.05"
+	echoContent green "当前版本：v0.06"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "初始化服务器、安装Docker、执行容器\c"
 	echoContent red "\n=============================================================="
@@ -325,6 +334,7 @@ menu() {
 	echoContent skyBlue "-------------------------安装软件-----------------------------"
 	echoContent yellow "16.安装 Webmin"
 	echoContent yellow "17.安装 Docker"
+	echoContent yellow "18.安装 Git"
 	echoContent skyBlue "-------------------------工具管理-----------------------------"
 	echoContent yellow "3.账号管理"
 	echoContent yellow "4.更换伪装站"
@@ -396,6 +406,9 @@ menu() {
     ;;
   17)
     install_docker
+    ;;
+  18)
+    install_git
     ;;
 	esac
 }
