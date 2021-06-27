@@ -180,42 +180,46 @@ installCronTLS() {
 #-----------------------------------------------------------------------------#
 # 脚本快捷方式
 aliasInstall() {
-
-	if [[ -f "$HOME/smart-tool-v2.sh" ]] && [[ -d "/etc/v2ray-agent" ]] && grep <$HOME/smart-tool-v2.sh -q "作者：mack-a"; then
-		mv "$HOME/smart-tool-v2.sh" /etc/v2ray-agent/smart-tool-v2.sh
-		if [[ -d "/usr/bin/" ]] && [[ ! -f "/usr/bin/smt" ]]; then
-			ln -s /etc/v2ray-agent/smart-tool-v2.sh /usr/bin/smt
-			chmod 700 /usr/bin/smt
+	if [[ -f "$HOME/smart-tool-v2.sh" ]] && [[ -d "/etc/smart-tool" ]] && grep <$HOME/smart-tool-v2.sh -q "Author: Linfeng Zhong (Fred)"; then
+		mv "$HOME/smart-tool-v2.sh" /etc/smart-tool/smart-tool-v2.sh
+		if [[ -d "/usr/bin/" ]] && [[ ! -f "/usr/bin/st" ]]; then
+			ln -s /etc/smart-tool/smart-tool-v2.sh /usr/bin/st
+			chmod 700 /usr/bin/st
 			rm -rf "$HOME/smart-tool-v2.sh"
-		elif [[ -d "/usr/sbin" ]] && [[ ! -f "/usr/sbin/vasma" ]]; then
-			ln -s /etc/v2ray-agent/install.sh /usr/sbin/smt
-			chmod 700 /usr/sbin/smt
+		elif [[ -d "/usr/sbin" ]] && [[ ! -f "/usr/sbin/st" ]]; then
+			ln -s /etc/smart-tool/smart-tool-v2.sh /usr/sbin/st
+			chmod 700 /usr/sbin/st
 			rm -rf "$HOME/smart-tool-v2.sh"
 		fi
-		echoContent green "快捷方式创建成功，可执行[smt]重新打开脚本"
+		echoContent green "快捷方式创建成功，可执行[st]重新打开脚本"
 	fi
 }
 #-----------------------------------------------------------------------------#
 # 更新脚本
 updateSmartTool() {
 	echoContent skyBlue "\n 更新Smart tool 脚本"
-	rm -rf /etc/v2ray-agent/install.sh
+	rm -rf /etc/smart-tool/smart-tool-v2.sh
 	if wget --help | grep -q show-progress; then
-		wget -c -q --show-progress -P /etc/v2ray-agent/ -N --no-check-certificate "https://raw.githubusercontent.com/mack-a/v2ray-agent/master/install.sh"
+		wget -c -q --show-progress -P /etc/smart-tool/ -N --no-check-certificate "https://raw.githubusercontent.com/linfengzhong/toolbox/main/Shell/smart-tool-v2.sh"
 	else
-		wget -c -q -P /etc/v2ray-agent/ -N --no-check-certificate "https://raw.githubusercontent.com/mack-a/v2ray-agent/master/install.sh"
+		wget -c -q -P /etc/smart-tool/ -N --no-check-certificate "https://raw.githubusercontent.com/linfengzhong/toolbox/main/Shell/smart-tool-v2.sh"
 	fi
 
-	sudo chmod 700 /etc/v2ray-agent/install.sh
-	local version=$(cat /etc/v2ray-agent/install.sh | grep '当前版本：v' | awk -F "[v]" '{print $2}' | tail -n +2 | head -n 1 | awk -F "[\"]" '{print $1}')
+	sudo chmod 700 /etc/smart-tool/smart-tool-v2.sh
+	local version=$(cat /etc/smart-tool/smart-tool-v2.sh | grep '当前版本：v' | awk -F "[v]" '{print $2}' | tail -n +2 | head -n 1 | awk -F "[\"]" '{print $1}')
 
 	echoContent green "\n ---> 更新完毕"
-	echoContent yellow " ---> 请手动执行[vasma]打开脚本"
+	echoContent yellow " ---> 请手动执行[st]打开脚本"
 	echoContent green " ---> 当前版本:${version}\n"
 	echoContent yellow "如更新不成功，请手动执行下面命令\n"
-	echoContent skyBlue "wget -P /root -N --no-check-certificate "https://raw.githubusercontent.com/mack-a/v2ray-agent/master/install.sh" && chmod 700 /root/install.sh && /root/install.sh"
+	echoContent skyBlue "wget -P /root -N --no-check-certificate "https://raw.githubusercontent.com/linfengzhong/toolbox/main/Shell/smart-tool-v2.sh" && chmod 700 /root/smart-tool-v2.sh && /root/smart-tool-v2.sh"
 	echo
 	exit 0
+}
+#-----------------------------------------------------------------------------#
+# 初始化安装目录
+mkdirTools() {
+	mkdir -p /etc/smart-tool
 }
 #-----------------------------------------------------------------------------#
 # 主菜单
@@ -223,6 +227,7 @@ menu() {
 	cd "$HOME" || exit
 	echoContent red "\n=============================================================="
 	echoContent green "SmartTool：v0.01"
+	echoContent green "当前版本：v0.01"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "初始化服务器、安装Docker、执行容器\c"
 	echoContent red "\n=============================================================="
@@ -282,7 +287,7 @@ menu() {
 		updateTrojanGo 1
 		;;
 	12)
-		updateV2RayAgent 1
+		updateSmartTool 1
 		;;
 	13)
 		bbrInstall
@@ -298,19 +303,7 @@ menu() {
 
 initVar $1
 checkSystem
-readInstallType
-readInstallProtocolType
-readConfigHostPathUUID
+#readInstallType
+#readInstallProtocolType
+#readConfigHostPathUUID
 
-# 初始化安装目录
-mkdirTools() {
-	mkdir -p /etc/v2ray-agent/tls
-	mkdir -p /etc/v2ray-agent/mtg
-	mkdir -p /etc/v2ray-agent/subscribe
-	mkdir -p /etc/v2ray-agent/subscribe_tmp
-	mkdir -p /etc/v2ray-agent/v2ray/conf
-	mkdir -p /etc/v2ray-agent/xray/conf
-	mkdir -p /etc/v2ray-agent/trojan
-	mkdir -p /etc/systemd/system/
-	mkdir -p /tmp/v2ray-agent-tls/
-}
