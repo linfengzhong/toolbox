@@ -437,6 +437,13 @@ function install_docker_compose () {
 	judge "Install docker compose "
 }
 #-----------------------------------------------------------------------------#
+# Show IP
+#-----------------------------------------------------------------------------#
+# 外部IP
+function show_ip () {
+  print_info "服务器外部 IP：" && curl https://ipinfo.io/ip && "\n"
+}
+#-----------------------------------------------------------------------------#
 # 主菜单
 menu() {
 	cd "$HOME" || exit
@@ -462,6 +469,7 @@ menu() {
 	echoContent yellow "33.One-key"
 	echoContent yellow "34.docker status"
 	echoContent skyBlue "-------------------------工具管理-----------------------------"
+	echoContent yellow "41.show IP"	
 	echoContent skyBlue "-------------------------版本管理-----------------------------"
 	echoContent yellow "12.更新脚本"
 	echoContent skyBlue "-------------------------脚本管理-----------------------------"
@@ -556,6 +564,9 @@ menu() {
 	34)
 		show_docker_images
 		show_docker_container
+		;;
+	31)
+		show_ip
 		;;
 		esac
 }
