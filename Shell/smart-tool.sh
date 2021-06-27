@@ -117,6 +117,12 @@ function git-init () {
   cat ~/.ssh/id_rsa.pub
   judge "初始化 Git "
 }
+function git-clone-tool-box () {
+  print_info "Git clone ToolBox "
+  cd ～/git
+  git clone git@github.com:linfengzhong/toolbox.git
+  judge "Git clone ToolBox "
+}
 #-----------------------------------------------------------------------------#
 # 同步下载Git文件夹
 function github_pull () {

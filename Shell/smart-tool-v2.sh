@@ -99,6 +99,12 @@ function git-init () {
   cat ~/.ssh/id_rsa.pub
   judge "初始化 Git "
 }
+function git-clone-tool-box () {
+  print_info "Git clone ToolBox "
+  cd ～/git
+  git clone git@github.com:linfengzhong/toolbox.git
+  judge "Git clone ToolBox "
+}
 #-----------------------------------------------------------------------------#
 # 同步下载Git文件夹
 function github_pull () {
@@ -424,7 +430,7 @@ menu() {
 	cd "$HOME" || exit
 	echoContent red "\n=============================================================="
 	echoContent green "SmartTool：v0.02"
-	echoContent green "当前版本：v0.08"
+	echoContent green "当前版本：v0.09"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "初始化服务器、安装Docker、执行容器\c"
 	echoContent red "\n=============================================================="
@@ -437,6 +443,7 @@ menu() {
 	echoContent yellow "21.git-init"
 	echoContent yellow "22.git-pull"
 	echoContent yellow "23.git-push"
+  echoContent yellow "24.git-clone"
 	echoContent skyBlue "---------------------Docker Container-----------------------"
 	echoContent yellow "31.docker-compose up"
 	echoContent yellow "32.docker-compose down"
@@ -525,6 +532,9 @@ menu() {
     ;;
   23)
     github_push
+    ;;
+  24)
+    git-clone-tool-box
     ;;
   31)
     start_docker_compose
