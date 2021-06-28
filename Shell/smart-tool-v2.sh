@@ -388,6 +388,12 @@ function install_git () {
 #PyPi (will always have latest version)
 #Install or update to latest version
 function install_bpytop () {
+	print_info "Install Prerequisites for Python3 "
+	sudo yum -y install gcc libffi-devel python3-devel \
+                    openssl-devel \
+                    automake autoconf libtool make
+	judge "Install Prerequisites for Python3 "
+
 	print_info "Install bpytop "
 	sudo pip3 install bpytop --upgrade
 	judge "1/2 Install bpytop "
@@ -472,7 +478,7 @@ menu() {
 	cd "$HOME" || exit
 	echoContent red "\n=============================================================="
 	echoContent green "SmartTool：v0.02"
-	echoContent green "当前版本：v0.020"
+	echoContent green "当前版本：v0.021"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "初始化服务器、安装Docker、执行容器\c"
 	echoContent red "\n=============================================================="
