@@ -365,10 +365,10 @@ function updateSmartTool() {
 #	print_info "---> 更新前版本:${oldVersion}\n"
 	
 	rm -rf /etc/smart-tool/smart-tool-v2.sh
-	echoContent skyBlue "开始下载：\n"
+	echoContent skyBlue "开始下载： "
 	if wget --help | grep -q show-progress; then
 		wget -c -q --show-progress -P /etc/smart-tool/ -N --no-check-certificate "https://raw.githubusercontent.com/linfengzhong/toolbox/main/Shell/smart-tool-v2.sh"
-  else
+  	else
 		wget -c -q -P /etc/smart-tool/ -N --no-check-certificate "https://raw.githubusercontent.com/linfengzhong/toolbox/main/Shell/smart-tool-v2.sh"
 	fi
 
@@ -382,7 +382,7 @@ function updateSmartTool() {
 #	echoContent skyBlue "wget -P /root -N --no-check-certificate\
 #  "https://raw.githubusercontent.com/linfengzhong/toolbox/main/Shell/smart-tool-v2.sh" &&\
 #  chmod 700 /root/smart-tool-v2.sh && /root/smart-tool-v2.sh"
-#	echo
+	echo
 	exit 0
 }
 #-----------------------------------------------------------------------------#
@@ -552,7 +552,7 @@ function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=============================================================="
-	echoContent green "SmartTool：v0.045"
+	echoContent green "SmartTool：v0.046"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "初始化服务器、安装Docker、执行容器"
 	echoContent green "当前系统Linux 版本 : \c" 
