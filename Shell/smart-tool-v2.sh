@@ -303,7 +303,7 @@ function echoContent() {
 # 查看TLS证书的状态
 function checkTLStatus() {
 	echo $1
-	
+
 	if [[ -n "$1" ]]; then
 		if [[ -d "$HOME/.acme.sh/$1_ecc" ]] && [[ -f "$HOME/.acme.sh/$1_ecc/$1.key" ]] && [[ -f "$HOME/.acme.sh/$1_ecc/$1.cer" ]]; then
 			modifyTime=$(stat $HOME/.acme.sh/$1_ecc/$1.key | sed -n '7,6p' | awk '{print $2" "$3" "$4" "$5}')
@@ -514,7 +514,7 @@ function menu() {
 	echoContent green "初始化服务器、安装Docker、执行容器\n"
 	echoContent green "当前系统Linux 版本 : \c" 
 	checkSystem
-	echoContent red "\n=============================================================="
+	echoContent red "=============================================================="
 	echoContent skyBlue "-------------------------安装软件-----------------------------"
 	echoContent yellow "14.安装 acme.sh"
 	echoContent yellow "15.安装 bpytop"
