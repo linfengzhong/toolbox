@@ -531,7 +531,7 @@ function menu() {
 	cd "$HOME" || exit
 	echoContent red "\n=============================================================="
 	echoContent green "SmartTool：v0.02"
-	echoContent green "当前版本：v0.035"
+	echoContent green "当前版本：v0.036"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "初始化服务器、安装Docker、执行容器"
 	echoContent green "当前系统Linux 版本 : \c" 
@@ -602,8 +602,6 @@ function menu() {
 		;;
 	10)
 		install_prerequisite
-		updateSmartTool
-		bbrInstall
 		install_acme
 		install_bpytop
 		install_webmin
