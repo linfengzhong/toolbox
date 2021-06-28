@@ -302,7 +302,6 @@ function echoContent() {
 #-----------------------------------------------------------------------------#
 # 查看TLS证书的状态
 function checkTLStatus() {
-	echo $1
 	print_info "网站地址: ${domain}"
 	if [[ -n "$1" ]]; then
 		if [[ -d "$HOME/.acme.sh/$1" ]] && [[ -f "$HOME/.acme.sh/$1/$1.key" ]] && [[ -f "$HOME/.acme.sh/$1/$1.cer" ]]; then
@@ -494,6 +493,15 @@ function install_docker_compose () {
 	judge "Install docker compose "
 }
 #-----------------------------------------------------------------------------#
+# Install Prerequisite
+#-----------------------------------------------------------------------------#
+# 安装必要程序
+function install_prerequisite () {
+  print_info "安装 wget lsof tar unzip curl socat "
+  yum -y install wget lsof tar unzip curl socat
+  judge "安装 wget lsof tar unzip curl socat "
+}
+#-----------------------------------------------------------------------------#
 # Show IP
 #-----------------------------------------------------------------------------#
 # 外部IP
@@ -501,6 +509,20 @@ function show_ip () {
 	print_info "服务器外部 IP: "
 	local zIP=$(curl -s https://ipinfo.io/ip)
 	print_info $zIP
+}
+#-----------------------------------------------------------------------------#
+#===== RHEL 7/8 | CentOS 7/8 | Rocky Linux 8 =====
+#-----------------------------------------------------------------------------#
+# Security-Enhanced Linux
+# This guide is based on SELinux being disabled or in permissive mode. 
+# Steps to do this are as follows.
+#-----------------------------------------------------------------------------#
+function turn_off_selinux () {
+  print_info "开始配置 Linux Rocky 8.4 / CentOS 8 服务器"
+  sed -i 's/SELINUX=.*/SELINUX=disabled/g' /etc/selinux/config
+  setenforce 0
+  #judge "Step 1: Security-Enhanced Linux"
+  print_info "Security-Enhanced Linux <--- 完成"
 }
 #-----------------------------------------------------------------------------#
 # 主菜单
@@ -516,6 +538,7 @@ function menu() {
 	checkSystem
 	echoContent red "=============================================================="
 	echoContent skyBlue "-------------------------安装软件-----------------------------"
+	echoContent yellow "11.安装 前继程序"
 	echoContent yellow "14.安装 acme.sh"
 	echoContent yellow "15.安装 bpytop"
 	echoContent yellow "16.安装 Webmin"
@@ -580,7 +603,7 @@ function menu() {
 		coreVersionManageMenu 1
 		;;
 	11)
-		updateTrojanGo 1
+		install_prerequisite
 		;;
 	12)
 		updateSmartTool 1
