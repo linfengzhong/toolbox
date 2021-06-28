@@ -611,7 +611,7 @@ function menu() {
 		show_ip
 		;;
 	42)
-		checkTLStatus "$(Domain)"
+		checkTLStatus domain
 		;;
 	97)
 		checkSystem
