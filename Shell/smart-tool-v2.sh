@@ -467,7 +467,7 @@ function install_docker_compose () {
 #-----------------------------------------------------------------------------#
 # 外部IP
 function show_ip () {
-  print_info "服务器外部 IP：\n"
+  print_info "服务器外部 IP: "
   local zIP=$(curl -s https://ipinfo.io/ip)
   print_info $zIP
 }
