@@ -504,9 +504,24 @@ function install_docker_compose () {
 #-----------------------------------------------------------------------------#
 # 安装必要程序
 function install_prerequisite () {
-  print_info "安装 wget lsof tar unzip curl socat "
-  yum -y install wget lsof tar unzip curl socat
-  judge "安装 wget lsof tar unzip curl socat "
+	print_info "安装 wget lsof tar unzip curl socat "
+	yum -y install wget lsof tar unzip curl socat
+	judge "安装 wget lsof tar unzip curl socat "
+}
+#-----------------------------------------------------------------------------#
+# 安装BBR
+bbrInstall() {
+	echoContent red "\n=============================================================="
+	echoContent green "BBR、DD脚本用的[ylx2016]的成熟作品，地址[https://github.com/ylx2016/Linux-NetSpeed]，请熟知"
+	echoContent yellow "1.安装脚本【推荐原版BBR+FQ】"
+	echoContent yellow "2.回退主目录"
+	echoContent red "=============================================================="
+	read -r -p "请选择：" installBBRStatus
+	if [[ "${installBBRStatus}" == "1" ]]; then
+		wget -N --no-check-certificate "https://raw.githubusercontent.com/ylx2016/Linux-NetSpeed/master/tcp.sh" && chmod +x tcp.sh && ./tcp.sh
+	else
+		menu
+	fi
 }
 #-----------------------------------------------------------------------------#
 # Show IP
@@ -570,6 +585,7 @@ function menu() {
 	echoContent yellow "00.更新脚本"
 	echoContent yellow "14.查看日志"
 	echoContent yellow "15.卸载脚本"
+	echoContent yellow "96.安装 BBR"
 	echoContent yellow "97.检查系统版本"
 	echoContent yellow "98.bpytop"
 	echoContent yellow "99.退出"
@@ -674,6 +690,9 @@ function menu() {
 		;;
 	43)
 		generate_ca
+		;;
+	96)
+		bbrInstall
 		;;
 	97)
 		checkSystem
