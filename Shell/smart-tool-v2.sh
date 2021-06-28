@@ -5,26 +5,97 @@
 # 2021-June-25 [Add new functions] - Stop/Start docker-compose
 #-----------------------------------------------------------------------------#
 #-----------------------------------------------------------------------------#
-#定义变量
-WORKDIR="/root/git/toolbox/Docker/docker-compose/k8s-master.ml/"
-GITHUB_REPO="/root/git/toolbox/"
-EMAIL="fred.zhong@outlook.com"
-WEBSITE="k8s-master.ml"
-#-----------------------------------------------------------------------------#
-#fonts color 字体颜色配置
-Red="\033[31m"
-Yellow="\033[33m"
-Blue="\033[36m"
-Green="\033[32m"
-RedBG="\033[41;37m"
-GreenBG="\033[42;37m"
-Font="\033[0m"
-#-----------------------------------------------------------------------------#
-# Notification information 通知信息
-# Info="${Green}[Message信息]${Font}"
-Info="${Green}[Info信息]${Font}"
-OK="${Green}[OK正常]${Font}"
-Error="${Red}[ERROR错误]${Font}"
+# 初始化全局变量
+function initVar() {
+
+	#-----------------------------------------------------------------------------#
+	#定义变量
+	WORKDIR="/root/git/toolbox/Docker/docker-compose/k8s-master.ml/"
+	GITHUB_REPO="/root/git/toolbox/"
+	EMAIL="fred.zhong@outlook.com"
+	WEBSITE="k8s-master.ml"
+	#-----------------------------------------------------------------------------#
+	#fonts color 字体颜色配置
+	Red="\033[31m"
+	Yellow="\033[33m"
+	Blue="\033[36m"
+	Green="\033[32m"
+	RedBG="\033[41;37m"
+	GreenBG="\033[42;37m"
+	Font="\033[0m"
+	#-----------------------------------------------------------------------------#
+	# Notification information 通知信息
+	# Info="${Green}[Message信息]${Font}"
+	Info="${Green}[Info信息]${Font}"
+	OK="${Green}[OK正常]${Font}"
+	Error="${Red}[ERROR错误]${Font}"
+	#-----------------------------------------------------------------------------#
+	
+	installType='yum -y install'
+	removeType='yum -y remove'
+	upgrade="yum -y update"
+	echoType='echo -e'
+
+	# 域名
+	domain="k8s-master.ml"
+
+	# CDN节点的address
+	add=
+
+	# 安装总进度
+	totalProgress=1
+
+	# 1.xray-core安装
+	# 2.v2ray-core 安装
+	# 3.v2ray-core[xtls] 安装
+	coreInstallType=
+
+	# 核心安装path
+	# coreInstallPath=
+
+	# v2ctl Path
+	ctlPath=
+	# 1.全部安装
+	# 2.个性化安装
+	# v2rayAgentInstallType=
+
+	# 当前的个性化安装方式 01234
+	currentInstallProtocolType=
+
+	# 选择的个性化安装方式
+	selectCustomInstallType=
+
+	# v2ray-core、xray-core配置文件的路径
+	configPath=
+
+	# 配置文件的path
+	currentPath=
+
+	# 配置文件的host
+	currentHost=
+
+	# 安装时选择的core类型
+	selectCoreType=
+
+	# 默认core版本
+	v2rayCoreVersion=
+
+	# 随机路径
+	customPath=
+
+	# centos version
+	centosVersion=
+
+	# UUID
+	currentUUID=
+
+	# pingIPv6 pingIPv4
+	# pingIPv4=
+	pingIPv6=
+
+	# 集成更新证书逻辑不再使用单独的脚本--RenewTLS
+	renewTLS=$1
+}
 #-----------------------------------------------------------------------------#
 #打印Info
 function print_info() {
@@ -198,74 +269,6 @@ function checkSystem() {
 	fi
 }
 #-----------------------------------------------------------------------------#
-# 初始化全局变量
-function initVar() {
-	installType='yum -y install'
-	removeType='yum -y remove'
-	upgrade="yum -y update"
-	echoType='echo -e'
-
-	# 域名
-	domain="k8s-master.ml"
-
-	# CDN节点的address
-	add=
-
-	# 安装总进度
-	totalProgress=1
-
-	# 1.xray-core安装
-	# 2.v2ray-core 安装
-	# 3.v2ray-core[xtls] 安装
-	coreInstallType=
-
-	# 核心安装path
-	# coreInstallPath=
-
-	# v2ctl Path
-	ctlPath=
-	# 1.全部安装
-	# 2.个性化安装
-	# v2rayAgentInstallType=
-
-	# 当前的个性化安装方式 01234
-	currentInstallProtocolType=
-
-	# 选择的个性化安装方式
-	selectCustomInstallType=
-
-	# v2ray-core、xray-core配置文件的路径
-	configPath=
-
-	# 配置文件的path
-	currentPath=
-
-	# 配置文件的host
-	currentHost=
-
-	# 安装时选择的core类型
-	selectCoreType=
-
-	# 默认core版本
-	v2rayCoreVersion=
-
-	# 随机路径
-	customPath=
-
-	# centos version
-	centosVersion=
-
-	# UUID
-	currentUUID=
-
-	# pingIPv6 pingIPv4
-	# pingIPv4=
-	pingIPv6=
-
-	# 集成更新证书逻辑不再使用单独的脚本--RenewTLS
-	renewTLS=$1
-}
-#-----------------------------------------------------------------------------#
 # 输出带颜色内容 字体颜色配置
 function echoContent() {
 	case $1 in
@@ -381,6 +384,25 @@ function mkdirTools() {
 	mkdir -p /etc/smart-tool
 }
 #-----------------------------------------------------------------------------#
+# Install acme.sh
+#-----------------------------------------------------------------------------#
+function install_acme () {
+  print_info "Install acme.sh "
+  sudo curl https://get.acme.sh | sh -s email=$EMAIL
+  judge "安装 acme.sh "
+}
+#-----------------------------------------------------------------------------#
+# Generate CA
+#-----------------------------------------------------------------------------#
+function generate_ca () {
+#  local WEBSITE=$1
+  print_info "生成网站证书 "
+  print_info "----- 网站证书 ----"
+  sudo sh /root/.acme.sh/acme.sh  --issue  -d $WEBSITE --standalone --force
+  print_info "----- 网站证书 ----"
+  judge "生成网站证书 "
+}
+#-----------------------------------------------------------------------------#
 # Install Git
 # https://git-scm.com
 #-----------------------------------------------------------------------------#
@@ -486,12 +508,13 @@ function menu() {
 	cd "$HOME" || exit
 	echoContent red "\n=============================================================="
 	echoContent green "SmartTool：v0.02"
-	echoContent green "当前版本：v0.028"
+	echoContent green "当前版本：v0.030"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "初始化服务器、安装Docker、执行容器\c"
 	echoContent green "当前系统Linux 版本 : " checkSystem
 	echoContent red "\n=============================================================="
 	echoContent skyBlue "-------------------------安装软件-----------------------------"
+	echoContent yellow "14.安装 acme.sh"
 	echoContent yellow "15.安装 bpytop"
 	echoContent yellow "16.安装 Webmin"
 	echoContent yellow "17.安装 Docker"
@@ -510,6 +533,7 @@ function menu() {
 	echoContent skyBlue "-------------------------工具管理-----------------------------"
 	echoContent yellow "41.show IP"	
 	echoContent yellow "42.show CA status"	
+	echoContent yellow "43.generate CA"	
 	echoContent skyBlue "-------------------------版本管理-----------------------------"
 	echoContent yellow "12.更新脚本"
 	echoContent skyBlue "-------------------------脚本管理-----------------------------"
@@ -563,7 +587,7 @@ function menu() {
 		bbrInstall
 		;;
 	14)
-		checkLog 1
+		install_acme
 		;;
 	15)
 		install_bpytop
@@ -613,6 +637,9 @@ function menu() {
 		;;
 	42)
 		checkTLStatus domain
+		;;
+	43)
+		generate_ca
 		;;
 	97)
 		checkSystem
