@@ -510,7 +510,7 @@ function menu() {
 	echoContent skyBlue "-------------------------脚本管理-----------------------------"
 	echoContent yellow "14.查看日志"
 	echoContent yellow "15.卸载脚本"
-	echoContent yellow "98.BpyTOP"
+	echoContent yellow "98.bpytop"
 	echoContent yellow "99.退出"
 	echoContent red "=============================================================="
 	mkdirTools
