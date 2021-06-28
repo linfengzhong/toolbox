@@ -380,6 +380,24 @@ function install_git () {
 	sudo yum -y install git
 	judge "Install Git "
 }
+
+#-----------------------------------------------------------------------------
+# Install bpytop
+# https://github.com/aristocratos/bpytop
+#-----------------------------------------------------------------------------
+#PyPi (will always have latest version)
+#Install or update to latest version
+function install_bpytop () {
+	print_info "Install bpytop "
+	sudo pip3 install bpytop --upgrade
+	judge "1/2 Install bpytop "
+
+	echo 'alias bpytop=/usr/local/bin/bpytop'>>~/.bash_profile
+	source ~/.bash_profile 
+	judge "2/2 添加 bpytop 命令到.bash_profile"
+
+	judge "Install bpytop"
+}
 #-----------------------------------------------------------------------------#
 # Install webmin
 # https://webmin.com
@@ -454,11 +472,12 @@ menu() {
 	cd "$HOME" || exit
 	echoContent red "\n=============================================================="
 	echoContent green "SmartTool：v0.02"
-	echoContent green "当前版本：v0.19"
+	echoContent green "当前版本：v0.020"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "初始化服务器、安装Docker、执行容器\c"
 	echoContent red "\n=============================================================="
 	echoContent skyBlue "-------------------------安装软件-----------------------------"
+	echoContent yellow "15.安装 bpytop"
 	echoContent yellow "16.安装 Webmin"
 	echoContent yellow "17.安装 Docker"
 	echoContent yellow "18.安装 docker compose"
@@ -529,7 +548,7 @@ menu() {
 		checkLog 1
 		;;
 	15)
-		unInstall 1
+		install_bpytop
 		;;
 	16)
 		install_webmin
