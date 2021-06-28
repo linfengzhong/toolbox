@@ -383,6 +383,18 @@ function updateSmartTool() {
 # 初始化安装目录
 function mkdirTools() {
 	mkdir -p /etc/smart-tool
+
+
+	mkdir -p /etc/fuckGFW/tls
+	mkdir -p /etc/fuckGFW/mtg
+	mkdir -p /etc/fuckGFW/subscribe
+	mkdir -p /etc/fuckGFW/subscribe_tmp
+	mkdir -p /etc/fuckGFW/v2ray/conf
+	mkdir -p /etc/fuckGFW/xray/conf
+	mkdir -p /etc/fuckGFW/trojan
+	mkdir -p /etc/systemd/system/
+	mkdir -p /tmp/fuckGFW-tls/
+
 }
 #-----------------------------------------------------------------------------#
 # Install acme.sh
@@ -541,12 +553,179 @@ function turn_off_selinux () {
   print_info "Security-Enhanced Linux <--- 完成"
 }
 #-----------------------------------------------------------------------------#
+# 查看、检查日志
+checkLog() {
+	if [[ -z ${configPath} ]]; then
+		echoContent red " ---> 没有检测到安装目录，请执行脚本安装内容"
+	fi
+	local logStatus=false
+	if [[ -n $(cat ${configPath}00_log.json | grep access) ]]; then
+		logStatus=true
+	fi
+
+	echoContent skyBlue "\n功能 $1/${totalProgress} : 查看日志"
+	echoContent red "\n=============================================================="
+	echoContent yellow "# 建议仅调试时打开access日志\n"
+
+	if [[ "${logStatus}" == "false" ]]; then
+		echoContent yellow "1.打开access日志"
+	else
+		echoContent yellow "1.关闭access日志"
+	fi
+
+	echoContent yellow "2.监听access日志"
+	echoContent yellow "3.监听error日志"
+	echoContent yellow "4.清空日志"
+	echoContent red "=============================================================="
+
+	read -r -p "请选择：" selectAccessLogType
+	local configPathLog=${configPath//conf\//}
+
+	case ${selectAccessLogType} in
+	1)
+		if [[ "${logStatus}" == "false" ]]; then
+			cat <<EOF >${configPath}00_log.json
+{
+  "log": {
+  	"access":"${configPathLog}access.log",
+    "error": "${configPathLog}error.log",
+    "loglevel": "warning"
+  }
+}
+EOF
+		elif [[ "${logStatus}" == "true" ]]; then
+			cat <<EOF >${configPath}00_log.json
+{
+  "log": {
+    "error": "${configPathLog}error.log",
+    "loglevel": "warning"
+  }
+}
+EOF
+		fi
+		reloadCore
+		checkLog 1
+		;;
+	2)
+		tail -f ${configPathLog}access.log
+		;;
+	3)
+		tail -f ${configPathLog}error.log
+		;;
+	4)
+		echo >${configPathLog}access.log
+		echo >${configPathLog}error.log
+		;;
+	esac
+}
+#-----------------------------------------------------------------------------#
+# 安装Trojan-go
+installTrojanGo() {
+	echoContent skyBlue "安装Trojan-Go "
+
+	if ! ls /etc/fuckGFW/trojan/ | grep -q trojan-go; then
+		version=$(curl -s https://github.com/p4gefau1t/trojan-go/releases | grep /trojan-go/releases/tag/ | head -1 | awk -F "[/]" '{print $6}' | awk -F "[>]" '{print $2}' | awk -F "[<]" '{print $1}')
+		echoContent green " ---> Trojan-Go版本:${version}"
+		if wget --help | grep -q show-progress; then
+			wget -c -q --show-progress -P /etc/fuckGFW/trojan/ "https://github.com/p4gefau1t/trojan-go/releases/download/${version}/trojan-go-linux-amd64.zip"
+		else
+			wget -c -P /etc/fuckGFW/trojan/ "https://github.com/p4gefau1t/trojan-go/releases/download/${version}/trojan-go-linux-amd64.zip" >/dev/null 2>&1
+		fi
+		unzip -o /etc/fuckGFW/trojan/trojan-go-linux-amd64.zip -d /etc/fuckGFW/trojan >/dev/null
+		rm -rf /etc/fuckGFW/trojan/trojan-go-linux-amd64.zip
+	else
+		echoContent green " ---> Trojan-Go版本:$(/etc/fuckGFW/trojan/trojan-go --version | awk '{print $2}' | head -1)"
+
+		read -r -p "是否重新安装？[y/n]:" reInstallTrojanStatus
+		if [[ "${reInstallTrojanStatus}" == "y" ]]; then
+			rm -rf /etc/fuckGFW/trojan/trojan-go*
+			installTrojanGo
+		fi
+	fi
+}
+#-----------------------------------------------------------------------------#
+# 更新Trojan-Go
+updateTrojanGo() {
+	echoContent skyBlue "更新Trojan-Go "
+	if [[ ! -d "/etc/fuckGFW/trojan/" ]]; then
+		echoContent red " ---> 没有检测到安装目录，请执行脚本安装内容"
+		menu
+		exit 0
+	fi
+	if find /etc/fuckGFW/trojan/ | grep -q "trojan-go"; then
+		version=$(curl -s https://github.com/p4gefau1t/trojan-go/releases | grep /trojan-go/releases/tag/ | head -1 | awk -F "[/]" '{print $6}' | awk -F "[>]" '{print $2}' | awk -F "[<]" '{print $1}')
+		echoContent green " ---> Trojan-Go版本:${version}"
+		if [[ -n $(wget --help | grep show-progress) ]]; then
+			wget -c -q --show-progress -P /etc/fuckGFW/trojan/ "https://github.com/p4gefau1t/trojan-go/releases/download/${version}/trojan-go-linux-amd64.zip"
+		else
+			wget -c -P /etc/fuckGFW/trojan/ "https://github.com/p4gefau1t/trojan-go/releases/download/${version}/trojan-go-linux-amd64.zip" >/dev/null 2>&1
+		fi
+		unzip -o /etc/fuckGFW/trojan/trojan-go-linux-amd64.zip -d /etc/fuckGFW/trojan >/dev/null
+		rm -rf /etc/fuckGFW/trojan/trojan-go-linux-amd64.zip
+		handleTrojanGo stop
+		handleTrojanGo start
+	else
+		echoContent green " ---> 当前Trojan-Go版本:$(/etc/fuckGFW/trojan/trojan-go --version | awk '{print $2}' | head -1)"
+		if [[ -n $(/etc/fuckGFW/trojan/trojan-go --version) ]]; then
+			version=$(curl -s https://github.com/p4gefau1t/trojan-go/releases | grep /trojan-go/releases/tag/ | head -1 | awk -F "[/]" '{print $6}' | awk -F "[>]" '{print $2}' | awk -F "[<]" '{print $1}')
+			if [[ "${version}" == "$(/etc/fuckGFW/trojan/trojan-go --version | awk '{print $2}' | head -1)" ]]; then
+				read -r -p "当前版本与最新版相同，是否重新安装？[y/n]:" reInstalTrojanGoStatus
+				if [[ "${reInstalTrojanGoStatus}" == "y" ]]; then
+					handleTrojanGo stop
+					rm -rf /etc/fuckGFW/trojan/trojan-go
+					updateTrojanGo 1
+				else
+					echoContent green " ---> 放弃重新安装"
+				fi
+			else
+				read -r -p "最新版本为：${version}，是否更新？[y/n]：" installTrojanGoStatus
+				if [[ "${installTrojanGoStatus}" == "y" ]]; then
+					rm -rf /etc/fuckGFW/trojan/trojan-go
+					updateTrojanGo 1
+				else
+					echoContent green " ---> 放弃更新"
+				fi
+			fi
+		fi
+	fi
+}
+#-----------------------------------------------------------------------------#
+# 操作Trojan-Go
+handleTrojanGo() {
+	if [[ -n $(find /bin /usr/bin -name "systemctl") ]] && ls /etc/systemd/system/ | grep -q trojan-go.service; then
+		if [[ -z $(pgrep -f "trojan-go") ]] && [[ "$1" == "start" ]]; then
+			systemctl start trojan-go.service
+		elif [[ -n $(pgrep -f "trojan-go") ]] && [[ "$1" == "stop" ]]; then
+			systemctl stop trojan-go.service
+		fi
+	fi
+
+	sleep 0.5
+	if [[ "$1" == "start" ]]; then
+		if [[ -n $(pgrep -f "trojan-go") ]]; then
+			echoContent green " ---> Trojan-Go启动成功"
+		else
+			echoContent red "Trojan-Go启动失败"
+			echoContent red "请手动执行【/etc/fuckGFW/trojan/trojan-go -config /etc/fuckGFW/trojan/config_full.json】,查看错误日志"
+			exit 0
+		fi
+	elif [[ "$1" == "stop" ]]; then
+		if [[ -z $(pgrep -f "trojan-go") ]]; then
+			echoContent green " ---> Trojan-Go关闭成功"
+		else
+			echoContent red "Trojan-Go关闭失败"
+			echoContent red "请手动执行【ps -ef|grep -v grep|grep trojan-go|awk '{print \$2}'|xargs kill -9】"
+			exit 0
+		fi
+	fi
+}
+#-----------------------------------------------------------------------------#
 # 主菜单
 function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=============================================================="
-	echoContent green "SmartTool：v0.048"
+	echoContent green "SmartTool：v0.049"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "初始化服务器、安装Docker、执行容器"
 	echoContent green "当前系统Linux版本 : \c" 
