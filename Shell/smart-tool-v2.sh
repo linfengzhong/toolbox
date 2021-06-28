@@ -44,6 +44,11 @@ judge() {
   fi
 }
 #-----------------------------------------------------------------------------#
+# 清理屏幕
+cleanUp() {
+	clear
+}
+#-----------------------------------------------------------------------------#
 #定义变量
 WORKDIR="/root/git/toolbox/Docker/docker-compose/k8s-master.ml/"
 GITHUB_REPO="/root/git/toolbox/"
@@ -342,24 +347,21 @@ aliasInstall() {
 updateSmartTool() {
 	echoContent skyBlue "\n 更新Smart tool 脚本"
 	rm -rf /etc/smart-tool/smart-tool-v2.sh
-  echo "删除成功"
 	if wget --help | grep -q show-progress; then
 		wget -c -q --show-progress -P /etc/smart-tool/ -N --no-check-certificate "https://raw.githubusercontent.com/linfengzhong/toolbox/main/Shell/smart-tool-v2.sh"
-	  echo "第一分支"
   else
 		wget -c -q -P /etc/smart-tool/ -N --no-check-certificate "https://raw.githubusercontent.com/linfengzhong/toolbox/main/Shell/smart-tool-v2.sh"
-	  echo "第二分支"
 	fi
 
 	sudo chmod 700 /etc/smart-tool/smart-tool-v2.sh
 	local version=$(cat /etc/smart-tool/smart-tool-v2.sh | grep '当前版本：v' | awk -F "[v]" '{print $2}' | tail -n +2 | head -n 1 | awk -F "[\"]" '{print $1}')
 
 	print_info "---> 更新完毕"
-	echoContent yellow " ---> 请手动执行[st]打开脚本"
-	echoContent green " ---> 当前版本:${version}\n"
-	echoContent yellow "如更新不成功，请手动执行下面命令\n"
-	echoContent skyBlue "wget -P /root -N --no-check-certificate \
-  "https://raw.githubusercontent.com/linfengzhong/toolbox/main/Shell/smart-tool-v2.sh" && \
+	print_info "---> 请手动执行[st]打开脚本"
+	print_info "---> 当前版本:${version}\n"
+	echoContent yellow "如更新不成功，请手动执行下面命令"
+	echoContent skyBlue "wget -P /root -N --no-check-certificate\
+  "https://raw.githubusercontent.com/linfengzhong/toolbox/main/Shell/smart-tool-v2.sh" &&\
   chmod 700 /root/smart-tool-v2.sh && /root/smart-tool-v2.sh"
 	echo
 	exit 0
@@ -374,90 +376,140 @@ mkdirTools() {
 # https://git-scm.com
 #-----------------------------------------------------------------------------#
 function install_git () {
-  print_info "Install Git "
-  sudo yum -y install git
-  judge "Install Git "
+	print_info "Install Git "
+	sudo yum -y install git
+	judge "Install Git "
+}
+
+#-----------------------------------------------------------------------------
+# Install bpytop
+# https://github.com/aristocratos/bpytop
+#-----------------------------------------------------------------------------
+#PyPi (will always have latest version)
+#Install or update to latest version
+function install_bpytop () {
+	print_info "Install Prerequisites for Python3 "
+	sudo yum -y install gcc libffi-devel python3-devel \
+                    openssl-devel \
+                    automake autoconf libtool make
+	judge "Install Prerequisites for Python3 "
+
+	print_info "Install bpytop "
+	sudo pip3 install bpytop --upgrade
+	judge "1/2 Install bpytop "
+
+	echo 'alias bpytop=/usr/local/bin/bpytop'>>~/.bash_profile
+	source ~/.bash_profile 
+	judge "2/2 添加 bpytop 命令到.bash_profile"
+
+	judge "Install bpytop"
 }
 #-----------------------------------------------------------------------------#
 # Install webmin
 # https://webmin.com
 #-----------------------------------------------------------------------------#
 function install_webmin () {
-  # https://doxfer.webmin.com/Webmin/Installation
-  print_info "Install webmin "
-  (echo "[Webmin]
-  name=Webmin Distribution Neutral
-  baseurl=http://download.webmin.com/download/yum
-  enabled=1
-  gpgcheck=1
-  gpgkey=http://www.webmin.com/jcameron-key.asc" >/etc/yum.repos.d/webmin.repo;)
-  sleep 1
-  sudo yum -y install webmin
-  judge "Install webmin "
+	# https://doxfer.webmin.com/Webmin/Installation
+	print_info "Install webmin "
+	(echo "[Webmin]
+name=Webmin Distribution Neutral
+baseurl=http://download.webmin.com/download/yum
+enabled=1
+gpgcheck=1
+gpgkey=http://www.webmin.com/jcameron-key.asc" >/etc/yum.repos.d/webmin.repo;)
+	sleep 1
+	sudo yum -y install webmin
+	judge "Install webmin "
 }
 #-----------------------------------------------------------------------------#
 # Install Docker CE
 # https://docs.docker.com/engine/install/centos/
 #-----------------------------------------------------------------------------#
 function install_docker () {
-  print_info "Install Docker CE "
-  sudo yum -y remove docker \
-                  docker-client \
-                  docker-client-latest \
-                  docker-common \
-                  docker-latest \
-                  docker-latest-logrotate \
-                  docker-logrotate \
-                  docker-engine
-  judge "1/3 Uninstall old versions of Docker CE "
-  sudo yum -y install yum-utils
-  sudo yum-config-manager \
-        --add-repo \
-        https://download.docker.com/linux/centos/docker-ce.repo
+	print_info "Install Docker CE "
+	sudo yum -y remove docker \
+					docker-client \
+					docker-client-latest \
+					docker-common \
+					docker-latest \
+					docker-latest-logrotate \
+					docker-logrotate \
+					docker-engine
+	judge "1/3 Uninstall old versions of Docker CE "
+	sudo yum -y install yum-utils
+	sudo yum-config-manager \
+			--add-repo \
+			https://download.docker.com/linux/centos/docker-ce.repo
 
-  judge "2/3 Set up the repository for Docker "
+	judge "2/3 Set up the repository for Docker "
 
-  sudo yum -y install docker-ce docker-ce-cli containerd.io
-  sudo systemctl start docker
-  sudo systemctl enable docker
+	sudo yum -y install docker-ce docker-ce-cli containerd.io
+	sudo systemctl start docker
+	sudo systemctl enable docker
 
-  judge "3/3 Install Docker Engine "
-  judge "Install Docker CE "
+	judge "3/3 Install Docker Engine "
+	judge "Install Docker CE "
+}
+#-----------------------------------------------------------------------------#
+# Install Docker Compose
+# https://docs.docker.com/compose/install/#install-compose
+#-----------------------------------------------------------------------------#
+function install_docker_compose () {
+	print_info "Install docker compose "
+	sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+	sudo chmod +x /usr/local/bin/docker-compose
+	sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+	docker-compose --version
+	judge "Install docker compose "
+}
+#-----------------------------------------------------------------------------#
+# Show IP
+#-----------------------------------------------------------------------------#
+# 外部IP
+function show_ip () {
+  print_info "服务器外部 IP：\n"
+  zIP=$(curl https://ipinfo.io/ip)
+  print_info $zIP
 }
 #-----------------------------------------------------------------------------#
 # 主菜单
 menu() {
+	clear
 	cd "$HOME" || exit
 	echoContent red "\n=============================================================="
 	echoContent green "SmartTool：v0.02"
-	echoContent green "当前版本：v0.10"
+	echoContent green "当前版本：v0.021"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "初始化服务器、安装Docker、执行容器\c"
 	echoContent red "\n=============================================================="
 	echoContent skyBlue "-------------------------安装软件-----------------------------"
+	echoContent yellow "15.安装 bpytop"
 	echoContent yellow "16.安装 Webmin"
 	echoContent yellow "17.安装 Docker"
-	echoContent yellow "18.安装 Git"
-	echoContent skyBlue "-------------------------Git--------------------------------"  
+	echoContent yellow "18.安装 docker compose"
+	echoContent yellow "19.安装 Git"
+	echoContent skyBlue "-------------------------版本控制-----------------------------"  
 	echoContent yellow "21.git-init"
 	echoContent yellow "22.git-pull"
 	echoContent yellow "23.git-push"
-  echoContent yellow "24.git-clone"
-	echoContent skyBlue "---------------------Docker Container-----------------------"
+	echoContent yellow "24.git-clone"
+	echoContent skyBlue "-------------------------容器相关-----------------------------"
 	echoContent yellow "31.docker-compose up"
 	echoContent yellow "32.docker-compose down"
 	echoContent yellow "33.One-key"
 	echoContent yellow "34.docker status"
 	echoContent skyBlue "-------------------------工具管理-----------------------------"
+	echoContent yellow "41.show IP"	
 	echoContent skyBlue "-------------------------版本管理-----------------------------"
 	echoContent yellow "12.更新脚本"
 	echoContent skyBlue "-------------------------脚本管理-----------------------------"
 	echoContent yellow "14.查看日志"
 	echoContent yellow "15.卸载脚本"
+	echoContent yellow "99.退出"
 	echoContent red "=============================================================="
 	mkdirTools
 	aliasInstall
-	read -r -p "请选择:" selectInstallType
+	read -r -p "Please choose the function(请选择): " selectInstallType
 	case ${selectInstallType} in
 	1)
 		selectCoreInstall
@@ -502,51 +554,65 @@ menu() {
 		checkLog 1
 		;;
 	15)
-		unInstall 1
+		install_bpytop
 		;;
-  16)
-    install_webmin
-    ;;
-  17)
-    install_docker
-    ;;
-  18)
-    install_git
-    ;;
-  21)
-    git-init
-    ;;
-  22)
-    github_pull
-    ;;
-  23)
-    github_push
-    ;;
-  24)
-    git-clone-tool-box
-    ;;
-  31)
-    start_docker_compose
-    ;;
-  32)
-    shutdown_docker_compose
-    ;;
-  33)
-    shutdown_docker_compose
-    github_pull
-    github_push
-    start_docker_compose
-    ;;
-  34)
-    show_docker_images
-    show_docker_container
-    ;;
+	16)
+		install_webmin
+		;;
+	17)
+		install_docker
+		;;
+	18)
+		install_docker_compose
+		;;
+	19)
+		install_git
+		;;	
+	21)
+		git-init
+		;;
+	22)
+		github_pull
+		;;
+	23)
+		github_push
+		;;
+	24)
+		git-clone-tool-box
+		;;
+	31)
+		start_docker_compose
+		;;
+	32)
+		shutdown_docker_compose
+		;;
+	33)
+		shutdown_docker_compose
+		github_pull
+		github_push
+		start_docker_compose
+		;;
+	34)
+		show_docker_images
+		show_docker_container
+		;;
+	41)
+		show_ip
+		;;
+	99)
+	    exit 0
+		;;
+	*)
+		print_error "请输入正确的数字"
+#		menu "$@"
+		;;
 	esac
 }
 
+cleanUp
 initVar $1
 checkSystem
 #readInstallType
 #readInstallProtocolType
 #readConfigHostPathUUID
-menu
+menu "$@"
