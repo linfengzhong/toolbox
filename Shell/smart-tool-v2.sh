@@ -206,7 +206,7 @@ function initVar() {
 	echoType='echo -e'
 
 	# 域名
-	domain=
+	domain="k8s-master.ml"
 
 	# CDN节点的address
 	add=
@@ -486,7 +486,7 @@ function menu() {
 	cd "$HOME" || exit
 	echoContent red "\n=============================================================="
 	echoContent green "SmartTool：v0.02"
-	echoContent green "当前版本：v0.026"
+	echoContent green "当前版本：v0.027"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "初始化服务器、安装Docker、执行容器\c"
 	echoContent red "\n=============================================================="
@@ -611,7 +611,7 @@ function menu() {
 		show_ip
 		;;
 	42)
-		checkTLStatus
+		checkTLStatus "$(Domain)"
 		;;
 	97)
 		checkSystem
