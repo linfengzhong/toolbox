@@ -373,11 +373,11 @@ function updateSmartTool() {
 	fi
 
 	sudo chmod 700 /etc/smart-tool/smart-tool-v2.sh
-	local newVersion=$(cat /etc/smart-tool/smart-tool-v2.sh | grep 'SmartTool：v' | awk -F "[v]" '{print $2}' | tail -n +2 | head -n 1 | awk -F "[\"]" '{print $1}')
+	local newversion=$(cat /etc/smart-tool/smart-tool-v2.sh | grep 'SmartTool：v' | awk -F "[v]" '{print $2}' | tail -n +2 | head -n 1 | awk -F "[\"]" '{print $1}')
 
 	print_info "---> 更新完毕"
 	print_info "---> 请手动执行[st]打开脚本"
-	print_info "---> 当前版本:${newVersion}\n"
+	print_info "---> 当前版本:${newversion}\n"
 #	echoContent yellow "如更新不成功，请手动执行下面命令"
 #	echoContent skyBlue "wget -P /root -N --no-check-certificate\
 #  "https://raw.githubusercontent.com/linfengzhong/toolbox/main/Shell/smart-tool-v2.sh" &&\
@@ -552,10 +552,10 @@ function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=============================================================="
-	echoContent green "SmartTool：v0.046"
+	echoContent green "SmartTool：v0.047"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "初始化服务器、安装Docker、执行容器"
-	echoContent green "当前系统Linux 版本 : \c" 
+	echoContent green "当前系统Linux版本 : \c" 
 	checkSystem
 	echoContent red "=============================================================="
 	echoContent skyBlue "-------------------------安装软件-----------------------------"
