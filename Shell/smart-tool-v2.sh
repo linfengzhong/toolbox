@@ -305,8 +305,8 @@ function checkTLStatus() {
 	echo $1
 
 	if [[ -n "$1" ]]; then
-		if [[ -d "$HOME/.acme.sh/$1_ecc" ]] && [[ -f "$HOME/.acme.sh/$1_ecc/$1.key" ]] && [[ -f "$HOME/.acme.sh/$1_ecc/$1.cer" ]]; then
-			modifyTime=$(stat $HOME/.acme.sh/$1_ecc/$1.key | sed -n '7,6p' | awk '{print $2" "$3" "$4" "$5}')
+		if [[ -d "$HOME/.acme.sh/$1" ]] && [[ -f "$HOME/.acme.sh/$1/$1.key" ]] && [[ -f "$HOME/.acme.sh/$1/$1.cer" ]]; then
+			modifyTime=$(stat $HOME/.acme.sh/$1/$1.key | sed -n '7,6p' | awk '{print $2" "$3" "$4" "$5}')
 
 			modifyTime=$(date +%s -d "${modifyTime}")
 			currentTime=$(date +%s)
@@ -509,9 +509,9 @@ function menu() {
 	cd "$HOME" || exit
 	echoContent red "\n=============================================================="
 	echoContent green "SmartTool：v0.02"
-	echoContent green "当前版本：v0.033"
+	echoContent green "当前版本：v0.034"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
-	echoContent green "初始化服务器、安装Docker、执行容器\n"
+	echoContent green "初始化服务器、安装Docker、执行容器"
 	echoContent green "当前系统Linux 版本 : \c" 
 	checkSystem
 	echoContent red "=============================================================="
