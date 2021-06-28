@@ -300,6 +300,46 @@ function echoContent() {
 	esac
 }
 #-----------------------------------------------------------------------------#
+# 更新证书
+renewalTLS() {
+	echoContent skyBlue "更新证书 "
+
+	if [[ -d "$HOME/.acme.sh/${currentHost}" ]] && [[ -f "$HOME/.acme.sh/${currentHost}/${currentHost}.key" ]] && [[ -f "$HOME/.acme.sh/${currentHost}/${currentHost}.cer" ]]; then
+		modifyTime=$(stat $HOME/.acme.sh/${currentHost}/${currentHost}.cer | sed -n '7,6p' | awk '{print $2" "$3" "$4" "$5}')
+
+		modifyTime=$(date +%s -d "${modifyTime}")
+		currentTime=$(date +%s)
+		stampDiff=$(expr ${currentTime} - ${modifyTime})
+		days=$(expr ${stampDiff} / 86400)
+		remainingDays=$(expr 90 - ${days})
+		tlsStatus=${remainingDays}
+		if [[ ${remainingDays} -le 0 ]]; then
+			tlsStatus="已过期"
+		fi
+
+		echoContent skyBlue " ---> 证书检查日期:$(date "+%F %H:%M:%S")"
+		echoContent skyBlue " ---> 证书生成日期:$(date -d @"${modifyTime}" +"%F %H:%M:%S")"
+		echoContent skyBlue " ---> 证书生成天数:${days}"
+		echoContent skyBlue " ---> 证书剩余天数:"${tlsStatus}
+		echoContent skyBlue " ---> 证书过期前最后一天自动更新，如更新失败请手动更新"
+
+		if [[ ${remainingDays} -le 1 ]]; then
+			echoContent yellow " ---> 重新生成证书"
+			# handleNginx stop
+			# sudo "$HOME/.acme.sh/acme.sh" --cron --home "$HOME/.acme.sh"
+			# sudo "$HOME/.acme.sh/acme.sh" --installcert -d "${currentHost}" --fullchainpath /etc/v2ray-agent/tls/"${currentHost}.crt" --keypath /etc/v2ray-agent/tls/"${currentHost}.key"
+			# handleNginx start
+
+			#reloadCore
+
+		else
+			echoContent green " ---> 证书有效"
+		fi
+	else
+		echoContent red " ---> 未安装"
+	fi
+}
+#-----------------------------------------------------------------------------#
 # 查看TLS证书的状态
 function checkTLStatus() {
 	print_info "网站地址: ${domain}"
@@ -725,7 +765,7 @@ function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=============================================================="
-	echoContent green "SmartTool：v0.049"
+	echoContent green "SmartTool：v0.050"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "初始化服务器、安装Docker、执行容器"
 	echoContent green "当前系统Linux版本 : \c" 
@@ -752,7 +792,7 @@ function menu() {
 	echoContent yellow "34.docker status"
 	echoContent skyBlue "-------------------------工具管理-----------------------------"
 	echoContent yellow "41.show IP"	
-	echoContent yellow "42.show CA status"	
+	echoContent yellow "42.show CA status | 5.renew CA"
 	echoContent yellow "43.generate CA"	
 	echoContent skyBlue "-------------------------脚本管理-----------------------------"
 	echoContent yellow "00.更新脚本"
@@ -780,7 +820,7 @@ function menu() {
 		updateNginxBlog 1
 		;;
 	5)
-		renewalTLS 1
+		renewalTLS
 		;;
 	6)
 		updateV2RayCDN 1
