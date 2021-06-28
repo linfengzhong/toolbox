@@ -489,6 +489,7 @@ function menu() {
 	echoContent green "当前版本：v0.028"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "初始化服务器、安装Docker、执行容器\c"
+	echoContent green "当前系统Linux 版本 : " checkSystem
 	echoContent red "\n=============================================================="
 	echoContent skyBlue "-------------------------安装软件-----------------------------"
 	echoContent yellow "15.安装 bpytop"
@@ -631,7 +632,6 @@ function menu() {
 
 cleanUp
 initVar $1
-checkSystem
 #readInstallType
 #readInstallProtocolType
 #readConfigHostPathUUID
