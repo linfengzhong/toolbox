@@ -531,19 +531,20 @@ function menu() {
 	cd "$HOME" || exit
 	echoContent red "\n=============================================================="
 	echoContent green "SmartTool：v0.02"
-	echoContent green "当前版本：v0.034"
+	echoContent green "当前版本：v0.035"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "初始化服务器、安装Docker、执行容器"
 	echoContent green "当前系统Linux 版本 : \c" 
 	checkSystem
 	echoContent red "=============================================================="
 	echoContent skyBlue "-------------------------安装软件-----------------------------"
-	echoContent yellow "11.安装 前继程序"
+	echoContent yellow "10.安装 全部程序"	
+	echoContent yellow "11.安装 prerequisite"
 	echoContent yellow "14.安装 acme.sh"
 	echoContent yellow "15.安装 bpytop"
 	echoContent yellow "16.安装 Webmin"
-	echoContent yellow "17.安装 Docker"
-	echoContent yellow "18.安装 docker compose"
+	echoContent yellow "17.安装 Docker CE"
+	echoContent yellow "18.安装 Docker compose"
 	echoContent yellow "19.安装 Git"
 	echoContent skyBlue "-------------------------版本控制-----------------------------"  
 	echoContent yellow "21.git-init"
@@ -600,7 +601,15 @@ function menu() {
 		addCorePort 1
 		;;
 	10)
-		coreVersionManageMenu 1
+		install_prerequisite
+		updateSmartTool
+		bbrInstall
+		install_acme
+		install_bpytop
+		install_webmin
+		install_docker
+		install_docker_compose
+		install_git
 		;;
 	11)
 		install_prerequisite
