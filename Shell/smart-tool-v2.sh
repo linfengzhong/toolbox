@@ -358,12 +358,6 @@ function aliasInstall() {
 # 更新脚本
 function updateSmartTool() {
 
-#	local version=$(cat /etc/smart-tool/smart-tool-v2.sh | grep 'SmartTool：v' | awk -F "[v]" '{print $2}' | tail -n +2 | head -n 1 | awk -F "[\"]" '{print $1}')
-#	print_info "---> 当前版本:${version}\n"
-
-#	local oldVersion=$(cat /etc/smart-tool/smart-tool-v2.sh | grep 'SmartTool：v' | awk -F "[v]" '{print $2}' | tail -n +2 | head -n 1 | awk -F "[\"]" '{print $1}')
-#	print_info "---> 更新前版本:${oldVersion}\n"
-	
 	rm -rf /etc/smart-tool/smart-tool-v2.sh
 	echoContent skyBlue "开始下载： "
 	if wget --help | grep -q show-progress; then
@@ -552,7 +546,7 @@ function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=============================================================="
-	echoContent green "SmartTool：v0.047"
+	echoContent green "SmartTool：v0.048"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "初始化服务器、安装Docker、执行容器"
 	echoContent green "当前系统Linux版本 : \c" 
