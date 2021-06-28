@@ -508,10 +508,10 @@ function menu() {
 	cd "$HOME" || exit
 	echoContent red "\n=============================================================="
 	echoContent green "SmartTool：v0.02"
-	echoContent green "当前版本：v0.032"
+	echoContent green "当前版本：v0.033"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
-	echoContent green "初始化服务器、安装Docker、执行容器\c"
-	echoContent green "当前系统Linux 版本 : " 
+	echoContent green "初始化服务器、安装Docker、执行容器\n"
+	echoContent green "当前系统Linux 版本 : \c" 
 	checkSystem
 	echoContent red "\n=============================================================="
 	echoContent skyBlue "-------------------------安装软件-----------------------------"
