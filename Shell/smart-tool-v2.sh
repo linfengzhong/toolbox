@@ -302,7 +302,8 @@ function echoContent() {
 #-----------------------------------------------------------------------------#
 # 查看TLS证书的状态
 function checkTLStatus() {
-
+	echo $1
+	
 	if [[ -n "$1" ]]; then
 		if [[ -d "$HOME/.acme.sh/$1_ecc" ]] && [[ -f "$HOME/.acme.sh/$1_ecc/$1.key" ]] && [[ -f "$HOME/.acme.sh/$1_ecc/$1.cer" ]]; then
 			modifyTime=$(stat $HOME/.acme.sh/$1_ecc/$1.key | sed -n '7,6p' | awk '{print $2" "$3" "$4" "$5}')
