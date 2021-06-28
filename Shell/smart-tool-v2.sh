@@ -388,11 +388,11 @@ function install_webmin () {
 	# https://doxfer.webmin.com/Webmin/Installation
 	print_info "Install webmin "
 	(echo "[Webmin]
-	name=Webmin Distribution Neutral
-	baseurl=http://download.webmin.com/download/yum
-	enabled=1
-	gpgcheck=1
-	gpgkey=http://www.webmin.com/jcameron-key.asc" >/etc/yum.repos.d/webmin.repo;)
+name=Webmin Distribution Neutral
+baseurl=http://download.webmin.com/download/yum
+enabled=1
+gpgcheck=1
+gpgkey=http://www.webmin.com/jcameron-key.asc" >/etc/yum.repos.d/webmin.repo;)
 	sleep 1
 	sudo yum -y install webmin
 	judge "Install webmin "
