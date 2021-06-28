@@ -370,8 +370,8 @@ function updateSmartTool() {
 	local newversion=$(cat /etc/smart-tool/smart-tool-v2.sh | grep 'SmartTool：v' | awk -F "[v]" '{print $2}' | tail -n +2 | head -n 1 | awk -F "[\"]" '{print $1}')
 
 	print_info "---> 更新完毕"
-	print_info "---> 请手动执行[st]打开脚本"
-	print_info "---> 当前版本:${newversion}\n"
+	print_info "---> 当前版本:${newversion}"
+	print_info "---> 请手动执行[st]打开脚本\n"
 #	echoContent yellow "如更新不成功，请手动执行下面命令"
 #	echoContent skyBlue "wget -P /root -N --no-check-certificate\
 #  "https://raw.githubusercontent.com/linfengzhong/toolbox/main/Shell/smart-tool-v2.sh" &&\
