@@ -5,6 +5,12 @@
 # 2021-June-25 [Add new functions] - Stop/Start docker-compose
 #-----------------------------------------------------------------------------#
 #-----------------------------------------------------------------------------#
+#定义变量
+WORKDIR="/root/git/toolbox/Docker/docker-compose/k8s-master.ml/"
+GITHUB_REPO="/root/git/toolbox/"
+EMAIL="fred.zhong@outlook.com"
+WEBSITE="k8s-master.ml"
+#-----------------------------------------------------------------------------#
 #fonts color 字体颜色配置
 Red="\033[31m"
 Yellow="\033[33m"
@@ -14,146 +20,149 @@ RedBG="\033[41;37m"
 GreenBG="\033[42;37m"
 Font="\033[0m"
 #-----------------------------------------------------------------------------#
-#notification information 通知信息
-Info="${Green}[Message信息]${Font}"
+# Notification information 通知信息
+# Info="${Green}[Message信息]${Font}"
+Info="${Green}[Info信息]${Font}"
 OK="${Green}[OK正常]${Font}"
 Error="${Red}[ERROR错误]${Font}"
 #-----------------------------------------------------------------------------#
 #打印Info
 function print_info() {
-  echo -e "${Info} ${Blue} $1 ${Font}"
+	echo -e "${Info} ${Blue} $1 ${Font}"
 }
 #-----------------------------------------------------------------------------#
 #打印OK
 function print_ok() {
-  echo -e "${OK} ${Blue} $1 ${Font}"
+	echo -e "${OK} ${Blue} $1 ${Font}"
 }
 #-----------------------------------------------------------------------------#
 #打印错误
 function print_error() {
-  echo -e "${ERROR} ${RedBG} $1 ${Font}"
+	echo -e "${ERROR} ${RedBG} $1 ${Font}"
 }
 #-----------------------------------------------------------------------------#
 #判定 成功 or 失败
-judge() {
-  if [[ 0 -eq $? ]]; then
-    print_ok "$1 <--- 完成"
-  else
-    print_error "$1 <--- 失败"
-    exit 1
-  fi
+function judge() {
+	if [[ 0 -eq $? ]]; then
+		print_ok "$1 <--- 完成"
+	else
+		print_error "$1 <--- 失败"
+		exit 1
+	fi
 }
 #-----------------------------------------------------------------------------#
 # 清理屏幕
-cleanUp() {
+function cleanUp() {
 	clear
 }
 #-----------------------------------------------------------------------------#
-#定义变量
-WORKDIR="/root/git/toolbox/Docker/docker-compose/k8s-master.ml/"
-GITHUB_REPO="/root/git/toolbox/"
-EMAIL="fred.zhong@outlook.com"
-WEBSITE="k8s-master.ml"
+# 调用bpytop
+function execBpytop() {
+	/usr/local/bin/bpytop
+}
 #-----------------------------------------------------------------------------#
 # Shutdown Docker Compose, Delete All-In-One folder & Docker Compose Up
 # 关闭docker-compose
 function shutdown_docker_compose () {
-  print_info "Shutdown Docker Compose "
-  print_info "关闭 Docker Compose VM "
-  cd $WORKDIR
-  sudo docker-compose down
-  judge "关闭 Docker Compose VM "
+	print_info "Shutdown Docker Compose "
+	print_info "关闭 Docker Compose VM "
+	cd $WORKDIR
+	sudo docker-compose down
+	judge "关闭 Docker Compose VM "
 }
 #-----------------------------------------------------------------------------#
 # 启动docker-compose
 function start_docker_compose () {
-  print_info "启动 Docker Compose "
-  cd $WORKDIR
-  sudo chmod 777 -R grafana
-  sudo chmod 777 -R jenkins
-  sudo chmod 777 -R gitea
-  sudo docker-compose build
-  sudo docker-compose up -d
-  judge "启动 Docker Compose "
+	print_info "启动 Docker Compose "
+	cd $WORKDIR
+	sudo chmod 777 -R grafana
+	sudo chmod 777 -R jenkins
+	sudo chmod 777 -R gitea
+	sudo docker-compose build
+	sudo docker-compose up -d
+	judge "启动 Docker Compose "
 }
 #-----------------------------------------------------------------------------#
 # 查看Docker Images
 function show_docker_images () {
-  sudo docker images
+	sudo docker images
 }
 #-----------------------------------------------------------------------------#
 # 列出所有运行的docker container
 function show_docker_container () {
-  sudo docker container ps
+	sudo docker container ps
 }
 #-----------------------------------------------------------------------------#
 # Git global configuration
 # https://git-scm.com
 #-----------------------------------------------------------------------------#
 function git-init () {
-  print_info "初始化 Git "
-  git config --global user.name "root" 
-  git config --global user.email "root@k8s-master.ml"
-  git config --global pull.rebase false
-  cd ~
-  mkdir git
-  cd git
-  # /root/.ssh/id_rsa
-  # /root/.ssh/id_rsa.pub
-  ssh-keygen -t rsa -C fred.zhong@outlook.com  
-  cat ~/.ssh/id_rsa.pub
-  judge "初始化 Git "
+	print_info "初始化 Git "
+	git config --global user.name "root" 
+	git config --global user.email "root@k8s-master.ml"
+	git config --global pull.rebase false
+	cd ~
+	mkdir git
+	cd git
+	# /root/.ssh/id_rsa
+	# /root/.ssh/id_rsa.pub
+	ssh-keygen -t rsa -C fred.zhong@outlook.com  
+	cat ~/.ssh/id_rsa.pub
+	judge "初始化 Git "
 }
+#-----------------------------------------------------------------------------#
+# Git clone toolbox.git
 function git-clone-tool-box () {
-  print_info "Git clone ToolBox "
-  cd  $HOME/git/
-  git clone git@github.com:linfengzhong/toolbox.git
-  judge "Git clone ToolBox "
+	print_info "Git clone ToolBox "
+	cd  $HOME/git/
+	git clone git@github.com:linfengzhong/toolbox.git
+	judge "Git clone ToolBox "
 }
 #-----------------------------------------------------------------------------#
 # 同步下载Git文件夹
 function github_pull () {
-  print_info "更新同步 下载GitHub文件 -> Local Github Repo "
-  cd $GITHUB_REPO
-  # 查询git repo状态
-  sudo git status
-  # 暂存未提交的变更 可用来暂存当前正在进行的工作
-  # sudo git stash
-  # Commit
-  sudo git commit -am "update logs"
-  # 抽取数据
-  sudo git pull
-  #sudo git pull --rebase
-  #sleep 1
-  #sudo cp -rf ~/git/toolbox/Docker/docker-compose/all-in-one/ ~/
-  #sleep 1
-  #sudo cp -rf ~/git/toolbox/Docker/docker-compose/k8s-master.ml/ ~/
-  #sudo chown -R root:root ~/all-in-one/
-  #sudo chown -R root:root ~/k8s-master.ml/
-  judge "更新同步 下载GitHub文件 -> Local Github Repo "
+	print_info "更新同步 下载GitHub文件 -> Local Github Repo "
+	cd $GITHUB_REPO
+	# 查询git repo状态
+	sudo git status
+	# 暂存未提交的变更 可用来暂存当前正在进行的工作
+	# sudo git stash
+	# Commit
+	sudo git commit -am "update logs"
+	# 抽取数据
+	sudo git pull
+	#sudo git pull --rebase
+	#sleep 1
+	#sudo cp -rf ~/git/toolbox/Docker/docker-compose/all-in-one/ ~/
+	#sleep 1
+	#sudo cp -rf ~/git/toolbox/Docker/docker-compose/k8s-master.ml/ ~/
+	#sudo chown -R root:root ~/all-in-one/
+	#sudo chown -R root:root ~/k8s-master.ml/
+	judge "更新同步 下载GitHub文件 -> Local Github Repo "
 }
 #-----------------------------------------------------------------------------#
 # 同步上传Git文件夹
 function github_push () {
-  print_info "更新同步 上传Local Github Repo -> GitHub文件 "
-  cd $GITHUB_REPO
-  # 查询git repo状态
-  sudo git status
-  # 从Git栈中读取最近一次保存的内容
-  # sudo git stash pop
-  sudo git add .
-  sudo git commit -m "sync_all_config_log_data"
-  sudo git push
-  judge "更新同步 上传Local Github Repo -> GitHub文件 "
-  #sleep 1
-  #sudo cp -rf ~/git/toolbox/Docker/docker-compose/all-in-one/ ~/
-  #sleep 1
-  #sudo cp -rf ~/git/toolbox/Docker/docker-compose/k8s-master.ml/ ~/
-  #sudo chown -R root:root ~/all-in-one/
-  #sudo chown -R root:root ~/k8s-master.ml/
+	print_info "更新同步 上传Local Github Repo -> GitHub文件 "
+	cd $GITHUB_REPO
+	# 查询git repo状态
+	sudo git status
+	# 从Git栈中读取最近一次保存的内容
+	# sudo git stash pop
+	sudo git add .
+	sudo git commit -m "sync_all_config_log_data"
+	sudo git push
+	judge "更新同步 上传Local Github Repo -> GitHub文件 "
+	#sleep 1
+	#sudo cp -rf ~/git/toolbox/Docker/docker-compose/all-in-one/ ~/
+	#sleep 1
+	#sudo cp -rf ~/git/toolbox/Docker/docker-compose/k8s-master.ml/ ~/
+	#sudo chown -R root:root ~/all-in-one/
+	#sudo chown -R root:root ~/k8s-master.ml/
 }
+#-----------------------------------------------------------------------------#
 # 检查系统
-checkSystem() {
+function checkSystem() {
 	if [[ -n $(find /etc -name "redhat-release") ]] || grep </proc/version -q -i "centos"; then
 		centosVersion=$(rpm -q centos-release | awk -F "[-]" '{print $3}' | awk -F "[.]" '{print $1}')
 
@@ -190,7 +199,7 @@ checkSystem() {
 }
 #-----------------------------------------------------------------------------#
 # 初始化全局变量
-initVar() {
+function initVar() {
 	installType='yum -y install'
 	removeType='yum -y remove'
 	upgrade="yum -y update"
@@ -258,7 +267,7 @@ initVar() {
 }
 #-----------------------------------------------------------------------------#
 # 输出带颜色内容 字体颜色配置
-echoContent() {
+function echoContent() {
 	case $1 in
 		# 红色
 	"red")
@@ -289,7 +298,7 @@ echoContent() {
 }
 #-----------------------------------------------------------------------------#
 # 查看TLS证书的状态
-checkTLStatus() {
+function checkTLStatus() {
 
 	if [[ -n "$1" ]]; then
 		if [[ -d "$HOME/.acme.sh/$1_ecc" ]] && [[ -f "$HOME/.acme.sh/$1_ecc/$1.key" ]] && [[ -f "$HOME/.acme.sh/$1_ecc/$1.cer" ]]; then
@@ -312,7 +321,7 @@ checkTLStatus() {
 }
 #-----------------------------------------------------------------------------#
 # 定时任务更新tls证书
-installCronTLS() {
+function installCronTLS() {
 	echoContent skyBlue "\n进度 $1/${totalProgress} : 添加定时维护证书"
 	crontab -l >/etc/v2ray-agent/backup_crontab.cron
 	sed '/v2ray-agent/d;/acme.sh/d' /etc/v2ray-agent/backup_crontab.cron >/etc/v2ray-agent/backup_crontab.cron
@@ -323,11 +332,11 @@ installCronTLS() {
 
 #-----------------------------------------------------------------------------#
 # 调用
-#echoContent green " ---> 检测到证书"
+# echoContent green " ---> 检测到证书"
 #		checkTLStatus "${tlsDomain}"
 #-----------------------------------------------------------------------------#
 # 脚本快捷方式
-aliasInstall() {
+function aliasInstall() {
 	if [[ -f "$HOME/smart-tool-v2.sh" ]] && [[ -d "/etc/smart-tool" ]] && grep <$HOME/smart-tool-v2.sh -q "Author: Linfeng Zhong (Fred)"; then
 		mv "$HOME/smart-tool-v2.sh" /etc/smart-tool/smart-tool-v2.sh
 		if [[ -d "/usr/bin/" ]] && [[ ! -f "/usr/bin/st" ]]; then
@@ -344,8 +353,8 @@ aliasInstall() {
 }
 #-----------------------------------------------------------------------------#
 # 更新脚本
-updateSmartTool() {
-	echoContent skyBlue "\n 更新Smart tool 脚本"
+function updateSmartTool() {
+	echoContent skyBlue "更新Smart tool 脚本"
 	rm -rf /etc/smart-tool/smart-tool-v2.sh
 	if wget --help | grep -q show-progress; then
 		wget -c -q --show-progress -P /etc/smart-tool/ -N --no-check-certificate "https://raw.githubusercontent.com/linfengzhong/toolbox/main/Shell/smart-tool-v2.sh"
@@ -368,7 +377,7 @@ updateSmartTool() {
 }
 #-----------------------------------------------------------------------------#
 # 初始化安装目录
-mkdirTools() {
+function mkdirTools() {
 	mkdir -p /etc/smart-tool
 }
 #-----------------------------------------------------------------------------#
@@ -380,7 +389,6 @@ function install_git () {
 	sudo yum -y install git
 	judge "Install Git "
 }
-
 #-----------------------------------------------------------------------------
 # Install bpytop
 # https://github.com/aristocratos/bpytop
@@ -407,9 +415,9 @@ function install_bpytop () {
 #-----------------------------------------------------------------------------#
 # Install webmin
 # https://webmin.com
+# https://doxfer.webmin.com/Webmin/Installation
 #-----------------------------------------------------------------------------#
 function install_webmin () {
-	# https://doxfer.webmin.com/Webmin/Installation
 	print_info "Install webmin "
 	(echo "[Webmin]
 name=Webmin Distribution Neutral
@@ -467,18 +475,18 @@ function install_docker_compose () {
 #-----------------------------------------------------------------------------#
 # 外部IP
 function show_ip () {
-  print_info "服务器外部 IP：\n"
-  zIP=$(curl https://ipinfo.io/ip)
-  print_info $zIP
+	print_info "服务器外部 IP: "
+	local zIP=$(curl -s https://ipinfo.io/ip)
+	print_info $zIP
 }
 #-----------------------------------------------------------------------------#
 # 主菜单
-menu() {
+function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=============================================================="
 	echoContent green "SmartTool：v0.02"
-	echoContent green "当前版本：v0.021"
+	echoContent green "当前版本：v0.025"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "初始化服务器、安装Docker、执行容器\c"
 	echoContent red "\n=============================================================="
@@ -505,6 +513,8 @@ menu() {
 	echoContent skyBlue "-------------------------脚本管理-----------------------------"
 	echoContent yellow "14.查看日志"
 	echoContent yellow "15.卸载脚本"
+	echoContent yellow "97.检查系统版本"
+	echoContent yellow "98.bpytop"
 	echoContent yellow "99.退出"
 	echoContent red "=============================================================="
 	mkdirTools
@@ -599,6 +609,12 @@ menu() {
 	41)
 		show_ip
 		;;
+	97)
+		checkSystem
+		;;
+	98)
+		execBpytop
+		;;	
 	99)
 	    exit 0
 		;;
