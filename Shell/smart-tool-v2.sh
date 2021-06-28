@@ -483,7 +483,7 @@ function menu() {
 	cd "$HOME" || exit
 	echoContent red "\n=============================================================="
 	echoContent green "SmartTool：v0.02"
-	echoContent green "当前版本：v0.024"
+	echoContent green "当前版本：v0.025"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "初始化服务器、安装Docker、执行容器\c"
 	echoContent red "\n=============================================================="
@@ -510,6 +510,7 @@ function menu() {
 	echoContent skyBlue "-------------------------脚本管理-----------------------------"
 	echoContent yellow "14.查看日志"
 	echoContent yellow "15.卸载脚本"
+	echoContent yellow "97.检查系统版本"
 	echoContent yellow "98.bpytop"
 	echoContent yellow "99.退出"
 	echoContent red "=============================================================="
@@ -604,6 +605,9 @@ function menu() {
 		;;
 	41)
 		show_ip
+		;;
+	97)
+		checkSystem
 		;;
 	98)
 		execBpytop
