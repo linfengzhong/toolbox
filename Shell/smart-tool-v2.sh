@@ -559,9 +559,8 @@ function menu() {
 	echoContent yellow "41.show IP"	
 	echoContent yellow "42.show CA status"	
 	echoContent yellow "43.generate CA"	
-	echoContent skyBlue "-------------------------版本管理-----------------------------"
-	echoContent yellow "12.更新脚本"
 	echoContent skyBlue "-------------------------脚本管理-----------------------------"
+	echoContent yellow "00.更新脚本"
 	echoContent yellow "14.查看日志"
 	echoContent yellow "15.卸载脚本"
 	echoContent yellow "97.检查系统版本"
@@ -610,9 +609,6 @@ function menu() {
 		;;
 	11)
 		install_prerequisite
-		;;
-	12)
-		updateSmartTool 1
 		;;
 	13)
 		bbrInstall
@@ -680,6 +676,9 @@ function menu() {
 		;;	
 	99)
 	    exit 0
+		;;
+	00)
+		updateSmartTool 1
 		;;
 	*)
 		print_error "请输入正确的数字"
