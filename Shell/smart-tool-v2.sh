@@ -765,7 +765,7 @@ function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=============================================================="
-	echoContent green "SmartTool：v0.052"
+	echoContent green "SmartTool：v0.053"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "初始化服务器、安装Docker、执行容器"
 	echoContent green "当前系统Linux版本 : \c" 
@@ -784,11 +784,9 @@ function menu() {
 	echoContent yellow "22.git-pull | 23.git-push | 24.git-clone"
 	echoContent skyBlue "-------------------------容器相关-----------------------------"
 	echoContent yellow "31.docker-compose up | 32.docker-compose down"
-	echoContent yellow "33.One-key"
-	echoContent yellow "34.docker status"
+	echoContent yellow "33.One-key | 34.docker status"
 	echoContent skyBlue "-------------------------工具管理-----------------------------"
-	echoContent yellow "41.show IP"	
-	echoContent yellow "42.show CA status | 5.renew CA"
+	echoContent yellow "41.show IP | 42.show CA status | 5.renew CA"	
 	echoContent yellow "43.generate CA"	
 	echoContent skyBlue "-------------------------脚本管理-----------------------------"
 	echoContent yellow "00.更新脚本"
