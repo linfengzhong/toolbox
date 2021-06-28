@@ -486,7 +486,7 @@ function menu() {
 	cd "$HOME" || exit
 	echoContent red "\n=============================================================="
 	echoContent green "SmartTool：v0.02"
-	echoContent green "当前版本：v0.025"
+	echoContent green "当前版本：v0.026"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "初始化服务器、安装Docker、执行容器\c"
 	echoContent red "\n=============================================================="
@@ -508,6 +508,7 @@ function menu() {
 	echoContent yellow "34.docker status"
 	echoContent skyBlue "-------------------------工具管理-----------------------------"
 	echoContent yellow "41.show IP"	
+	echoContent yellow "42.show CA status"	
 	echoContent skyBlue "-------------------------版本管理-----------------------------"
 	echoContent yellow "12.更新脚本"
 	echoContent skyBlue "-------------------------脚本管理-----------------------------"
@@ -608,6 +609,9 @@ function menu() {
 		;;
 	41)
 		show_ip
+		;;
+	42)
+		checkTLStatus
 		;;
 	97)
 		checkSystem
