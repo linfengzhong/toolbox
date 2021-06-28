@@ -366,7 +366,7 @@ function updateSmartTool() {
 	fi
 
 	sudo chmod 700 /etc/smart-tool/smart-tool-v2.sh
-	local version=$(cat /etc/smart-tool/smart-tool-v2.sh | grep '当前版本：v' | awk -F "[v]" '{print $2}' | tail -n +2 | head -n 1 | awk -F "[\"]" '{print $1}')
+	local version=$(cat /etc/smart-tool/smart-tool-v2.sh | grep 'SmartTool：v' | awk -F "[v]" '{print $2}' | tail -n +2 | head -n 1 | awk -F "[\"]" '{print $1}')
 
 	print_info "---> 更新完毕"
 	print_info "---> 请手动执行[st]打开脚本"
@@ -530,8 +530,7 @@ function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=============================================================="
-	echoContent green "SmartTool：v0.02"
-	echoContent green "当前版本：v0.036"
+	echoContent green "SmartTool：v0.037"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "初始化服务器、安装Docker、执行容器"
 	echoContent green "当前系统Linux 版本 : \c" 
