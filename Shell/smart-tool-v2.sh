@@ -317,11 +317,11 @@ renewalTLS() {
 			tlsStatus="已过期"
 		fi
 
-		echoContent skyBlue " ---> 证书检查日期:$(date "+%F %H:%M:%S")"
-		echoContent skyBlue " ---> 证书生成日期:$(date -d @"${modifyTime}" +"%F %H:%M:%S")"
-		echoContent skyBlue " ---> 证书生成天数:${days}"
-		echoContent skyBlue " ---> 证书剩余天数:"${tlsStatus}
-		echoContent skyBlue " ---> 证书过期前最后一天自动更新，如更新失败请手动更新"
+		print_info " ---> 证书检查日期:$(date "+%F %H:%M:%S")"
+		print_info " ---> 证书生成日期:$(date -d @"${modifyTime}" +"%F %H:%M:%S")"
+		print_info " ---> 证书生成天数:${days}"
+		print_info " ---> 证书剩余天数:"${tlsStatus}
+		print_info " ---> 证书过期前最后一天自动更新，如更新失败请手动更新"
 
 		if [[ ${remainingDays} -le 1 ]]; then
 			echoContent yellow " ---> 重新生成证书"
@@ -765,7 +765,7 @@ function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=============================================================="
-	echoContent green "SmartTool：v0.051"
+	echoContent green "SmartTool：v0.052"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "初始化服务器、安装Docker、执行容器"
 	echoContent green "当前系统Linux版本 : \c" 
