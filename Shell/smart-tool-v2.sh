@@ -358,10 +358,11 @@ function aliasInstall() {
 # 更新脚本
 function updateSmartTool() {
 
-	local oldVersion=$(cat /etc/smart-tool/smart-tool-v2.sh | grep 'SmartTool：v' | awk -F "[v]" '{print $2}' | tail -n +2 | head -n 1 | awk -F "[\"]" '{print $1}')
-	print_info "---> 更新前版本:${oldVersion}\n"
+	local version=$(cat /etc/smart-tool/smart-tool-v2.sh | grep 'SmartTool：v' | awk -F "[v]" '{print $2}' | tail -n +2 | head -n 1 | awk -F "[\"]" '{print $1}')
+	print_info "---> 更新前版本:${version}\n"
 
 	rm -rf /etc/smart-tool/smart-tool-v2.sh
+	echoContent skyBlue  "---> 开始下载："
 	if wget --help | grep -q show-progress; then
 		wget -c -q --show-progress -P /etc/smart-tool/ -N --no-check-certificate "https://raw.githubusercontent.com/linfengzhong/toolbox/main/Shell/smart-tool-v2.sh"
   else
@@ -369,11 +370,11 @@ function updateSmartTool() {
 	fi
 
 	sudo chmod 700 /etc/smart-tool/smart-tool-v2.sh
-	local newVersion=$(cat /etc/smart-tool/smart-tool-v2.sh | grep 'SmartTool：v' | awk -F "[v]" '{print $2}' | tail -n +2 | head -n 1 | awk -F "[\"]" '{print $1}')
+	local version=$(cat /etc/smart-tool/smart-tool-v2.sh | grep 'SmartTool：v' | awk -F "[v]" '{print $2}' | tail -n +2 | head -n 1 | awk -F "[\"]" '{print $1}')
 
 	print_info "---> 更新完毕"
 	print_info "---> 请手动执行[st]打开脚本"
-	print_info "---> 当前版本:${newVersion}\n"
+	print_info "---> 当前版本:${version}\n"
 #	echoContent yellow "如更新不成功，请手动执行下面命令"
 #	echoContent skyBlue "wget -P /root -N --no-check-certificate\
 #  "https://raw.githubusercontent.com/linfengzhong/toolbox/main/Shell/smart-tool-v2.sh" &&\
@@ -533,7 +534,7 @@ function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=============================================================="
-	echoContent green "SmartTool：v0.038"
+	echoContent green "SmartTool：v0.039"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "初始化服务器、安装Docker、执行容器"
 	echoContent green "当前系统Linux 版本 : \c" 
