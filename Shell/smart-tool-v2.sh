@@ -350,7 +350,7 @@ function aliasInstall() {
 #-----------------------------------------------------------------------------#
 # 更新脚本
 function updateSmartTool() {
-	echoContent skyBlue "\n 更新Smart tool 脚本"
+	echoContent skyBlue "更新Smart tool 脚本"
 	rm -rf /etc/smart-tool/smart-tool-v2.sh
 	if wget --help | grep -q show-progress; then
 		wget -c -q --show-progress -P /etc/smart-tool/ -N --no-check-certificate "https://raw.githubusercontent.com/linfengzhong/toolbox/main/Shell/smart-tool-v2.sh"
