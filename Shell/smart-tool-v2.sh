@@ -35,7 +35,7 @@ function print_error() {
 }
 #-----------------------------------------------------------------------------#
 #判定 成功 or 失败
-judge() {
+function judge() {
   if [[ 0 -eq $? ]]; then
     print_ok "$1 <--- 完成"
   else
@@ -45,7 +45,7 @@ judge() {
 }
 #-----------------------------------------------------------------------------#
 # 清理屏幕
-cleanUp() {
+function cleanUp() {
 	clear
 }
 #-----------------------------------------------------------------------------#
@@ -153,7 +153,7 @@ function github_push () {
   #sudo chown -R root:root ~/k8s-master.ml/
 }
 # 检查系统
-checkSystem() {
+function checkSystem() {
 	if [[ -n $(find /etc -name "redhat-release") ]] || grep </proc/version -q -i "centos"; then
 		centosVersion=$(rpm -q centos-release | awk -F "[-]" '{print $3}' | awk -F "[.]" '{print $1}')
 
@@ -190,7 +190,7 @@ checkSystem() {
 }
 #-----------------------------------------------------------------------------#
 # 初始化全局变量
-initVar() {
+function initVar() {
 	installType='yum -y install'
 	removeType='yum -y remove'
 	upgrade="yum -y update"
@@ -258,7 +258,7 @@ initVar() {
 }
 #-----------------------------------------------------------------------------#
 # 输出带颜色内容 字体颜色配置
-echoContent() {
+function echoContent() {
 	case $1 in
 		# 红色
 	"red")
@@ -289,7 +289,7 @@ echoContent() {
 }
 #-----------------------------------------------------------------------------#
 # 查看TLS证书的状态
-checkTLStatus() {
+function checkTLStatus() {
 
 	if [[ -n "$1" ]]; then
 		if [[ -d "$HOME/.acme.sh/$1_ecc" ]] && [[ -f "$HOME/.acme.sh/$1_ecc/$1.key" ]] && [[ -f "$HOME/.acme.sh/$1_ecc/$1.cer" ]]; then
@@ -312,7 +312,7 @@ checkTLStatus() {
 }
 #-----------------------------------------------------------------------------#
 # 定时任务更新tls证书
-installCronTLS() {
+function installCronTLS() {
 	echoContent skyBlue "\n进度 $1/${totalProgress} : 添加定时维护证书"
 	crontab -l >/etc/v2ray-agent/backup_crontab.cron
 	sed '/v2ray-agent/d;/acme.sh/d' /etc/v2ray-agent/backup_crontab.cron >/etc/v2ray-agent/backup_crontab.cron
@@ -327,7 +327,7 @@ installCronTLS() {
 #		checkTLStatus "${tlsDomain}"
 #-----------------------------------------------------------------------------#
 # 脚本快捷方式
-aliasInstall() {
+function aliasInstall() {
 	if [[ -f "$HOME/smart-tool-v2.sh" ]] && [[ -d "/etc/smart-tool" ]] && grep <$HOME/smart-tool-v2.sh -q "Author: Linfeng Zhong (Fred)"; then
 		mv "$HOME/smart-tool-v2.sh" /etc/smart-tool/smart-tool-v2.sh
 		if [[ -d "/usr/bin/" ]] && [[ ! -f "/usr/bin/st" ]]; then
@@ -344,7 +344,7 @@ aliasInstall() {
 }
 #-----------------------------------------------------------------------------#
 # 更新脚本
-updateSmartTool() {
+function updateSmartTool() {
 	echoContent skyBlue "\n 更新Smart tool 脚本"
 	rm -rf /etc/smart-tool/smart-tool-v2.sh
 	if wget --help | grep -q show-progress; then
@@ -368,7 +368,7 @@ updateSmartTool() {
 }
 #-----------------------------------------------------------------------------#
 # 初始化安装目录
-mkdirTools() {
+function mkdirTools() {
 	mkdir -p /etc/smart-tool
 }
 #-----------------------------------------------------------------------------#
@@ -468,17 +468,17 @@ function install_docker_compose () {
 # 外部IP
 function show_ip () {
   print_info "服务器外部 IP：\n"
-  zIP=$(curl https://ipinfo.io/ip)
+  local zIP=$(curl -s https://ipinfo.io/ip)
   print_info $zIP
 }
 #-----------------------------------------------------------------------------#
 # 主菜单
-menu() {
+function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=============================================================="
 	echoContent green "SmartTool：v0.02"
-	echoContent green "当前版本：v0.021"
+	echoContent green "当前版本：v0.022"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "初始化服务器、安装Docker、执行容器\c"
 	echoContent red "\n=============================================================="
