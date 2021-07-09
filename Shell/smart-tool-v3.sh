@@ -600,7 +600,7 @@ function mkdirTools() {
 	mkdir -p /etc/fuckGFW/nginx/conf.d
 	mkdir -p /etc/fuckGFW/v2ray/conf
 	mkdir -p /etc/fuckGFW/xray/${currentHost}
-	mkdir -p /etc/fuckGFW/trojan-go/conf
+	mkdir -p /etc/fuckGFW/trojan-go/
 	mkdir -p /etc/systemd/system/
 	mkdir -p /tmp/fuckGFW-tls/
 
@@ -662,9 +662,6 @@ cronRenewTLS() {
 # 生成 Nginx 配置文件
 function generate_nginx_conf {
 	# /etc/fuckGFW/nginx/conf
-	# /etc/fuckGFW/v2ray/conf
-	# /etc/fuckGFW/xray/conf
-	# /etc/fuckGFW/trojan-go/conf
 	print_info "生成 NGINX 配置文件 "
 	print_info "/etc/fuckGFW/nginx/conf.d/${currentHost}.conf"
 
@@ -713,10 +710,7 @@ EOF
 #-----------------------------------------------------------------------------#
 # 生成 xray 配置文件
 function generate_xray_conf {
-	# /etc/fuckGFW/nginx/conf
-	# /etc/fuckGFW/v2ray/conf
-	# /etc/fuckGFW/xray/conf
-	# /etc/fuckGFW/trojan-go/conf
+	# /etc/fuckGFW/xray/${currentHost}
 	print_info "生成 xray 配置文件 "
 	print_info "/etc/fuckGFW/xray/${currentHost}/config.json"
 
@@ -822,7 +816,7 @@ EOF
 #-----------------------------------------------------------------------------#
 # 生成 trojan-go 配置文件
 function generate_trojan_go_conf {
-	# /etc/fuckGFW/trojan-go/conf
+	# /etc/fuckGFW/trojan-go
 	print_info "生成 trojan-go 配置文件 "
 	print_info "/etc/fuckGFW/trojan-go/config.json"
 
