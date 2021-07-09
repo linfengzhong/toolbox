@@ -6,6 +6,7 @@
 #-----------------------------------------------------------------------------#
 #-----------------------------------------------------------------------------#
 # 初始化全局变量
+export LANG=en_US.UTF-8
 function initVar() {
 
 	#-----------------------------------------------------------------------------#
@@ -234,15 +235,36 @@ function github_push () {
 #-----------------------------------------------------------------------------#
 # 检查系统
 function checkSystem() {
-	if [[ -n $(find /etc -name "redhat-release") ]] || grep </proc/version -q -i "centos"; then
-		centosVersion=$(rpm -q centos-release | awk -F "[-]" '{print $3}' | awk -F "[.]" '{print $1}')
 
-		if [[ -z "${centosVersion}" ]] && grep </etc/centos-release "release 8"; then
-			centosVersion=8
+	if [[ -n $(find /etc -name "rocky-release") ]] || grep </proc/version -q -i "rockylinux"; then
+		mkdir -p /etc/yum.repos.d
+
+		if [[ -f "/etc/rocky-release" ]];then
+			centosVersion=$(rpm -q rocky-release | awk -F "[-]" '{print $3}' | awk -F "[.]" '{print $1}')
+
+			if [[ -z "${centosVersion}" ]] && grep </etc/rocky-release "version 8"; then
+				centosVersion=8
+			fi
+		fi
+		release="rocky"
+		installType='yum -y install'
+		removeType='yum -y remove'
+		upgrade="yum update -y --skip-broken"
+		echoContent white "Rocky Linux 8.4"
+
+	elif [[ -n $(find /etc -name "redhat-release") ]] || grep </proc/version -q -i "centos"; then
+		mkdir -p /etc/yum.repos.d
+
+		if [[ -f "/etc/centos-release" ]];then
+			centosVersion=$(rpm -q centos-release | awk -F "[-]" '{print $3}' | awk -F "[.]" '{print $1}')
+
+			if [[ -z "${centosVersion}" ]] && grep </etc/centos-release "release 8"; then
+				centosVersion=8
+			fi
 		fi
 		release="centos"
 		installType='yum -y install'
-		# removeType='yum -y remove'
+		removeType='yum -y remove'
 		upgrade="yum update -y --skip-broken"
 
 	elif grep </etc/issue -q -i "debian" && [[ -f "/etc/issue" ]] || grep </etc/issue -q -i "debian" && [[ -f "/proc/version" ]]; then
@@ -380,16 +402,16 @@ function installCronTLS() {
 #-----------------------------------------------------------------------------#
 # 脚本快捷方式
 function aliasInstall() {
-	if [[ -f "$HOME/smart-tool-v2.sh" ]] && [[ -d "/etc/smart-tool" ]] && grep <$HOME/smart-tool-v2.sh -q "Author: Linfeng Zhong (Fred)"; then
-		mv "$HOME/smart-tool-v2.sh" /etc/smart-tool/smart-tool-v2.sh
+	if [[ -f "$HOME/smart-tool-v3.sh" ]] && [[ -d "/etc/smart-tool" ]] && grep <$HOME/smart-tool-v3.sh -q "Author: Linfeng Zhong (Fred)"; then
+		mv "$HOME/smart-tool-v3.sh" /etc/smart-tool/smart-tool-v3.sh
 		if [[ -d "/usr/bin/" ]] && [[ ! -f "/usr/bin/st" ]]; then
-			ln -s /etc/smart-tool/smart-tool-v2.sh /usr/bin/st
+			ln -s /etc/smart-tool/smart-tool-v3.sh /usr/bin/st
 			chmod 700 /usr/bin/st
-			rm -rf "$HOME/smart-tool-v2.sh"
+			rm -rf "$HOME/smart-tool-v3.sh"
 		elif [[ -d "/usr/sbin" ]] && [[ ! -f "/usr/sbin/st" ]]; then
-			ln -s /etc/smart-tool/smart-tool-v2.sh /usr/sbin/st
+			ln -s /etc/smart-tool/smart-tool-v3.sh /usr/sbin/st
 			chmod 700 /usr/sbin/st
-			rm -rf "$HOME/smart-tool-v2.sh"
+			rm -rf "$HOME/smart-tool-v3.sh"
 		fi
 		echoContent green "快捷方式创建成功，可执行[st]重新打开脚本"
 	fi
@@ -1816,6 +1838,17 @@ xrayCoreInstall() {
 	showAccounts 17
 }
 
+function InstallV2rayAgent {
+	# https://github.com/mack-a/v2ray-agent
+	# Latest Version
+	# wget -P /root -N --no-check-certificate "https://raw.githubusercontent.com/mack-a/v2ray-agent/master/install.sh" && chmod 700 /root/install.sh && /root/install.sh
+	# Stable-v2.4.16
+	# wget -P /root -N --no-check-certificate "https://raw.githubusercontent.com/mack-a/v2ray-agent/stable_v2.4.16/install.sh" && chmod 700 /root/install.sh && /root/install.sh
+	print_info "Install v2ray-agent "
+	wget -P /root -N --no-check-certificate "https://raw.githubusercontent.com/mack-a/v2ray-agent/master/install.sh" && chmod 700 /root/install.sh
+	judge "安装 v2ray agent "
+
+}
 #-----------------------------------------------------------------------------#
 # 主菜单
 function menu() {
@@ -1845,6 +1878,8 @@ function menu() {
 	echoContent skyBlue "-------------------------工具管理-----------------------------"
 	echoContent yellow "41.show IP | 42.show CA status | 5.renew CA"	
 	echoContent yellow "43.generate CA"	
+	echoContent skyBlue "-------------------------科学上网-----------------------------"
+	echoContent yellow "50.安装v2ray-agent"	
 	echoContent skyBlue "-------------------------脚本管理-----------------------------"
 	echoContent yellow "00.更新脚本"
 	echoContent yellow ".查看日志"
@@ -1954,6 +1989,9 @@ function menu() {
 		;;
 	43)
 		generate_ca
+		;;
+	50)
+		InstallV2rayAgent
 		;;
 	96)
 		bbrInstall
