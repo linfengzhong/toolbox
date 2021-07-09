@@ -10,12 +10,10 @@
 # 初始化全局变量
 export LANG=en_US.UTF-8
 function initVar() {
-
 	# 网站 域名 配置文件的host
 	# WEBSITE="k8s-master.ml"
 	# domain="k8s-master.tk"
 	currentHost="k8s-master.tk"
-
 	# UUID
 	currentUUID="d8206743-b292-43d1-8200-5606238a5abb"
 
@@ -221,7 +219,20 @@ function install_prerequisite () {
 	judge "安装 wget lsof tar unzip curl socat nmap "
 }
 #-----------------------------------------------------------------------------#
-# 安装BBR
+# 安装 v2ray-agent
+function InstallV2rayAgent {
+	# https://github.com/mack-a/v2ray-agent
+	print_info "安装 v2ray-agent "
+	wget -P /root -N --no-check-certificate "https://raw.githubusercontent.com/mack-a/v2ray-agent/master/install.sh" && chmod 700 /root/install.sh
+	judge "安装 v2ray-agent "
+
+	print_info "运行 v2ray-agent "
+	sleep 3
+	cd /root
+	./install.sh
+}
+#-----------------------------------------------------------------------------#
+# 安装 BBR
 function install_bbr() {
 	echoContent red "\n=============================================================="
 	echoContent green "BBR、DD脚本用的[ylx2016]的成熟作品，地址[https://github.com/ylx2016/Linux-NetSpeed]，请熟知"
@@ -234,17 +245,6 @@ function install_bbr() {
 	else
 		menu
 	fi
-}
-function InstallV2rayAgent {
-	# https://github.com/mack-a/v2ray-agent
-	print_info "安装 v2ray-agent "
-	wget -P /root -N --no-check-certificate "https://raw.githubusercontent.com/mack-a/v2ray-agent/master/install.sh" && chmod 700 /root/install.sh
-	judge "安装 v2ray-agent "
-
-	print_info "运行 v2ray-agent "
-	sleep 3
-	cd /root
-	./install.sh
 }
 #-----------------------------------------------------------------------------#
 # 清理屏幕
@@ -297,15 +297,18 @@ function show_docker_container () {
 function git_init () {
 	print_info "初始化 Git "
 	git config --global user.name "root" 
-	git config --global user.email "root@k8s-master.ml"
+	git config --global user.email "root@${currentHost}"
 	git config --global pull.rebase false
 	cd ~
 	mkdir git
 	cd git
 	# /root/.ssh/id_rsa
 	# /root/.ssh/id_rsa.pub
-	ssh-keygen -t rsa -C fred.zhong@outlook.com  
+	ssh-keygen -t rsa -C fred.zhong@outlook.com
+	print_info "请复制下面的Public key到GitHub "
+	print_info "======== Public key========= "
 	cat ~/.ssh/id_rsa.pub
+	print_info "======== Public key End========= "
 	judge "初始化 Git "
 }
 #-----------------------------------------------------------------------------#
@@ -863,7 +866,7 @@ function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=============================================================="
-	echoContent green "SmartTool：v0.073"
+	echoContent green "SmartTool：v0.074"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "初始化服务器、安装Docker、执行容器"
 	echoContent green "当前系统Linux版本 : \c" 
