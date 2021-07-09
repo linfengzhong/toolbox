@@ -1863,14 +1863,14 @@ function menu() {
 	echoContent yellow "18.安装 Docker compose"
 	echoContent yellow "19.安装 Git"
 	echoContent skyBlue "-------------------------版本控制-----------------------------"  
-	echoContent yellow "21.git init | 22.git pull | 23.git push | 24.git clone"
+	echoContent yellow "20.git init | 21.git clone | 22.git pull | 23.git push"
 	echoContent skyBlue "-------------------------容器相关-----------------------------"
 	echoContent yellow "30.One-key"
 	echoContent yellow "31.docker-compose up"
 	echoContent yellow "32.docker-compose down"
 	echoContent yellow "33.docker status"
 	echoContent skyBlue "-------------------------证书管理-----------------------------"
-	echoContent yellow "41.generate CA | 42.CA status | 43.renew CA"	
+	echoContent yellow "41.generate CA | 42.show CA | 43.renew CA"	
 	echoContent skyBlue "-------------------------科学上网-----------------------------"
 	echoContent yellow "50.安装v2ray-agent"	
 	echoContent yellow "51.安装 BBR"
@@ -1879,8 +1879,7 @@ function menu() {
 	echoContent yellow "96.show IP"	
 	echoContent yellow "97.检查系统版本"
 	echoContent yellow "98.bpytop"
-	echoContent yellow ".查看日志"
-	echoContent yellow ".卸载脚本"
+	echoContent yellow ".查看日志 | .卸载脚本"
 	echoContent yellow "99.退出"
 	echoContent red "=============================================================="
 	mkdirTools
@@ -1941,17 +1940,17 @@ function menu() {
 	19)
 		install_git
 		;;	
-	21)
+	20)
 		git_init
+		;;
+	21)
+		git_clone_tool_box
 		;;
 	22)
 		github_pull
 		;;
 	23)
 		github_push
-		;;
-	24)
-		git_clone_tool_box
 		;;
 	30)
 		shutdown_docker_compose
