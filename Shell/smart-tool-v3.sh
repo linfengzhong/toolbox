@@ -729,8 +729,8 @@ function generate_xray_conf {
       "settings": {
         "clients": [
           {
-            "id": ${currentUUID},
-            "add": ${currentHost},
+            "id": "${currentUUID}",
+            "add": "${currentHost}",
             "flow": "xtls-rprx-direct",
             "email": "${currentHost}_VLESS_XTLS/TLS-direct_TCP"
           }
@@ -776,7 +776,7 @@ function generate_xray_conf {
       "settings": {
         "clients": [
           {
-            "id": ${currentUUID},
+            "id": "${currentUUID}",
             "email": "${currentHost}_vless_ws"
           }
         ],
@@ -831,7 +831,7 @@ function generate_trojan_go_conf {
     "log_level":3,
     "log_file":"/etc/trojan-go/trojan.log",
     "password": [
-        ${currentUUID}
+        "${currentUUID}"
     ],
     "dns":[
         "localhost"
@@ -843,8 +843,8 @@ function generate_trojan_go_conf {
     "websocket": {
         "enabled": true,
         "path": "/rrdatws",
-        "host": ${currentHost},
-        "add":${currentHost}
+        "host": "${currentHost}",
+        "add": "${currentHost}"
     },
     "router": {
         "enabled": false
@@ -863,7 +863,7 @@ function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=============================================================="
-	echoContent green "SmartTool：v0.071"
+	echoContent green "SmartTool：v0.072"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "初始化服务器、安装Docker、执行容器"
 	echoContent green "当前系统Linux版本 : \c" 
