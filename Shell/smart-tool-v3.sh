@@ -596,15 +596,16 @@ function updateSmartTool() {
 function mkdirTools() {
 	mkdir -p /etc/smart-tool
 
+	mkdir -p /etc/fuckGFW/website/html
 	mkdir -p /etc/fuckGFW/tls
-	mkdir -p /etc/fuckGFW/mtg
+#	mkdir -p /etc/fuckGFW/mtg
 	mkdir -p /etc/fuckGFW/subscribe
-	mkdir -p /etc/fuckGFW/subscribe_tmp
+#	mkdir -p /etc/fuckGFW/subscribe_tmp
 	mkdir -p /etc/fuckGFW/nginx/conf.d
-	mkdir -p /etc/fuckGFW/v2ray/conf
+#	mkdir -p /etc/fuckGFW/v2ray/conf
 	mkdir -p /etc/fuckGFW/xray/${currentHost}
 	mkdir -p /etc/fuckGFW/trojan-go/
-	mkdir -p /etc/systemd/system/
+#	mkdir -p /etc/systemd/system/
 	mkdir -p /tmp/fuckGFW-tls/
 
 }
@@ -861,14 +862,45 @@ EOF
 	judge "生成 trojan-go 配置文件 "
 
 }
-
+#-----------------------------------------------------------------------------#
+# Website
+function generate_fake_website {
+#	/etc/fuckGFW/website
+#	https://raw.githubusercontent.com/linfengzhong/toolbox/main/Website/html1.zip
+#	https://raw.githubusercontent.com/linfengzhong/toolbox/main/Website/html2.zip
+#	https://raw.githubusercontent.com/linfengzhong/toolbox/main/Website/html3.zip
+#	https://raw.githubusercontent.com/linfengzhong/toolbox/main/Website/html4.zip
+#	https://raw.githubusercontent.com/linfengzhong/toolbox/main/Website/html5.zip
+#	https://raw.githubusercontent.com/linfengzhong/toolbox/main/Website/html5.zip
+	print_info "随机添加伪装站点 "
+	if [[ -d "/etc/fuckGFW/website/html" && -f "/etc/fuckGFW/website/html/check" ]]; then
+		echo
+		read -r -p "检测到安装伪装站点，是否需要重新安装[y/n]：" nginxBlogInstallStatus
+		if [[ "${nginxBlogInstallStatus}" == "y" ]]; then
+			rm -rf /etc/fuckGFW/website/html
+			randomNum=$((RANDOM%6+1))
+			wget -q -P /etc/fuckGFW/website https://raw.githubusercontent.com/linfengzhong/toolbox/main/Website/html${randomNum}.zip >/dev/null
+			unzip -o /etc/fuckGFW/website/html${randomNum}.zip -d /etc/fuckGFW/website/html >/dev/null
+			rm -f /etc/fuckGFW/website/html${randomNum}.zip*
+			echoContent green " ---> 添加伪装站点成功"
+		fi
+	else
+		randomNum=$((RANDOM%6+1))
+		rm -rf /etc/fuckGFW/website/html
+		wget -q -P /etc/fuckGFW/website https://raw.githubusercontent.com/linfengzhong/toolbox/main/Website/html${randomNum}.zip >/dev/null
+		unzip -o /etc/fuckGFW/website/html${randomNum}.zip -d /etc/fuckGFW/website/html >/dev/null
+		rm -f /etc/fuckGFW/website/html${randomNum}.zip*
+		echoContent green " ---> 添加伪装站点成功"
+	fi
+	judge "随机添加伪装站点  "	
+}
 #-----------------------------------------------------------------------------#
 # 主菜单
 function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=============================================================="
-	echoContent green "SmartTool：v0.076"
+	echoContent green "SmartTool：v0.077"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "初始化服务器、安装Docker、执行容器"
 	echoContent green "当前系统Linux版本 : \c" 
@@ -889,10 +921,8 @@ function menu() {
 	echoContent yellow "31.docker-compose up"
 	echoContent yellow "32.docker-compose down"
 	echoContent yellow "33.docker status"
-	echoContent skyBlue "-------------------------配置文件-----------------------------"
-	echoContent yellow "35.generate nginx conf"
-	echoContent yellow "36.generate xray conf"
-	echoContent yellow "37.generate trojan-go conf"
+	echoContent yellow "35.generate Nginx Xray Trojan-go config"
+	echoContent yellow "36.随机添加伪装站点"
 	echoContent skyBlue "-------------------------证书管理-----------------------------"
 	echoContent yellow "41.generate CA | 42.show CA | 43.renew CA"	
 	echoContent skyBlue "-------------------------科学上网-----------------------------"
@@ -967,12 +997,11 @@ function menu() {
 		;;
 	35)
 		generate_nginx_conf
+		generate_xray_conf
+		generate_trojan_go_conf
 		;;
 	36)
-		generate_xray_conf
-		;;
-	37)
-		generate_trojan_go_conf
+		generate_fake_website
 		;;
 	41)
 		generate_ca
