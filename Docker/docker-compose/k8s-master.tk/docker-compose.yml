@@ -83,7 +83,7 @@ services:
             # CA & Key
             - /etc/fuckGFW/xray/k8s-master.tk:/etc/xray/k8s-master.tk
             # Store date on logserver
-            - /root/git/logserver/k8s-master.tk/xray/xray.log:/etc/xray/xray.log
+            - /root/git/logserver/k8s-master.tk/xray/error.log:/etc/xray/error.log
             - /root/git/logserver/k8s-master.tk/xray/access.log:/etc/xray/access.log
         networks: 
             - net

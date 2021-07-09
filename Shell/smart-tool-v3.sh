@@ -763,7 +763,7 @@ function generate_xray_conf {
 {
   "log": {
     "access": "/etc/xray/access.log",
-    "error": "/etc/xray/xray.log",
+    "error": "/etc/xray/error.log",
     "loglevel": "debug"
   },
 
