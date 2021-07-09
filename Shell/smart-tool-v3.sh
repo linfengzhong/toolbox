@@ -547,24 +547,24 @@ function aliasInstall() {
 # 更新脚本
 function updateSmartTool() {
 
-	rm -rf /etc/smart-tool/smart-tool-v2.sh
+	rm -rf /etc/smart-tool/smart-tool-v3.sh
 	echoContent skyBlue "开始下载： "
 	if wget --help | grep -q show-progress; then
-		wget -c -q --show-progress -P /etc/smart-tool/ -N --no-check-certificate "https://raw.githubusercontent.com/linfengzhong/toolbox/main/Shell/smart-tool-v2.sh"
+		wget -c -q --show-progress -P /etc/smart-tool/ -N --no-check-certificate "https://raw.githubusercontent.com/linfengzhong/toolbox/main/Shell/smart-tool-v3.sh"
   	else
-		wget -c -q -P /etc/smart-tool/ -N --no-check-certificate "https://raw.githubusercontent.com/linfengzhong/toolbox/main/Shell/smart-tool-v2.sh"
+		wget -c -q -P /etc/smart-tool/ -N --no-check-certificate "https://raw.githubusercontent.com/linfengzhong/toolbox/main/Shell/smart-tool-v3.sh"
 	fi
 
-	sudo chmod 700 /etc/smart-tool/smart-tool-v2.sh
-	local newversion=$(cat /etc/smart-tool/smart-tool-v2.sh | grep 'SmartTool：v' | awk -F "[v]" '{print $2}' | tail -n +2 | head -n 1 | awk -F "[\"]" '{print $1}')
+	sudo chmod 700 /etc/smart-tool/smart-tool-v3.sh
+	local newversion=$(cat /etc/smart-tool/smart-tool-v3.sh | grep 'SmartTool：v' | awk -F "[v]" '{print $2}' | tail -n +2 | head -n 1 | awk -F "[\"]" '{print $1}')
 
 	print_info "---> 更新完毕"
 	print_info "---> 当前版本:${newversion}"
 	print_info "---> 请手动执行[st]打开脚本\n"
 #	echoContent yellow "如更新不成功，请手动执行下面命令"
 #	echoContent skyBlue "wget -P /root -N --no-check-certificate\
-#  "https://raw.githubusercontent.com/linfengzhong/toolbox/main/Shell/smart-tool-v2.sh" &&\
-#  chmod 700 /root/smart-tool-v2.sh && /root/smart-tool-v2.sh"
+#  "https://raw.githubusercontent.com/linfengzhong/toolbox/main/Shell/smart-tool-v3.sh" &&\
+#  chmod 700 /root/smart-tool-v3.sh && /root/smart-tool-v3.sh"
 	echo
 	exit 0
 }
