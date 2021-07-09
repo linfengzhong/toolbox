@@ -491,12 +491,7 @@ renewalTLS() {
 
 		if [[ ${remainingDays} -le 1 ]]; then
 			echoContent yellow " ---> 重新生成证书"
-			# handleNginx stop
-			# sudo "$HOME/.acme.sh/acme.sh" --cron --home "$HOME/.acme.sh"
-			# sudo "$HOME/.acme.sh/acme.sh" --installcert -d "${currentHost}" --fullchainpath /etc/v2ray-agent/tls/"${currentHost}.crt" --keypath /etc/v2ray-agent/tls/"${currentHost}.key"
-			# handleNginx start
-
-			#reloadCore
+			sh /root/.acme.sh/acme.sh  --issue  -d $currentHost --standalone --force
 
 		else
 			echoContent green " ---> 证书有效"
@@ -793,15 +788,21 @@ function installTools() {
 		fi
 	fi
 }
-
-
+#-----------------------------------------------------------------------------#
+# 定时任务检查证书
+cronRenewTLS() {
+	if [[ "${renewTLS}" == "RenewTLS" ]]; then
+		renewalTLS
+		exit 0
+	fi
+}
 #-----------------------------------------------------------------------------#
 # 主菜单
 function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=============================================================="
-	echoContent green "SmartTool：v0.065"
+	echoContent green "SmartTool：v0.066"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "初始化服务器、安装Docker、执行容器"
 	echoContent green "当前系统Linux版本 : \c" 
@@ -825,7 +826,7 @@ function menu() {
 	echoContent skyBlue "-------------------------证书管理-----------------------------"
 	echoContent yellow "41.generate CA | 42.show CA | 43.renew CA"	
 	echoContent skyBlue "-------------------------科学上网-----------------------------"
-	echoContent yellow "50.安装 v2ray-agent"	
+	echoContent yellow "50.安装 v2ray-agent | 快捷方式 vasma "	
 	echoContent yellow "51.安装 BBR"
 	echoContent skyBlue "-------------------------脚本管理-----------------------------"
 	echoContent yellow "00.更新脚本"
@@ -929,4 +930,5 @@ function menu() {
 
 cleanScreen
 initVar $1
-menu "$@"
+cronRenewTLS
+menu
