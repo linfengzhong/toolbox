@@ -762,8 +762,8 @@ function generate_xray_conf {
 	cat <<EOF >/etc/fuckGFW/xray/config.json
 {
   "log": {
-	"access": "/etc/xray/access.log",
-    "error": "/etc/xray/xray.log",
+    "access": "/etc/xray/access.log",
+    "error": "/etc/xray/error.log",
     "loglevel": "debug"
   },
 
