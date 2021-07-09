@@ -234,9 +234,9 @@ function install_docker_compose () {
 # Install Prerequisite
 # 安装必要程序
 function install_prerequisite () {
-	print_info "安装 wget lsof tar unzip curl socat "
-	yum -y install wget lsof tar unzip curl socat
-	judge "安装 wget lsof tar unzip curl socat "
+	print_info "安装 wget lsof tar unzip curl socat nmap "
+	yum -y install wget lsof tar unzip curl socat nmap
+	judge "安装 wget lsof tar unzip curl socat nmap "
 }
 #-----------------------------------------------------------------------------#
 # 安装BBR
@@ -254,6 +254,7 @@ function install_bbr() {
 	fi
 }
 function InstallV2rayAgent {
+	# https://github.com/mack-a/v2ray-agent
 	print_info "安装 v2ray-agent "
 	wget -P /root -N --no-check-certificate "https://raw.githubusercontent.com/mack-a/v2ray-agent/master/install.sh" && chmod 700 /root/install.sh
 	judge "安装 v2ray-agent "
@@ -831,7 +832,7 @@ function menu() {
 	echoContent red "=============================================================="
 	mkdirTools
 	aliasInstall
-	read -r -p "Please choose the function(请选择): " selectInstallType
+	read -r -p "Please choose the function (请选择) : " selectInstallType
 	case ${selectInstallType} in
 	10)
 		install_prerequisite
