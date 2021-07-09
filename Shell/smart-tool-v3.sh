@@ -1847,7 +1847,7 @@ function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=============================================================="
-	echoContent green "SmartTool：v0.055"
+	echoContent green "SmartTool：v0.056"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "初始化服务器、安装Docker、执行容器"
 	echoContent green "当前系统Linux版本 : \c" 
@@ -1872,14 +1872,13 @@ function menu() {
 	echoContent skyBlue "-------------------------证书管理-----------------------------"
 	echoContent yellow "41.generate CA | 42.show CA | 43.renew CA"	
 	echoContent skyBlue "-------------------------科学上网-----------------------------"
-	echoContent yellow "50.安装v2ray-agent"	
+	echoContent yellow "50.安装 v2ray-agent"	
 	echoContent yellow "51.安装 BBR"
 	echoContent skyBlue "-------------------------脚本管理-----------------------------"
 	echoContent yellow "00.更新脚本"
 	echoContent yellow "96.show IP"	
-	echoContent yellow "97.检查系统版本"
+	echoContent yellow "97.check system"
 	echoContent yellow "98.bpytop"
-	echoContent yellow ".查看日志 | .卸载脚本"
 	echoContent yellow "99.退出"
 	echoContent red "=============================================================="
 	mkdirTools
