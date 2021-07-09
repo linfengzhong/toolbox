@@ -10,16 +10,17 @@
 # 初始化全局变量
 export LANG=en_US.UTF-8
 function initVar() {
-
-	#定义变量
-	WORKDIR="/root/git/toolbox/Docker/docker-compose/k8s-master.ml/"
-	GITHUB_REPO="/root/git/toolbox/"
-	EMAIL="fred.zhong@outlook.com"
-
 	# 网站 域名 配置文件的host
 	# WEBSITE="k8s-master.ml"
-	domain="k8s-master.tk"
+	# domain="k8s-master.tk"
 	currentHost="k8s-master.tk"
+	# UUID
+	currentUUID="d8206743-b292-43d1-8200-5606238a5abb"
+
+	#定义变量
+	WORKDIR="/root/git/toolbox/Docker/docker-compose/${currentHost}/"
+	GITHUB_REPO="/root/git/toolbox/"
+	EMAIL="fred.zhong@outlook.com"
 
 	#fonts color 字体颜色配置
 	Red="\033[31m"
@@ -85,9 +86,6 @@ function initVar() {
 	# centos version
 	centosVersion=
 
-	# UUID
-	currentUUID=
-
 	# pingIPv6 pingIPv4
 	# pingIPv4=
 	pingIPv6=
@@ -127,23 +125,6 @@ function install_acme () {
   sudo curl https://get.acme.sh | sh -s email=$EMAIL
   judge "安装 acme.sh "
 }
-#-----------------------------------------------------------------------------#
-# Generate CA
-function generate_ca () {
-	local DomainName
-	print_info "---> 生成网站证书"
-	print_info "----- 网站证书 ----"
-	show_ip
-	read -r -p "请输入与本服务器绑定IP的域名地址: " DomainName
-	if [ $DomainName ]; then
-		sh /root/.acme.sh/acme.sh  --issue  -d $DomainName --standalone --force
-	else
-		print_error "未输入域名，退出本程序"
-		exit 0
-	fi
-	print_info "----- 网站证书 ----"
-	judge "生成网站证书 "
-	}
 #-----------------------------------------------------------------------------#
 # Install Git
 # https://git-scm.com
@@ -238,7 +219,20 @@ function install_prerequisite () {
 	judge "安装 wget lsof tar unzip curl socat nmap "
 }
 #-----------------------------------------------------------------------------#
-# 安装BBR
+# 安装 v2ray-agent
+function InstallV2rayAgent {
+	# https://github.com/mack-a/v2ray-agent
+	print_info "安装 v2ray-agent "
+	wget -P /root -N --no-check-certificate "https://raw.githubusercontent.com/mack-a/v2ray-agent/master/install.sh" && chmod 700 /root/install.sh
+	judge "安装 v2ray-agent "
+
+	print_info "运行 v2ray-agent "
+	sleep 3
+	cd /root
+	./install.sh
+}
+#-----------------------------------------------------------------------------#
+# 安装 BBR
 function install_bbr() {
 	echoContent red "\n=============================================================="
 	echoContent green "BBR、DD脚本用的[ylx2016]的成熟作品，地址[https://github.com/ylx2016/Linux-NetSpeed]，请熟知"
@@ -251,12 +245,6 @@ function install_bbr() {
 	else
 		menu
 	fi
-}
-function InstallV2rayAgent {
-	# https://github.com/mack-a/v2ray-agent
-	print_info "安装 v2ray-agent "
-	wget -P /root -N --no-check-certificate "https://raw.githubusercontent.com/mack-a/v2ray-agent/master/install.sh" && chmod 700 /root/install.sh
-	judge "安装 v2ray-agent "
 }
 #-----------------------------------------------------------------------------#
 # 清理屏幕
@@ -309,15 +297,18 @@ function show_docker_container () {
 function git_init () {
 	print_info "初始化 Git "
 	git config --global user.name "root" 
-	git config --global user.email "root@k8s-master.ml"
+	git config --global user.email "root@${currentHost}"
 	git config --global pull.rebase false
 	cd ~
 	mkdir git
 	cd git
 	# /root/.ssh/id_rsa
 	# /root/.ssh/id_rsa.pub
-	ssh-keygen -t rsa -C fred.zhong@outlook.com  
+	ssh-keygen -t rsa -C fred.zhong@outlook.com
+	print_info "请复制下面的Public key到GitHub "
+	print_info "======== Public key========= "
 	cat ~/.ssh/id_rsa.pub
+	print_info "======== Public key End========= "
 	judge "初始化 Git "
 }
 #-----------------------------------------------------------------------------#
@@ -461,8 +452,33 @@ function echoContent() {
 	esac
 }
 #-----------------------------------------------------------------------------#
+# Generate CA
+function generate_ca () {
+	print_info "默认域名: $currentHost"	
+	local tempDomainName
+	show_ip
+	read -r -p "如与默认域名不一致，请输入与本服务器绑定IP的新域名: " tempDomainName
+	if [ $tempDomainName ]; then
+		print_info "----- 新域名证书 ----"
+		sh /root/.acme.sh/acme.sh  --issue  -d $tempDomainName --standalone --force
+		print_info "----- 新域名证书 ----"
+		print_info "----- 保存新域名证书到 /etc/fuckGFW/tls ----"
+		cp -pf $HOME/.acme.sh/$tempDomainName/*.cer /etc/fuckGFW/tls/
+		cp -pf $HOME/.acme.sh/$tempDomainName/*.key /etc/fuckGFW/tls/
+	else
+		print_error "未输入域名，使用默认域名: $currentHost"
+		print_info "----- 默认域名证书 ----"
+		sh /root/.acme.sh/acme.sh  --issue  -d $currentHost --standalone --force
+		print_info "----- 默认域名证书 ----"
+		print_info "----- 保存默认域名证书到 /etc/fuckGFW/tls ----"
+		cp -pf $HOME/.acme.sh/$currentHost/*.cer /etc/fuckGFW/tls/
+		cp -pf $HOME/.acme.sh/$currentHost/*.key /etc/fuckGFW/tls/
+	fi
+	judge "生成网站证书 "
+}
+#-----------------------------------------------------------------------------#
 # 更新证书
-renewalTLS() {
+function renewalTLS() {
 	echoContent skyBlue "更新证书 "
 
 	if [[ -d "$HOME/.acme.sh/${currentHost}" ]] && [[ -f "$HOME/.acme.sh/${currentHost}/${currentHost}.key" ]] && [[ -f "$HOME/.acme.sh/${currentHost}/${currentHost}.cer" ]]; then
@@ -486,12 +502,7 @@ renewalTLS() {
 
 		if [[ ${remainingDays} -le 1 ]]; then
 			echoContent yellow " ---> 重新生成证书"
-			# handleNginx stop
-			# sudo "$HOME/.acme.sh/acme.sh" --cron --home "$HOME/.acme.sh"
-			# sudo "$HOME/.acme.sh/acme.sh" --installcert -d "${currentHost}" --fullchainpath /etc/v2ray-agent/tls/"${currentHost}.crt" --keypath /etc/v2ray-agent/tls/"${currentHost}.key"
-			# handleNginx start
-
-			#reloadCore
+			sh /root/.acme.sh/acme.sh  --issue  -d $currentHost --standalone --force
 
 		else
 			echoContent green " ---> 证书有效"
@@ -503,17 +514,7 @@ renewalTLS() {
 #-----------------------------------------------------------------------------#
 # 查看TLS证书的状态
 function checkTLStatus() {
-
-#	local DomainName
-#	read -r -p "请输入查询域名地址: " DomainName
-#	if ["${DomainName}"]; then
-#		sh /root/.acme.sh/acme.sh  --issue  -d $DomainName --standalone --force
-#	else
-#		print_error "未输入域名，退出本程序"
-#		exit 0
-#	fi
-
-	print_info "网站地址: ${domain}"
+	print_info "当前域名: ${currentHost}"
 	if [[ -n "$1" ]]; then
 		if [[ -d "$HOME/.acme.sh/$1" ]] && [[ -f "$HOME/.acme.sh/$1/$1.key" ]] && [[ -f "$HOME/.acme.sh/$1/$1.cer" ]]; then
 			modifyTime=$(stat $HOME/.acme.sh/$1/$1.key | sed -n '7,6p' | awk '{print $2" "$3" "$4" "$5}')
@@ -599,9 +600,10 @@ function mkdirTools() {
 	mkdir -p /etc/fuckGFW/mtg
 	mkdir -p /etc/fuckGFW/subscribe
 	mkdir -p /etc/fuckGFW/subscribe_tmp
+	mkdir -p /etc/fuckGFW/nginx/conf.d
 	mkdir -p /etc/fuckGFW/v2ray/conf
-	mkdir -p /etc/fuckGFW/xray/conf
-	mkdir -p /etc/fuckGFW/trojan
+	mkdir -p /etc/fuckGFW/xray/${currentHost}
+	mkdir -p /etc/fuckGFW/trojan-go/
 	mkdir -p /etc/systemd/system/
 	mkdir -p /tmp/fuckGFW-tls/
 
@@ -609,17 +611,20 @@ function mkdirTools() {
 
 #-----------------------------------------------------------------------------#
 # Show IP
-#-----------------------------------------------------------------------------#
-# 外部IP
 function show_ip () {
 	local zIP=$(curl -s https://ipinfo.io/ip)
 	print_info "服务器外部 IP: $zIP "
 }
 #-----------------------------------------------------------------------------#
+# Generate UUID
+function generate_uuid () {
+	local zUUID=$(cat /proc/sys/kernel/random/uuid)
+	print_info "随机生成 UUID: $zUUID "
+}
+#-----------------------------------------------------------------------------#
 # Security-Enhanced Linux
 # This guide is based on SELinux being disabled or in permissive mode. 
 # Steps to do this are as follows.
-#-----------------------------------------------------------------------------#
 function turn_off_selinux () {
   print_info "开始配置 Linux Rocky 8.4 / CentOS 8 服务器"
   sed -i 's/SELINUX=.*/SELINUX=disabled/g' /etc/selinux/config
@@ -647,148 +652,215 @@ function turn_off_selinux () {
 # 更新Trojan-Go
 # 操作Trojan-Go
 # 清理旧残留
-#-----------------------------------------------------------------------------#
 # 安装工具包
-function installTools() {
-	echo '安装工具'
-	echoContent skyBlue "\n进度  $1/${totalProgress} : 安装工具"
-	# 修复ubuntu个别系统问题
-	if [[ "${release}" == "ubuntu" ]]; then
-		dpkg --configure -a
-	fi
-
-	if [[ -n $(pgrep -f "apt") ]]; then
-		pgrep -f apt | xargs kill -9
-	fi
-
-	echoContent green " ---> 检查、安装更新【新机器会很慢，如长时间无反应，请手动停止后重新执行】"
-
-	${upgrade} >/dev/null 2>&1
-	if [[ "${release}" == "centos" ]]; then
-		rm -rf /var/run/yum.pid
-		${installType} epel-release >/dev/null 2>&1
-	fi
-
-	#	[[ -z `find /usr/bin /usr/sbin |grep -v grep|grep -w curl` ]]
-
-	if ! find /usr/bin /usr/sbin | grep -q -w wget; then
-		echoContent green " ---> 安装wget"
-		${installType} wget >/dev/null 2>&1
-	fi
-
-	if ! find /usr/bin /usr/sbin | grep -q -w curl; then
-		echoContent green " ---> 安装curl"
-		${installType} curl >/dev/null 2>&1
-	fi
-
-	if ! find /usr/bin /usr/sbin | grep -q -w unzip; then
-		echoContent green " ---> 安装unzip"
-		${installType} unzip >/dev/null 2>&1
-	fi
-
-	if ! find /usr/bin /usr/sbin | grep -q -w socat; then
-		echoContent green " ---> 安装socat"
-		${installType} socat >/dev/null 2>&1
-	fi
-
-	if ! find /usr/bin /usr/sbin | grep -q -w tar; then
-		echoContent green " ---> 安装tar"
-		${installType} tar >/dev/null 2>&1
-	fi
-
-	if ! find /usr/bin /usr/sbin | grep -q -w cron; then
-		echoContent green " ---> 安装crontabs"
-		if [[ "${release}" == "ubuntu" ]] || [[ "${release}" == "debian" ]]; then
-			${installType} cron >/dev/null 2>&1
-		else
-			${installType} crontabs >/dev/null 2>&1
-		fi
-	fi
-	if ! find /usr/bin /usr/sbin | grep -q -w jq; then
-		echoContent green " ---> 安装jq"
-		${installType} jq >/dev/null 2>&1
-	fi
-
-	if ! find /usr/bin /usr/sbin | grep -q -w binutils; then
-		echoContent green " ---> 安装binutils"
-		${installType} binutils >/dev/null 2>&1
-	fi
-
-	if ! find /usr/bin /usr/sbin | grep -q -w ping6; then
-		echoContent green " ---> 安装ping6"
-		${installType} inetutils-ping >/dev/null 2>&1
-	fi
-
-	if ! find /usr/bin /usr/sbin | grep -q -w qrencode; then
-		echoContent green " ---> 安装qrencode"
-		${installType} qrencode >/dev/null 2>&1
-	fi
-
-    if ! find /usr/bin /usr/sbin | grep -q -w sudo; then
-		echoContent green " ---> 安装sudo"
-		${installType} sudo >/dev/null 2>&1
-	fi
-
-	if ! find /usr/bin /usr/sbin | grep -q -w lsb-release; then
-		echoContent green " ---> 安装lsb-release"
-		${installType} lsb-release >/dev/null 2>&1
-	fi
-
-	# 检测nginx版本，并提供是否卸载的选项
-
-	if ! find /usr/bin /usr/sbin | grep -q -w nginx; then
-		echoContent green " ---> 安装nginx"
-		installNginxTools
-	else
-		nginxVersion=$(nginx -v 2>&1)
-		nginxVersion=$(echo "${nginxVersion}" | awk -F "[n][g][i][n][x][/]" '{print $2}' | awk -F "[.]" '{print $2}')
-		if [[ ${nginxVersion} -lt 14 ]]; then
-			read -r -p "读取到当前的Nginx版本不支持gRPC，会导致安装失败，是否卸载Nginx后重新安装 ？[y/n]:" unInstallNginxStatus
-			if [[ "${unInstallNginxStatus}" == "y" ]]; then
-				${removeType} nginx >/dev/null 2>&1
-				echoContent yellow " ---> nginx卸载完成"
-				echoContent green " ---> 安装nginx"
-				installNginxTools >/dev/null 2>&1
-			else
-				exit 0
-			fi
-		fi
-	fi
-	if ! find /usr/bin /usr/sbin | grep -q -w semanage; then
-		echoContent green " ---> 安装semanage"
-		${installType} bash-completion >/dev/null 2>&1
-
-		if [[ "${centosVersion}" == "7" ]]; then
-			policyCoreUtils="policycoreutils-python.x86_64"
-		elif [[ "${centosVersion}" == "8" ]]; then
-			policyCoreUtils="policycoreutils-python-utils-2.9-9.el8.noarch"
-		fi
-
-		if [[ -n "${policyCoreUtils}" ]]; then
-			${installType} ${policyCoreUtils} >/dev/null 2>&1
-		fi
-		if [[ -n $(which semanage) ]]; then
-			semanage port -a -t http_port_t -p tcp 31300
-
-		fi
-	fi
-
-	# todo 关闭防火墙
-
-	if [[ ! -d "$HOME/.acme.sh" ]] || [[ -d "$HOME/.acme.sh" && -z $(find "$HOME/.acme.sh/acme.sh") ]]; then
-		echoContent green " ---> 安装acme.sh"
-		curl -s https://get.acme.sh | sh -s email=my@example.com >/etc/v2ray-agent/tls/acme.log 2>&1
-		if [[ ! -d "$HOME/.acme.sh" ]] || [[ -z $(find "$HOME/.acme.sh/acme.sh") ]]; then
-			echoContent red "  acme安装失败--->"
-			tail -n 100 /etc/v2ray-agent/tls/acme.log
-			echoContent yellow "错误排查："
-			echoContent red "  1.获取Github文件失败，请等待Gitub恢复后尝试，恢复进度可查看 [https://www.githubstatus.com/]"
-			echoContent red "  2.acme.sh脚本出现bug，可查看[https://github.com/acmesh-official/acme.sh] issues"
-			exit 0
-		fi
+#-----------------------------------------------------------------------------#
+# 定时任务检查证书
+cronRenewTLS() {
+	if [[ "${renewTLS}" == "RenewTLS" ]]; then
+		renewalTLS
+		exit 0
 	fi
 }
+#-----------------------------------------------------------------------------#
+# 生成 Nginx 配置文件
+function generate_nginx_conf {
+	# /etc/fuckGFW/nginx/conf
+	print_info "生成 NGINX 配置文件 "
+	print_info "/etc/fuckGFW/nginx/conf.d/${currentHost}.conf"
 
+	cat <<EOF >/etc/fuckGFW/nginx/conf.d/${currentHost}.conf
+server {
+    listen 80;
+    server_name ${currentHost};
+    return 301 https://${currentHost};
+}
+
+server {
+    listen 31300;
+    server_name ${currentHost};
+    root /usr/share/nginx/html;
+
+    location / {
+        add_header Strict-Transport-Security "max-age=63072000" always;
+    }
+
+    location /portainer/ {
+        proxy_pass http://portainer:9000/;
+    }
+
+    location /httpd/ {
+        proxy_pass http://httpd:80/;
+    }
+
+    location /grafana/ {
+        proxy_pass http://grafana:3000/;
+    }
+
+    location /adminer/ {
+        proxy_pass http://adminer:8080/;
+    }
+        
+    location /gitea/ {
+        proxy_pass http://gitea:3000/;
+    }
+}
+EOF
+	cat /etc/fuckGFW/nginx/conf.d/${currentHost}.conf
+	judge "生成 NGINX 配置文件 "
+
+}
+
+#-----------------------------------------------------------------------------#
+# 生成 xray 配置文件
+function generate_xray_conf {
+	# /etc/fuckGFW/xray
+	print_info "生成 xray 配置文件 "
+	print_info "/etc/fuckGFW/xray/config.json"
+
+	cat <<EOF >/etc/fuckGFW/xray/config.json
+{
+  "log": {
+    "error": "/etc/xray/xray.log",
+    "loglevel": "warning"
+  },
+
+  "inbounds": [
+    {
+      "port": 443,
+      "protocol": "vless",
+      "tag": "VLESSTCP",
+      "settings": {
+        "clients": [
+          {
+            "id": "${currentUUID}",
+            "add": "${currentHost}",
+            "flow": "xtls-rprx-direct",
+            "email": "${currentHost}_VLESS_XTLS/TLS-direct_TCP"
+          }
+        ],
+        "decryption": "none",
+        "fallbacks": [
+          {
+            "dest": "trojan-go:31296",
+            "xver": 0
+          },
+          {
+            "path": "/rrdaws",
+            "dest": 31297,
+            "xver": 1
+          }
+        ]
+      },
+      "streamSettings": {
+        "network": "tcp",
+        "security": "xtls",
+        "xtlsSettings": {
+          "minVersion": "1.2",
+          "alpn": [
+            "http/1.1",
+            "h2"
+          ],
+          "certificates": [
+            {
+              "certificateFile": "/etc/xray/${currentHost}/fullchain.cer",
+              "keyFile": "/etc/xray/${currentHost}/${currentHost}.key",
+              "ocspStapling": 3600,
+              "usage": "encipherment"
+            }
+          ]
+        }
+      }
+    },
+      {
+      "port": 31297,
+      "listen": "127.0.0.1",
+      "protocol": "vless",
+      "tag": "VLESSWS",
+      "settings": {
+        "clients": [
+          {
+            "id": "${currentUUID}",
+            "email": "${currentHost}_vless_ws"
+          }
+        ],
+        "decryption": "none"
+      },
+      "streamSettings": {
+        "network": "ws",
+        "security": "none",
+        "wsSettings": {
+          "acceptProxyProtocol": true,
+          "path": "/rrdaws"
+        }
+      }
+    }
+     ],
+  "outbounds": [
+    {
+      "protocol": "freedom",
+      "settings": {
+        "domainStrategy": "UseIPv4"
+      },
+      "tag": "IPv4-out"
+    }
+  ],
+  "dns": {
+    "servers": [
+      "localhost"
+    ]
+  }
+}
+EOF
+
+	cat /etc/fuckGFW/xray/config.json
+	judge "生成 xray 配置文件 "
+	print_info "复制证书到xray配置文件夹 "
+	cp -pf /etc/fuckGFW/tls/*.* /etc/fuckGFW/xray/${currentHost}/
+
+}
+#-----------------------------------------------------------------------------#
+# 生成 trojan-go 配置文件
+function generate_trojan_go_conf {
+	# /etc/fuckGFW/trojan-go
+	print_info "生成 trojan-go 配置文件 "
+	print_info "/etc/fuckGFW/trojan-go/config.json"
+
+	cat <<EOF >/etc/fuckGFW/trojan-go/config.json
+{
+    "run_type": "server",
+    "local_addr": "trojan-go",
+    "local_port": 31296,
+    "remote_addr": "nginx",
+    "remote_port": 31300,
+    "disable_http_check":true,
+    "log_level":3,
+    "log_file":"/etc/trojan-go/trojan.log",
+    "password": [
+        "${currentUUID}"
+    ],
+    "dns":[
+        "localhost"
+    ],
+    "transport_plugin":{
+        "enabled":true,
+        "type":"plaintext"
+    },
+    "websocket": {
+        "enabled": true,
+        "path": "/rrdatws",
+        "host": "${currentHost}",
+        "add": "${currentHost}"
+    },
+    "router": {
+        "enabled": false
+    }
+}
+EOF
+
+	cat /etc/fuckGFW/trojan-go/config.json
+	judge "生成 trojan-go 配置文件 "
+
+}
 
 #-----------------------------------------------------------------------------#
 # 主菜单
@@ -796,7 +868,7 @@ function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=============================================================="
-	echoContent green "SmartTool：v0.064"
+	echoContent green "SmartTool：v0.076"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "初始化服务器、安装Docker、执行容器"
 	echoContent green "当前系统Linux版本 : \c" 
@@ -817,13 +889,18 @@ function menu() {
 	echoContent yellow "31.docker-compose up"
 	echoContent yellow "32.docker-compose down"
 	echoContent yellow "33.docker status"
+	echoContent skyBlue "-------------------------配置文件-----------------------------"
+	echoContent yellow "35.generate nginx conf"
+	echoContent yellow "36.generate xray conf"
+	echoContent yellow "37.generate trojan-go conf"
 	echoContent skyBlue "-------------------------证书管理-----------------------------"
 	echoContent yellow "41.generate CA | 42.show CA | 43.renew CA"	
 	echoContent skyBlue "-------------------------科学上网-----------------------------"
-	echoContent yellow "50.安装 v2ray-agent"	
+	echoContent yellow "50.安装 v2ray-agent | 快捷方式 vasma "	
 	echoContent yellow "51.安装 BBR"
 	echoContent skyBlue "-------------------------脚本管理-----------------------------"
 	echoContent yellow "00.更新脚本"
+	echoContent yellow "96.generate UUID"	
 	echoContent yellow "97.show IP"	
 	echoContent yellow "98.bpytop"
 	echoContent yellow "99.退出"
@@ -888,11 +965,20 @@ function menu() {
 		show_docker_images
 		show_docker_container
 		;;
+	35)
+		generate_nginx_conf
+		;;
+	36)
+		generate_xray_conf
+		;;
+	37)
+		generate_trojan_go_conf
+		;;
 	41)
 		generate_ca
 		;;
 	42)
-		checkTLStatus "${domain}"
+		checkTLStatus "${currentHost}"
 		;;
 	43)
 		renewalTLS
@@ -905,6 +991,9 @@ function menu() {
 		;;
 	00)
 		updateSmartTool 1
+		;;
+	96)
+		generate_uuid
 		;;
 	97)
 		show_ip
@@ -924,4 +1013,5 @@ function menu() {
 
 cleanScreen
 initVar $1
-menu "$@"
+cronRenewTLS
+menu
