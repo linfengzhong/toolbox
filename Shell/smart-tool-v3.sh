@@ -597,7 +597,7 @@ function mkdirTools() {
 	mkdir -p /etc/fuckGFW/mtg
 	mkdir -p /etc/fuckGFW/subscribe
 	mkdir -p /etc/fuckGFW/subscribe_tmp
-	mkdir -p /etc/fuckGFW/nginx/conf
+	mkdir -p /etc/fuckGFW/nginx/conf.d
 	mkdir -p /etc/fuckGFW/v2ray/conf
 	mkdir -p /etc/fuckGFW/xray/conf
 	mkdir -p /etc/fuckGFW/trojan-go/conf
@@ -656,12 +656,54 @@ cronRenewTLS() {
 	fi
 }
 
-function generate_conf {
+function generate_nginx_conf {
 	# /etc/fuckGFW/nginx/conf
 	# /etc/fuckGFW/v2ray/conf
 	# /etc/fuckGFW/xray/conf
 	# /etc/fuckGFW/trojan-go/conf
-	clear
+	print_info "生成 NGINX 配置文件 "
+	print_info "/etc/fuckGFW/nginx/conf.d/${currentHost}.conf"
+
+	cat <<EOF >/etc/fuckGFW/nginx/conf.d/${currentHost}.conf
+    server {
+        listen 80;
+        server_name ${currentHost};
+        return 301 https://${currentHost};
+    }
+    server {
+        listen 31300;
+        server_name ${currentHost};
+        root /usr/share/nginx/html;
+
+        location / {
+            add_header Strict-Transport-Security "max-age=63072000" always;
+        }
+
+        location /portainer/ {
+            proxy_pass http://portainer:9000/;
+        }
+
+        location /httpd/ {
+            proxy_pass http://httpd:80/;
+        }
+
+        location /grafana/ {
+            proxy_pass http://grafana:3000/;
+        }
+
+        location /adminer/ {
+            proxy_pass http://adminer:8080/;
+        }
+        
+        location /gitea/ {
+            proxy_pass http://gitea:3000/;
+        }
+
+    }
+EOF
+	cat /etc/fuckGFW/nginx/conf.d/${currentHost}.conf
+	judge "生成 NGINX 配置文件 "
+
 }
 #-----------------------------------------------------------------------------#
 # 主菜单
@@ -669,7 +711,7 @@ function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=============================================================="
-	echoContent green "SmartTool：v0.068"
+	echoContent green "SmartTool：v0.069"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "初始化服务器、安装Docker、执行容器"
 	echoContent green "当前系统Linux版本 : \c" 
@@ -764,6 +806,9 @@ function menu() {
 	33)
 		show_docker_images
 		show_docker_container
+		;;
+	35)
+		generate_nginx_conf
 		;;
 	41)
 		generate_ca
