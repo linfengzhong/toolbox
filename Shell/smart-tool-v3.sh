@@ -872,7 +872,7 @@ function generate_fake_website {
 #	https://raw.githubusercontent.com/linfengzhong/toolbox/main/Website/html4.zip
 #	https://raw.githubusercontent.com/linfengzhong/toolbox/main/Website/html5.zip
 #	https://raw.githubusercontent.com/linfengzhong/toolbox/main/Website/html5.zip
-	print_info "随机添加伪装站点 "
+	print_info "添加随机伪装站点 "
 	if [[ -d "/etc/fuckGFW/website/html" && -f "/etc/fuckGFW/website/html/check" ]]; then
 		echo
 		read -r -p "检测到安装伪装站点，是否需要重新安装[y/n]：" nginxBlogInstallStatus
@@ -892,7 +892,7 @@ function generate_fake_website {
 		rm -f /etc/fuckGFW/website/html${randomNum}.zip*
 		echoContent green " ---> 添加伪装站点成功"
 	fi
-	judge "随机添加伪装站点  "	
+	judge "添加随机伪装站点  "	
 }
 #-----------------------------------------------------------------------------#
 # 主菜单
@@ -900,7 +900,7 @@ function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=============================================================="
-	echoContent green "SmartTool：v0.077"
+	echoContent green "SmartTool：v0.078"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "初始化服务器、安装Docker、执行容器"
 	echoContent green "当前系统Linux版本 : \c" 
@@ -922,7 +922,7 @@ function menu() {
 	echoContent yellow "32.docker-compose down"
 	echoContent yellow "33.docker status"
 	echoContent yellow "35.generate Nginx Xray Trojan-go config"
-	echoContent yellow "36.随机添加伪装站点"
+	echoContent yellow "36.添加随机伪装站点"
 	echoContent skyBlue "-------------------------证书管理-----------------------------"
 	echoContent yellow "41.generate CA | 42.show CA | 43.renew CA"	
 	echoContent skyBlue "-------------------------科学上网-----------------------------"
