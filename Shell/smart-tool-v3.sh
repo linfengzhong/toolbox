@@ -18,7 +18,7 @@ function initVar() {
 
 	# 网站 域名 配置文件的host
 	# WEBSITE="k8s-master.ml"
-	domain="k8s-master.tk"
+	# domain="k8s-master.tk"
 	currentHost="k8s-master.tk"
 
 	#fonts color 字体颜色配置
@@ -127,23 +127,6 @@ function install_acme () {
   sudo curl https://get.acme.sh | sh -s email=$EMAIL
   judge "安装 acme.sh "
 }
-#-----------------------------------------------------------------------------#
-# Generate CA
-function generate_ca () {
-	local DomainName
-	print_info "---> 生成网站证书"
-	print_info "----- 网站证书 ----"
-	show_ip
-	read -r -p "请输入与本服务器绑定IP的域名地址: " DomainName
-	if [ $DomainName ]; then
-		sh /root/.acme.sh/acme.sh  --issue  -d $DomainName --standalone --force
-	else
-		print_error "未输入域名，退出本程序"
-		exit 0
-	fi
-	print_info "----- 网站证书 ----"
-	judge "生成网站证书 "
-	}
 #-----------------------------------------------------------------------------#
 # Install Git
 # https://git-scm.com
@@ -466,8 +449,25 @@ function echoContent() {
 	esac
 }
 #-----------------------------------------------------------------------------#
+# Generate CA
+function generate_ca () {
+	local DomainName
+	print_info "---> 生成网站证书"
+	print_info "----- 网站证书 ----"
+	show_ip
+	read -r -p "请输入与本服务器绑定IP的域名地址: " DomainName
+	if [ $DomainName ]; then
+		sh /root/.acme.sh/acme.sh  --issue  -d $DomainName --standalone --force
+	else
+		print_error "未输入域名，退出本程序"
+		exit 0
+	fi
+	print_info "----- 网站证书 ----"
+	judge "生成网站证书 "
+	}
+#-----------------------------------------------------------------------------#
 # 更新证书
-renewalTLS() {
+function renewalTLS() {
 	echoContent skyBlue "更新证书 "
 
 	if [[ -d "$HOME/.acme.sh/${currentHost}" ]] && [[ -f "$HOME/.acme.sh/${currentHost}/${currentHost}.key" ]] && [[ -f "$HOME/.acme.sh/${currentHost}/${currentHost}.cer" ]]; then
@@ -513,7 +513,7 @@ function checkTLStatus() {
 #		exit 0
 #	fi
 
-	print_info "网站地址: ${domain}"
+	print_info "网站地址: ${currentHost}"
 	if [[ -n "$1" ]]; then
 		if [[ -d "$HOME/.acme.sh/$1" ]] && [[ -f "$HOME/.acme.sh/$1/$1.key" ]] && [[ -f "$HOME/.acme.sh/$1/$1.cer" ]]; then
 			modifyTime=$(stat $HOME/.acme.sh/$1/$1.key | sed -n '7,6p' | awk '{print $2" "$3" "$4" "$5}')
@@ -898,7 +898,7 @@ function menu() {
 		generate_ca
 		;;
 	42)
-		checkTLStatus "${domain}"
+		checkTLStatus "${currentHost}"
 		;;
 	43)
 		renewalTLS
