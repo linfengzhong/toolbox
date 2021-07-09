@@ -41,8 +41,9 @@ services:
             #- ./nginx/conf.d:/etc/nginx/conf.d
             - /etc/fuckGFW/nginx/conf.d/:/etc/nginx/conf.d
             - /etc/fuckGFW/website/html:/usr/share/nginx/html
-            - ./nginx/error.log:/var/log/nginx/error.log
-            - ./nginx/access.log:/var/log/nginx/access.log
+            # Store date on logserver
+            - /root/git/logserver/k8s-master.tk/nginx/error.log:/var/log/nginx/error.log
+            - /root/git/logserver/k8s-master.tk/nginx/access.log:/var/log/nginx/access.log
         networks: 
             - net
     #3. trojan go -> fuck GFW
@@ -57,7 +58,9 @@ services:
             - 31296
         volumes:
             #- ./trojan-go:/etc/trojan-go
-            - /etc/fuckGFW/trojan-go:/etc/trojan-go
+            - /etc/fuckGFW/trojan-go/config.json:/etc/trojan-go/config.json
+            # Store date on logserver
+            - /root/git/logserver/k8s-master.tk/trojan-go/trojan.log:/etc/trojan-go/trojan.log           
         networks: 
             - net
     #        depends_on:
@@ -76,7 +79,11 @@ services:
             - 443:443
         volumes: 
             #- ./xray:/etc/xray
-            - /etc/fuckGFW/xray:/etc/xray
+            - /etc/fuckGFW/xray/config.json:/etc/xray/config.json
+            # CA & Key
+            - /etc/fuckGFW/xray/k8s-master.tk:/etc/xray/k8s-master.tk
+            # Store date on logserver
+            - /root/git/logserver/k8s-master.tk/xray/xray.log:/etc/xray/xray.log   
         networks: 
             - net
     #        depends_on:
