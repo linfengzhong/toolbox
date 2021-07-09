@@ -260,7 +260,7 @@ function InstallV2rayAgent {
 
 	print_info "运行 v2ray-agent "
 	sleep 3
-	cd ～
+	cd /root
 	./install.sh
 }
 #-----------------------------------------------------------------------------#
