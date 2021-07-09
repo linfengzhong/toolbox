@@ -1847,37 +1847,40 @@ function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=============================================================="
-	echoContent green "SmartTool：v0.054"
+	echoContent green "SmartTool：v0.055"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "初始化服务器、安装Docker、执行容器"
 	echoContent green "当前系统Linux版本 : \c" 
 	checkSystem
 	echoContent red "=============================================================="
 	echoContent skyBlue "-------------------------安装软件-----------------------------"
-	echoContent yellow "10.安装 全部程序"	
+	echoContent yellow "10.安装 全部程序"
 	echoContent yellow "11.安装 prerequisite"
-	echoContent yellow "13.安装 BBR"
 	echoContent yellow "14.安装 acme.sh"
 	echoContent yellow "15.安装 bpytop"
 	echoContent yellow "16.安装 Webmin"
-	echoContent yellow "17.安装 Docker CE | 18.安装 Docker compose"
+	echoContent yellow "17.安装 Docker CE"
+	echoContent yellow "18.安装 Docker compose"
 	echoContent yellow "19.安装 Git"
 	echoContent skyBlue "-------------------------版本控制-----------------------------"  
 	echoContent yellow "21.git init | 22.git pull | 23.git push | 24.git clone"
 	echoContent skyBlue "-------------------------容器相关-----------------------------"
-	echoContent yellow "31.docker-compose up | 32.docker-compose down"
-	echoContent yellow "33.One-key | 34.docker status"
-	echoContent skyBlue "-------------------------工具管理-----------------------------"
-	echoContent yellow "41.show IP | 42.show CA status | 5.renew CA"	
-	echoContent yellow "43.generate CA"	
+	echoContent yellow "30.One-key"
+	echoContent yellow "31.docker-compose up"
+	echoContent yellow "32.docker-compose down"
+	echoContent yellow "33.docker status"
+	echoContent skyBlue "-------------------------证书管理-----------------------------"
+	echoContent yellow "41.generate CA | 42.CA status | 43.renew CA"	
 	echoContent skyBlue "-------------------------科学上网-----------------------------"
 	echoContent yellow "50.安装v2ray-agent"	
+	echoContent yellow "51.安装 BBR"
 	echoContent skyBlue "-------------------------脚本管理-----------------------------"
 	echoContent yellow "00.更新脚本"
-	echoContent yellow ".查看日志"
-	echoContent yellow ".卸载脚本"
+	echoContent yellow "96.show IP"	
 	echoContent yellow "97.检查系统版本"
 	echoContent yellow "98.bpytop"
+	echoContent yellow ".查看日志"
+	echoContent yellow ".卸载脚本"
 	echoContent yellow "99.退出"
 	echoContent red "=============================================================="
 	mkdirTools
@@ -1895,9 +1898,6 @@ function menu() {
 		;;
 	4)
 		updateNginxBlog 1
-		;;
-	5)
-		renewalTLS
 		;;
 	6)
 		updateV2RayCDN 1
@@ -1922,9 +1922,6 @@ function menu() {
 		;;
 	11)
 		install_prerequisite
-		;;
-	13)
-		install_bbr
 		;;
 	14)
 		install_acme
@@ -1956,6 +1953,12 @@ function menu() {
 	24)
 		git_clone_tool_box
 		;;
+	30)
+		shutdown_docker_compose
+		github_pull
+		github_push
+		start_docker_compose
+		;;
 	31)
 		start_docker_compose
 		;;
@@ -1963,26 +1966,26 @@ function menu() {
 		shutdown_docker_compose
 		;;
 	33)
-		shutdown_docker_compose
-		github_pull
-		github_push
-		start_docker_compose
-		;;
-	34)
 		show_docker_images
 		show_docker_container
 		;;
 	41)
-		show_ip
+		generate_ca
 		;;
 	42)
 		checkTLStatus "${domain}"
 		;;
 	43)
-		generate_ca
+		renewalTLS
 		;;
 	50)
 		InstallV2rayAgent
+		;;
+	51)
+		install_bbr
+		;;
+	96)
+		show_ip
 		;;
 	97)
 		checkSystem
