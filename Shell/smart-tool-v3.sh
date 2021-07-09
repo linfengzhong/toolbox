@@ -294,7 +294,7 @@ function show_docker_container () {
 # Git global configuration
 # https://git-scm.com
 #-----------------------------------------------------------------------------#
-function git-init () {
+function git_init () {
 	print_info "初始化 Git "
 	git config --global user.name "root" 
 	git config --global user.email "root@k8s-master.ml"
@@ -310,7 +310,7 @@ function git-init () {
 }
 #-----------------------------------------------------------------------------#
 # Git clone toolbox.git
-function git-clone-tool-box () {
+function git_clone_tool_box () {
 	print_info "Git clone ToolBox "
 	cd  $HOME/git/
 	git clone git@github.com:linfengzhong/toolbox.git
@@ -1847,7 +1847,7 @@ function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=============================================================="
-	echoContent green "SmartTool：v0.053"
+	echoContent green "SmartTool：v0.054"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "初始化服务器、安装Docker、执行容器"
 	echoContent green "当前系统Linux版本 : \c" 
@@ -1856,14 +1856,14 @@ function menu() {
 	echoContent skyBlue "-------------------------安装软件-----------------------------"
 	echoContent yellow "10.安装 全部程序"	
 	echoContent yellow "11.安装 prerequisite"
+	echoContent yellow "13.安装 BBR"
 	echoContent yellow "14.安装 acme.sh"
 	echoContent yellow "15.安装 bpytop"
 	echoContent yellow "16.安装 Webmin"
 	echoContent yellow "17.安装 Docker CE | 18.安装 Docker compose"
 	echoContent yellow "19.安装 Git"
 	echoContent skyBlue "-------------------------版本控制-----------------------------"  
-	echoContent yellow "21.git-init"
-	echoContent yellow "22.git-pull | 23.git-push | 24.git-clone"
+	echoContent yellow "21.git init | 22.git pull | 23.git push | 24.git clone"
 	echoContent skyBlue "-------------------------容器相关-----------------------------"
 	echoContent yellow "31.docker-compose up | 32.docker-compose down"
 	echoContent yellow "33.One-key | 34.docker status"
@@ -1876,7 +1876,6 @@ function menu() {
 	echoContent yellow "00.更新脚本"
 	echoContent yellow ".查看日志"
 	echoContent yellow ".卸载脚本"
-	echoContent yellow "96.安装 BBR"
 	echoContent yellow "97.检查系统版本"
 	echoContent yellow "98.bpytop"
 	echoContent yellow "99.退出"
@@ -1924,6 +1923,9 @@ function menu() {
 	11)
 		install_prerequisite
 		;;
+	13)
+		install_bbr
+		;;
 	14)
 		install_acme
 		;;
@@ -1943,7 +1945,7 @@ function menu() {
 		install_git
 		;;	
 	21)
-		git-init
+		git_init
 		;;
 	22)
 		github_pull
@@ -1952,7 +1954,7 @@ function menu() {
 		github_push
 		;;
 	24)
-		git-clone-tool-box
+		git_clone_tool_box
 		;;
 	31)
 		start_docker_compose
@@ -1981,9 +1983,6 @@ function menu() {
 		;;
 	50)
 		InstallV2rayAgent
-		;;
-	96)
-		install_bbr
 		;;
 	97)
 		checkSystem
