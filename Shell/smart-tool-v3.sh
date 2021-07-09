@@ -597,9 +597,10 @@ function mkdirTools() {
 	mkdir -p /etc/fuckGFW/mtg
 	mkdir -p /etc/fuckGFW/subscribe
 	mkdir -p /etc/fuckGFW/subscribe_tmp
+	mkdir -p /etc/fuckGFW/nginx/conf
 	mkdir -p /etc/fuckGFW/v2ray/conf
 	mkdir -p /etc/fuckGFW/xray/conf
-	mkdir -p /etc/fuckGFW/trojan
+	mkdir -p /etc/fuckGFW/trojan-go/conf
 	mkdir -p /etc/systemd/system/
 	mkdir -p /tmp/fuckGFW-tls/
 
@@ -645,147 +646,7 @@ function turn_off_selinux () {
 # 更新Trojan-Go
 # 操作Trojan-Go
 # 清理旧残留
-#-----------------------------------------------------------------------------#
 # 安装工具包
-function installTools() {
-	echo '安装工具'
-	echoContent skyBlue "\n进度  $1/${totalProgress} : 安装工具"
-	# 修复ubuntu个别系统问题
-	if [[ "${release}" == "ubuntu" ]]; then
-		dpkg --configure -a
-	fi
-
-	if [[ -n $(pgrep -f "apt") ]]; then
-		pgrep -f apt | xargs kill -9
-	fi
-
-	echoContent green " ---> 检查、安装更新【新机器会很慢，如长时间无反应，请手动停止后重新执行】"
-
-	${upgrade} >/dev/null 2>&1
-	if [[ "${release}" == "centos" ]]; then
-		rm -rf /var/run/yum.pid
-		${installType} epel-release >/dev/null 2>&1
-	fi
-
-	#	[[ -z `find /usr/bin /usr/sbin |grep -v grep|grep -w curl` ]]
-
-	if ! find /usr/bin /usr/sbin | grep -q -w wget; then
-		echoContent green " ---> 安装wget"
-		${installType} wget >/dev/null 2>&1
-	fi
-
-	if ! find /usr/bin /usr/sbin | grep -q -w curl; then
-		echoContent green " ---> 安装curl"
-		${installType} curl >/dev/null 2>&1
-	fi
-
-	if ! find /usr/bin /usr/sbin | grep -q -w unzip; then
-		echoContent green " ---> 安装unzip"
-		${installType} unzip >/dev/null 2>&1
-	fi
-
-	if ! find /usr/bin /usr/sbin | grep -q -w socat; then
-		echoContent green " ---> 安装socat"
-		${installType} socat >/dev/null 2>&1
-	fi
-
-	if ! find /usr/bin /usr/sbin | grep -q -w tar; then
-		echoContent green " ---> 安装tar"
-		${installType} tar >/dev/null 2>&1
-	fi
-
-	if ! find /usr/bin /usr/sbin | grep -q -w cron; then
-		echoContent green " ---> 安装crontabs"
-		if [[ "${release}" == "ubuntu" ]] || [[ "${release}" == "debian" ]]; then
-			${installType} cron >/dev/null 2>&1
-		else
-			${installType} crontabs >/dev/null 2>&1
-		fi
-	fi
-	if ! find /usr/bin /usr/sbin | grep -q -w jq; then
-		echoContent green " ---> 安装jq"
-		${installType} jq >/dev/null 2>&1
-	fi
-
-	if ! find /usr/bin /usr/sbin | grep -q -w binutils; then
-		echoContent green " ---> 安装binutils"
-		${installType} binutils >/dev/null 2>&1
-	fi
-
-	if ! find /usr/bin /usr/sbin | grep -q -w ping6; then
-		echoContent green " ---> 安装ping6"
-		${installType} inetutils-ping >/dev/null 2>&1
-	fi
-
-	if ! find /usr/bin /usr/sbin | grep -q -w qrencode; then
-		echoContent green " ---> 安装qrencode"
-		${installType} qrencode >/dev/null 2>&1
-	fi
-
-    if ! find /usr/bin /usr/sbin | grep -q -w sudo; then
-		echoContent green " ---> 安装sudo"
-		${installType} sudo >/dev/null 2>&1
-	fi
-
-	if ! find /usr/bin /usr/sbin | grep -q -w lsb-release; then
-		echoContent green " ---> 安装lsb-release"
-		${installType} lsb-release >/dev/null 2>&1
-	fi
-
-	# 检测nginx版本，并提供是否卸载的选项
-
-	if ! find /usr/bin /usr/sbin | grep -q -w nginx; then
-		echoContent green " ---> 安装nginx"
-		installNginxTools
-	else
-		nginxVersion=$(nginx -v 2>&1)
-		nginxVersion=$(echo "${nginxVersion}" | awk -F "[n][g][i][n][x][/]" '{print $2}' | awk -F "[.]" '{print $2}')
-		if [[ ${nginxVersion} -lt 14 ]]; then
-			read -r -p "读取到当前的Nginx版本不支持gRPC，会导致安装失败，是否卸载Nginx后重新安装 ？[y/n]:" unInstallNginxStatus
-			if [[ "${unInstallNginxStatus}" == "y" ]]; then
-				${removeType} nginx >/dev/null 2>&1
-				echoContent yellow " ---> nginx卸载完成"
-				echoContent green " ---> 安装nginx"
-				installNginxTools >/dev/null 2>&1
-			else
-				exit 0
-			fi
-		fi
-	fi
-	if ! find /usr/bin /usr/sbin | grep -q -w semanage; then
-		echoContent green " ---> 安装semanage"
-		${installType} bash-completion >/dev/null 2>&1
-
-		if [[ "${centosVersion}" == "7" ]]; then
-			policyCoreUtils="policycoreutils-python.x86_64"
-		elif [[ "${centosVersion}" == "8" ]]; then
-			policyCoreUtils="policycoreutils-python-utils-2.9-9.el8.noarch"
-		fi
-
-		if [[ -n "${policyCoreUtils}" ]]; then
-			${installType} ${policyCoreUtils} >/dev/null 2>&1
-		fi
-		if [[ -n $(which semanage) ]]; then
-			semanage port -a -t http_port_t -p tcp 31300
-
-		fi
-	fi
-
-	# todo 关闭防火墙
-
-	if [[ ! -d "$HOME/.acme.sh" ]] || [[ -d "$HOME/.acme.sh" && -z $(find "$HOME/.acme.sh/acme.sh") ]]; then
-		echoContent green " ---> 安装acme.sh"
-		curl -s https://get.acme.sh | sh -s email=my@example.com >/etc/v2ray-agent/tls/acme.log 2>&1
-		if [[ ! -d "$HOME/.acme.sh" ]] || [[ -z $(find "$HOME/.acme.sh/acme.sh") ]]; then
-			echoContent red "  acme安装失败--->"
-			tail -n 100 /etc/v2ray-agent/tls/acme.log
-			echoContent yellow "错误排查："
-			echoContent red "  1.获取Github文件失败，请等待Gitub恢复后尝试，恢复进度可查看 [https://www.githubstatus.com/]"
-			echoContent red "  2.acme.sh脚本出现bug，可查看[https://github.com/acmesh-official/acme.sh] issues"
-			exit 0
-		fi
-	fi
-}
 #-----------------------------------------------------------------------------#
 # 定时任务检查证书
 cronRenewTLS() {
@@ -794,13 +655,20 @@ cronRenewTLS() {
 		exit 0
 	fi
 }
+
+function generate_conf {
+	# /etc/fuckGFW/nginx/conf
+	# /etc/fuckGFW/v2ray/conf
+	# /etc/fuckGFW/xray/conf
+	# /etc/fuckGFW/trojan-go/conf
+}
 #-----------------------------------------------------------------------------#
 # 主菜单
 function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=============================================================="
-	echoContent green "SmartTool：v0.067"
+	echoContent green "SmartTool：v0.068"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "初始化服务器、安装Docker、执行容器"
 	echoContent green "当前系统Linux版本 : \c" 
@@ -821,6 +689,10 @@ function menu() {
 	echoContent yellow "31.docker-compose up"
 	echoContent yellow "32.docker-compose down"
 	echoContent yellow "33.docker status"
+	echoContent skyBlue "-------------------------配置文件-----------------------------"
+	echoContent yellow "35.generate nginx conf"
+	echoContent yellow "36.generate xray conf"
+	echoContent yellow "37.generate trojan-go conf"
 	echoContent skyBlue "-------------------------证书管理-----------------------------"
 	echoContent yellow "41.generate CA | 42.show CA | 43.renew CA"	
 	echoContent skyBlue "-------------------------科学上网-----------------------------"
