@@ -451,23 +451,25 @@ function echoContent() {
 #-----------------------------------------------------------------------------#
 # Generate CA
 function generate_ca () {
-	local DomainName
-	print_info "---> 生成网站证书"
+	print_info "默认域名: $currentHost"	
+	local tempDomainName
 	show_ip
-	read -r -p "请输入与本服务器绑定IP的域名地址: " DomainName
-	if [ $DomainName ]; then
-		print_info "----- 网站证书 ----"
-		sh /root/.acme.sh/acme.sh  --issue  -d $DomainName --standalone --force
-		print_info "----- 网站证书 ----"
+	read -r -p "如与默认域名不一致，请输入与本服务器绑定IP的新域名: " tempDomainName
+	if [ $tempDomainName ]; then
+		print_info "----- 新域名证书 ----"
+		sh /root/.acme.sh/acme.sh  --issue  -d $tempDomainName --standalone --force
+		print_info "----- 新域名证书 ----"
+		print_info "----- 保存新域名证书到 /etc/fuckGFW/tls ----"
+		cp -pf $HOME/.acme.sh/$tempDomainName/*.* /etc/fuckGFW/tls/
 	else
-		print_error "未输入域名，退出本程序"
-		exit 0
+		print_error "未输入域名，使用默认域名: $currentHost"
+		print_info "----- 默认域名证书 ----"
+		sh /root/.acme.sh/acme.sh  --issue  -d $currentHost --standalone --force
+		print_info "----- 默认域名证书 ----"
+		print_info "----- 保存默认域名证书到 /etc/fuckGFW/tls ----"
+		cp -pf $HOME/.acme.sh/$currentHost/*.* /etc/fuckGFW/tls/
 	fi
-
 	judge "生成网站证书 "
-	print_info "----- 保存证书到 /etc/fuckGFW/tls ----"
-	cp -pf $HOME/.acme.sh/$currentHost/*.* /etc/fuckGFW/tls/
-
 }
 #-----------------------------------------------------------------------------#
 # 更新证书
@@ -507,17 +509,7 @@ function renewalTLS() {
 #-----------------------------------------------------------------------------#
 # 查看TLS证书的状态
 function checkTLStatus() {
-
-#	local DomainName
-#	read -r -p "请输入查询域名地址: " DomainName
-#	if ["${DomainName}"]; then
-#		sh /root/.acme.sh/acme.sh  --issue  -d $DomainName --standalone --force
-#	else
-#		print_error "未输入域名，退出本程序"
-#		exit 0
-#	fi
-
-	print_info "网站地址: ${currentHost}"
+	print_info "当前域名: ${currentHost}"
 	if [[ -n "$1" ]]; then
 		if [[ -d "$HOME/.acme.sh/$1" ]] && [[ -f "$HOME/.acme.sh/$1/$1.key" ]] && [[ -f "$HOME/.acme.sh/$1/$1.cer" ]]; then
 			modifyTime=$(stat $HOME/.acme.sh/$1/$1.key | sed -n '7,6p' | awk '{print $2" "$3" "$4" "$5}')
