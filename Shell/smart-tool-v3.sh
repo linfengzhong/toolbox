@@ -136,7 +136,7 @@ function generate_ca () {
 	print_info "----- 网站证书 ----"
 	show_ip
 	read -r -p "请输入与本服务器绑定IP的域名地址: " DomainName
-	if ["${DomainName}"]; then
+	if [[ -n $DomainName]]; then
 		sh /root/.acme.sh/acme.sh  --issue  -d $DomainName --standalone --force
 	else
 		print_error "未输入域名，退出本程序"
@@ -1864,7 +1864,7 @@ function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=============================================================="
-	echoContent green "SmartTool：v0.057"
+	echoContent green "SmartTool：v0.058"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "初始化服务器、安装Docker、执行容器"
 	echoContent green "当前系统Linux版本 : \c" 
