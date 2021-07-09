@@ -5,17 +5,23 @@
 # 2021-June-25 [Add new functions] - Stop/Start docker-compose
 #-----------------------------------------------------------------------------#
 #-----------------------------------------------------------------------------#
+#===== RHEL 7/8 | CentOS 7/8 | Rocky Linux 8 =====
+#-----------------------------------------------------------------------------#
+#-----------------------------------------------------------------------------#
 # 初始化全局变量
 export LANG=en_US.UTF-8
 function initVar() {
 
-	#-----------------------------------------------------------------------------#
 	#定义变量
 	WORKDIR="/root/git/toolbox/Docker/docker-compose/k8s-master.ml/"
 	GITHUB_REPO="/root/git/toolbox/"
 	EMAIL="fred.zhong@outlook.com"
+
+	# 网站 域名 配置文件的host
 	WEBSITE="k8s-master.ml"
-	#-----------------------------------------------------------------------------#
+	domain="k8s-master.ml"
+	currentHost="k8s-master.ml"
+
 	#fonts color 字体颜色配置
 	Red="\033[31m"
 	Yellow="\033[33m"
@@ -24,21 +30,17 @@ function initVar() {
 	RedBG="\033[41;37m"
 	GreenBG="\033[42;37m"
 	Font="\033[0m"
-	#-----------------------------------------------------------------------------#
+
 	# Notification information 通知信息
 	# Info="${Green}[Message信息]${Font}"
 	Info="${Green}[Info信息]${Font}"
 	OK="${Green}[OK正常]${Font}"
 	Error="${Red}[ERROR错误]${Font}"
-	#-----------------------------------------------------------------------------#
 	
 	installType='yum -y install'
 	removeType='yum -y remove'
 	upgrade="yum -y update"
 	echoType='echo -e'
-
-	# 域名
-	domain="k8s-master.ml"
 
 	# CDN节点的address
 	add=
@@ -71,9 +73,6 @@ function initVar() {
 
 	# 配置文件的path
 	currentPath=
-
-	# 配置文件的host
-	currentHost="k8s-master.ml"
 
 	# 安装时选择的core类型
 	selectCoreType=
@@ -123,6 +122,131 @@ function judge() {
 	fi
 }
 #-----------------------------------------------------------------------------#
+# Install acme.sh
+function install_acme () {
+  print_info "Install acme.sh "
+  sudo curl https://get.acme.sh | sh -s email=$EMAIL
+  judge "安装 acme.sh "
+}
+#-----------------------------------------------------------------------------#
+# Generate CA
+function generate_ca () {
+#  local WEBSITE=$1
+  print_info "生成网站证书 "
+  print_info "----- 网站证书 ----"
+  sudo sh /root/.acme.sh/acme.sh  --issue  -d $WEBSITE --standalone --force
+  print_info "----- 网站证书 ----"
+  judge "生成网站证书 "
+}
+#-----------------------------------------------------------------------------#
+# Install Git
+# https://git-scm.com
+function install_git () {
+	print_info "Install Git "
+	sudo yum -y install git
+	judge "Install Git "
+}
+#-----------------------------------------------------------------------------#
+# Install bpytop
+# https://github.com/aristocratos/bpytop
+# PyPi (will always have latest version)
+# Install or update to latest version
+function install_bpytop () {
+	print_info "Install Prerequisites for Python3 "
+	sudo yum -y install gcc libffi-devel python3-devel \
+                    openssl-devel \
+                    automake autoconf libtool make
+	judge "Install Prerequisites for Python3 "
+
+	print_info "Install bpytop "
+	sudo pip3 install bpytop --upgrade
+	judge "1/2 Install bpytop "
+
+	echo 'alias bpytop=/usr/local/bin/bpytop'>>~/.bash_profile
+	source ~/.bash_profile 
+	judge "2/2 添加 bpytop 命令到.bash_profile"
+
+	judge "Install bpytop"
+}
+#-----------------------------------------------------------------------------#
+# Install webmin
+# https://webmin.com
+# https://doxfer.webmin.com/Webmin/Installation
+function install_webmin () {
+	print_info "Install webmin "
+	(echo "[Webmin]
+name=Webmin Distribution Neutral
+baseurl=http://download.webmin.com/download/yum
+enabled=1
+gpgcheck=1
+gpgkey=http://www.webmin.com/jcameron-key.asc" >/etc/yum.repos.d/webmin.repo;)
+	sleep 1
+	sudo yum -y install webmin
+	judge "Install webmin "
+}
+#-----------------------------------------------------------------------------#
+# Install Docker CE
+# https://docs.docker.com/engine/install/centos/
+function install_docker () {
+	print_info "Install Docker CE "
+	sudo yum -y remove docker \
+					docker-client \
+					docker-client-latest \
+					docker-common \
+					docker-latest \
+					docker-latest-logrotate \
+					docker-logrotate \
+					docker-engine
+	judge "1/3 Uninstall old versions of Docker CE "
+	sudo yum -y install yum-utils
+	sudo yum-config-manager \
+			--add-repo \
+			https://download.docker.com/linux/centos/docker-ce.repo
+
+	judge "2/3 Set up the repository for Docker "
+
+	sudo yum -y install docker-ce docker-ce-cli containerd.io
+	sudo systemctl start docker
+	sudo systemctl enable docker
+
+	judge "3/3 Install Docker Engine "
+	judge "Install Docker CE "
+}
+#-----------------------------------------------------------------------------#
+# Install Docker Compose
+# https://docs.docker.com/compose/install/#install-compose
+function install_docker_compose () {
+	print_info "Install docker compose "
+	sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+	sudo chmod +x /usr/local/bin/docker-compose
+	sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+	docker-compose --version
+	judge "Install docker compose "
+}
+#-----------------------------------------------------------------------------#
+# Install Prerequisite
+# 安装必要程序
+function install_prerequisite () {
+	print_info "安装 wget lsof tar unzip curl socat "
+	yum -y install wget lsof tar unzip curl socat
+	judge "安装 wget lsof tar unzip curl socat "
+}
+#-----------------------------------------------------------------------------#
+# 安装BBR
+function install_bbr() {
+	echoContent red "\n=============================================================="
+	echoContent green "BBR、DD脚本用的[ylx2016]的成熟作品，地址[https://github.com/ylx2016/Linux-NetSpeed]，请熟知"
+	echoContent yellow "1.安装脚本【推荐原版BBR+FQ】"
+	echoContent yellow "2.回退主目录"
+	echoContent red "=============================================================="
+	read -r -p "请选择：" installBBRStatus
+	if [[ "${installBBRStatus}" == "1" ]]; then
+		wget -N --no-check-certificate "https://raw.githubusercontent.com/ylx2016/Linux-NetSpeed/master/tcp.sh" && chmod +x tcp.sh && ./tcp.sh
+	else
+		menu
+	fi
+}
+#-----------------------------------------------------------------------------#
 # 清理屏幕
 function cleanScreen() {
 	clear
@@ -157,11 +281,13 @@ function start_docker_compose () {
 #-----------------------------------------------------------------------------#
 # 查看Docker Images
 function show_docker_images () {
+	print_info "查看Docker Images "
 	sudo docker images
 }
 #-----------------------------------------------------------------------------#
 # 列出所有运行的docker container
 function show_docker_container () {
+	print_info "列出所有运行的docker container "
 	sudo docker container ps
 }
 #-----------------------------------------------------------------------------#
@@ -250,7 +376,7 @@ function checkSystem() {
 		installType='yum -y install'
 		removeType='yum -y remove'
 		upgrade="yum update -y --skip-broken"
-		echoContent white "Rocky Linux 8.4"
+		echoContent white "Rocky 8.4"
 
 	elif [[ -n $(find /etc -name "redhat-release") ]] || grep </proc/version -q -i "centos"; then
 		mkdir -p /etc/yum.repos.d
@@ -266,6 +392,7 @@ function checkSystem() {
 		installType='yum -y install'
 		removeType='yum -y remove'
 		upgrade="yum update -y --skip-broken"
+		echoContent white "CentOS 8.4"
 
 	elif grep </etc/issue -q -i "debian" && [[ -f "/etc/issue" ]] || grep </etc/issue -q -i "debian" && [[ -f "/proc/version" ]]; then
 		if grep </etc/issue -i "8"; then
@@ -274,13 +401,13 @@ function checkSystem() {
 		release="debian"
 		installType='apt -y install'
 		upgrade="apt update -y"
-		# removeType='apt -y autoremove'
+		removeType='apt -y autoremove'
 
 	elif grep </etc/issue -q -i "ubuntu" && [[ -f "/etc/issue" ]] || grep </etc/issue -q -i "ubuntu" && [[ -f "/proc/version" ]]; then
 		release="ubuntu"
 		installType='apt-get -y install'
 		upgrade="apt-get update -y"
-		# removeType='apt-get --purge remove'
+		removeType='apt-get --purge remove'
 	fi
 
 	if [[ -z ${release} ]]; then
@@ -413,8 +540,8 @@ function aliasInstall() {
 			chmod 700 /usr/sbin/st
 			rm -rf "$HOME/smart-tool-v3.sh"
 		fi
-		echoContent green "快捷方式创建成功，可执行[st]重新打开脚本"
 	fi
+	echoContent green "快捷方式创建成功，可执行[st]重新打开脚本"
 }
 #-----------------------------------------------------------------------------#
 # 更新脚本
@@ -446,7 +573,6 @@ function updateSmartTool() {
 function mkdirTools() {
 	mkdir -p /etc/smart-tool
 
-
 	mkdir -p /etc/fuckGFW/tls
 	mkdir -p /etc/fuckGFW/mtg
 	mkdir -p /etc/fuckGFW/subscribe
@@ -458,139 +584,7 @@ function mkdirTools() {
 	mkdir -p /tmp/fuckGFW-tls/
 
 }
-#-----------------------------------------------------------------------------#
-# Install acme.sh
-#-----------------------------------------------------------------------------#
-function install_acme () {
-  print_info "Install acme.sh "
-  sudo curl https://get.acme.sh | sh -s email=$EMAIL
-  judge "安装 acme.sh "
-}
-#-----------------------------------------------------------------------------#
-# Generate CA
-#-----------------------------------------------------------------------------#
-function generate_ca () {
-#  local WEBSITE=$1
-  print_info "生成网站证书 "
-  print_info "----- 网站证书 ----"
-  sudo sh /root/.acme.sh/acme.sh  --issue  -d $WEBSITE --standalone --force
-  print_info "----- 网站证书 ----"
-  judge "生成网站证书 "
-}
-#-----------------------------------------------------------------------------#
-# Install Git
-# https://git-scm.com
-#-----------------------------------------------------------------------------#
-function install_git () {
-	print_info "Install Git "
-	sudo yum -y install git
-	judge "Install Git "
-}
-#-----------------------------------------------------------------------------
-# Install bpytop
-# https://github.com/aristocratos/bpytop
-#-----------------------------------------------------------------------------
-#PyPi (will always have latest version)
-#Install or update to latest version
-function install_bpytop () {
-	print_info "Install Prerequisites for Python3 "
-	sudo yum -y install gcc libffi-devel python3-devel \
-                    openssl-devel \
-                    automake autoconf libtool make
-	judge "Install Prerequisites for Python3 "
 
-	print_info "Install bpytop "
-	sudo pip3 install bpytop --upgrade
-	judge "1/2 Install bpytop "
-
-	echo 'alias bpytop=/usr/local/bin/bpytop'>>~/.bash_profile
-	source ~/.bash_profile 
-	judge "2/2 添加 bpytop 命令到.bash_profile"
-
-	judge "Install bpytop"
-}
-#-----------------------------------------------------------------------------#
-# Install webmin
-# https://webmin.com
-# https://doxfer.webmin.com/Webmin/Installation
-#-----------------------------------------------------------------------------#
-function install_webmin () {
-	print_info "Install webmin "
-	(echo "[Webmin]
-name=Webmin Distribution Neutral
-baseurl=http://download.webmin.com/download/yum
-enabled=1
-gpgcheck=1
-gpgkey=http://www.webmin.com/jcameron-key.asc" >/etc/yum.repos.d/webmin.repo;)
-	sleep 1
-	sudo yum -y install webmin
-	judge "Install webmin "
-}
-#-----------------------------------------------------------------------------#
-# Install Docker CE
-# https://docs.docker.com/engine/install/centos/
-#-----------------------------------------------------------------------------#
-function install_docker () {
-	print_info "Install Docker CE "
-	sudo yum -y remove docker \
-					docker-client \
-					docker-client-latest \
-					docker-common \
-					docker-latest \
-					docker-latest-logrotate \
-					docker-logrotate \
-					docker-engine
-	judge "1/3 Uninstall old versions of Docker CE "
-	sudo yum -y install yum-utils
-	sudo yum-config-manager \
-			--add-repo \
-			https://download.docker.com/linux/centos/docker-ce.repo
-
-	judge "2/3 Set up the repository for Docker "
-
-	sudo yum -y install docker-ce docker-ce-cli containerd.io
-	sudo systemctl start docker
-	sudo systemctl enable docker
-
-	judge "3/3 Install Docker Engine "
-	judge "Install Docker CE "
-}
-#-----------------------------------------------------------------------------#
-# Install Docker Compose
-# https://docs.docker.com/compose/install/#install-compose
-#-----------------------------------------------------------------------------#
-function install_docker_compose () {
-	print_info "Install docker compose "
-	sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-	sudo chmod +x /usr/local/bin/docker-compose
-	sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
-	docker-compose --version
-	judge "Install docker compose "
-}
-#-----------------------------------------------------------------------------#
-# Install Prerequisite
-#-----------------------------------------------------------------------------#
-# 安装必要程序
-function install_prerequisite () {
-	print_info "安装 wget lsof tar unzip curl socat "
-	yum -y install wget lsof tar unzip curl socat
-	judge "安装 wget lsof tar unzip curl socat "
-}
-#-----------------------------------------------------------------------------#
-# 安装BBR
-bbrInstall() {
-	echoContent red "\n=============================================================="
-	echoContent green "BBR、DD脚本用的[ylx2016]的成熟作品，地址[https://github.com/ylx2016/Linux-NetSpeed]，请熟知"
-	echoContent yellow "1.安装脚本【推荐原版BBR+FQ】"
-	echoContent yellow "2.回退主目录"
-	echoContent red "=============================================================="
-	read -r -p "请选择：" installBBRStatus
-	if [[ "${installBBRStatus}" == "1" ]]; then
-		wget -N --no-check-certificate "https://raw.githubusercontent.com/ylx2016/Linux-NetSpeed/master/tcp.sh" && chmod +x tcp.sh && ./tcp.sh
-	else
-		menu
-	fi
-}
 #-----------------------------------------------------------------------------#
 # Show IP
 #-----------------------------------------------------------------------------#
@@ -600,8 +594,6 @@ function show_ip () {
 	local zIP=$(curl -s https://ipinfo.io/ip)
 	print_info $zIP
 }
-#-----------------------------------------------------------------------------#
-#===== RHEL 7/8 | CentOS 7/8 | Rocky Linux 8 =====
 #-----------------------------------------------------------------------------#
 # Security-Enhanced Linux
 # This guide is based on SELinux being disabled or in permissive mode. 
@@ -1932,9 +1924,6 @@ function menu() {
 	11)
 		install_prerequisite
 		;;
-	13)
-		bbrInstall
-		;;
 	14)
 		install_acme
 		;;
@@ -1994,7 +1983,7 @@ function menu() {
 		InstallV2rayAgent
 		;;
 	96)
-		bbrInstall
+		install_bbr
 		;;
 	97)
 		checkSystem
