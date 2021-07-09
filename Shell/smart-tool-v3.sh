@@ -18,7 +18,7 @@ function initVar() {
 	EMAIL="fred.zhong@outlook.com"
 
 	# 网站 域名 配置文件的host
-	WEBSITE="k8s-master.ml"
+	# WEBSITE="k8s-master.ml"
 	domain="k8s-master.ml"
 	currentHost="k8s-master.ml"
 
@@ -131,13 +131,20 @@ function install_acme () {
 #-----------------------------------------------------------------------------#
 # Generate CA
 function generate_ca () {
-#  local WEBSITE=$1
-  print_info "生成网站证书 "
-  print_info "----- 网站证书 ----"
-  sudo sh /root/.acme.sh/acme.sh  --issue  -d $WEBSITE --standalone --force
-  print_info "----- 网站证书 ----"
-  judge "生成网站证书 "
-}
+	local DomainName
+	print_info "生成网站证书 "
+	print_info "----- 网站证书 ----"
+	show_ip
+	read -r -p "请输入与本服务器绑定IP的域名地址: " DomainName
+	if ["${DomainName}"]; then
+		sh /root/.acme.sh/acme.sh  --issue  -d $DomainName --standalone --force
+	else
+		print_error "未输入域名，退出本程序"
+		exit 0
+	fi
+	print_info "----- 网站证书 ----"
+	judge "生成网站证书 "
+	}
 #-----------------------------------------------------------------------------#
 # Install Git
 # https://git-scm.com
@@ -1859,9 +1866,8 @@ function menu() {
 	echoContent yellow "14.安装 acme.sh"
 	echoContent yellow "15.安装 bpytop"
 	echoContent yellow "16.安装 Webmin"
-	echoContent yellow "17.安装 Docker CE"
-	echoContent yellow "18.安装 Docker compose"
-	echoContent yellow "19.安装 Git"
+	echoContent yellow "17.安装 Docker CE & docker compose"
+	echoContent yellow "18.安装 Git"
 	echoContent skyBlue "-------------------------版本控制-----------------------------"  
 	echoContent yellow "20.git init | 21.git clone | 22.git pull | 23.git push"
 	echoContent skyBlue "-------------------------容器相关-----------------------------"
@@ -1932,11 +1938,9 @@ function menu() {
 		;;
 	17)
 		install_docker
-		;;
-	18)
 		install_docker_compose
 		;;
-	19)
+	18)
 		install_git
 		;;	
 	20)
