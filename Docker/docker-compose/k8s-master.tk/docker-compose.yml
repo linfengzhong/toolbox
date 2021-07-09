@@ -40,7 +40,7 @@ services:
         volumes: 
             #- ./nginx/conf.d:/etc/nginx/conf.d
             - /etc/fuckGFW/nginx/conf.d/:/etc/nginx/conf.d
-            - ./nginx/html:/usr/share/nginx/html
+            - /etc/fuckGFW/website/html:/usr/share/nginx/html
             - ./nginx/error.log:/var/log/nginx/error.log
             - ./nginx/access.log:/var/log/nginx/access.log
         networks: 
