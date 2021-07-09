@@ -132,7 +132,7 @@ function install_acme () {
 # Generate CA
 function generate_ca () {
 	local DomainName
-	print_info "--> 生成网站证书 "
+	print_info "---> 生成网站证书"
 	print_info "----- 网站证书 ----"
 	show_ip
 	read -r -p "请输入与本服务器绑定IP的域名地址: " DomainName
