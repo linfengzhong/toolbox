@@ -732,7 +732,7 @@ function generate_xray_conf {
             "id": ${currentUUID},
             "add": ${currentHost},
             "flow": "xtls-rprx-direct",
-            "email": "${currentUUID}_VLESS_XTLS/TLS-direct_TCP"
+            "email": "${currentHost}_VLESS_XTLS/TLS-direct_TCP"
           }
         ],
         "decryption": "none",
@@ -759,8 +759,8 @@ function generate_xray_conf {
           ],
           "certificates": [
             {
-              "certificateFile": "/etc/xray/k8s-master.ml/fullchain.cer",
-              "keyFile": "/etc/xray/k8s-master.ml/k8s-master.ml.key",
+              "certificateFile": "/etc/xray/${currentHost}/fullchain.cer",
+              "keyFile": "/etc/xray/${currentHost}/${currentHost}.key",
               "ocspStapling": 3600,
               "usage": "encipherment"
             }
@@ -777,7 +777,7 @@ function generate_xray_conf {
         "clients": [
           {
             "id": ${currentUUID},
-            "email": "k8s-master.ml_vless_ws"
+            "email": "${currentHost}_vless_ws"
           }
         ],
         "decryption": "none"
@@ -813,6 +813,49 @@ EOF
 	judge "生成 xray 配置文件 "
 
 }
+#-----------------------------------------------------------------------------#
+# 生成 trojan-go 配置文件
+function generate_trojan_go_conf {
+	# /etc/fuckGFW/trojan-go/conf
+	print_info "生成 trojan-go 配置文件 "
+	print_info "/etc/fuckGFW/trojan-go/config.json"
+
+	cat <<EOF >/etc/fuckGFW/trojan-go/config.json
+{
+    "run_type": "server",
+    "local_addr": "trojan-go",
+    "local_port": 31296,
+    "remote_addr": "nginx",
+    "remote_port": 31300,
+    "disable_http_check":true,
+    "log_level":3,
+    "log_file":"/etc/trojan-go/trojan.log",
+    "password": [
+        ${currentUUID}
+    ],
+    "dns":[
+        "localhost"
+    ],
+    "transport_plugin":{
+        "enabled":true,
+        "type":"plaintext"
+    },
+    "websocket": {
+        "enabled": true,
+        "path": "/rrdatws",
+        "host": ${currentHost},
+        "add":${currentHost}
+    },
+    "router": {
+        "enabled": false
+    }
+}
+EOF
+
+	cat /etc/fuckGFW/trojan-go/config.json
+	judge "生成 trojan-go 配置文件 "
+
+}
 
 #-----------------------------------------------------------------------------#
 # 主菜单
@@ -820,7 +863,7 @@ function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=============================================================="
-	echoContent green "SmartTool：v0.070"
+	echoContent green "SmartTool：v0.071"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "初始化服务器、安装Docker、执行容器"
 	echoContent green "当前系统Linux版本 : \c" 
@@ -921,6 +964,9 @@ function menu() {
 		;;
 	36)
 		generate_xray_conf
+		;;
+	37)
+		generate_trojan_go_conf
 		;;
 	41)
 		generate_ca
