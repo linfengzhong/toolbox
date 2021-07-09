@@ -661,6 +661,7 @@ function generate_conf {
 	# /etc/fuckGFW/v2ray/conf
 	# /etc/fuckGFW/xray/conf
 	# /etc/fuckGFW/trojan-go/conf
+	clear
 }
 #-----------------------------------------------------------------------------#
 # 主菜单
