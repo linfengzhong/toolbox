@@ -132,9 +132,9 @@ function install_acme () {
 # Generate CA
 function generate_ca () {
 	local DomainName
-	print_info "生成网站证书 "
+	print_info "--> 生成网站证书 "
 	print_info "----- 网站证书 ----"
-#	show_ip
+	show_ip
 	read -r -p "请输入与本服务器绑定IP的域名地址: " DomainName
 	if [ $DomainName ]; then
 		sh /root/.acme.sh/acme.sh  --issue  -d $DomainName --standalone --force
@@ -1863,7 +1863,7 @@ function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=============================================================="
-	echoContent green "SmartTool：v0.060"
+	echoContent green "SmartTool：v0.061"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "初始化服务器、安装Docker、执行容器"
 	echoContent green "当前系统Linux版本 : \c" 
