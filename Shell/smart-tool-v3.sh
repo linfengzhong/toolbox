@@ -19,7 +19,8 @@ function initVar() {
 
 	#定义变量
 	WORKDIR="/root/git/toolbox/Docker/docker-compose/${currentHost}/"
-	GITHUB_REPO="/root/git/toolbox/"
+	GITHUB_REPO_TOOLBOX="/root/git/toolbox/"
+	GITHUB_REPO_LOGSERVER="/root/git/logserver/"
 	EMAIL="fred.zhong@outlook.com"
 
 	#fonts color 字体颜色配置
@@ -313,7 +314,7 @@ function git_init () {
 }
 #-----------------------------------------------------------------------------#
 # Git clone toolbox.git
-function git_clone_tool_box () {
+function git_clone_toolbox () {
 	print_info "Git clone ToolBox "
 	cd  $HOME/git/
 	git clone git@github.com:linfengzhong/toolbox.git
@@ -321,9 +322,9 @@ function git_clone_tool_box () {
 }
 #-----------------------------------------------------------------------------#
 # 同步下载Git文件夹
-function github_pull () {
+function github_pull_toolbox () {
 	print_info "更新同步 下载GitHub文件 -> Local Github Repo "
-	cd $GITHUB_REPO
+	cd $GITHUB_REPO_TOOLBOX
 	# 查询git repo状态
 	sudo git status
 	# 暂存未提交的变更 可用来暂存当前正在进行的工作
@@ -343,9 +344,9 @@ function github_pull () {
 }
 #-----------------------------------------------------------------------------#
 # 同步上传Git文件夹
-function github_push () {
+function github_push_toolbox () {
 	print_info "更新同步 上传Local Github Repo -> GitHub文件 "
-	cd $GITHUB_REPO
+	cd $GITHUB_REPO_TOOLBOX
 	# 查询git repo状态
 	sudo git status
 	# 从Git栈中读取最近一次保存的内容
@@ -362,9 +363,42 @@ function github_push () {
 	#sudo chown -R root:root ~/k8s-master.ml/
 }
 #-----------------------------------------------------------------------------#
+# Git clone logserver.git
+function git_clone_logserver () {
+	print_info "Git clone logserver "
+	cd  $HOME/git/
+	git clone git@github.com:linfengzhong/logserver.git
+	judge "Git clone logserver "
+}
+#-----------------------------------------------------------------------------#
+# 同步下载Git文件夹
+function github_pull_logserver () {
+	print_info "更新同步 下载GitHub文件 -> Local Github Repo "
+	cd $GITHUB_REPO_LOGSERVER
+	# 查询git repo状态
+	sudo git status
+	# Commit
+	sudo git commit -am "update logs"
+	# 抽取数据
+	sudo git pull
+	judge "更新同步 下载GitHub文件 -> Local Github Repo "
+}
+#-----------------------------------------------------------------------------#
+# 同步上传Git文件夹
+function github_push_logserver () {
+	print_info "更新同步 上传Local Github Repo -> GitHub文件 "
+	cd $GITHUB_REPO_LOGSERVER
+	# 查询git repo状态
+	sudo git status
+
+	sudo git add .
+	sudo git commit -m "sync_all_config_log_data"
+	sudo git push
+	judge "更新同步 上传Local Github Repo -> GitHub文件 "
+}
+#-----------------------------------------------------------------------------#
 # 检查系统
 function checkSystem() {
-
 	if [[ -n $(find /etc -name "rocky-release") ]] || grep </proc/version -q -i "rockylinux"; then
 		mkdir -p /etc/yum.repos.d
 
@@ -379,7 +413,7 @@ function checkSystem() {
 		installType='yum -y install'
 		removeType='yum -y remove'
 		upgrade="yum update -y --skip-broken"
-		echoContent white "Rocky 8.4"
+		echoContent white "Rocky Linux release 8.4 (Green Obsidian)"
 
 	elif [[ -n $(find /etc -name "redhat-release") ]] || grep </proc/version -q -i "centos"; then
 		mkdir -p /etc/yum.repos.d
@@ -872,7 +906,7 @@ function generate_fake_website {
 #	https://raw.githubusercontent.com/linfengzhong/toolbox/main/Website/html4.zip
 #	https://raw.githubusercontent.com/linfengzhong/toolbox/main/Website/html5.zip
 #	https://raw.githubusercontent.com/linfengzhong/toolbox/main/Website/html5.zip
-	print_info "随机添加伪装站点 "
+	print_info "添加随机伪装站点 "
 	if [[ -d "/etc/fuckGFW/website/html" && -f "/etc/fuckGFW/website/html/check" ]]; then
 		echo
 		read -r -p "检测到安装伪装站点，是否需要重新安装[y/n]：" nginxBlogInstallStatus
@@ -892,7 +926,15 @@ function generate_fake_website {
 		rm -f /etc/fuckGFW/website/html${randomNum}.zip*
 		echoContent green " ---> 添加伪装站点成功"
 	fi
-	judge "随机添加伪装站点  "	
+	judge "添加随机伪装站点  "	
+}
+#-----------------------------------------------------------------------------#
+# Upload logs & configuration & dynamic data
+function upload_logs_configuration_dynamic_data () {
+	print_info "更新日志、配置文件、动态数据到GitHub "
+	github_pull_logserver
+	github_push_logserver
+	judge "更新日志、配置文件、动态数据到GitHub "	
 }
 #-----------------------------------------------------------------------------#
 # 主菜单
@@ -900,7 +942,7 @@ function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=============================================================="
-	echoContent green "SmartTool：v0.077"
+	echoContent green "SmartTool：v0.08"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "初始化服务器、安装Docker、执行容器"
 	echoContent green "当前系统Linux版本 : \c" 
@@ -922,7 +964,9 @@ function menu() {
 	echoContent yellow "32.docker-compose down"
 	echoContent yellow "33.docker status"
 	echoContent yellow "35.generate Nginx Xray Trojan-go config"
-	echoContent yellow "36.随机添加伪装站点"
+	echoContent yellow "36.添加随机伪装站点"
+	echoContent yellow "37.初始化logserver"
+	echoContent yellow "38.更新日志、配置文件、动态数据到GitHub"
 	echoContent skyBlue "-------------------------证书管理-----------------------------"
 	echoContent yellow "41.generate CA | 42.show CA | 43.renew CA"	
 	echoContent skyBlue "-------------------------科学上网-----------------------------"
@@ -971,18 +1015,18 @@ function menu() {
 		git_init
 		;;
 	21)
-		git_clone_tool_box
+		git_clone_toolbox
 		;;
 	22)
-		github_pull
+		github_pull_toolbox
 		;;
 	23)
-		github_push
+		github_push_toolbox
 		;;
 	30)
 		shutdown_docker_compose
-		github_pull
-		github_push
+		github_pull_toolbox
+		github_push_toolbox
 		start_docker_compose
 		;;
 	31)
@@ -1002,6 +1046,12 @@ function menu() {
 		;;
 	36)
 		generate_fake_website
+		;;
+	37)
+		git_clone_logserver
+		;;
+	38)
+		upload_logs_configuration_dynamic_data
 		;;
 	41)
 		generate_ca
