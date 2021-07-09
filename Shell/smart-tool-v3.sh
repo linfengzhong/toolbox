@@ -498,6 +498,16 @@ renewalTLS() {
 #-----------------------------------------------------------------------------#
 # 查看TLS证书的状态
 function checkTLStatus() {
+
+#	local DomainName
+#	read -r -p "请输入查询域名地址: " DomainName
+#	if ["${DomainName}"]; then
+#		sh /root/.acme.sh/acme.sh  --issue  -d $DomainName --standalone --force
+#	else
+#		print_error "未输入域名，退出本程序"
+#		exit 0
+#	fi
+
 	print_info "网站地址: ${domain}"
 	if [[ -n "$1" ]]; then
 		if [[ -d "$HOME/.acme.sh/$1" ]] && [[ -f "$HOME/.acme.sh/$1/$1.key" ]] && [[ -f "$HOME/.acme.sh/$1/$1.cer" ]]; then
