@@ -257,6 +257,10 @@ function InstallV2rayAgent {
 	print_info "安装 v2ray-agent "
 	wget -P /root -N --no-check-certificate "https://raw.githubusercontent.com/mack-a/v2ray-agent/master/install.sh" && chmod 700 /root/install.sh
 	judge "安装 v2ray-agent "
+
+	print_info "运行 v2ray-agent "
+	sleep 3
+	sh install.sh
 }
 #-----------------------------------------------------------------------------#
 # 清理屏幕
@@ -796,7 +800,7 @@ function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=============================================================="
-	echoContent green "SmartTool：v0.064"
+	echoContent green "SmartTool：v0.065"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "初始化服务器、安装Docker、执行容器"
 	echoContent green "当前系统Linux版本 : \c" 
