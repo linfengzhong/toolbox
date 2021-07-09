@@ -749,14 +749,22 @@ EOF
 # 生成 xray 配置文件
 function generate_xray_conf {
 	# /etc/fuckGFW/xray
+	# error 日志的级别, 指示 error 日志需要记录的信息. 默认值为 "warning"。
+	#	"debug"：调试程序时用到的输出信息。同时包含所有 "info" 内容。
+	#	"info"：运行时的状态信息等，不影响正常使用。同时包含所有 "warning" 内容。
+	#	"warning"：发生了一些并不影响正常运行的问题时输出的信息，但有可能影响用户的体验。同时包含所有 "error" 内容。
+	#	"error"：Xray 遇到了无法正常运行的问题，需要立即解决。
+	#	"none"：不记录任何内容。
+
 	print_info "生成 xray 配置文件 "
 	print_info "/etc/fuckGFW/xray/config.json"
 
 	cat <<EOF >/etc/fuckGFW/xray/config.json
 {
   "log": {
+	"access": "/etc/xray/access.log",
     "error": "/etc/xray/xray.log",
-    "loglevel": "warning"
+    "loglevel": "debug"
   },
 
   "inbounds": [
@@ -857,6 +865,14 @@ EOF
 # 生成 trojan-go 配置文件
 function generate_trojan_go_conf {
 	# /etc/fuckGFW/trojan-go
+	# log_level指定日志等级。等级越高，输出的信息越少。合法的值有
+	#	0 输出Debug以上日志（所有日志）
+	#	1 输出Info及以上日志
+	#	2 输出Warning及以上日志
+	#	3 输出Error及以上日志
+	#	4 输出Fatal及以上日志
+	#	5 完全不输出日志
+
 	print_info "生成 trojan-go 配置文件 "
 	print_info "/etc/fuckGFW/trojan-go/config.json"
 
@@ -868,7 +884,7 @@ function generate_trojan_go_conf {
     "remote_addr": "nginx",
     "remote_port": 31300,
     "disable_http_check":true,
-    "log_level":3,
+    "log_level":0,
     "log_file":"/etc/trojan-go/trojan.log",
     "password": [
         "${currentUUID}"
