@@ -460,14 +460,16 @@ function generate_ca () {
 		sh /root/.acme.sh/acme.sh  --issue  -d $tempDomainName --standalone --force
 		print_info "----- 新域名证书 ----"
 		print_info "----- 保存新域名证书到 /etc/fuckGFW/tls ----"
-		cp -pf $HOME/.acme.sh/$tempDomainName/*.* /etc/fuckGFW/tls/
+		cp -pf $HOME/.acme.sh/$tempDomainName/*.cer /etc/fuckGFW/tls/
+		cp -pf $HOME/.acme.sh/$tempDomainName/*.key /etc/fuckGFW/tls/
 	else
 		print_error "未输入域名，使用默认域名: $currentHost"
 		print_info "----- 默认域名证书 ----"
 		sh /root/.acme.sh/acme.sh  --issue  -d $currentHost --standalone --force
 		print_info "----- 默认域名证书 ----"
 		print_info "----- 保存默认域名证书到 /etc/fuckGFW/tls ----"
-		cp -pf $HOME/.acme.sh/$currentHost/*.* /etc/fuckGFW/tls/
+		cp -pf $HOME/.acme.sh/$currentHost/*.cer /etc/fuckGFW/tls/
+		cp -pf $HOME/.acme.sh/$currentHost/*.key /etc/fuckGFW/tls/
 	fi
 	judge "生成网站证书 "
 }
