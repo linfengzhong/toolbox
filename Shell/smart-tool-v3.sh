@@ -613,6 +613,12 @@ function show_ip () {
 	print_info "服务器外部 IP: $zIP "
 }
 #-----------------------------------------------------------------------------#
+# Generate UUID
+function generate_uuid () {
+	local zUUID=$(cat /proc/sys/kernel/random/uuid)
+	print_info "随机生成 UUID: $zUUID "
+}
+#-----------------------------------------------------------------------------#
 # Security-Enhanced Linux
 # This guide is based on SELinux being disabled or in permissive mode. 
 # Steps to do this are as follows.
@@ -863,7 +869,7 @@ function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=============================================================="
-	echoContent green "SmartTool：v0.072"
+	echoContent green "SmartTool：v0.073"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "初始化服务器、安装Docker、执行容器"
 	echoContent green "当前系统Linux版本 : \c" 
@@ -895,6 +901,7 @@ function menu() {
 	echoContent yellow "51.安装 BBR"
 	echoContent skyBlue "-------------------------脚本管理-----------------------------"
 	echoContent yellow "00.更新脚本"
+	echoContent yellow "96.generate UUID"	
 	echoContent yellow "97.show IP"	
 	echoContent yellow "98.bpytop"
 	echoContent yellow "99.退出"
@@ -985,6 +992,9 @@ function menu() {
 		;;
 	00)
 		updateSmartTool 1
+		;;
+	96)
+		generate_uuid
 		;;
 	97)
 		show_ip
