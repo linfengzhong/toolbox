@@ -11,15 +11,18 @@
 export LANG=en_US.UTF-8
 function initVar() {
 
-	#定义变量
-	WORKDIR="/root/git/toolbox/Docker/docker-compose/k8s-master.ml/"
-	GITHUB_REPO="/root/git/toolbox/"
-	EMAIL="fred.zhong@outlook.com"
-
 	# 网站 域名 配置文件的host
 	# WEBSITE="k8s-master.ml"
 	# domain="k8s-master.tk"
 	currentHost="k8s-master.tk"
+
+	# UUID
+	currentUUID="d8206743-b292-43d1-8200-5606238a5abb"
+
+	#定义变量
+	WORKDIR="/root/git/toolbox/Docker/docker-compose/${currentHost}/"
+	GITHUB_REPO="/root/git/toolbox/"
+	EMAIL="fred.zhong@outlook.com"
 
 	#fonts color 字体颜色配置
 	Red="\033[31m"
@@ -84,9 +87,6 @@ function initVar() {
 
 	# centos version
 	centosVersion=
-
-	# UUID
-	currentUUID=
 
 	# pingIPv6 pingIPv4
 	# pingIPv4=
@@ -599,7 +599,7 @@ function mkdirTools() {
 	mkdir -p /etc/fuckGFW/subscribe_tmp
 	mkdir -p /etc/fuckGFW/nginx/conf.d
 	mkdir -p /etc/fuckGFW/v2ray/conf
-	mkdir -p /etc/fuckGFW/xray/conf
+	mkdir -p /etc/fuckGFW/xray/${currentHost}
 	mkdir -p /etc/fuckGFW/trojan-go/conf
 	mkdir -p /etc/systemd/system/
 	mkdir -p /tmp/fuckGFW-tls/
@@ -608,8 +608,6 @@ function mkdirTools() {
 
 #-----------------------------------------------------------------------------#
 # Show IP
-#-----------------------------------------------------------------------------#
-# 外部IP
 function show_ip () {
 	local zIP=$(curl -s https://ipinfo.io/ip)
 	print_info "服务器外部 IP: $zIP "
@@ -618,7 +616,6 @@ function show_ip () {
 # Security-Enhanced Linux
 # This guide is based on SELinux being disabled or in permissive mode. 
 # Steps to do this are as follows.
-#-----------------------------------------------------------------------------#
 function turn_off_selinux () {
   print_info "开始配置 Linux Rocky 8.4 / CentOS 8 服务器"
   sed -i 's/SELINUX=.*/SELINUX=disabled/g' /etc/selinux/config
@@ -655,7 +652,8 @@ cronRenewTLS() {
 		exit 0
 	fi
 }
-
+#-----------------------------------------------------------------------------#
+# 生成 Nginx 配置文件
 function generate_nginx_conf {
 	# /etc/fuckGFW/nginx/conf
 	# /etc/fuckGFW/v2ray/conf
@@ -665,53 +663,164 @@ function generate_nginx_conf {
 	print_info "/etc/fuckGFW/nginx/conf.d/${currentHost}.conf"
 
 	cat <<EOF >/etc/fuckGFW/nginx/conf.d/${currentHost}.conf
-    server {
-        listen 80;
-        server_name ${currentHost};
-        return 301 https://${currentHost};
+server {
+    listen 80;
+    server_name ${currentHost};
+    return 301 https://${currentHost};
+}
+
+server {
+    listen 31300;
+    server_name ${currentHost};
+    root /usr/share/nginx/html;
+
+    location / {
+        add_header Strict-Transport-Security "max-age=63072000" always;
     }
-    server {
-        listen 31300;
-        server_name ${currentHost};
-        root /usr/share/nginx/html;
 
-        location / {
-            add_header Strict-Transport-Security "max-age=63072000" always;
-        }
+    location /portainer/ {
+        proxy_pass http://portainer:9000/;
+    }
 
-        location /portainer/ {
-            proxy_pass http://portainer:9000/;
-        }
+    location /httpd/ {
+        proxy_pass http://httpd:80/;
+    }
 
-        location /httpd/ {
-            proxy_pass http://httpd:80/;
-        }
+    location /grafana/ {
+        proxy_pass http://grafana:3000/;
+    }
 
-        location /grafana/ {
-            proxy_pass http://grafana:3000/;
-        }
-
-        location /adminer/ {
-            proxy_pass http://adminer:8080/;
-        }
+    location /adminer/ {
+        proxy_pass http://adminer:8080/;
+    }
         
-        location /gitea/ {
-            proxy_pass http://gitea:3000/;
-        }
-
+    location /gitea/ {
+        proxy_pass http://gitea:3000/;
     }
+}
 EOF
 	cat /etc/fuckGFW/nginx/conf.d/${currentHost}.conf
 	judge "生成 NGINX 配置文件 "
 
 }
+
+#-----------------------------------------------------------------------------#
+# 生成 xray 配置文件
+function generate_xray_conf {
+	# /etc/fuckGFW/nginx/conf
+	# /etc/fuckGFW/v2ray/conf
+	# /etc/fuckGFW/xray/conf
+	# /etc/fuckGFW/trojan-go/conf
+	print_info "生成 xray 配置文件 "
+	print_info "/etc/fuckGFW/xray/${currentHost}/config.json"
+
+	cat <<EOF >/etc/fuckGFW/xray/${currentHost}/config.json
+{
+  "log": {
+    "error": "/etc/xray/xray.log",
+    "loglevel": "warning"
+  },
+
+  "inbounds": [
+    {
+      "port": 443,
+      "protocol": "vless",
+      "tag": "VLESSTCP",
+      "settings": {
+        "clients": [
+          {
+            "id": ${currentUUID},
+            "add": ${currentHost},
+            "flow": "xtls-rprx-direct",
+            "email": "${currentUUID}_VLESS_XTLS/TLS-direct_TCP"
+          }
+        ],
+        "decryption": "none",
+        "fallbacks": [
+          {
+            "dest": "trojan-go:31296",
+            "xver": 0
+          },
+          {
+            "path": "/rrdaws",
+            "dest": 31297,
+            "xver": 1
+          }
+        ]
+      },
+      "streamSettings": {
+        "network": "tcp",
+        "security": "xtls",
+        "xtlsSettings": {
+          "minVersion": "1.2",
+          "alpn": [
+            "http/1.1",
+            "h2"
+          ],
+          "certificates": [
+            {
+              "certificateFile": "/etc/xray/k8s-master.ml/fullchain.cer",
+              "keyFile": "/etc/xray/k8s-master.ml/k8s-master.ml.key",
+              "ocspStapling": 3600,
+              "usage": "encipherment"
+            }
+          ]
+        }
+      }
+    },
+      {
+      "port": 31297,
+      "listen": "127.0.0.1",
+      "protocol": "vless",
+      "tag": "VLESSWS",
+      "settings": {
+        "clients": [
+          {
+            "id": ${currentUUID},
+            "email": "k8s-master.ml_vless_ws"
+          }
+        ],
+        "decryption": "none"
+      },
+      "streamSettings": {
+        "network": "ws",
+        "security": "none",
+        "wsSettings": {
+          "acceptProxyProtocol": true,
+          "path": "/rrdaws"
+        }
+      }
+    }
+     ],
+  "outbounds": [
+    {
+      "protocol": "freedom",
+      "settings": {
+        "domainStrategy": "UseIPv4"
+      },
+      "tag": "IPv4-out"
+    }
+  ],
+  "dns": {
+    "servers": [
+      "localhost"
+    ]
+  }
+}
+EOF
+
+	cat /etc/fuckGFW/xray/${currentHost}/config.json
+	judge "生成 xray 配置文件 "
+
+}
+
 #-----------------------------------------------------------------------------#
 # 主菜单
 function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=============================================================="
-	echoContent green "SmartTool：v0.069"
+	echoContent green "SmartTool：v0.070"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "初始化服务器、安装Docker、执行容器"
 	echoContent green "当前系统Linux版本 : \c" 
@@ -809,6 +918,9 @@ function menu() {
 		;;
 	35)
 		generate_nginx_conf
+		;;
+	36)
+		generate_xray_conf
 		;;
 	41)
 		generate_ca
