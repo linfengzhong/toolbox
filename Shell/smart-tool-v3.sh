@@ -713,11 +713,11 @@ EOF
 #-----------------------------------------------------------------------------#
 # 生成 xray 配置文件
 function generate_xray_conf {
-	# /etc/fuckGFW/xray/${currentHost}
+	# /etc/fuckGFW/xray
 	print_info "生成 xray 配置文件 "
-	print_info "/etc/fuckGFW/xray/${currentHost}/config.json"
+	print_info "/etc/fuckGFW/xray/config.json"
 
-	cat <<EOF >/etc/fuckGFW/xray/${currentHost}/config.json
+	cat <<EOF >/etc/fuckGFW/xray/config.json
 {
   "log": {
     "error": "/etc/xray/xray.log",
@@ -812,8 +812,10 @@ function generate_xray_conf {
 }
 EOF
 
-	cat /etc/fuckGFW/xray/${currentHost}/config.json
+	cat /etc/fuckGFW/xray/config.json
 	judge "生成 xray 配置文件 "
+	print_info "复制证书到xray配置文件夹 "
+	cp -pf /etc/fuckGFW/tls/*.* /etc/fuckGFW/xray/${currentHost}/
 
 }
 #-----------------------------------------------------------------------------#
@@ -866,7 +868,7 @@ function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=============================================================="
-	echoContent green "SmartTool：v0.074"
+	echoContent green "SmartTool：v0.076"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "初始化服务器、安装Docker、执行容器"
 	echoContent green "当前系统Linux版本 : \c" 

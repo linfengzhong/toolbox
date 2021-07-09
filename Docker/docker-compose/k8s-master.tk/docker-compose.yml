@@ -38,7 +38,8 @@ services:
         ports:
             - 80:80
         volumes: 
-            - ./nginx/conf.d:/etc/nginx/conf.d
+            #- ./nginx/conf.d:/etc/nginx/conf.d
+            - /etc/fuckGFW/nginx/conf.d/:/etc/nginx/conf.d
             - ./nginx/html:/usr/share/nginx/html
             - ./nginx/error.log:/var/log/nginx/error.log
             - ./nginx/access.log:/var/log/nginx/access.log
@@ -55,7 +56,8 @@ services:
         expose:
             - 31296
         volumes:
-            - ./trojan-go:/etc/trojan-go
+            #- ./trojan-go:/etc/trojan-go
+            - /etc/fuckGFW/trojan-go:/etc/trojan-go
         networks: 
             - net
     #        depends_on:
@@ -73,7 +75,8 @@ services:
         ports: 
             - 443:443
         volumes: 
-            - ./xray:/etc/xray
+            #- ./xray:/etc/xray
+            - /etc/fuckGFW/xray:/etc/xray
         networks: 
             - net
     #        depends_on:
