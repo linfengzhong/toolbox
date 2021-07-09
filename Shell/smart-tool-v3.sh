@@ -453,10 +453,10 @@ function echoContent() {
 function generate_ca () {
 	local DomainName
 	print_info "---> 生成网站证书"
-	print_info "----- 网站证书 ----"
 	show_ip
 	read -r -p "请输入与本服务器绑定IP的域名地址: " DomainName
 	if [ $DomainName ]; then
+		print_info "----- 网站证书 ----"
 		sh /root/.acme.sh/acme.sh  --issue  -d $DomainName --standalone --force
 	else
 		print_error "未输入域名，退出本程序"
@@ -464,7 +464,10 @@ function generate_ca () {
 	fi
 	print_info "----- 网站证书 ----"
 	judge "生成网站证书 "
-	}
+	print_info "----- 保存证书到 /etc/fuckGFW/tls ----"
+	cp -f $HOME/.acme.sh/$currentHost/*.* /etc/fuckGFW/tls/
+
+}
 #-----------------------------------------------------------------------------#
 # 更新证书
 function renewalTLS() {
@@ -802,7 +805,7 @@ function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=============================================================="
-	echoContent green "SmartTool：v0.066"
+	echoContent green "SmartTool：v0.067"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "初始化服务器、安装Docker、执行容器"
 	echoContent green "当前系统Linux版本 : \c" 
