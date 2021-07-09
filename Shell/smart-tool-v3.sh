@@ -136,7 +136,7 @@ function generate_ca () {
 	print_info "----- 网站证书 ----"
 	show_ip
 	read -r -p "请输入与本服务器绑定IP的域名地址: " DomainName
-	if [[ -n $DomainName]]; then
+	if [ -n $DomainName ]; then
 		sh /root/.acme.sh/acme.sh  --issue  -d $DomainName --standalone --force
 	else
 		print_error "未输入域名，退出本程序"
