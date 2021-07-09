@@ -1,0 +1,29 @@
+{
+    "run_type": "server",
+    "local_addr": "trojan-go",
+    "local_port": 31296,
+    "remote_addr": "nginx",
+    "remote_port": 31300,
+    "disable_http_check":true,
+    "log_level":3,
+    "log_file":"/etc/trojan-go/trojan.log",
+    "password": [
+        "14f67e67-e98e-4819-b763-91c18d770711"
+    ],
+    "dns":[
+        "localhost"
+    ],
+    "transport_plugin":{
+        "enabled":true,
+        "type":"plaintext"
+    },
+    "websocket": {
+        "enabled": true,
+        "path": "/rrdatws",
+        "host": "k8s-master.ml",
+        "add":"k8s-master.ml"
+    },
+    "router": {
+        "enabled": false
+    }
+}
