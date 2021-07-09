@@ -379,7 +379,7 @@ function checkSystem() {
 		installType='yum -y install'
 		removeType='yum -y remove'
 		upgrade="yum update -y --skip-broken"
-		echoContent white "Rocky 8.4"
+		echoContent white "Rocky Linux release 8.4 (Green Obsidian)"
 
 	elif [[ -n $(find /etc -name "redhat-release") ]] || grep </proc/version -q -i "centos"; then
 		mkdir -p /etc/yum.repos.d
