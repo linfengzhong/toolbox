@@ -458,14 +458,15 @@ function generate_ca () {
 	if [ $DomainName ]; then
 		print_info "----- 网站证书 ----"
 		sh /root/.acme.sh/acme.sh  --issue  -d $DomainName --standalone --force
+		print_info "----- 网站证书 ----"
 	else
 		print_error "未输入域名，退出本程序"
 		exit 0
 	fi
-	print_info "----- 网站证书 ----"
+
 	judge "生成网站证书 "
 	print_info "----- 保存证书到 /etc/fuckGFW/tls ----"
-	cp -f $HOME/.acme.sh/$currentHost/*.* /etc/fuckGFW/tls/
+	cp -pf $HOME/.acme.sh/$currentHost/*.* /etc/fuckGFW/tls/
 
 }
 #-----------------------------------------------------------------------------#
