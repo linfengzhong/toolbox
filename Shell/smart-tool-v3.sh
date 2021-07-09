@@ -895,12 +895,19 @@ function generate_fake_website {
 	judge "添加随机伪装站点  "	
 }
 #-----------------------------------------------------------------------------#
+# Upload logs & configuration & dynamic data
+function upload_logs_configuration_dynamic_data () {
+	print_info "更新日志、配置文件、动态数据到GitHub  "
+
+	judge "更新日志、配置文件、动态数据到GitHub  "	
+}
+#-----------------------------------------------------------------------------#
 # 主菜单
 function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=============================================================="
-	echoContent green "SmartTool：v0.078"
+	echoContent green "SmartTool：v0.079"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "初始化服务器、安装Docker、执行容器"
 	echoContent green "当前系统Linux版本 : \c" 
@@ -923,6 +930,7 @@ function menu() {
 	echoContent yellow "33.docker status"
 	echoContent yellow "35.generate Nginx Xray Trojan-go config"
 	echoContent yellow "36.添加随机伪装站点"
+	echoContent yellow "37.更新日志、配置文件、动态数据到GitHub"
 	echoContent skyBlue "-------------------------证书管理-----------------------------"
 	echoContent yellow "41.generate CA | 42.show CA | 43.renew CA"	
 	echoContent skyBlue "-------------------------科学上网-----------------------------"
@@ -1002,6 +1010,9 @@ function menu() {
 		;;
 	36)
 		generate_fake_website
+		;;
+	37)
+		upload_logs_configuration_dynamic_data
 		;;
 	41)
 		generate_ca
