@@ -3,10 +3,9 @@
 # Author: Linfeng Zhong (Fred)
 # 2021-May-26 [Initial Version] - Shell Script for setup new server
 # 2021-June-25 [Add new functions] - Stop/Start docker-compose
+# 2021-July-09 [v3] - Remove non used functions
 #-----------------------------------------------------------------------------#
-#-----------------------------------------------------------------------------#
-#===== RHEL 7/8 | CentOS 7/8 | Rocky Linux 8 =====
-#-----------------------------------------------------------------------------#
+#================== RHEL 7/8 | CentOS 7/8 | Rocky Linux 8 ====================#
 #-----------------------------------------------------------------------------#
 # 初始化全局变量
 export LANG=en_US.UTF-8
@@ -797,7 +796,7 @@ function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=============================================================="
-	echoContent green "SmartTool：v0.063"
+	echoContent green "SmartTool：v0.064"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "初始化服务器、安装Docker、执行容器"
 	echoContent green "当前系统Linux版本 : \c" 
@@ -825,8 +824,7 @@ function menu() {
 	echoContent yellow "51.安装 BBR"
 	echoContent skyBlue "-------------------------脚本管理-----------------------------"
 	echoContent yellow "00.更新脚本"
-	echoContent yellow "96.show IP"	
-	echoContent yellow "97.check system"
+	echoContent yellow "97.show IP"	
 	echoContent yellow "98.bpytop"
 	echoContent yellow "99.退出"
 	echoContent red "=============================================================="
@@ -908,11 +906,8 @@ function menu() {
 	00)
 		updateSmartTool 1
 		;;
-	96)
-		show_ip
-		;;
 	97)
-		checkSystem
+		show_ip
 		;;
 	98)
 		execBpytop
