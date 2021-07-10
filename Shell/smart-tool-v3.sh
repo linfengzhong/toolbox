@@ -962,7 +962,7 @@ function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=============================================================="
-	echoContent green "SmartTool：v0.085"
+	echoContent green "SmartTool：v0.086"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "logserver：https://github.com/linfengzhong/logserver"
 	echoContent green "初始化服务器、安装Docker、执行容器"
@@ -972,27 +972,26 @@ function menu() {
 	echoContent skyBlue "-------------------------安装软件-----------------------------"
 	echoContent yellow "10.安装 全部程序"
 	echoContent yellow "11.安装 prerequisite"
-	echoContent yellow "14.安装 acme.sh"
-	echoContent yellow "15.安装 bpytop"
-	echoContent yellow "16.安装 Webmin"
-	echoContent yellow "17.安装 Docker CE & docker compose"
-	echoContent yellow "18.安装 Git"
+	echoContent yellow "12.安装 acme.sh"
+	echoContent yellow "13.安装 bpytop"
+	echoContent yellow "14.安装 webmin"
+	echoContent yellow "15.安装 docker CE & docker compose"
+	echoContent yellow "16.安装 git"
 	echoContent skyBlue "-------------------------版本控制-----------------------------"  
 	echoContent yellow "20.git init | 21.git clone | 22.git pull | 23.git push"
 	echoContent skyBlue "-------------------------容器相关-----------------------------"
 	echoContent yellow "30.One-key"
-	echoContent yellow "31.docker-compose up"
-	echoContent yellow "32.docker-compose down"
+	echoContent yellow "31.docker-compose up | 32.docker-compose down"
 	echoContent yellow "33.docker status"
-	echoContent yellow "35.generate config for Nginx Xray Trojan-go"
-	echoContent yellow "36.添加随机伪装站点"
-	echoContent yellow "37.更新日志、配置文件、动态数据到GitHub"
+	echoContent yellow "34.generate config for Nginx Xray Trojan-go"
+	echoContent yellow "35.添加随机伪装站点"
+	echoContent yellow "36.更新日志、配置文件、动态数据到GitHub"
 	echoContent skyBlue "-------------------------证书管理-----------------------------"
-	echoContent yellow "41.generate CA | 42.show CA | 43.renew CA"	
+	echoContent yellow "40.show CA | 41.generate CA | 42.renew CA"	
 	echoContent skyBlue "-------------------------科学上网-----------------------------"
 	echoContent yellow "50.安装 v2ray-agent | 快捷方式 [vasma] | 51.安装 BBR"	
 	echoContent skyBlue "-------------------------脚本管理-----------------------------"
-	echoContent yellow "96.generate UUID | 97.show IP | 98.bpytop"	
+	echoContent yellow "61.generate UUID | 62.show IP | 63.bpytop"	
 	echoContent yellow "00.更新脚本 | 99.退出"
 	echoContent red "=============================================================="
 	mkdirTools
@@ -1011,20 +1010,20 @@ function menu() {
 	11)
 		install_prerequisite
 		;;
-	14)
+	12)
 		install_acme
 		;;
-	15)
+	13)
 		install_bpytop
 		;;
-	16)
+	14)
 		install_webmin
 		;;
-	17)
+	15)
 		install_docker
 		install_docker_compose
 		;;
-	18)
+	16)
 		install_git
 		;;	
 	20)
@@ -1056,24 +1055,24 @@ function menu() {
 		show_docker_images
 		show_docker_container
 		;;
-	35)
+	34)
 		generate_nginx_conf
 		generate_xray_conf
 		generate_trojan_go_conf
 		;;
-	36)
+	35)
 		generate_fake_website
 		;;
-	37)
+	36)
 		upload_logs_configuration_dynamic_data
+		;;
+	40)
+		checkTLStatus "${currentHost}"
 		;;
 	41)
 		generate_ca
 		;;
 	42)
-		checkTLStatus "${currentHost}"
-		;;
-	43)
 		renewalTLS
 		;;
 	50)
@@ -1082,18 +1081,18 @@ function menu() {
 	51)
 		install_bbr
 		;;
+	61)
+		generate_uuid
+		;;
+	62)
+		show_ip
+		;;
+	63)
+		execBpytop
+		;;
 	00)
 		updateSmartTool 1
 		;;
-	96)
-		generate_uuid
-		;;
-	97)
-		show_ip
-		;;
-	98)
-		execBpytop
-		;;	
 	99)
 	    exit 0
 		;;
