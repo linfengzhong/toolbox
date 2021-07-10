@@ -34,6 +34,7 @@ function initVar() {
 	Font="\033[0m"
 	# Notification information 通知信息
 	# Info="${Green}[Message信息]${Font}"
+	Start="${Green}[Start开始]${Font}"
 	Info="${Green}[Info信息]${Font}"
 	OK="${Green}[OK正常]${Font}"
 	Error="${Red}[ERROR错误]${Font}"
@@ -82,6 +83,11 @@ function initVar() {
 	renewTLS=$1
 }
 #-----------------------------------------------------------------------------#
+#打印Start
+function print_start() {
+	echo -e "${Start} ${Blue} $1 ${Font}"
+}
+#-----------------------------------------------------------------------------#
 #打印Info
 function print_info() {
 	echo -e "${Info} ${Blue} $1 ${Font}"
@@ -97,7 +103,7 @@ function print_done() {
 	echo -e "${DONE} ${Blue} $1 ${Font}"
 }
 #-----------------------------------------------------------------------------#
-#打印错误
+#打印Error
 function print_error() {
 	echo -e "${ERROR} ${RedBG} $1 ${Font}"
 }
@@ -154,7 +160,7 @@ function install_acme () {
 # Install Git
 # https://git-scm.com
 function install_git () {
-	print_info "Install Git "
+	print_start "Install Git "
 	sudo yum -y install git
 	judge "Install Git "
 }
@@ -971,7 +977,7 @@ function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=============================================================="
-	echoContent green "SmartTool：v0.11"
+	echoContent green "SmartTool：v0.12"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "logserver：https://github.com/linfengzhong/logserver"
 	echoContent green "初始化服务器、安装Docker、执行容器"
