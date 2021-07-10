@@ -964,7 +964,7 @@ function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=============================================================="
-	echoContent green "SmartTool：v0.098"
+	echoContent green "SmartTool：v0.099"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "logserver：https://github.com/linfengzhong/logserver"
 	echoContent green "初始化服务器、安装Docker、执行容器"
@@ -1050,7 +1050,9 @@ function menu() {
 	30)
 		shutdown_docker_compose
 		github_pull_toolbox
+		github_pull_logserver
 		github_push_toolbox
+		github_push_logserver
 		start_docker_compose
 		;;
 	31)
