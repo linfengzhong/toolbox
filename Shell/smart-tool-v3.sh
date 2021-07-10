@@ -756,6 +756,21 @@ server {
 
     location /jenkins/ {
         proxy_pass http://jenkins:8080;
+        
+		proxy_set_header   Host             $host;
+        proxy_set_header   X-Real-IP        $remote_addr;
+        proxy_set_header   X-Forwarded-For  $proxy_add_x_forwarded_for;
+        proxy_set_header   X-Forwarded-Proto http;
+        proxy_max_temp_file_size 0;
+
+        proxy_connect_timeout      150;
+        proxy_send_timeout         100;
+        proxy_read_timeout         100;
+
+        proxy_buffer_size          8k;
+        proxy_buffers              4 32k;
+        proxy_busy_buffers_size    64k;
+        proxy_temp_file_write_size 64k;  
     }
 }
 EOF
@@ -981,7 +996,7 @@ function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=============================================================="
-	echoContent green "SmartTool：v0.15"
+	echoContent green "SmartTool：v0.16"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "logserver：https://github.com/linfengzhong/logserver"
 	echoContent green "初始化服务器、安装Docker、执行容器"
