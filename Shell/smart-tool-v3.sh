@@ -30,12 +30,14 @@ function initVar() {
 	Green="\033[32m"
 	RedBG="\033[41;37m"
 	GreenBG="\033[42;37m"
+	Magenta="\033[31m"
 	Font="\033[0m"
 	# Notification information 通知信息
 	# Info="${Green}[Message信息]${Font}"
 	Info="${Green}[Info信息]${Font}"
 	OK="${Green}[OK正常]${Font}"
 	Error="${Red}[ERROR错误]${Font}"
+	DONE="${Magenta}[Done完成]${Font}"
 	
 	installType='yum -y install'
 	removeType='yum -y remove'
@@ -90,6 +92,11 @@ function print_ok() {
 	echo -e "${OK} ${Blue} $1 ${Font}"
 }
 #-----------------------------------------------------------------------------#
+#打印Done
+function print_done() {
+	echo -e "${DONE} ${Blue} $1 ${Font}"
+}
+#-----------------------------------------------------------------------------#
 #打印错误
 function print_error() {
 	echo -e "${ERROR} ${RedBG} $1 ${Font}"
@@ -98,8 +105,8 @@ function print_error() {
 #判定 成功 or 失败
 function judge() {
 	if [[ 0 -eq $? ]]; then
-		print_ok "$1 \c" 
-		echoContent magenta "[Done完成]"
+		print_done "$1" 
+		#echoContent magenta "[Done完成]"
 	else
 		print_error "$1 <--- 失败"
 		exit 1
@@ -964,7 +971,7 @@ function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=============================================================="
-	echoContent green "SmartTool：v0.10"
+	echoContent green "SmartTool：v0.11"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "logserver：https://github.com/linfengzhong/logserver"
 	echoContent green "初始化服务器、安装Docker、执行容器"
