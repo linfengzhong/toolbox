@@ -756,7 +756,6 @@ server {
 
     location /jenkins/ {
         proxy_redirect http://jenkins:8080;
-        #proxy_pass http://jenkins:8080;
     }
 }
 EOF
