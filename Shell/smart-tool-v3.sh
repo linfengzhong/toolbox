@@ -755,6 +755,7 @@ server {
     }
 
     location /jenkins/ {
+		#proxy_redirect http://master:8080/;
         proxy_pass http://jenkins:8080;
 		proxy_set_header   Host             $host;
         proxy_set_header   X-Real-IP        $remote_addr;
