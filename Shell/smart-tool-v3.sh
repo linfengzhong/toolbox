@@ -748,6 +748,7 @@ EOF
 #-----------------------------------------------------------------------------#
 # 生成 xray 配置文件
 function generate_xray_conf {
+	# https://xtls.github.io/config/
 	# /etc/fuckGFW/xray
 	# error 日志的级别, 指示 error 日志需要记录的信息. 默认值为 "warning"。
 	#	"debug"：调试程序时用到的输出信息。同时包含所有 "info" 内容。
@@ -864,6 +865,7 @@ EOF
 #-----------------------------------------------------------------------------#
 # 生成 trojan-go 配置文件
 function generate_trojan_go_conf {
+	# https://p4gefau1t.github.io/trojan-go/basic/full-config/
 	# /etc/fuckGFW/trojan-go
 	# log_level指定日志等级。等级越高，输出的信息越少。合法的值有
 	#	0 输出Debug以上日志（所有日志）
@@ -958,7 +960,7 @@ function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=============================================================="
-	echoContent green "SmartTool：v0.08"
+	echoContent green "SmartTool：v0.081"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "初始化服务器、安装Docker、执行容器"
 	echoContent green "当前系统Linux版本 : \c" 

@@ -2,6 +2,7 @@ version: '3.8'
 services:
     #1. httpd -> apache for mock website http://shanghai3721.ml/httpd/
     #--> Working
+    # https://hub.docker.com/_/httpd
     httpd:
         image: httpd:alpine
         container_name: httpd
@@ -11,7 +12,7 @@ services:
         expose:
             - 80
         volumes: 
-            - ./httpd/html6/:/usr/local/apache2/htdocs/
+            - /etc/fuckGFW/website/html/:/usr/local/apache2/htdocs/
             - ./httpd/conf/:/usr/local/apache2/conf/
         networks:
             - net
@@ -41,7 +42,7 @@ services:
             #- ./nginx/conf.d:/etc/nginx/conf.d
             - /etc/fuckGFW/nginx/conf.d/:/etc/nginx/conf.d
             - /etc/fuckGFW/website/html:/usr/share/nginx/html
-            # Store date on logserver
+            # Store data on logserver
             - /root/git/logserver/k8s-master.tk/nginx/error.log:/var/log/nginx/error.log
             - /root/git/logserver/k8s-master.tk/nginx/access.log:/var/log/nginx/access.log
         networks: 
@@ -59,7 +60,7 @@ services:
         volumes:
             #- ./trojan-go:/etc/trojan-go
             - /etc/fuckGFW/trojan-go/config.json:/etc/trojan-go/config.json
-            # Store date on logserver
+            # Store data on logserver
             - /root/git/logserver/k8s-master.tk/trojan-go/trojan.log:/etc/trojan-go/trojan.log           
         networks: 
             - net
@@ -162,8 +163,10 @@ services:
         secrets:
             - grafana_admin_password
         volumes:
-            - ./grafana/:/etc/grafana/
-            - ./grafana/:/var/lib/grafana 
+            # 持久化配置文件
+            # Store data on logserver
+            - /root/git/logserver/k8s-master.tk/grafana/:/etc/grafana/
+            - /root/git/logserver/k8s-master.tk/grafana/:/var/lib/grafana 
         expose:
             - 3000
         networks: 
@@ -200,7 +203,8 @@ services:
             - 50000
         volumes:
             # 持久化配置文件
-            - ./jenkins/:/var/jenkins_home/
+            # Store data on logserver
+            - /root/git/logserver/k8s-master.tk/jenkins/:/var/jenkins_home/
         networks: 
             - net       
     #11. Portainer -> Docker UI
@@ -216,7 +220,9 @@ services:
             - 9000
         volumes:
             - /var/run/docker.sock:/var/run/docker.sock
-            - ./portainer/data:/data
+            # 持久化配置文件
+            # Store data on logserver
+            - /root/git/logserver/k8s-master.tk/portainer/data:/data
         networks: 
             - net
 
@@ -238,7 +244,9 @@ services:
             - 3000
             - 22
         volumes:
-            - ./gitea/data:/data
+            # 持久化配置文件
+            # Store data on logserver
+            - /root/git/logserver/k8s-master.tk/gitea/data:/data
             - /etc/timezone:/etc/timezone:ro
             - /etc/localtime:/etc/localtime:ro
         networks: 
@@ -260,7 +268,9 @@ services:
             MYSQL_USER: gitea
             MYSQL_PASSWORD: changeme
         volumes:
-            - ./mysql/db/:/var/lib/mysql
+            # 持久化配置文件
+            # Store data on logserver
+            - /root/git/logserver/k8s-master.tk/mysql/db/:/var/lib/mysql
         networks: 
             - net
     #14. Adminer -> Database UI
