@@ -251,7 +251,8 @@ function install_git () {
 function InstallV2rayAgent {
 	# https://github.com/mack-a/v2ray-agent
 	print_start "安装 v2ray-agent "
-	wget -P /root -N --no-check-certificate "https://raw.githubusercontent.com/mack-a/v2ray-agent/master/install.sh" && chmod 700 /root/install.sh
+	wget -c -q --show-progress -P /root -N --no-check-certificate "https://raw.githubusercontent.com/mack-a/v2ray-agent/master/install.sh" 
+	chmod 700 /root/install.sh
 	judge "安装 v2ray-agent "
 	print_info "运行 v2ray-agent "
 	sleep 2
@@ -976,7 +977,7 @@ function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=============================================================="
-	echoContent green "SmartTool：v0.13"
+	echoContent green "SmartTool：v0.14"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "logserver：https://github.com/linfengzhong/logserver"
 	echoContent green "初始化服务器、安装Docker、执行容器"
