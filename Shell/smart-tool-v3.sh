@@ -962,7 +962,7 @@ function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=============================================================="
-	echoContent green "SmartTool：v0.083"
+	echoContent green "SmartTool：v0.084"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "logserver：https://github.com/linfengzhong/logserver"
 	echoContent green "初始化服务器、安装Docker、执行容器"
@@ -991,12 +991,10 @@ function menu() {
 	echoContent skyBlue "-------------------------证书管理-----------------------------"
 	echoContent yellow "41.generate CA | 42.show CA | 43.renew CA"	
 	echoContent skyBlue "-------------------------科学上网-----------------------------"
-	echoContent yellow "50.安装 v2ray-agent | 快捷方式 [vasma] "	
-	echoContent yellow "51.安装 BBR"
+	echoContent yellow "50.安装 v2ray-agent | 快捷方式 [vasma] | 51.安装 BBR"	
 	echoContent skyBlue "-------------------------脚本管理-----------------------------"
-	echoContent yellow "00.更新脚本"
 	echoContent yellow "96.generate UUID | 97.show IP | 98.bpytop"	
-	echoContent yellow "99.退出"
+	echoContent yellow "00.更新脚本 | 99.退出"
 	echoContent red "=============================================================="
 	mkdirTools
 	aliasInstall
