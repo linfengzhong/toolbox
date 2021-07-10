@@ -320,8 +320,8 @@ function git_init () {
 		print_info "======== Public key========= "
 		cat ~/.ssh/id_rsa.pub
 		print_info "======== Public key End========= "
+		judge "初始化 Git "
 	fi
-	judge "初始化 Git "
 }
 #-----------------------------------------------------------------------------#
 # Git clone toolbox.git
@@ -332,8 +332,8 @@ function git_clone_toolbox () {
 	else
 		cd  $HOME/git/
 		git clone git@github.com:linfengzhong/toolbox.git
+		judge "Git clone ToolBox "
 	fi
-	judge "Git clone ToolBox "
 }
 #-----------------------------------------------------------------------------#
 # 同步下载Git文件夹
@@ -386,8 +386,8 @@ function git_clone_logserver () {
 	else
 		cd  $HOME/git/
 		git clone git@github.com:linfengzhong/logserver.git
+		judge "Git clone logserver "
 	fi
-	judge "Git clone logserver "
 }
 #-----------------------------------------------------------------------------#
 # 同步下载Git文件夹
@@ -981,7 +981,7 @@ function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=============================================================="
-	echoContent green "SmartTool：v0.091"
+	echoContent green "SmartTool：v0.092"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "logserver：https://github.com/linfengzhong/logserver"
 	echoContent green "初始化服务器、安装Docker、执行容器"
@@ -1003,7 +1003,7 @@ function menu() {
 	echoContent yellow "31.docker-compose up"
 	echoContent yellow "32.docker-compose down"
 	echoContent yellow "33.docker status"
-	echoContent yellow "34.generate config for Nginx Xray Trojan-go"
+	echoContent yellow "34.generate config [Nginx] [Xray] [Trojan-go]"
 	echoContent yellow "35.添加随机伪装站点"
 	echoContent yellow "36.更新日志、配置文件、动态数据到GitHub"
 	echoContent skyBlue "-------------------------证书管理-----------------------------"
