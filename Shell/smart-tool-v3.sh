@@ -977,8 +977,9 @@ function menu() {
 	echoContent yellow "12.安装 acme.sh"
 	echoContent yellow "13.安装 bpytop"
 	echoContent yellow "14.安装 webmin"
-	echoContent yellow "15.安装 docker CE & docker compose"
-	echoContent yellow "16.安装 git"
+	echoContent yellow "15.安装 docker CE"
+	echoContent yellow "16.安装 docker compose"
+	echoContent yellow "17.安装 git"
 	echoContent skyBlue "-------------------------版本控制-----------------------------"  
 	echoContent yellow "20.git init | 21.git clone | 22.git pull | 23.git push"
 	echoContent skyBlue "-------------------------容器相关-----------------------------"
@@ -1024,11 +1025,13 @@ function menu() {
 		;;
 	15)
 		install_docker
-		install_docker_compose
 		;;
 	16)
+		install_docker_compose
+		;;
+	17)
 		install_git
-		;;	
+		;;
 	20)
 		git_init
 		;;
