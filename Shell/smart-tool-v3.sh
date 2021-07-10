@@ -976,7 +976,7 @@ function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=============================================================="
-	echoContent green "SmartTool：v0.089"
+	echoContent green "SmartTool：v0.090"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "logserver：https://github.com/linfengzhong/logserver"
 	echoContent green "初始化服务器、安装Docker、执行容器"
@@ -1007,7 +1007,7 @@ function menu() {
 	echoContent yellow "50.安装 v2ray-agent | 快捷方式 [vasma] | 51.安装 BBR"	
 	echoContent skyBlue "-------------------------脚本管理-----------------------------"
 	echoContent yellow "61.generate UUID | 62.show IP | 63.bpytop"	
-	echoContent yellow "00.更新脚本 | 99.退出"
+	echoContent yellow "0.更新脚本 | 9.退出"
 	echoContent red "=============================================================="
 	mkdirTools
 	aliasInstall
@@ -1107,10 +1107,10 @@ function menu() {
 	63)
 		execBpytop
 		;;
-	00)
+	0)
 		updateSmartTool 1
 		;;
-	99)
+	9)
 	    exit 0
 		;;
 	*)
