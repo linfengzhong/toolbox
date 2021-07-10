@@ -960,8 +960,9 @@ function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=============================================================="
-	echoContent green "SmartTool：v0.081"
+	echoContent green "SmartTool：v0.082"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
+	echoContent green "logserver：https://github.com/linfengzhong/logserver"
 	echoContent green "初始化服务器、安装Docker、执行容器"
 	echoContent green "当前系统Linux版本 : \c" 
 	checkSystem
@@ -992,9 +993,7 @@ function menu() {
 	echoContent yellow "51.安装 BBR"
 	echoContent skyBlue "-------------------------脚本管理-----------------------------"
 	echoContent yellow "00.更新脚本"
-	echoContent yellow "96.generate UUID"	
-	echoContent yellow "97.show IP"	
-	echoContent yellow "98.bpytop"
+	echoContent yellow "96.generate UUID | 97.show IP | 98.bpytop"	
 	echoContent yellow "99.退出"
 	echoContent red "=============================================================="
 	mkdirTools
