@@ -98,7 +98,7 @@ function print_error() {
 #判定 成功 or 失败
 function judge() {
 	if [[ 0 -eq $? ]]; then
-		print_ok "$1 <--- 完成"
+		print_ok "$1 <--- 完成" echoContent red "完成"
 	else
 		print_error "$1 <--- 失败"
 		exit 1
@@ -963,7 +963,7 @@ function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=============================================================="
-	echoContent green "SmartTool：v0.094"
+	echoContent green "SmartTool：v0.095"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "logserver：https://github.com/linfengzhong/logserver"
 	echoContent green "初始化服务器、安装Docker、执行容器"
