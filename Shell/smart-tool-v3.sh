@@ -815,7 +815,7 @@ function generate_xray_conf {
         }
       }
     },
-      {
+    {
       "port": 31297,
       "listen": "127.0.0.1",
       "protocol": "vless",
@@ -838,7 +838,8 @@ function generate_xray_conf {
         }
       }
     }
-     ],
+  ],
+
   "outbounds": [
     {
       "protocol": "freedom",
@@ -848,6 +849,7 @@ function generate_xray_conf {
       "tag": "IPv4-out"
     }
   ],
+
   "dns": {
     "servers": [
       "localhost"
