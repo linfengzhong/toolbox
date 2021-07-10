@@ -317,15 +317,15 @@ function git_clone_toolbox () {
 #-----------------------------------------------------------------------------#
 # 同步下载Git文件夹
 function github_pull_toolbox () {
-	echoContent white "ToolBox"
+	echoContent yellow "ToolBox"
 	print_info "下载 -> Local toolbox Repo "
 	cd $GITHUB_REPO_TOOLBOX
 	# 查询git repo状态
-	sudo git status
+	# sudo git status
 	# 暂存未提交的变更 可用来暂存当前正在进行的工作
 	# sudo git stash
 	# Commit
-	sudo git commit -am "$date update logs"
+	# sudo git commit -am "$date update logs"
 	# 抽取数据
 	sudo git pull
 	#sudo git pull --rebase
@@ -340,11 +340,11 @@ function github_pull_toolbox () {
 #-----------------------------------------------------------------------------#
 # 同步上传Git文件夹
 function github_push_toolbox () {
-	echoContent white "ToolBox"
+	echoContent yellow "ToolBox"
 	print_info "上传 -> GitHub "
 	cd $GITHUB_REPO_TOOLBOX
 	# 查询git repo状态
-	sudo git status
+	# sudo git status
 	# 从Git栈中读取最近一次保存的内容
 	# sudo git stash pop
 	sudo git add .
@@ -373,13 +373,13 @@ function git_clone_logserver () {
 #-----------------------------------------------------------------------------#
 # 同步下载Git文件夹
 function github_pull_logserver () {
-	echoContent white "logserver"
+	echoContent yellow "logserver"
 	print_info "下载 -> Local logserver Repo "
 	cd $GITHUB_REPO_LOGSERVER
 	# 查询git repo状态
-	sudo git status
+	# sudo git status
 	# Commit
-	sudo git commit -am "$date update logs"
+	# sudo git commit -am "$date update logs"
 	# 抽取数据
 	sudo git pull
 	judge "下载 -> Local logserver Repo "
@@ -387,12 +387,11 @@ function github_pull_logserver () {
 #-----------------------------------------------------------------------------#
 # 同步上传Git文件夹
 function github_push_logserver () {
-	echoContent white "logserver"
+	echoContent yellow "logserver"
 	print_info "上传 -> GitHub "
 	cd $GITHUB_REPO_LOGSERVER
 	# 查询git repo状态
-	sudo git status
-
+	# sudo git status
 	sudo git add .
 	sudo git commit -m "$date sync_all_config_log_data"
 	sudo git push
@@ -964,7 +963,7 @@ function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=============================================================="
-	echoContent green "SmartTool：v0.093"
+	echoContent green "SmartTool：v0.094"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "logserver：https://github.com/linfengzhong/logserver"
 	echoContent green "初始化服务器、安装Docker、执行容器"
