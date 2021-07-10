@@ -23,7 +23,6 @@ function initVar() {
 	GITHUB_REPO_TOOLBOX="/root/git/toolbox/"
 	GITHUB_REPO_LOGSERVER="/root/git/logserver/"
 	EMAIL="fred.zhong@outlook.com"
-
 	#fonts color 字体颜色配置
 	Red="\033[31m"
 	Yellow="\033[33m"
@@ -32,7 +31,6 @@ function initVar() {
 	RedBG="\033[41;37m"
 	GreenBG="\033[42;37m"
 	Font="\033[0m"
-
 	# Notification information 通知信息
 	# Info="${Green}[Message信息]${Font}"
 	Info="${Green}[Info信息]${Font}"
@@ -46,52 +44,38 @@ function initVar() {
 
 	# CDN节点的address
 	add=
-
 	# 安装总进度
 	totalProgress=1
-
 	# 1.xray-core安装
 	# 2.v2ray-core 安装
 	# 3.v2ray-core[xtls] 安装
 	coreInstallType=
-
 	# 核心安装path
 	# coreInstallPath=
-
 	# v2ctl Path
 	ctlPath=
 	# 1.全部安装
 	# 2.个性化安装
 	# v2rayAgentInstallType=
-
 	# 当前的个性化安装方式 01234
 	currentInstallProtocolType=
-
 	# 选择的个性化安装方式
 	selectCustomInstallType=
-
 	# v2ray-core、xray-core配置文件的路径
 	configPath=
-
 	# 配置文件的path
 	currentPath=
-
 	# 安装时选择的core类型
 	selectCoreType=
-
 	# 默认core版本
 	v2rayCoreVersion=
-
 	# 随机路径
 	customPath=
-
 	# centos version
 	centosVersion=
-
 	# pingIPv6 pingIPv4
 	# pingIPv4=
 	pingIPv6=
-
 	# 集成更新证书逻辑不再使用单独的脚本--RenewTLS
 	renewTLS=$1
 }
@@ -191,13 +175,10 @@ function install_docker () {
 	sudo yum-config-manager \
 			--add-repo \
 			https://download.docker.com/linux/centos/docker-ce.repo
-
 	judge "2/3 Set up the repository for Docker "
-
 	sudo yum -y install docker-ce docker-ce-cli containerd.io
 	sudo systemctl start docker
 	sudo systemctl enable docker
-
 	judge "3/3 Install Docker Engine "
 	judge "Install Docker CE "
 }
@@ -227,7 +208,6 @@ function InstallV2rayAgent {
 	print_info "安装 v2ray-agent "
 	wget -P /root -N --no-check-certificate "https://raw.githubusercontent.com/mack-a/v2ray-agent/master/install.sh" && chmod 700 /root/install.sh
 	judge "安装 v2ray-agent "
-
 	print_info "运行 v2ray-agent "
 	sleep 2
 	cd $HOME
@@ -277,7 +257,6 @@ function start_docker_compose () {
 	sudo chmod 777 -R grafana
 	sudo chmod 777 -R jenkins
 	sudo chmod 777 -R gitea
-
 	cd $WORKDIR
 	sudo chmod 777 -R grafana
 	sudo chmod 777 -R jenkins
@@ -338,7 +317,8 @@ function git_clone_toolbox () {
 #-----------------------------------------------------------------------------#
 # 同步下载Git文件夹
 function github_pull_toolbox () {
-	print_info "更新同步 下载GitHub文件 -> Local Github Repo "
+	echoContent white "ToolBox"
+	print_info "下载 -> Local toolbox Repo "
 	cd $GITHUB_REPO_TOOLBOX
 	# 查询git repo状态
 	sudo git status
@@ -355,12 +335,13 @@ function github_pull_toolbox () {
 	#sudo cp -rf ~/git/toolbox/Docker/docker-compose/k8s-master.ml/ ~/
 	#sudo chown -R root:root ~/all-in-one/
 	#sudo chown -R root:root ~/k8s-master.ml/
-	judge "更新同步 下载GitHub文件 -> Local Github Repo "
+	judge "下载 -> Local toolbox Repo "
 }
 #-----------------------------------------------------------------------------#
 # 同步上传Git文件夹
 function github_push_toolbox () {
-	print_info "更新同步 上传Local Github Repo -> GitHub文件 "
+	echoContent white "ToolBox"
+	print_info "上传 -> GitHub "
 	cd $GITHUB_REPO_TOOLBOX
 	# 查询git repo状态
 	sudo git status
@@ -369,7 +350,7 @@ function github_push_toolbox () {
 	sudo git add .
 	sudo git commit -m "$date sync_all_config_log_data"
 	sudo git push
-	judge "更新同步 上传Local Github Repo -> GitHub文件 "
+	judge "上传 -> GitHub "
 	#sleep 1
 	#sudo cp -rf ~/git/toolbox/Docker/docker-compose/all-in-one/ ~/
 	#sleep 1
@@ -392,7 +373,8 @@ function git_clone_logserver () {
 #-----------------------------------------------------------------------------#
 # 同步下载Git文件夹
 function github_pull_logserver () {
-	print_info "更新同步 下载GitHub文件 -> Local Github Repo "
+	echoContent white "logserver"
+	print_info "下载 -> Local logserver Repo "
 	cd $GITHUB_REPO_LOGSERVER
 	# 查询git repo状态
 	sudo git status
@@ -400,12 +382,13 @@ function github_pull_logserver () {
 	sudo git commit -am "$date update logs"
 	# 抽取数据
 	sudo git pull
-	judge "更新同步 下载GitHub文件 -> Local Github Repo "
+	judge "下载 -> Local logserver Repo "
 }
 #-----------------------------------------------------------------------------#
 # 同步上传Git文件夹
 function github_push_logserver () {
-	print_info "更新同步 上传Local Github Repo -> GitHub文件 "
+	echoContent white "logserver"
+	print_info "上传 -> GitHub "
 	cd $GITHUB_REPO_LOGSERVER
 	# 查询git repo状态
 	sudo git status
@@ -413,7 +396,7 @@ function github_push_logserver () {
 	sudo git add .
 	sudo git commit -m "$date sync_all_config_log_data"
 	sudo git push
-	judge "更新同步 上传Local Github Repo -> GitHub文件 "
+	judge "上传 -> GitHub "
 }
 #-----------------------------------------------------------------------------#
 # 检查系统
@@ -981,7 +964,7 @@ function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=============================================================="
-	echoContent green "SmartTool：v0.092"
+	echoContent green "SmartTool：v0.093"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "logserver：https://github.com/linfengzhong/logserver"
 	echoContent green "初始化服务器、安装Docker、执行容器"
