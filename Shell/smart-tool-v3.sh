@@ -123,9 +123,9 @@ function judge() {
 #-----------------------------------------------------------------------------#
 # Install acme.sh
 function install_acme () {
-  print_info "Install acme.sh "
-  sudo curl https://get.acme.sh | sh -s email=$EMAIL
-  judge "安装 acme.sh "
+	print_info "Install acme.sh "
+	sudo curl https://get.acme.sh | sh -s email=$EMAIL
+	judge "安装 acme.sh "
 }
 #-----------------------------------------------------------------------------#
 # Install Git
@@ -229,15 +229,16 @@ function InstallV2rayAgent {
 	judge "安装 v2ray-agent "
 
 	print_info "运行 v2ray-agent "
-	sleep 3
-	cd /root
+	sleep 2
+	cd $HOME
 	./install.sh
 }
 #-----------------------------------------------------------------------------#
 # 安装 BBR
 function install_bbr() {
 	echoContent red "\n=============================================================="
-	echoContent green "BBR、DD脚本用的[ylx2016]的成熟作品，地址[https://github.com/ylx2016/Linux-NetSpeed]，请熟知"
+	echoContent green "BBR、DD脚本用的[ylx2016]的成熟作品，请熟知"
+	echoContent green "地址 https://github.com/ylx2016/Linux-NetSpeed"
 	echoContent yellow "1.安装脚本【推荐原版BBR+FQ】"
 	echoContent yellow "2.回退主目录"
 	echoContent red "=============================================================="
@@ -303,19 +304,23 @@ function show_docker_container () {
 #-----------------------------------------------------------------------------#
 function git_init () {
 	print_info "初始化 Git "
-	git config --global user.name "root" 
-	git config --global user.email "root@${currentHost}"
-	git config --global pull.rebase false
-	cd ~
-	mkdir -p git
-	cd git
-	# /root/.ssh/id_rsa
-	# /root/.ssh/id_rsa.pub
-	ssh-keygen -t rsa -C fred.zhong@outlook.com
-	print_info "请复制下面的Public key到GitHub "
-	print_info "======== Public key========= "
-	cat ~/.ssh/id_rsa.pub
-	print_info "======== Public key End========= "
+	if [[ -d "$HOME/git" ]];then
+		echoContent yellow "Git文件夹已存在，无需初始化Git！"
+	else
+		git config --global user.name "root" 
+		git config --global user.email "root@${currentHost}"
+		git config --global pull.rebase false
+		cd ~
+		mkdir -p git
+		cd git
+		# /root/.ssh/id_rsa
+		# /root/.ssh/id_rsa.pub
+		ssh-keygen -t rsa -C fred.zhong@outlook.com
+		print_info "请复制下面的Public key到GitHub "
+		print_info "======== Public key========= "
+		cat ~/.ssh/id_rsa.pub
+		print_info "======== Public key End========= "
+	fi
 	judge "初始化 Git "
 }
 #-----------------------------------------------------------------------------#
@@ -340,7 +345,7 @@ function github_pull_toolbox () {
 	# 暂存未提交的变更 可用来暂存当前正在进行的工作
 	# sudo git stash
 	# Commit
-	sudo git commit -am "update logs"
+	sudo git commit -am "$date update logs"
 	# 抽取数据
 	sudo git pull
 	#sudo git pull --rebase
@@ -392,7 +397,7 @@ function github_pull_logserver () {
 	# 查询git repo状态
 	sudo git status
 	# Commit
-	sudo git commit -am "update logs"
+	sudo git commit -am "$date update logs"
 	# 抽取数据
 	sudo git pull
 	judge "更新同步 下载GitHub文件 -> Local Github Repo "
@@ -675,11 +680,11 @@ function generate_uuid () {
 # This guide is based on SELinux being disabled or in permissive mode. 
 # Steps to do this are as follows.
 function turn_off_selinux () {
-  print_info "开始配置 Linux Rocky 8.4 / CentOS 8 服务器"
-  sed -i 's/SELINUX=.*/SELINUX=disabled/g' /etc/selinux/config
-  setenforce 0
-  #judge "Step 1: Security-Enhanced Linux"
-  print_info "Security-Enhanced Linux <--- 完成"
+	print_info "开始配置 Linux Rocky 8.4 / CentOS 8 服务器"
+	sed -i 's/SELINUX=.*/SELINUX=disabled/g' /etc/selinux/config
+	setenforce 0
+	#judge "Step 1: Security-Enhanced Linux"
+	print_info "Security-Enhanced Linux <--- 完成"
 }
 #-----------------------------------------------------------------------------#
 # 查看、检查日志
@@ -976,7 +981,7 @@ function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=============================================================="
-	echoContent green "SmartTool：v0.090"
+	echoContent green "SmartTool：v0.091"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "logserver：https://github.com/linfengzhong/logserver"
 	echoContent green "初始化服务器、安装Docker、执行容器"
