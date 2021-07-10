@@ -962,7 +962,7 @@ function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=============================================================="
-	echoContent green "SmartTool：v0.084"
+	echoContent green "SmartTool：v0.085"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "logserver：https://github.com/linfengzhong/logserver"
 	echoContent green "初始化服务器、安装Docker、执行容器"
@@ -986,8 +986,7 @@ function menu() {
 	echoContent yellow "33.docker status"
 	echoContent yellow "35.generate config for Nginx Xray Trojan-go"
 	echoContent yellow "36.添加随机伪装站点"
-	echoContent yellow "37.初始化logserver"
-	echoContent yellow "38.更新日志、配置文件、动态数据到GitHub"
+	echoContent yellow "37.更新日志、配置文件、动态数据到GitHub"
 	echoContent skyBlue "-------------------------证书管理-----------------------------"
 	echoContent yellow "41.generate CA | 42.show CA | 43.renew CA"	
 	echoContent skyBlue "-------------------------科学上网-----------------------------"
@@ -1033,6 +1032,7 @@ function menu() {
 		;;
 	21)
 		git_clone_toolbox
+		git_clone_logserver
 		;;
 	22)
 		github_pull_toolbox
@@ -1065,9 +1065,6 @@ function menu() {
 		generate_fake_website
 		;;
 	37)
-		git_clone_logserver
-		;;
-	38)
 		upload_logs_configuration_dynamic_data
 		;;
 	41)
