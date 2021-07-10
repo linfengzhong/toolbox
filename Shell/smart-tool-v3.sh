@@ -150,19 +150,19 @@ function echoContent() {
 	esac
 }
 #-----------------------------------------------------------------------------#
-# Install acme.sh
-function install_acme () {
-	print_info "Install acme.sh "
-	sudo curl https://get.acme.sh | sh -s email=$EMAIL
-	judge "安装 acme.sh "
+# Install Prerequisite
+# 安装必要程序
+function install_prerequisite () {
+	print_start "安装 wget lsof tar unzip curl socat nmap "
+	yum -y install wget lsof tar unzip curl socat nmap
+	judge "安装 wget lsof tar unzip curl socat nmap "
 }
 #-----------------------------------------------------------------------------#
-# Install Git
-# https://git-scm.com
-function install_git () {
-	print_start "Install Git "
-	sudo yum -y install git
-	judge "Install Git "
+# Install acme.sh
+function install_acme () {
+	print_start "Install acme.sh "
+	sudo curl https://get.acme.sh | sh -s email=$EMAIL
+	judge "安装 acme.sh "
 }
 #-----------------------------------------------------------------------------#
 # Install bpytop
@@ -170,13 +170,13 @@ function install_git () {
 # PyPi (will always have latest version)
 # Install or update to latest version
 function install_bpytop () {
-	print_info "Install Prerequisites for Python3 "
+	print_start "Install Prerequisites for Python3 "
 	sudo yum -y install gcc libffi-devel python3-devel \
                     openssl-devel \
                     automake autoconf libtool make
 	judge "Install Prerequisites for Python3 "
 
-	print_info "Install bpytop "
+	print_start "Install bpytop "
 	sudo pip3 install bpytop --upgrade
 	judge "1/2 Install bpytop "
 
@@ -191,7 +191,7 @@ function install_bpytop () {
 # https://webmin.com
 # https://doxfer.webmin.com/Webmin/Installation
 function install_webmin () {
-	print_info "Install webmin "
+	print_start "Install webmin "
 	(echo "[Webmin]
 name=Webmin Distribution Neutral
 baseurl=http://download.webmin.com/download/yum
@@ -206,7 +206,7 @@ gpgkey=http://www.webmin.com/jcameron-key.asc" >/etc/yum.repos.d/webmin.repo;)
 # Install Docker CE
 # https://docs.docker.com/engine/install/centos/
 function install_docker () {
-	print_info "Install Docker CE "
+	print_start "Install Docker CE "
 	sudo yum -y remove docker \
 					docker-client \
 					docker-client-latest \
@@ -231,7 +231,7 @@ function install_docker () {
 # Install Docker Compose
 # https://docs.docker.com/compose/install/#install-compose
 function install_docker_compose () {
-	print_info "Install docker compose "
+	print_start "Install docker compose "
 	sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 	sudo chmod +x /usr/local/bin/docker-compose
 	sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
@@ -239,18 +239,18 @@ function install_docker_compose () {
 	judge "Install docker compose "
 }
 #-----------------------------------------------------------------------------#
-# Install Prerequisite
-# 安装必要程序
-function install_prerequisite () {
-	print_info "安装 wget lsof tar unzip curl socat nmap "
-	yum -y install wget lsof tar unzip curl socat nmap
-	judge "安装 wget lsof tar unzip curl socat nmap "
+# Install Git
+# https://git-scm.com
+function install_git () {
+	print_start "Install Git "
+	sudo yum -y install git
+	judge "Install Git "
 }
 #-----------------------------------------------------------------------------#
 # 安装 v2ray-agent
 function InstallV2rayAgent {
 	# https://github.com/mack-a/v2ray-agent
-	print_info "安装 v2ray-agent "
+	print_start "安装 v2ray-agent "
 	wget -P /root -N --no-check-certificate "https://raw.githubusercontent.com/mack-a/v2ray-agent/master/install.sh" && chmod 700 /root/install.sh
 	judge "安装 v2ray-agent "
 	print_info "运行 v2ray-agent "
@@ -288,7 +288,7 @@ function execBpytop() {
 # Shutdown Docker Compose, Delete All-In-One folder & Docker Compose Up
 # 关闭docker-compose
 function shutdown_docker_compose () {
-	print_info "Shutdown Docker Compose "
+	print_start "Shutdown Docker Compose "
 	print_info "关闭 Docker Compose VM "
 	cd $WORKDIR
 	sudo docker-compose down
@@ -297,7 +297,7 @@ function shutdown_docker_compose () {
 #-----------------------------------------------------------------------------#
 # 启动docker-compose
 function start_docker_compose () {
-	print_info "启动 Docker Compose "
+	print_start "启动 Docker Compose "
 	cd $LOGDIR
 	sudo chmod 777 -R grafana
 	sudo chmod 777 -R jenkins
@@ -327,7 +327,7 @@ function show_docker_container () {
 # https://git-scm.com
 #-----------------------------------------------------------------------------#
 function git_init () {
-	print_info "初始化 Git "
+	print_start "初始化 Git "
 	if [[ -d "$HOME/git" ]];then
 		echoContent yellow "Git文件夹已存在，无需初始化Git！"
 	else
@@ -350,7 +350,7 @@ function git_init () {
 #-----------------------------------------------------------------------------#
 # Git clone toolbox.git
 function git_clone_toolbox () {
-	print_info "Git clone ToolBox "
+	print_start "Git clone ToolBox "
 	if [[ -d "$HOME/git/toolbox" ]];then
 		echoContent yellow "toolbox文件夹已存在，无需重新clone！"
 	else
@@ -406,7 +406,7 @@ function github_push_toolbox () {
 #-----------------------------------------------------------------------------#
 # Git clone logserver.git
 function git_clone_logserver () {
-	print_info "Git clone logserver "
+	print_start "Git clone logserver "
 	if [[ -d "$HOME/git/logserver" ]];then
 		echoContent yellow "logserver文件夹已存在，无需重新clone！"
 	else
@@ -618,7 +618,6 @@ function aliasInstall() {
 #-----------------------------------------------------------------------------#
 # 更新脚本
 function updateSmartTool() {
-
 	rm -rf /etc/smart-tool/smart-tool-v3.sh
 	echoContent skyBlue "开始下载： "
 	if wget --help | grep -q show-progress; then
@@ -676,7 +675,7 @@ function generate_uuid () {
 # This guide is based on SELinux being disabled or in permissive mode. 
 # Steps to do this are as follows.
 function turn_off_selinux () {
-	print_info "开始配置 Linux Rocky 8.4 / CentOS 8 服务器"
+	print_start "配置 Linux Rocky 8.4 / CentOS 8 服务器"
 	sed -i 's/SELINUX=.*/SELINUX=disabled/g' /etc/selinux/config
 	setenforce 0
 	#judge "Step 1: Security-Enhanced Linux"
@@ -715,7 +714,7 @@ cronRenewTLS() {
 # 生成 Nginx 配置文件
 function generate_nginx_conf {
 	# /etc/fuckGFW/nginx/conf
-	print_info "生成 NGINX 配置文件 "
+	print_start "生成 NGINX 配置文件 "
 	print_info "/etc/fuckGFW/nginx/conf.d/${currentHost}.conf"
 
 	cat <<EOF >/etc/fuckGFW/nginx/conf.d/${currentHost}.conf
@@ -772,7 +771,7 @@ function generate_xray_conf {
 	#	"error"：Xray 遇到了无法正常运行的问题，需要立即解决。
 	#	"none"：不记录任何内容。
 
-	print_info "生成 xray 配置文件 "
+	print_start "生成 xray 配置文件 "
 	print_info "/etc/fuckGFW/xray/config.json"
 
 	cat <<EOF >/etc/fuckGFW/xray/config.json
@@ -892,7 +891,7 @@ function generate_trojan_go_conf {
 	#	4 输出Fatal及以上日志
 	#	5 完全不输出日志
 
-	print_info "生成 trojan-go 配置文件 "
+	print_start "生成 trojan-go 配置文件 "
 	print_info "/etc/fuckGFW/trojan-go/config.json"
 
 	cat <<EOF >/etc/fuckGFW/trojan-go/config.json
@@ -941,7 +940,7 @@ function generate_fake_website {
 #	https://raw.githubusercontent.com/linfengzhong/toolbox/main/Website/html4.zip
 #	https://raw.githubusercontent.com/linfengzhong/toolbox/main/Website/html5.zip
 #	https://raw.githubusercontent.com/linfengzhong/toolbox/main/Website/html5.zip
-	print_info "添加随机伪装站点 "
+	print_start "添加随机伪装站点 "
 	if [[ -d "/etc/fuckGFW/website/html" && -f "/etc/fuckGFW/website/html/check" ]]; then
 		echo
 		read -r -p "检测到安装伪装站点，是否需要重新安装[y/n]：" nginxBlogInstallStatus
@@ -977,7 +976,7 @@ function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=============================================================="
-	echoContent green "SmartTool：v0.12"
+	echoContent green "SmartTool：v0.13"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "logserver：https://github.com/linfengzhong/logserver"
 	echoContent green "初始化服务器、安装Docker、执行容器"
