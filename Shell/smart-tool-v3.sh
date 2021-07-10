@@ -322,7 +322,9 @@ function git_init () {
 # Git clone toolbox.git
 function git_clone_toolbox () {
 	print_info "Git clone ToolBox "
-	if [[ -f "$HOME/git/toolbox" ]];then
+	if [[ -d "$HOME/git/toolbox" ]];then
+		echoContent yellow "toolbox文件夹已存在，无需重新clone！"
+	else
 		cd  $HOME/git/
 		git clone git@github.com:linfengzhong/toolbox.git
 	fi
@@ -374,7 +376,9 @@ function github_push_toolbox () {
 # Git clone logserver.git
 function git_clone_logserver () {
 	print_info "Git clone logserver "
-	if [[ -f "$HOME/git/toolbox" ]];then
+	if [[ -d "$HOME/git/logserver" ]];then
+		echoContent yellow "logserver文件夹已存在，无需重新clone！"
+	else
 		cd  $HOME/git/
 		git clone git@github.com:linfengzhong/logserver.git
 	fi
@@ -972,7 +976,7 @@ function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=============================================================="
-	echoContent green "SmartTool：v0.088"
+	echoContent green "SmartTool：v0.089"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "logserver：https://github.com/linfengzhong/logserver"
 	echoContent green "初始化服务器、安装Docker、执行容器"
