@@ -19,6 +19,7 @@ function initVar() {
 
 	#定义变量
 	WORKDIR="/root/git/toolbox/Docker/docker-compose/${currentHost}/"
+	LOGDIR="/root/git/logserver/${currentHost}/"
 	GITHUB_REPO_TOOLBOX="/root/git/toolbox/"
 	GITHUB_REPO_LOGSERVER="/root/git/logserver/"
 	EMAIL="fred.zhong@outlook.com"
@@ -271,6 +272,11 @@ function shutdown_docker_compose () {
 # 启动docker-compose
 function start_docker_compose () {
 	print_info "启动 Docker Compose "
+	cd $LOGDIR
+	sudo chmod 777 -R grafana
+	sudo chmod 777 -R jenkins
+	sudo chmod 777 -R gitea
+
 	cd $WORKDIR
 	sudo chmod 777 -R grafana
 	sudo chmod 777 -R jenkins
@@ -301,7 +307,7 @@ function git_init () {
 	git config --global user.email "root@${currentHost}"
 	git config --global pull.rebase false
 	cd ~
-	mkdir git
+	mkdir -p git
 	cd git
 	# /root/.ssh/id_rsa
 	# /root/.ssh/id_rsa.pub
@@ -316,8 +322,10 @@ function git_init () {
 # Git clone toolbox.git
 function git_clone_toolbox () {
 	print_info "Git clone ToolBox "
-	cd  $HOME/git/
-	git clone git@github.com:linfengzhong/toolbox.git
+	if [[ -f "$HOME/git/toolbox" ]];then
+		cd  $HOME/git/
+		git clone git@github.com:linfengzhong/toolbox.git
+	fi
 	judge "Git clone ToolBox "
 }
 #-----------------------------------------------------------------------------#
@@ -352,7 +360,7 @@ function github_push_toolbox () {
 	# 从Git栈中读取最近一次保存的内容
 	# sudo git stash pop
 	sudo git add .
-	sudo git commit -m "sync_all_config_log_data"
+	sudo git commit -m "$date sync_all_config_log_data"
 	sudo git push
 	judge "更新同步 上传Local Github Repo -> GitHub文件 "
 	#sleep 1
@@ -366,8 +374,10 @@ function github_push_toolbox () {
 # Git clone logserver.git
 function git_clone_logserver () {
 	print_info "Git clone logserver "
-	cd  $HOME/git/
-	git clone git@github.com:linfengzhong/logserver.git
+	if [[ -f "$HOME/git/toolbox" ]];then
+		cd  $HOME/git/
+		git clone git@github.com:linfengzhong/logserver.git
+	fi
 	judge "Git clone logserver "
 }
 #-----------------------------------------------------------------------------#
@@ -392,7 +402,7 @@ function github_push_logserver () {
 	sudo git status
 
 	sudo git add .
-	sudo git commit -m "sync_all_config_log_data"
+	sudo git commit -m "$date sync_all_config_log_data"
 	sudo git push
 	judge "更新同步 上传Local Github Repo -> GitHub文件 "
 }
@@ -951,10 +961,10 @@ function generate_fake_website {
 #-----------------------------------------------------------------------------#
 # Upload logs & configuration & dynamic data
 function upload_logs_configuration_dynamic_data () {
-	print_info "更新日志、配置文件、动态数据到GitHub "
+	#print_info "更新日志、配置文件、动态数据到GitHub "
 	github_pull_logserver
 	github_push_logserver
-	judge "更新日志、配置文件、动态数据到GitHub "	
+	#judge "更新日志、配置文件、动态数据到GitHub "	
 }
 #-----------------------------------------------------------------------------#
 # 主菜单
@@ -962,7 +972,7 @@ function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=============================================================="
-	echoContent green "SmartTool：v0.086"
+	echoContent green "SmartTool：v0.088"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "logserver：https://github.com/linfengzhong/logserver"
 	echoContent green "初始化服务器、安装Docker、执行容器"
@@ -981,7 +991,8 @@ function menu() {
 	echoContent yellow "20.git init | 21.git clone | 22.git pull | 23.git push"
 	echoContent skyBlue "-------------------------容器相关-----------------------------"
 	echoContent yellow "30.One-key"
-	echoContent yellow "31.docker-compose up | 32.docker-compose down"
+	echoContent yellow "31.docker-compose up"
+	echoContent yellow "32.docker-compose down"
 	echoContent yellow "33.docker status"
 	echoContent yellow "34.generate config for Nginx Xray Trojan-go"
 	echoContent yellow "35.添加随机伪装站点"
@@ -1035,9 +1046,11 @@ function menu() {
 		;;
 	22)
 		github_pull_toolbox
+		github_pull_logserver
 		;;
 	23)
 		github_push_toolbox
+		github_push_logserver
 		;;
 	30)
 		shutdown_docker_compose
