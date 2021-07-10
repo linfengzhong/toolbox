@@ -99,7 +99,7 @@ function print_error() {
 function judge() {
 	if [[ 0 -eq $? ]]; then
 		print_ok "$1 \c" 
-		echoContent magenta " [Done完成]"
+		echoContent magenta "[Done完成]"
 	else
 		print_error "$1 <--- 失败"
 		exit 1
