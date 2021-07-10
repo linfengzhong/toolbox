@@ -753,6 +753,21 @@ server {
     location /gitea/ {
         proxy_pass http://gitea:3000/;
     }
+
+	location /jenkins {
+		proxy_pass http://jenkins:8080;
+		proxy_http_version  1.1;
+		proxy_cache_bypass  $http_upgrade;
+
+		proxy_set_header Upgrade           $http_upgrade;
+		proxy_set_header Connection        "upgrade";
+		proxy_set_header Host              $host;
+		proxy_set_header X-Real-IP         $remote_addr;
+		proxy_set_header X-Forwarded-For   $proxy_add_x_forwarded_for;
+		proxy_set_header X-Forwarded-Proto $scheme;
+		proxy_set_header X-Forwarded-Host  $host;
+		proxy_set_header X-Forwarded-Port  $server_port;
+	}
 }
 EOF
 	cat /etc/fuckGFW/nginx/conf.d/${currentHost}.conf
@@ -977,7 +992,7 @@ function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=============================================================="
-	echoContent green "SmartTool：v0.14"
+	echoContent green "SmartTool：v0.15"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "logserver：https://github.com/linfengzhong/logserver"
 	echoContent green "初始化服务器、安装Docker、执行容器"
