@@ -98,7 +98,8 @@ function print_error() {
 #判定 成功 or 失败
 function judge() {
 	if [[ 0 -eq $? ]]; then
-		print_ok "$1 <--- 完成" echoContent red "完成"
+		print_ok "$1 <--- 完成" 
+		echoContent red "完成"
 	else
 		print_error "$1 <--- 失败"
 		exit 1
