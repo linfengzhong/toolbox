@@ -1193,15 +1193,15 @@ function upload_logs_configuration_dynamic_data () {
 function menu() {
 	clear
 	cd "$HOME" || exit
-	echoContent red "\n=============================================================="
-	echoContent green "SmartTool：v0.200"
+	echoContent red "\n======================================================================"
+	echoContent green "SmartTool：v0.202"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "logserver：https://github.com/linfengzhong/logserver"
 	echoContent green "初始化服务器、安装Docker、执行容器"
 	echoContent green "当前系统Linux版本 : \c" 
 	checkSystem
-	echoContent red "=============================================================="
-	echoContent skyBlue "-------------------------安装软件-----------------------------"
+	echoContent red "======================================================================"
+	echoContent skyBlue "-----------------------------安装软件---------------------------------"
 	echoContent yellow "10.安装 全部程序"
 	echoContent yellow "11.安装 prerequisite"
 	echoContent yellow "12.安装 acme.sh"
@@ -1210,26 +1210,25 @@ function menu() {
 	echoContent yellow "15.安装 docker CE"
 	echoContent yellow "16.安装 docker compose"
 	echoContent yellow "17.安装 git"
-	echoContent skyBlue "-------------------------版本控制-----------------------------"  
+	echoContent skyBlue "-----------------------------版本控制---------------------------------"  
 	echoContent yellow "20.git init | 21.git clone | 22.git pull | 23.git push"
-	echoContent skyBlue "-------------------------容器相关-----------------------------"
+	echoContent yellow "24.更新日志、配置文件、动态数据到GitHub"
+	echoContent skyBlue "-----------------------------容器相关---------------------------------"
 	echoContent yellow "30.One-key"
-	echoContent yellow "31.docker-compose up"
-	echoContent yellow "32.docker-compose down"
-	echoContent yellow "33.docker status"
-	echoContent yellow "34.generate config [Nginx] [Xray] [Trojan-go] [v2ray]"
-	echoContent yellow "35.添加随机伪装站点"
-	echoContent yellow "36.更新日志、配置文件、动态数据到GitHub"
-	echoContent yellow "37.generate docker-compose.yml"
-	echoContent yellow "38.generate access.log & error.log"
-	echoContent skyBlue "-------------------------证书管理-----------------------------"
+	echoContent yellow "31.generate conf [Nginx] [Trojan-go] [v2ray] [Xray]"
+	echoContent yellow "32.generate log  [Nginx] [Trojan-go] [v2ray] [Xray]"
+	echoContent yellow "33.generate docker-compose.yml"
+	echoContent yellow "34.generate fake website"
+	echoContent yellow "35.docker-compose up | 36.docker-compose down | 37.docker status"
+	echoContent skyBlue "-----------------------------证书管理---------------------------------"
 	echoContent yellow "40.show CA | 41.generate CA | 42.renew CA"	
 	echoContent yellow "43.show Nginx | 44.Show trojan-go | 45.show v2ray | 46.show xray"
-	echoContent skyBlue "-------------------------科学上网-----------------------------"
+	echoContent skyBlue "-----------------------------科学上网---------------------------------"
 	echoContent yellow "50.安装 v2ray-agent | 快捷方式 [vasma] | 51.安装 BBR"	
-	echoContent skyBlue "-------------------------脚本管理-----------------------------"
-	echoContent yellow "61.generate UUID | 62.show IP | 63.bpytop | 0.更新脚本 | 9.退出"
-	echoContent red "=============================================================="
+	echoContent skyBlue "-----------------------------脚本管理---------------------------------"
+	echoContent yellow "61.generate UUID | 62.show IP | 63.bpytop"
+	echoContent yellow "0.更新脚本 | 9.退出"
+	echoContent red "======================================================================"
 	mkdirTools
 	aliasInstall
 	read -r -p "Please choose the function (请选择) : " selectInstallType
@@ -1279,8 +1278,18 @@ function menu() {
 		github_push_toolbox
 		github_push_logserver
 		;;
+	24)
+		upload_logs_configuration_dynamic_data
+		;;
 	30)
 		shutdown_docker_compose
+		generate_nginx_conf
+		generate_xray_conf
+		generate_trojan_go_conf
+		generate_v2ray_conf
+		generate_access_log_error_log
+		generate_docker_compose_yml
+		generate_fake_website
 		github_pull_toolbox
 		github_pull_logserver
 		github_push_toolbox
@@ -1288,32 +1297,29 @@ function menu() {
 		start_docker_compose
 		;;
 	31)
-		start_docker_compose
-		;;
-	32)
-		shutdown_docker_compose
-		;;
-	33)
-		show_docker_images
-		show_docker_container
-		;;
-	34)
 		generate_nginx_conf
 		generate_xray_conf
 		generate_trojan_go_conf
 		generate_v2ray_conf
 		;;
-	35)
-		generate_fake_website
+	32)
+		generate_access_log_error_log
 		;;
-	36)
-		upload_logs_configuration_dynamic_data
-		;;
-	37)
+	33)
 		generate_docker_compose_yml
 		;;
-	38)
-		generate_access_log_error_log
+	34)
+		generate_fake_website
+		;;
+	35)
+		start_docker_compose
+		;;
+	36)
+		shutdown_docker_compose
+		;;
+	37)
+		show_docker_images
+		show_docker_container
 		;;
 	40)
 		checkTLStatus "${currentHost}"
