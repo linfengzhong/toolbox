@@ -817,9 +817,9 @@ function generate_xray_conf {
   }
 }
 EOF
-	judge "生成 xray 配置文件 "
 	print_info "复制证书到xray配置文件夹 "
 	cp -pf /etc/fuckGFW/tls/*.* /etc/fuckGFW/xray/${currentHost}/
+	judge "生成 xray 配置文件 "
 }
 #-----------------------------------------------------------------------------#
 # 生成 trojan-go 配置文件
