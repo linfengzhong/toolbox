@@ -1098,20 +1098,20 @@ function show_docker_compose_yml {
 #-----------------------------------------------------------------------------#
 # generate access.log & error.log
 function generate_access_log_error_log {
-	print_start "Generate access.log & error.log for Nginx trojan-go v2ray xray "
+	print_start "Generate access.log & error.log for nginx trojan-go v2ray xray "
 	if [[ -f "$HOME/git/logserver/${currentHost}/nginx/access.log" ]];then
-		echoContent yellow "Nginx access.log 文件已存在，无需新建！ "
+		echoContent yellow "nginx access.log 文件已存在，无需新建！ "
 	else
 		cd $HOME/git/logserver/${currentHost}/nginx/
 		touch access.log
-		judge "Generate Nginx access.log "
+		judge "Generate nginx access.log "
 	fi
 	if [[ -f "$HOME/git/logserver/${currentHost}/nginx/error.log" ]];then
-		echoContent yellow "Nginx error.log 文件已存在，无需新建！ "
+		echoContent yellow "nginx error.log 文件已存在，无需新建！ "
 	else
 		cd $HOME/git/logserver/${currentHost}/nginx/
 		touch error.log
-		judge "Generate Nginx error.log "
+		judge "Generate nginx error.log "
 	fi
 	if [[ -f "$HOME/git/logserver/${currentHost}/trojan-go/error.log" ]];then
 		echoContent yellow "trojan-go error.log 文件已存在，无需新建！ "
@@ -1148,7 +1148,17 @@ function generate_access_log_error_log {
 		touch error.log
 		judge "Generate xray error.log "
 	fi
-	judge "Generate access.log & error.log for Nginx trojan-go v2ray xray "
+	judge "Generate access.log & error.log for nginx trojan-go v2ray xray "
+}
+#-----------------------------------------------------------------------------#
+# show access.log & error.log
+function show_error_log {
+	print_start "Show error.log for nginx trojan-go v2ray xray "
+	tail -n 20 $HOME/git/logserver/${currentHost}/nginx/error.log
+	tail -n 20 $HOME/git/logserver/${currentHost}/trojan-go/error.log
+	tail -n 20 $HOME/git/logserver/${currentHost}/v2ray/error.log
+	tail -n 20 $HOME/git/logserver/${currentHost}/xray/error.log
+	judge "Show error.log for nginx trojan-go v2ray xray "
 }
 #-----------------------------------------------------------------------------#
 # Website
@@ -1196,7 +1206,7 @@ function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=================================================================="
-	echoContent green "SmartTool：v0.206"
+	echoContent green "SmartTool：v0.208"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "logserver：https://github.com/linfengzhong/logserver"
 	echoContent green "初始化服务器、安装Docker、执行容器"
@@ -1224,9 +1234,10 @@ function menu() {
 	echoContent yellow "35.docker-compose up | 36.docker-compose down | 37.docker status"
 	echoContent skyBlue "---------------------------证书管理-------------------------------"
 	echoContent yellow "40.show CA | 41.generate CA | 42.renew CA"
-	echoContent skyBlue "---------------------------配置文件-------------------------------"
+	echoContent skyBlue "---------------------------查看文件-------------------------------"
 	echoContent yellow "43.show nginx | 44.show docker-compose.yml"
 	echoContent yellow "45.Show trojan-go | 46.show v2ray | 47.show xray"
+	echoContent yellow "48.Show log [Nginx] [Trojan-go] [v2ray] [Xray] - logserver"
 	echoContent skyBlue "---------------------------科学上网-------------------------------"
 	echoContent yellow "50.安装 v2ray-agent | 快捷方式 [vasma] | 51.安装 BBR"	
 	echoContent skyBlue "---------------------------脚本管理-------------------------------"
@@ -1348,6 +1359,9 @@ function menu() {
 		;;
 	47)
 		show_xray_conf
+		;;
+	48)
+		show_error_log
 		;;
 	50)
 		InstallV2rayAgent
