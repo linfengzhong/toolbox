@@ -387,6 +387,12 @@ function git_clone_logserver () {
 		git clone git@github.com:linfengzhong/logserver.git
 		judge "Git clone logserver "
 	fi
+	mkdir -p $HOME/git/logserver/$currentHost
+	mkdir -p $HOME/git/logserver/$currentHost/nginx
+	mkdir -p $HOME/git/logserver/$currentHost/portainer/data
+	mkdir -p $HOME/git/logserver/$currentHost/trojan-go
+	mkdir -p $HOME/git/logserver/$currentHost/v2ray
+	mkdir -p $HOME/git/logserver/$currentHost/xray
 }
 #-----------------------------------------------------------------------------#
 # 同步下载Git文件夹
