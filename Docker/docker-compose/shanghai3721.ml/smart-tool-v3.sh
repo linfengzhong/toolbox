@@ -359,8 +359,7 @@ function github_pull_toolbox () {
 	print_start "下载 -> Local toolbox Repo "
 	cd $GITHUB_REPO_TOOLBOX
 	sudo git pull
-	cp -pf $GITHUB_REPO_TOOLBOX/Shell/smart-tool-v3.sh $HOME
-	chmod 766 $HOME/smart-tool-v3.sh
+	cp -pf $GITHUB_REPO_TOOLBOX/Docker/$currentHost/smart-tool-v3.sh $HOME
 	aliasInstall
 	judge "下载 -> Local toolbox Repo "
 }
@@ -586,9 +585,9 @@ function updateSmartTool() {
 	rm -rf /etc/smart-tool/smart-tool-v3.sh
 	echoContent skyBlue "开始下载： "
 	if wget --help | grep -q show-progress; then
-		wget -c -q --show-progress -P /etc/smart-tool/ -N --no-check-certificate "https://raw.githubusercontent.com/linfengzhong/toolbox/main/Shell/smart-tool-v3.sh"
+		wget -c -q --show-progress -P /etc/smart-tool/ -N --no-check-certificate "https://raw.githubusercontent.com/linfengzhong/toolbox/main/Docker/docker-compose/${currentHost}/smart-tool-v3.sh"
   	else
-		wget -c -q -P /etc/smart-tool/ -N --no-check-certificate "https://raw.githubusercontent.com/linfengzhong/toolbox/main/Shell/smart-tool-v3.sh"
+		wget -c -q -P /etc/smart-tool/ -N --no-check-certificate "https://raw.githubusercontent.com/linfengzhong/toolbox/main/Docker/docker-compose/${currentHost}/smart-tool-v3.sh"
 	fi
 
 	sudo chmod 700 /etc/smart-tool/smart-tool-v3.sh
