@@ -966,6 +966,8 @@ services:
             TZ: Asia/Shanghai
         ports:
             - 80:80
+        expose:
+            - 31300
         volumes: 
             - /etc/fuckGFW/nginx/conf.d/:/etc/nginx/conf.d
             - /etc/fuckGFW/website/html:/usr/share/nginx/html
@@ -1194,7 +1196,7 @@ function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=================================================================="
-	echoContent green "SmartTool：v0.203"
+	echoContent green "SmartTool：v0.204"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "logserver：https://github.com/linfengzhong/logserver"
 	echoContent green "初始化服务器、安装Docker、执行容器"
@@ -1215,10 +1217,10 @@ function menu() {
 	echoContent yellow "24.更新日志、配置文件、动态数据到GitHub"
 	echoContent skyBlue "---------------------------容器相关-------------------------------"
 	echoContent yellow "30.One-key"
-	echoContent yellow "31.generate conf [Nginx] [Trojan-go] [v2ray] [Xray]"
-	echoContent yellow "32.generate log  [Nginx] [Trojan-go] [v2ray] [Xray]"
-	echoContent yellow "33.generate docker-compose.yml"
-	echoContent yellow "34.generate fake website"
+	echoContent yellow "31.generate conf [Nginx] [Trojan-go] [v2ray] [Xray] - fuckGFW"
+	echoContent yellow "32.generate log  [Nginx] [Trojan-go] [v2ray] [Xray] - logserver"
+	echoContent yellow "33.generate docker-compose.yml - fuckGFW"
+	echoContent yellow "34.generate fake website - fuckGFW"
 	echoContent yellow "35.docker-compose up | 36.docker-compose down | 37.docker status"
 	echoContent skyBlue "---------------------------证书管理-------------------------------"
 	echoContent yellow "40.show CA | 41.generate CA | 42.renew CA"	
