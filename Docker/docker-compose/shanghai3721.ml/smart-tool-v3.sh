@@ -1210,7 +1210,7 @@ function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=================================================================="
-	echoContent green "SmartTool：v0.209"
+	echoContent green "SmartTool：v0.210"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "logserver：https://github.com/linfengzhong/logserver"
 	echoContent green "初始化服务器、安装Docker、执行容器"
@@ -1220,11 +1220,8 @@ function menu() {
 	echoContent skyBlue "---------------------------安装软件-------------------------------"
 	echoContent yellow "10.安装 全部程序"
 	echoContent yellow "11.安装 prerequisite"
-	echoContent yellow "12.安装 acme.sh"
-	echoContent yellow "13.安装 bpytop"
-	echoContent yellow "14.安装 webmin"
-	echoContent yellow "15.安装 docker CE"
-	echoContent yellow "16.安装 docker compose"
+	echoContent yellow "12.安装 acme.sh | 13.安装 bpytop | 14.安装 webmin"
+	echoContent yellow "15.安装 docker CE | 16.安装 docker compose"
 	echoContent yellow "17.安装 git"
 	echoContent skyBlue "---------------------------版本控制-------------------------------"  
 	echoContent yellow "20.git init | 21.git clone | 22.git pull | 23.git push"
