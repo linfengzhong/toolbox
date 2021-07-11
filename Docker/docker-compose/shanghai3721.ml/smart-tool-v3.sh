@@ -1196,7 +1196,7 @@ function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=================================================================="
-	echoContent green "SmartTool：v0.204"
+	echoContent green "SmartTool：v0.205"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "logserver：https://github.com/linfengzhong/logserver"
 	echoContent green "初始化服务器、安装Docker、执行容器"
@@ -1223,8 +1223,9 @@ function menu() {
 	echoContent yellow "34.generate fake website - fuckGFW"
 	echoContent yellow "35.docker-compose up | 36.docker-compose down | 37.docker status"
 	echoContent skyBlue "---------------------------证书管理-------------------------------"
-	echoContent yellow "40.show CA | 41.generate CA | 42.renew CA"	
-	echoContent yellow "43.show Nginx | 44.Show trojan-go | 45.show v2ray | 46.show xray"
+	echoContent yellow "40.show CA | 41.generate CA | 42.renew CA"
+	echoContent yellow "43.show nginx | 44.show docker-compose.yml"
+	echoContent yellow "45.Show trojan-go | 46.show v2ray | 47.show xray"
 	echoContent skyBlue "---------------------------科学上网-------------------------------"
 	echoContent yellow "50.安装 v2ray-agent | 快捷方式 [vasma] | 51.安装 BBR"	
 	echoContent skyBlue "---------------------------脚本管理-------------------------------"
@@ -1336,12 +1337,15 @@ function menu() {
 		show_nginx_conf
 		;;
 	44)
-		show_trojan_go_conf
+		show_docker_compose_yml
 		;;
 	45)
-		show_v2ray_conf
+		show_trojan_go_conf
 		;;
 	46)
+		show_v2ray_conf
+		;;
+	47)
 		show_xray_conf
 		;;
 	50)
