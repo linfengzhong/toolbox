@@ -844,7 +844,7 @@ function generate_trojan_go_conf {
     "remote_port": 31300,
     "disable_http_check":true,
     "log_level":0,
-    "log_file":"/etc/trojan-go/trojan.log",
+    "log_file":"/etc/trojan-go/error.log",
     "password": [
         "${currentUUID}"
     ],
@@ -1113,12 +1113,12 @@ function generate_access_log_error_log {
 		touch error.log
 		judge "Generate Nginx error.log "
 	fi
-	if [[ -f "$HOME/git/logserver/${currentHost}/trojan-go/trojan-go.log" ]];then
-		echoContent yellow "trojan-go trojan-go.log 文件已存在，无需新建！ "
+	if [[ -f "$HOME/git/logserver/${currentHost}/trojan-go/error.log" ]];then
+		echoContent yellow "trojan-go error.log 文件已存在，无需新建！ "
 	else
 		cd $HOME/git/logserver/${currentHost}/trojan-go/
-		touch trojan-go.log
-		judge "Generate trojan-go trojan-go.log "
+		touch error.log
+		judge "Generate trojan-go error.log "
 	fi
 	if [[ -f "$HOME/git/logserver/${currentHost}/v2ray/access.log" ]];then
 		echoContent yellow "v2ray access.log 文件已存在，无需新建！ "
