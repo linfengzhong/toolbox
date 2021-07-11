@@ -381,6 +381,9 @@ function github_pull_toolbox () {
 	#sudo cp -rf ~/git/toolbox/Docker/docker-compose/k8s-master.ml/ ~/
 	#sudo chown -R root:root ~/all-in-one/
 	#sudo chown -R root:root ~/k8s-master.ml/
+	cp -pf $GITHUB_REPO_TOOLBOX/Shell/smart-tool-v3.sh $HOME
+	chmod 766 $HOME/smart-tool-v3.sh
+	aliasInstall
 	judge "下载 -> Local toolbox Repo "
 }
 #-----------------------------------------------------------------------------#
@@ -1063,7 +1066,7 @@ function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=============================================================="
-	echoContent green "SmartTool：v0.177"
+	echoContent green "SmartTool：v0.178"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "logserver：https://github.com/linfengzhong/logserver"
 	echoContent green "初始化服务器、安装Docker、执行容器"
