@@ -359,7 +359,7 @@ function github_pull_toolbox () {
 	print_start "下载 -> Local toolbox Repo "
 	cd $GITHUB_REPO_TOOLBOX
 	sudo git pull
-	cp -pf $GITHUB_REPO_TOOLBOX/Docker/$currentHost/smart-tool-v3.sh $HOME
+	cp -pf $HOME/git/toolbox/Docker/docker-compose/$currentHost/smart-tool-v3.sh $HOME
 	aliasInstall
 	judge "下载 -> Local toolbox Repo "
 }
@@ -1125,7 +1125,7 @@ function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=============================================================="
-	echoContent green "SmartTool：v0.18"
+	echoContent green "SmartTool：v0.19"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "logserver：https://github.com/linfengzhong/logserver"
 	echoContent green "初始化服务器、安装Docker、执行容器"
