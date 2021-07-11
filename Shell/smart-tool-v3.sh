@@ -958,40 +958,41 @@ function generate_v2ray_conf {
 		"error": "/etc/v2ray/error.log",
 		"loglevel": "debug"
 	},
+
 	"inbounds":[
-	{
-	  "port": 443,
-	  "listen": "127.0.0.1",
-	  "protocol": "trojan",
-	  "tag":"trojanTCP",
-	  "settings": {
-		"clients": [
-		  {
-			"password": "${currentUUID}",
-			"email": "${currentHost}_trojan_tcp"
-		  }
-		],
-		"fallbacks":[
-			{"dest":"nginx:31300"}
-		]
-	  },
-	  "streamSettings": {
-		"network": "tcp",
-		"security": "none",
-		"tcpSettings": {
-			"acceptProxyProtocol": true
+		{
+		"port": 443,
+		"listen": "127.0.0.1",
+		"protocol": "trojan",
+		"tag":"trojanTCP",
+		"settings": {
+			"clients": [
+				{"password": "${currentUUID}",
+				 "email": "${currentHost}_trojan_tcp"}
+			],
+			"fallbacks":[
+				{"dest":"nginx:31300"}
+			]
+			},
+		"streamSettings": {
+			"network": "tcp",
+			"security": "none",
+			"tcpSettings": {
+				"acceptProxyProtocol": true
+			}
+			}
 		}
-	  }
-	}
 	],
-    "outbounds":[
-        {
-            "protocol":"freedom",
-            "settings":{
-                "domainStrategy":"UseIPv4"
+
+	"outbounds":[
+		{
+			"protocol":"freedom",
+			"settings":{
+			"domainStrategy":"UseIPv4"
             },
             "tag":"IPv4-out"
         },
+
         {
             "protocol":"freedom",
             "settings":{
@@ -999,16 +1000,17 @@ function generate_v2ray_conf {
             },
             "tag":"IPv6-out"
         },
+
         {
             "protocol":"blackhole",
             "tag":"blackhole-out"
         }
     ],
-    "dns": {
-        "servers": [
-          "localhost"
-        ]
-  }
+	"dns": {
+		"servers": [
+			"localhost"
+		]
+	}
 }
 EOF
 
