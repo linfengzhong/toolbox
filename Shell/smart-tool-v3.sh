@@ -651,7 +651,7 @@ function mkdirTools() {
 	mkdir -p /etc/fuckGFW/subscribe
 #	mkdir -p /etc/fuckGFW/subscribe_tmp
 	mkdir -p /etc/fuckGFW/nginx/conf.d
-#	mkdir -p /etc/fuckGFW/v2ray/conf
+	mkdir -p /etc/fuckGFW/v2ray/
 	mkdir -p /etc/fuckGFW/xray/${currentHost}
 	mkdir -p /etc/fuckGFW/trojan-go/
 #	mkdir -p /etc/systemd/system/
@@ -933,6 +933,87 @@ EOF
 
 	cat /etc/fuckGFW/trojan-go/config.json
 	judge "生成 trojan-go 配置文件 "
+
+}
+#-----------------------------------------------------------------------------#
+# 生成 v2ray 配置文件
+function generate_v2ray_conf {
+	# https://www.v2fly.org/config/overview.html
+	# /etc/fuckGFW/v2ray
+	# loglevel: "debug" | "info" | "warning" | "error" | "none"
+	# 日志的级别。默认值为 "warning"。
+	#	"debug"：详细的调试性信息。同时包含所有 "info" 内容。
+	#	"info"：V2Ray 在运行时的状态，不影响正常使用。同时包含所有 "warning" 内容。
+	#	"warning"：V2Ray 遇到了一些问题，通常是外部问题，不影响 V2Ray 的正常运行，但有可能影响用户的体验。同时包含所有 "error" 内容。
+	#	"error"：V2Ray 遇到了无法正常运行的问题，需要立即解决。
+	#	"none"：不记录任何内容。
+
+	print_start "生成 v2ray 配置文件 "
+	print_info "/etc/fuckGFW/v2ray/config.json"
+
+	cat <<EOF >/etc/fuckGFW/v2ray/config.json
+{
+	"log": {
+		"access": "/etc/v2ray/access.log",
+		"error": "/etc/v2ray/error.log",
+		"loglevel": "debug"
+	},
+	"inbounds":[
+	{
+	  "port": 443,
+	  "listen": "127.0.0.1",
+	  "protocol": "trojan",
+	  "tag":"trojanTCP",
+	  "settings": {
+		"clients": [
+		  {
+			"password": "${currentUUID}",
+			"email": "${currentHost}_trojan_tcp"
+		  }
+		],
+		"fallbacks":[
+			{"dest":"nginx:31300"}
+		]
+	  },
+	  "streamSettings": {
+		"network": "tcp",
+		"security": "none",
+		"tcpSettings": {
+			"acceptProxyProtocol": true
+		}
+	  }
+	}
+	],
+    "outbounds":[
+        {
+            "protocol":"freedom",
+            "settings":{
+                "domainStrategy":"UseIPv4"
+            },
+            "tag":"IPv4-out"
+        },
+        {
+            "protocol":"freedom",
+            "settings":{
+                "domainStrategy":"UseIPv6"
+            },
+            "tag":"IPv6-out"
+        },
+        {
+            "protocol":"blackhole",
+            "tag":"blackhole-out"
+        }
+    ],
+    "dns": {
+        "servers": [
+          "localhost"
+        ]
+  }
+}
+EOF
+
+	cat /etc/fuckGFW/v2ray/config.json
+	judge "生成 v2ray 配置文件 "
 
 }
 #-----------------------------------------------------------------------------#

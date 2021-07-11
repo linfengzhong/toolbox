@@ -64,8 +64,8 @@ services:
             - /root/git/logserver/k8s-master.tk/trojan-go/trojan.log:/etc/trojan-go/trojan.log           
         networks: 
             - net
-    #        depends_on:
-    #            - nginx
+        depends_on:
+            - nginx
     #4. xray -> fuck GFW * Proxy Server
     # VLESS_XTLS/TLS-direct_TCP
     # VLESS_WS
@@ -88,8 +88,27 @@ services:
             - /root/git/logserver/k8s-master.tk/xray/access.log:/etc/xray/access.log
         networks: 
             - net
-    #        depends_on:
-    #            - nginx
+        depends_on:
+            - nginx
+    #5. v2ray -> fuck GFW * Proxy Server
+    #--> Working
+    v2ray:
+        image: v2fly/v2fly-core:latest
+        container_name: v2ray
+        restart: always
+        environment: 
+            TZ: Asia/Shanghai
+        expose:
+            - 31296
+        volumes:
+            - /etc/fuckGFW/v2ray/config.json:/etc/v2ray/config.json
+            # Store data on logserver
+            - /root/git/logserver/k8s-master.tk/v2ray/error.log:/etc/v2ray/error.log
+            - /root/git/logserver/k8s-master.tk/v2ray/access.log:/etc/v2ray/access.log   
+        networks: 
+            - net
+        depends_on:
+            - nginx
     #6. prometheus -> monitor virtual machines
     #--> Working
     prometheus:
@@ -226,8 +245,8 @@ services:
             - /root/git/logserver/k8s-master.tk/portainer/data:/data
         networks: 
             - net
-
-    # Gitea
+    #12. Gitea -> Git
+    #--> Working
     gitea:
         image: gitea/gitea:latest
         container_name: gitea
