@@ -966,8 +966,6 @@ services:
             TZ: Asia/Shanghai
         ports:
             - 80:80
-        expose:
-            - 31300
         volumes: 
             - /etc/fuckGFW/nginx/conf.d/:/etc/nginx/conf.d
             - /etc/fuckGFW/website/html:/usr/share/nginx/html
