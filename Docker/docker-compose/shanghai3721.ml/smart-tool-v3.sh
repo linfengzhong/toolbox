@@ -1292,13 +1292,19 @@ function menu() {
 	22)
 		github_pull_toolbox
 		github_pull_logserver
+		sleep 2
+		menu
 		;;
 	23)
 		github_push_toolbox
 		github_push_logserver
+		sleep 2
+		menu
 		;;
 	24)
 		upload_logs_configuration_dynamic_data
+		sleep 2
+		menu
 		;;
 	30)
 		shutdown_docker_compose
