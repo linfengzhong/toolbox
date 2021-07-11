@@ -1227,7 +1227,8 @@ function menu() {
 	echoContent green "SmartTool：v0.211"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "logserver：https://github.com/linfengzhong/logserver"
-	echoContent green "初始化服务器、安装Docker、执行容器"
+	echoContent green "初始化服务器、安装Docker、执行容器 on \c" 
+	echoContent yellow "${currentHost}"
 	echoContent green "当前系统Linux版本 : \c" 
 	checkSystem
 	echoContent red "=================================================================="
