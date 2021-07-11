@@ -953,64 +953,63 @@ function generate_v2ray_conf {
 
 	cat <<EOF >/etc/fuckGFW/v2ray/config.json
 {
-	"log": {
-		"access": "/etc/v2ray/access.log",
-		"error": "/etc/v2ray/error.log",
-		"loglevel": "debug"
-	},
+  "log": {
+    "access": "/etc/v2ray/access.log",
+    "error": "/etc/v2ray/error.log",
+    "loglevel": "debug"
+  },
 
-	"inbounds":[
-		{
-		"port": 443,
-		"listen": "127.0.0.1",
-		"protocol": "trojan",
-		"tag":"trojanTCP",
-		"settings": {
-			"clients": [
-				{"password": "${currentUUID}",
-				 "email": "${currentHost}_trojan_tcp"}
-			],
-			"fallbacks":[
-				{"dest":"nginx:31300"}
-			]
-			},
-		"streamSettings": {
-			"network": "tcp",
-			"security": "none",
-			"tcpSettings": {
-				"acceptProxyProtocol": true
-			}
-			}
-		}
-	],
-
-	"outbounds":[
-		{
-			"protocol":"freedom",
-			"settings":{
-			"domainStrategy":"UseIPv4"
-            },
-            "tag":"IPv4-out"
+  "inbounds":[
+    {
+      "port": 443,
+      "listen": "127.0.0.1",
+      "protocol": "trojan",
+      "tag":"trojanTCP",
+      "settings": {
+        "clients": [
+          {"password": "${currentUUID}",
+           "email": "${currentHost}_trojan_tcp"}
+          ],
+        "fallbacks":[
+          {"dest":"nginx:31300"}
+          ]
         },
-
-        {
-            "protocol":"freedom",
-            "settings":{
-                "domainStrategy":"UseIPv6"
-            },
-            "tag":"IPv6-out"
-        },
-
-        {
-            "protocol":"blackhole",
-            "tag":"blackhole-out"
+        "streamSettings": {
+          "network": "tcp",
+          "security": "none",
+          "tcpSettings": {
+            "acceptProxyProtocol": true
+          }
         }
-    ],
-	"dns": {
-		"servers": [
-			"localhost"
-		]
-	}
+    }
+  ],
+  "outbounds":[
+    {
+      "protocol":"freedom",
+      "settings":{
+        "domainStrategy":"UseIPv4"
+      },
+      "tag":"IPv4-out"
+    },
+
+    {
+      "protocol":"freedom",
+      "settings":{
+        "domainStrategy":"UseIPv6"
+      },
+      "tag":"IPv6-out"
+    },
+
+    {
+      "protocol":"blackhole",
+      "tag":"blackhole-out"
+    }
+  ],
+  "dns": {
+    "servers": [
+      "localhost"
+    ]
+  }
 }
 EOF
 
@@ -1064,7 +1063,7 @@ function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=============================================================="
-	echoContent green "SmartTool：v0.176"
+	echoContent green "SmartTool：v0.177"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "logserver：https://github.com/linfengzhong/logserver"
 	echoContent green "初始化服务器、安装Docker、执行容器"
