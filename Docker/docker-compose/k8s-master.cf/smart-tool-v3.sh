@@ -1210,13 +1210,21 @@ function upload_logs_configuration_dynamic_data () {
 	github_push_logserver
 	#judge "更新日志、配置文件、动态数据到GitHub "	
 }
+function init_webmin_ssl {
+	print_start "初始化webmin SSL证书 "
+	cp -pf $HOME/.acme.sh/$currentHost/$currentHost.cer /etc/webmin/miniserv.cert
+	cp -pf $HOME/.acme.sh/$currentHost/$currentHost.key /etc/webmin/miniserv.pem
+	cp -pf $HOME/.acme.sh/$currentHost/ca.cer /etc/webmin/miniserv.ca
+	systemctl restart webmin
+	judge "初始化webmin SSL证书 "	
+}
 #-----------------------------------------------------------------------------#
 # 主菜单
 function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=================================================================="
-	echoContent green "SmartTool：v0.210"
+	echoContent green "SmartTool：v0.211"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "logserver：https://github.com/linfengzhong/logserver"
 	echoContent green "初始化服务器、安装Docker、执行容器"
@@ -1240,7 +1248,7 @@ function menu() {
 	echoContent yellow "34.generate fake website - fuckGFW"
 	echoContent yellow "35.docker-compose up | 36.docker-compose down | 37.docker status"
 	echoContent skyBlue "---------------------------证书管理-------------------------------"
-	echoContent yellow "40.show CA | 41.generate CA | 42.renew CA"
+	echoContent yellow "40.show CA | 41.generate CA | 42.renew CA | 49.webmin ssl"
 	echoContent skyBlue "---------------------------查看文件-------------------------------"
 	echoContent yellow "43.show nginx | 44.show docker-compose.yml"
 	echoContent yellow "45.Show trojan-go | 46.show v2ray | 47.show xray"
@@ -1375,6 +1383,9 @@ function menu() {
 		;;
 	48)
 		show_error_log
+		;;
+	49)
+		init_webmin_ssl
 		;;
 	50)
 		InstallV2rayAgent
