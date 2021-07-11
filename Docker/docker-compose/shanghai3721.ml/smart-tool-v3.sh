@@ -683,7 +683,6 @@ function generate_nginx_conf {
 	# /etc/fuckGFW/nginx/conf
 	print_start "生成 NGINX 配置文件 "
 	print_info "/etc/fuckGFW/nginx/conf.d/${currentHost}.conf"
-
 	cat <<EOF >/etc/fuckGFW/nginx/conf.d/${currentHost}.conf
 server {
     listen 80;
@@ -705,9 +704,7 @@ server {
     }
 }
 EOF
-	cat /etc/fuckGFW/nginx/conf.d/${currentHost}.conf
 	judge "生成 NGINX 配置文件 "
-
 }
 
 #-----------------------------------------------------------------------------#
@@ -721,10 +718,8 @@ function generate_xray_conf {
 	#	"warning"：发生了一些并不影响正常运行的问题时输出的信息，但有可能影响用户的体验。同时包含所有 "error" 内容。
 	#	"error"：Xray 遇到了无法正常运行的问题，需要立即解决。
 	#	"none"：不记录任何内容。
-
 	print_start "生成 xray 配置文件 "
 	print_info "/etc/fuckGFW/xray/config.json"
-
 	cat <<EOF >/etc/fuckGFW/xray/config.json
 {
   "log": {
@@ -822,12 +817,9 @@ function generate_xray_conf {
   }
 }
 EOF
-
-	cat /etc/fuckGFW/xray/config.json
 	judge "生成 xray 配置文件 "
 	print_info "复制证书到xray配置文件夹 "
 	cp -pf /etc/fuckGFW/tls/*.* /etc/fuckGFW/xray/${currentHost}/
-
 }
 #-----------------------------------------------------------------------------#
 # 生成 trojan-go 配置文件
@@ -841,10 +833,8 @@ function generate_trojan_go_conf {
 	#	3 输出Error及以上日志
 	#	4 输出Fatal及以上日志
 	#	5 完全不输出日志
-
 	print_start "生成 trojan-go 配置文件 "
 	print_info "/etc/fuckGFW/trojan-go/config.json"
-
 	cat <<EOF >/etc/fuckGFW/trojan-go/config.json
 {
     "run_type": "server",
@@ -876,10 +866,7 @@ function generate_trojan_go_conf {
     }
 }
 EOF
-
-	cat /etc/fuckGFW/trojan-go/config.json
 	judge "生成 trojan-go 配置文件 "
-
 }
 #-----------------------------------------------------------------------------#
 # 生成 v2ray 配置文件
@@ -893,10 +880,8 @@ function generate_v2ray_conf {
 	#	"warning"：V2Ray 遇到了一些问题，通常是外部问题，不影响 V2Ray 的正常运行，但有可能影响用户的体验。同时包含所有 "error" 内容。
 	#	"error"：V2Ray 遇到了无法正常运行的问题，需要立即解决。
 	#	"none"：不记录任何内容。
-
 	print_start "生成 v2ray 配置文件 "
 	print_info "/etc/fuckGFW/v2ray/config.json"
-
 	cat <<EOF >/etc/fuckGFW/v2ray/config.json
 {
   "log": {
@@ -958,18 +943,13 @@ function generate_v2ray_conf {
   }
 }
 EOF
-
-	cat /etc/fuckGFW/v2ray/config.json
 	judge "生成 v2ray 配置文件 "
-
 }
 #-----------------------------------------------------------------------------#
 # 生成 docker-compose.yml 配置文件
 function generate_docker_compose_yml {
-
 	print_start "生成 docker-compose.yml 配置文件 "
 	print_info "/etc/fuckGFW/docker/${currentHost}/docker-compose.yml"
-
 	cat <<EOF >/etc/fuckGFW/docker/${currentHost}/docker-compose.yml
 version: '3.8'
 services:
@@ -1076,10 +1056,97 @@ networks:
     net:
         driver: bridge
 EOF
-
+	judge "生成 docker-compose.yml 配置文件 "
+}
+#-----------------------------------------------------------------------------#
+# 查看 Nginx 配置文件
+function show_nginx_conf {
+	print_start "查看 Nginx 配置文件 "
+	cat /etc/fuckGFW/nginx/conf.d/${currentHost}.conf
+	judge "查看 Nginx 配置文件 "
+}
+#-----------------------------------------------------------------------------#
+# 查看 xray 配置文件
+function show_xray_conf {
+	print_start "查看 xray 配置文件 "
+	cat /etc/fuckGFW/xray/config.json
+	judge "查看 xray 配置文件 "	
+}
+#-----------------------------------------------------------------------------#
+# 查看 trojan-go 配置文件
+function show_trojan_go_conf {
+	print_start "查看 trojan-go 配置文件 "
+	cat /etc/fuckGFW/trojan-go/config.json
+	judge "查看 trojan-go 配置文件 "	
+}
+#-----------------------------------------------------------------------------#
+# 查看 v2ray 配置文件
+function show_v2ray_conf {
+	print_start "查看 v2ray 配置文件 "
+	cat /etc/fuckGFW/v2ray/config.json
+	judge "查看 v2ray 配置文件 "	
+}
+#-----------------------------------------------------------------------------#
+# 查看 docker-compose.yml 配置文件
+function show_docker_compose_yml {
+	print_start "查看 docker-compose.yml 配置文件 "
 	cat /etc/fuckGFW/docker/${currentHost}/docker-compose.yml
-	judge "生成 trojan-go 配置文件 "
-
+	judge "查看 docker-compose.yml 配置文件 "
+}
+#-----------------------------------------------------------------------------#
+# generate access.log & error.log
+function generate_access_log_error_log {
+	print_start "Generate access.log & error.log for Nginx trojan-go v2ray xray "
+	if [[ -f "$HOME/git/logserver/${currentHost}/nginx/access.log" ]];then
+		echoContent yellow "Nginx access.log 文件已存在，无需新建！ "
+	else
+		cd $HOME/git/logserver/${currentHost}/nginx/
+		touch access.log
+		judge "Generate Nginx access.log "
+	fi
+	if [[ -f "$HOME/git/logserver/${currentHost}/nginx/error.log" ]];then
+		echoContent yellow "Nginx error.log 文件已存在，无需新建！ "
+	else
+		cd $HOME/git/logserver/${currentHost}/nginx/
+		touch error.log
+		judge "Generate Nginx error.log "
+	fi
+	if [[ -f "$HOME/git/logserver/${currentHost}/trojan-go/trojan-go.log" ]];then
+		echoContent yellow "trojan-go trojan-go.log 文件已存在，无需新建！ "
+	else
+		cd $HOME/git/logserver/${currentHost}/trojan-go/
+		touch trojan-go.log
+		judge "Generate trojan-go trojan-go.log "
+	fi
+	if [[ -f "$HOME/git/logserver/${currentHost}/v2ray/access.log" ]];then
+		echoContent yellow "v2ray access.log 文件已存在，无需新建！ "
+	else
+		cd $HOME/git/logserver/${currentHost}/v2ray/
+		touch access.log
+		judge "Generate v2ray access.log "
+	fi
+	if [[ -f "$HOME/git/logserver/${currentHost}/v2ray/error.log" ]];then
+		echoContent yellow "v2ray error.log 文件已存在，无需新建！ "
+	else
+		cd $HOME/git/logserver/${currentHost}/v2ray/
+		touch error.log
+		judge "Generate v2ray error.log "
+	fi
+	if [[ -f "$HOME/git/logserver/${currentHost}/xray/access.log" ]];then
+		echoContent yellow "xray access.log 文件已存在，无需新建！ "
+	else
+		cd $HOME/git/logserver/${currentHost}/xray/
+		touch access.log
+		judge "Generate xray access.log "
+	fi
+	if [[ -f "$HOME/git/logserver/${currentHost}/xray/error.log" ]];then
+		echoContent yellow "xray error.log 文件已存在，无需新建！ "
+	else
+		cd $HOME/git/logserver/${currentHost}/xray/
+		touch error.log
+		judge "Generate xray error.log "
+	fi
+	judge "Generate access.log & error.log for Nginx trojan-go v2ray xray "
 }
 #-----------------------------------------------------------------------------#
 # Website
@@ -1127,7 +1194,7 @@ function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=============================================================="
-	echoContent green "SmartTool：v0.191"
+	echoContent green "SmartTool：v0.200"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "logserver：https://github.com/linfengzhong/logserver"
 	echoContent green "初始化服务器、安装Docker、执行容器"
@@ -1154,13 +1221,14 @@ function menu() {
 	echoContent yellow "35.添加随机伪装站点"
 	echoContent yellow "36.更新日志、配置文件、动态数据到GitHub"
 	echoContent yellow "37.generate docker-compose.yml"
+	echoContent yellow "38.generate access.log & error.log"
 	echoContent skyBlue "-------------------------证书管理-----------------------------"
 	echoContent yellow "40.show CA | 41.generate CA | 42.renew CA"	
+	echoContent yellow "43.show Nginx | 44.Show trojan-go | 45.show v2ray | 46.show xray"
 	echoContent skyBlue "-------------------------科学上网-----------------------------"
 	echoContent yellow "50.安装 v2ray-agent | 快捷方式 [vasma] | 51.安装 BBR"	
 	echoContent skyBlue "-------------------------脚本管理-----------------------------"
-	echoContent yellow "61.generate UUID | 62.show IP | 63.bpytop"	
-	echoContent yellow "0.更新脚本 | 9.退出"
+	echoContent yellow "61.generate UUID | 62.show IP | 63.bpytop | 0.更新脚本 | 9.退出"
 	echoContent red "=============================================================="
 	mkdirTools
 	aliasInstall
@@ -1244,6 +1312,9 @@ function menu() {
 	37)
 		generate_docker_compose_yml
 		;;
+	38)
+		generate_access_log_error_log
+		;;
 	40)
 		checkTLStatus "${currentHost}"
 		;;
@@ -1252,6 +1323,18 @@ function menu() {
 		;;
 	42)
 		renewalTLS
+		;;
+	43)
+		show_nginx_conf
+		;;
+	44)
+		show_trojan_go_conf
+		;;
+	45)
+		show_v2ray_conf
+		;;
+	46)
+		show_xray_conf
 		;;
 	50)
 		InstallV2rayAgent
