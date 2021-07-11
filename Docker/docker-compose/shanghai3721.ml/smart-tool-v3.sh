@@ -1196,7 +1196,7 @@ function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=================================================================="
-	echoContent green "SmartTool：v0.205"
+	echoContent green "SmartTool：v0.206"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "logserver：https://github.com/linfengzhong/logserver"
 	echoContent green "初始化服务器、安装Docker、执行容器"
@@ -1224,6 +1224,7 @@ function menu() {
 	echoContent yellow "35.docker-compose up | 36.docker-compose down | 37.docker status"
 	echoContent skyBlue "---------------------------证书管理-------------------------------"
 	echoContent yellow "40.show CA | 41.generate CA | 42.renew CA"
+	echoContent skyBlue "---------------------------配置文件-------------------------------"
 	echoContent yellow "43.show nginx | 44.show docker-compose.yml"
 	echoContent yellow "45.Show trojan-go | 46.show v2ray | 47.show xray"
 	echoContent skyBlue "---------------------------科学上网-------------------------------"
