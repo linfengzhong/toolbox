@@ -99,7 +99,7 @@ services:
         environment: 
             TZ: Asia/Shanghai
         expose:
-            - 31296
+            - 443
         volumes:
             - /etc/fuckGFW/v2ray/config.json:/etc/v2ray/config.json
             # Store data on logserver
