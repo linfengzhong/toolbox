@@ -995,7 +995,7 @@ services:
         volumes:
             - /etc/fuckGFW/trojan-go/config.json:/etc/trojan-go/config.json
             # Store data on logserver
-            - /root/git/logserver/${currentHost}/trojan-go/trojan.log:/etc/trojan-go/trojan.log           
+            - /root/git/logserver/${currentHost}/trojan-go/trojan.log:/etc/trojan-go/error.log           
         networks: 
             - net
         depends_on:
