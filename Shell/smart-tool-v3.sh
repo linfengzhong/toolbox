@@ -363,7 +363,7 @@ function git_clone_toolbox () {
 #-----------------------------------------------------------------------------#
 # 同步下载Git文件夹
 function github_pull_toolbox () {
-	echoContent yellow "ToolBox"
+	echoContent yellow " ---> ToolBox"
 	print_start "下载 -> Local toolbox Repo "
 	cd $GITHUB_REPO_TOOLBOX
 	# 查询git repo状态
@@ -389,7 +389,7 @@ function github_pull_toolbox () {
 #-----------------------------------------------------------------------------#
 # 同步上传Git文件夹
 function github_push_toolbox () {
-	echoContent yellow "ToolBox"
+	echoContent yellow " ---> ToolBox"
 	print_start "上传 -> GitHub "
 	cd $GITHUB_REPO_TOOLBOX
 	# 查询git repo状态
@@ -422,7 +422,7 @@ function git_clone_logserver () {
 #-----------------------------------------------------------------------------#
 # 同步下载Git文件夹
 function github_pull_logserver () {
-	echoContent yellow "logserver"
+	echoContent yellow " ---> logserver"
 	print_start "下载 -> Local logserver Repo "
 	cd $GITHUB_REPO_LOGSERVER
 	# 查询git repo状态
@@ -436,7 +436,7 @@ function github_pull_logserver () {
 #-----------------------------------------------------------------------------#
 # 同步上传Git文件夹
 function github_push_logserver () {
-	echoContent yellow "logserver"
+	echoContent yellow " ---> logserver"
 	print_start "上传 -> GitHub "
 	cd $GITHUB_REPO_LOGSERVER
 	# 查询git repo状态
