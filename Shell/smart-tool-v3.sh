@@ -1062,7 +1062,7 @@ function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=============================================================="
-	echoContent green "SmartTool：v0.175"
+	echoContent green "SmartTool：v0.176"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "logserver：https://github.com/linfengzhong/logserver"
 	echoContent green "初始化服务器、安装Docker、执行容器"
@@ -1085,7 +1085,7 @@ function menu() {
 	echoContent yellow "31.docker-compose up"
 	echoContent yellow "32.docker-compose down"
 	echoContent yellow "33.docker status"
-	echoContent yellow "34.generate config [Nginx] [Xray] [Trojan-go]"
+	echoContent yellow "34.generate config [Nginx] [Xray] [Trojan-go] [v2ray]"
 	echoContent yellow "35.添加随机伪装站点"
 	echoContent yellow "36.更新日志、配置文件、动态数据到GitHub"
 	echoContent skyBlue "-------------------------证书管理-----------------------------"
@@ -1167,6 +1167,7 @@ function menu() {
 		generate_nginx_conf
 		generate_xray_conf
 		generate_trojan_go_conf
+		generate_v2ray_conf
 		;;
 	35)
 		generate_fake_website
