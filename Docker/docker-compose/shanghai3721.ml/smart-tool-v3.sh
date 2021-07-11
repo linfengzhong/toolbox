@@ -1154,9 +1154,13 @@ function generate_access_log_error_log {
 # show access.log & error.log
 function show_error_log {
 	print_start "Show error.log for nginx trojan-go v2ray xray "
+	echoContent yellow " ---> nginx"
 	tail -n 20 $HOME/git/logserver/${currentHost}/nginx/error.log
+	echoContent yellow " ---> trojan-go"
 	tail -n 20 $HOME/git/logserver/${currentHost}/trojan-go/error.log
+	echoContent yellow " ---> v2ray"
 	tail -n 20 $HOME/git/logserver/${currentHost}/v2ray/error.log
+	echoContent yellow " ---> xray"
 	tail -n 20 $HOME/git/logserver/${currentHost}/xray/error.log
 	judge "Show error.log for nginx trojan-go v2ray xray "
 }
@@ -1206,7 +1210,7 @@ function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=================================================================="
-	echoContent green "SmartTool：v0.208"
+	echoContent green "SmartTool：v0.209"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "logserver：https://github.com/linfengzhong/logserver"
 	echoContent green "初始化服务器、安装Docker、执行容器"
