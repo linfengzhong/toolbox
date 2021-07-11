@@ -13,7 +13,7 @@ function initVar() {
 	# 网站 域名 配置文件的host
 	# WEBSITE="k8s-master.ml"
 	# domain="k8s-master.tk"
-	currentHost="shanghai3721.ml"
+	currentHost="k8s-master.cf"
 	# UUID
 	currentUUID="d8206743-b292-43d1-8200-5606238a5abb"
 
