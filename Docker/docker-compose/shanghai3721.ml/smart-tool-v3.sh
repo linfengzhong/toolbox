@@ -344,6 +344,7 @@ function git_init () {
 # Git clone toolbox.git
 function git_clone_toolbox () {
 	print_start "Git clone ToolBox "
+	mkdir -p git
 	if [[ -d "$HOME/git/toolbox" ]];then
 		echoContent yellow "toolbox文件夹已存在，无需重新clone！"
 	else
