@@ -1126,7 +1126,7 @@ function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=============================================================="
-	echoContent green "SmartTool：v0.178"
+	echoContent green "SmartTool：v0.18"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "logserver：https://github.com/linfengzhong/logserver"
 	echoContent green "初始化服务器、安装Docker、执行容器"
@@ -1239,6 +1239,9 @@ function menu() {
 		;;
 	36)
 		upload_logs_configuration_dynamic_data
+		;;
+	37)
+		generate_docker_compose_yml
 		;;
 	40)
 		checkTLStatus "${currentHost}"
