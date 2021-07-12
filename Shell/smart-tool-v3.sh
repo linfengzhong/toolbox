@@ -2458,7 +2458,7 @@ function generate_vmess_trojan_account {
 	print_start "生成 clash -> account 配置文件 "
 	print_info "/etc/fuckGFW/clash/config.yml"
 	cat <<EOF >/etc/fuckGFW/clash/config.yml
-  # VMess 的配置
+  # Xray VMess 的配置
   - name: "${currentHost}-xrayWS-${currentIP}"
     type: vmess
     server: ${currentHost}
@@ -2470,7 +2470,8 @@ function generate_vmess_trojan_account {
     network: ws
     ws-path: /${customPath}vmessws
     Host: ${currentHost}
-  
+
+  # v2ray VMess 的配置
   - name: "${currentHost}-v2rayWS-${currentIP}"
     type: vmess
     server: ${currentHost}
@@ -2482,13 +2483,18 @@ function generate_vmess_trojan_account {
     network: ws
     ws-path: /${customPath}v2rayws
     Host: ${currentHost}
-  
+
+  # Trojan 的配置  
   - name: "${currentHost}-trojan-${currentIP}"
     type: trojan
     server: ${currentHost}
     port: 443
     password: ${currentUUID}
     sni: ${currentHost}
+
+  - ${currentHost}-xrayWS-${currentIP}
+  - ${currentHost}-v2rayWS-${currentIP}
+  - ${currentHost}-trojan-${currentIP}
 EOF
 	cat /etc/fuckGFW/clash/config.yml
 	judge "生成 clash -> account 配置文件 "
@@ -2499,7 +2505,7 @@ function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=================================================================="
-	echoContent green "SmartTool：v0.250"
+	echoContent green "SmartTool：v0.251"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "logserver：https://github.com/linfengzhong/logserver"
 	echoContent green "初始化服务器、安装Docker、执行容器 on \c" 
