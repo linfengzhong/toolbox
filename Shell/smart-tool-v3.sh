@@ -4,6 +4,7 @@
 # 2021-May-26 [Initial Version] - Shell Script for setup new server
 # 2021-June-25 [Add new functions] - Stop/Start docker-compose
 # 2021-July-09 [v3] - Remove non used functions
+# 2021-July-12 [logserver] - leverage logserver
 #-----------------------------------------------------------------------------#
 #================== RHEL 7/8 | CentOS 7/8 | Rocky Linux 8 ====================#
 #-----------------------------------------------------------------------------#
@@ -19,11 +20,13 @@ function initVar() {
 
 	#定义变量
 	# WORKDIR="/root/git/toolbox/Docker/docker-compose/${currentHost}/"
+	SmartToolDir="/root/git/toolbox/Shell"
 	WORKDIR="/etc/fuckGFW/docker/${currentHost}/"
 	LOGDIR="/root/git/logserver/${currentHost}/"
 	GITHUB_REPO_TOOLBOX="/root/git/toolbox/"
 	GITHUB_REPO_LOGSERVER="/root/git/logserver/"
 	EMAIL="fred.zhong@outlook.com"
+	myDate=date
 	#fonts color 字体颜色配置
 	Red="\033[31m"
 	Yellow="\033[33m"
@@ -351,30 +354,40 @@ function git_clone_toolbox () {
 		cd  $HOME/git/
 		git clone git@github.com:linfengzhong/toolbox.git
 		judge "Git clone ToolBox "
+
+		echoContent green "同步下载 smart-tool-v3.sh 到根目录"
+		#cp -pf $HOME/git/toolbox/Docker/docker-compose/$currentHost/smart-tool-v3.sh $HOME
+		cp -pf ${SmartToolDir}/smart-tool-v3.sh $HOME
+		chmod 700 $HOME/smart-tool-v3.sh
+		aliasInstall
 	fi
 }
 #-----------------------------------------------------------------------------#
 # 同步下载Git文件夹
 function github_pull_toolbox () {
 	echoContent yellow " ---> ToolBox"
-	print_start "下载 -> Local toolbox Repo "
+	print_start "下载 -> Local ToolBox Repo "
 	cd $GITHUB_REPO_TOOLBOX
 	sudo git pull
-	cp -pf $HOME/git/toolbox/Docker/docker-compose/$currentHost/smart-tool-v3.sh $HOME
+	judge "下载 -> Local ToolBox Repo "
+
+	echoContent green "同步下载 smart-tool-v3.sh 到根目录"
+	#cp -pf $HOME/git/toolbox/Docker/docker-compose/$currentHost/smart-tool-v3.sh $HOME
+	cp -pf ${SmartToolDir}/smart-tool-v3.sh $HOME
 	chmod 700 $HOME/smart-tool-v3.sh
 	aliasInstall
-	judge "下载 -> Local toolbox Repo "
+
 }
 #-----------------------------------------------------------------------------#
 # 同步上传Git文件夹
 function github_push_toolbox () {
 	echoContent yellow " ---> ToolBox"
-	print_start "上传 -> GitHub "
+	print_start "上传ToolBox -> GitHub "
 	cd $GITHUB_REPO_TOOLBOX
 	sudo git add .
-	sudo git commit -m "$date sync_all_config_log_data"
+	sudo git commit -m "${myDate} fix"
 	sudo git push
-	judge "上传 -> GitHub "
+	judge "上传ToolBox -> GitHub "
 }
 #-----------------------------------------------------------------------------#
 # Git clone logserver.git
@@ -393,6 +406,9 @@ function git_clone_logserver () {
 	mkdir -p $HOME/git/logserver/$currentHost/trojan-go
 	mkdir -p $HOME/git/logserver/$currentHost/v2ray
 	mkdir -p $HOME/git/logserver/$currentHost/xray
+	mkdir -p $HOME/git/logserver/$currentHost/prometheus
+	mkdir -p $HOME/git/logserver/$currentHost/grafana/
+	mkdir -p $HOME/git/logserver/$currentHost/grafana/lib
 }
 #-----------------------------------------------------------------------------#
 # 同步下载Git文件夹
@@ -407,12 +423,12 @@ function github_pull_logserver () {
 # 同步上传Git文件夹
 function github_push_logserver () {
 	echoContent yellow " ---> logserver"
-	print_start "上传 -> GitHub "
+	print_start "上传logserver -> GitHub "
 	cd $GITHUB_REPO_LOGSERVER
 	sudo git add .
-	sudo git commit -m "$date sync_all_config_log_data"
+	sudo git commit -m "${myDate} sync_all_config_log_data"
 	sudo git push
-	judge "上传 -> GitHub "
+	judge "上传logserver -> GitHub "
 }
 #-----------------------------------------------------------------------------#
 # 检查系统
@@ -491,10 +507,12 @@ function generate_ca () {
 		print_info "----- 默认域名证书 ----"
 		sh /root/.acme.sh/acme.sh  --issue  -d $currentHost --standalone --force
 		print_info "----- 默认域名证书 ----"
-		print_info "----- 保存默认域名证书到 /etc/fuckGFW/tls ----"
-		cp -pf $HOME/.acme.sh/$currentHost/*.cer /etc/fuckGFW/tls/
+		print_info "----- 保存默认域名证书到 /etc/fuckGFW/tls ----"	cp -pf $HOME/.acme.sh/$currentHost/*.cer /etc/fuckGFW/tls/
 		cp -pf $HOME/.acme.sh/$currentHost/*.key /etc/fuckGFW/tls/
 	fi
+	print_info "复制证书到xray配置文件夹 "
+	cp -pf /etc/fuckGFW/tls/*.* /etc/fuckGFW/xray/${currentHost}/
+	installCronTLS
 	judge "生成网站证书 "
 }
 #-----------------------------------------------------------------------------#
@@ -593,9 +611,9 @@ function updateSmartTool() {
 	rm -rf /etc/smart-tool/smart-tool-v3.sh
 	echoContent skyBlue "开始下载： "
 	if wget --help | grep -q show-progress; then
-		wget -c -q --show-progress -P /etc/smart-tool/ -N --no-check-certificate "https://raw.githubusercontent.com/linfengzhong/toolbox/main/Docker/docker-compose/${currentHost}/smart-tool-v3.sh"
+		wget -c -q --show-progress -P /etc/smart-tool/ -N --no-check-certificate "https://raw.githubusercontent.com/linfengzhong/toolbox/main/Shell/smart-tool-v3.sh"
   	else
-		wget -c -q -P /etc/smart-tool/ -N --no-check-certificate "https://raw.githubusercontent.com/linfengzhong/toolbox/main/Docker/docker-compose/${currentHost}/smart-tool-v3.sh"
+		wget -c -q -P /etc/smart-tool/ -N --no-check-certificate "https://raw.githubusercontent.com/linfengzhong/toolbox/main/Shell/smart-tool-v3.sh"
 	fi
 
 	sudo chmod 700 /etc/smart-tool/smart-tool-v3.sh
@@ -626,6 +644,8 @@ function mkdirTools() {
 	mkdir -p /etc/fuckGFW/v2ray/
 	mkdir -p /etc/fuckGFW/xray/${currentHost}
 	mkdir -p /etc/fuckGFW/trojan-go/
+	mkdir -p /etc/fuckGFW/prometheus/groups
+	mkdir -p /etc/fuckGFW/prometheus/rules
 #	mkdir -p /etc/systemd/system/
 #	mkdir -p /tmp/fuckGFW-tls/
 
@@ -707,6 +727,10 @@ server {
 
     location /portainer/ {
         proxy_pass http://portainer:9000/;
+    }
+    
+	location /grafana/ {
+        proxy_pass http://grafana:3000/;
     }
 }
 EOF
@@ -952,6 +976,55 @@ EOF
 	judge "生成 v2ray 配置文件 "
 }
 #-----------------------------------------------------------------------------#
+# 生成 prometheus 配置文件
+function generate_prometheus_conf {
+	# https://www.v2fly.org/config/overview.html
+	# /etc/fuckGFW/v2ray
+	print_start "生成 prometheus 配置文件 "
+	print_info "/etc/fuckGFW/prometheus/prometheus.yml"
+	cat <<EOF >/etc/fuckGFW/prometheus/prometheus.yml
+# my global config
+global:
+  scrape_interval:     15s # Set the scrape interval to every 15 seconds. Default is every 1 minute.
+  evaluation_interval: 15s # Evaluate rules every 15 seconds. The default is every 1 minute.
+  # scrape_timeout is set to the global default (10s).
+
+# Alertmanager configuration
+# alerting:
+#  alertmanagers:
+#  - static_configs:
+#    - targets: ['alertmanager:9090']
+  #  - targets:
+      # - alertmanager:9093
+
+# Load rules once and periodically evaluate them according to the global 'evaluation_interval'.
+rule_files:
+  # - "first_rules.yml"
+  # - "second_rules.yml"
+
+# A scrape configuration containing exactly one endpoint to scrape:
+# Here it's Prometheus itself.
+scrape_configs:
+  # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
+  - job_name: 'prometheus'
+
+    # metrics_path defaults to '/metrics'
+    # scheme defaults to 'http'.
+
+    static_configs:
+    - targets: ['localhost:9090']
+
+  - job_name: "docker"
+    static_configs:
+    - targets: ['cadvisor:8080']
+
+  - job_name: "linux"
+    static_configs:
+    - targets: ['35.185.165.176:9100','34.80.73.27:9100','35.221.170.54:9100']
+EOF
+	judge "生成 prometheus 配置文件 "
+}
+#-----------------------------------------------------------------------------#
 # 生成 docker-compose.yml 配置文件
 function generate_docker_compose_yml {
 	print_start "生成 docker-compose.yml 配置文件 "
@@ -1042,7 +1115,90 @@ services:
             - net
         depends_on:
             - nginx
-    #5. Portainer -> Docker UI
+    #5. cadvisor -> container advisor / monitor  
+    #--> Working      
+    cadvisor:
+        image: google/cadvisor:latest
+        container_name: cadvisor
+        restart: always
+        environment: 
+            TZ: Asia/Shanghai
+        expose: 
+            - 8080
+        volumes:
+            - /:/rootfs
+            - /var/run:/var/run
+            - /sys:/sys
+            - /var/lib/docker/:/var/lib/docker
+            - /dev/disk/:/dev/disk
+        networks: 
+            - net
+    #6. prometheus -> monitor virtual machines
+    #--> Working
+    prometheus:
+        image: prom/prometheus:latest
+        container_name: prometheus
+        restart: always
+        environment: 
+            TZ: Asia/Shanghai
+        expose: 
+            - 9090
+        volumes:
+            - /etc/fuckGFW/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml 
+            - /root/git/logserver/${currentHost}/prometheus/groups/:/root/prometheus/groups/
+            - /root/git/logserver/${currentHost}/prometheus/groups/:/usr/local/prometheus/groups/ 
+            - /root/git/logserver/${currentHost}/prometheus/rules/:/root/prometheus/rules/
+            - /root/git/logserver/${currentHost}/prometheus/rules/:/usr/local/prometheus/rules/ 
+        networks: 
+            - net
+    #7. grafana -> monitor UI
+    #--> Working
+    grafana:
+        image: grafana/grafana:latest
+        container_name: grafana
+        restart: always
+        environment: 
+        #https://grafana.com/docs/grafana/latest/administration/configuration/
+        #GF_<SectionName>_<KeyName>
+            TZ: Asia/Shanghai
+        #    GF_PATHS_CONFIG: /etc/grafana/grafana.ini
+        #    GF_PATHS_DATA: /var/lib/grafana
+        #    GF_PATHS_HOME: /usr/share/grafana
+        #    GF_PATHS_LOGS: /var/log/grafana
+        #    GF_PATHS_PLUGINS: /var/lib/grafana/plugins
+        #    GF_PATHS_PROVISIONING: /etc/grafana/provisioning
+        #    GF_SERVER_PROTOCOL: https
+            GF_SERVER_PROTOCOL: http
+            GF_SERVER_HTTP_PORT: 3000
+            GF_SERVER_DOMAIN: ${currentHost}
+            GF_SERVER_ROOT_URL: "%(protocol)s://%(domain)s:%(http_port)s/grafana/"
+            GF_SERVER_SERVE_FROM_SUB_PATH: "true"
+            GF_SECURITY_ADMIN_PASSWORD: etL#flk*r4KDo$32Ulfe$%3
+
+            GF_SERVER_ENABLE_GZIP: 'true'
+            GF_SECURITY_ADMIN_PASSWORD__FILE: /run/secrets/grafana_admin_password
+            GF_USERS_ALLOW_SIGN_UP: 'true'
+            GF_USERS_VIEWERS_CAN_EDIT: 'true'
+            GF_AUTH_ANONYMOUS_ENABLED: 'true'
+            GF_AUTH_ANONYMOUS_ORG_NAME: Main Org.
+            GF_AUTH_ANONYMOUS_ORG_ROLE: Viewer
+            GF_ANALYTICS_REPORTING_ENABLED: 'false'
+            GF_ANALYTICS_CHECK_FOR_UPDATES: 'false'
+        #    ROUSER: ocean  # read-only user name for postgres
+        #    ROPASSWORD__FILE: /run/secrets/postgres_ro_password  # postgres read-only user password
+            
+        #    GF_SERVER_CERT_FILE: /etc/grafana/shanghai3721.ml.crt
+        #    GF_SERVER_CERT_KEY: /etc/grafana/shanghai3721.ml.key
+        #secrets:
+        #    - grafana_admin_password
+        volumes:
+            - /root/git/logserver/${currentHost}/grafana/:/etc/grafana/
+            - /root/git/logserver/${currentHost}/grafana/lib:/var/lib/grafana 
+        expose:
+            - 3000
+        networks: 
+            - net
+    #8. Portainer -> Docker UI
     #--> Working
     portainer:
         image: portainer/portainer-ce:alpine
@@ -1224,7 +1380,7 @@ function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=================================================================="
-	echoContent green "SmartTool：v0.212"
+	echoContent green "SmartTool：v0.213"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "logserver：https://github.com/linfengzhong/logserver"
 	echoContent green "初始化服务器、安装Docker、执行容器 on \c" 
@@ -1243,7 +1399,7 @@ function menu() {
 	echoContent yellow "24.更新日志、配置文件、动态数据到GitHub"
 	echoContent skyBlue "---------------------------容器相关-------------------------------"
 	echoContent yellow "30.One-key"
-	echoContent yellow "31.generate conf [Nginx] [Trojan-go] [v2ray] [Xray] - fuckGFW"
+	echoContent yellow "31.generate conf [Nginx] [Trojan-go] [v2ray] [Xray] [Prometheus]- fuckGFW"
 	echoContent yellow "32.generate log  [Nginx] [Trojan-go] [v2ray] [Xray] - logserver"
 	echoContent yellow "33.generate docker-compose.yml - fuckGFW"
 	echoContent yellow "34.generate fake website - fuckGFW"
@@ -1326,6 +1482,7 @@ function menu() {
 		generate_xray_conf
 		generate_trojan_go_conf
 		generate_v2ray_conf
+		generate_prometheus_conf
 		generate_access_log_error_log
 		generate_fake_website
 		github_pull_toolbox
@@ -1339,6 +1496,7 @@ function menu() {
 		generate_xray_conf
 		generate_trojan_go_conf
 		generate_v2ray_conf
+		generate_prometheus_conf
 		;;
 	32)
 		generate_access_log_error_log
