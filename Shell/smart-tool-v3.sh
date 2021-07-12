@@ -1183,6 +1183,7 @@ services:
             GF_SERVER_DOMAIN: ${currentHost}
             GF_SERVER_ROOT_URL: "%(protocol)s://%(domain)s:%(http_port)s/grafana/"
             GF_SERVER_SERVE_FROM_SUB_PATH: "true"
+			GF_SECURITY_ADMIN_USER: root
             GF_SECURITY_ADMIN_PASSWORD: etL#flk*r4KDo$32Ulfe$%3
             GF_SERVER_ENABLE_GZIP: 'true'
             GF_USERS_ALLOW_SIGN_UP: 'true'
@@ -1381,7 +1382,7 @@ function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=================================================================="
-	echoContent green "SmartTool：v0.219"
+	echoContent green "SmartTool：v0.220"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "logserver：https://github.com/linfengzhong/logserver"
 	echoContent green "初始化服务器、安装Docker、执行容器 on \c" 
