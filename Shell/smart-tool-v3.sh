@@ -862,7 +862,7 @@ function generate_xray_conf {
           {
             "id": "${currentUUID}",
             "alterId": 64,
-            "add": "${currentHost}"",
+            "add": "${currentHost}",
             "email": "${currentHost}_vmess_ws"
           }
         ]
