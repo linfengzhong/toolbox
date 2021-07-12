@@ -2471,6 +2471,7 @@ function generate_vmess_trojan_account {
     password: ${currentUUID}
     sni: ${currentHost}
 EOF
+	cat /etc/fuckGFW/clash/config.yml
 	judge "生成 clash -> account 配置文件 "
 }
 #-----------------------------------------------------------------------------#
@@ -2479,7 +2480,7 @@ function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=================================================================="
-	echoContent green "SmartTool：v0.244"
+	echoContent green "SmartTool：v0.245"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "logserver：https://github.com/linfengzhong/logserver"
 	echoContent green "初始化服务器、安装Docker、执行容器 on \c" 
@@ -2506,16 +2507,16 @@ function menu() {
 	echoContent yellow "34.generate fake website - fuckGFW"
 	echoContent yellow "35.docker-compose up | 36.docker-compose down | 37.docker status"
 	echoContent skyBlue "---------------------------证书管理-------------------------------"
-	echoContent yellow "40.show CA | 41.generate CA | 42.renew CA | 49.webmin ssl"
+	echoContent yellow "40.show CA | 41.generate CA | 42.renew CA"
 	echoContent skyBlue "---------------------------查看文件-------------------------------"
 	echoContent yellow "43.show nginx | 44.show docker-compose.yml"
-	echoContent yellow "45.show trojan-go | 46.show v2ray | 47.show xray"
-	echoContent yellow "48.show log [Nginx] [Trojan-go] [v2ray] [Xray] - logserver"
+	echoContent yellow "45.show trojan-go | 46.show v2ray | 47.show xray | 48.show Account"
+	echoContent yellow "49.show log [Nginx] [Trojan-go] [v2ray] [Xray] - logserver"
 	echoContent skyBlue "---------------------------科学上网-------------------------------"
 	echoContent yellow "50.安装 v2ray-agent | 快捷方式 [vasma] | 51.安装 BBR"	
 	echoContent skyBlue "---------------------------脚本管理-------------------------------"
 	echoContent yellow "61.generate UUID | 62.show IP | 63.bpytop | 64.set timezone"
-	echoContent yellow "0.更新脚本 | 1.设置域名 | 2.设置UUID | 9.退出"
+	echoContent yellow "0.更新脚本 | 1.设置域名 | 2.设置UUID | 3.webmin ssl | 9.退出"
 	echoContent red "=================================================================="
 	mkdirTools
 	aliasInstall
@@ -2647,10 +2648,10 @@ function menu() {
 		show_xray_conf
 		;;
 	48)
-		show_error_log
+		generate_vmess_trojan_account
 		;;
 	49)
-		init_webmin_ssl
+		show_error_log
 		;;
 	50)
 		InstallV2rayAgent
@@ -2679,6 +2680,9 @@ function menu() {
 		;;
 	2)
 		set_current_uuid
+		;;
+	3)
+		init_webmin_ssl
 		;;
 	9)
 	    exit 0
