@@ -91,7 +91,7 @@ function initVar() {
 
 	if [[ -f "$HOME/.MYHOSTDOMAIN" ]]; then
 		print_error "已经设置服务器域名，无需重复设置！"
-		sleep 1
+		# sleep 1
 	else
 		print_info "初始化 SmartTool v3 "
 		read -r -p "请设置服务器域名：" inputHostName
@@ -2414,7 +2414,7 @@ function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=================================================================="
-	echoContent green "SmartTool：v0.242"
+	echoContent green "SmartTool：v0.243"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "logserver：https://github.com/linfengzhong/logserver"
 	echoContent green "初始化服务器、安装Docker、执行容器 on \c" 
