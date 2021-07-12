@@ -2347,7 +2347,7 @@ function init_webmin_ssl {
 	print_start "初始化webmin SSL证书 "
 	
 	if [[ -f "/etc/fuckGFW/webmin/backup/check" ]]; then
-		print_error "已经备份过，不需要重复备份！"
+		print_error "已经备份过，不需重复备份！"
 	else
 		print_info "备份webmin配置文件到 /etc/fuckGFW/webmin/ "
 		mkdir -p /etc/fuckGFW/webmin/backup
