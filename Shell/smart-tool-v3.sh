@@ -38,7 +38,7 @@ function initVar() {
 	Font="\033[0m"
 	# Notification information 通知信息
 	# Info="${Green}[Message信息]${Font}"
-	Start="${Green}[Start开始]${Font}"
+	Start="${Yellow}[Start开始]${Font}"
 	Info="${Green}[Info信息]${Font}"
 	OK="${Green}[OK正常]${Font}"
 	Error="${Red}[ERROR错误]${Font}"
