@@ -2131,7 +2131,7 @@ services:
             GF_ANALYTICS_CHECK_FOR_UPDATES: 'false'
         volumes:
             - /root/git/logserver/${currentHost}/grafana/:/etc/grafana/
-			- /etc/fuckGFW/grafana/grafana.ini:/etc/grafana/grafana.ini
+            - /etc/fuckGFW/grafana/grafana.ini:/etc/grafana/grafana.ini
             - /root/git/logserver/${currentHost}/grafana/lib:/var/lib/grafana 
         expose:
             - 3000
