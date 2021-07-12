@@ -94,20 +94,26 @@ function initVar() {
 		sleep 1
 	else
 		print_info "初始化 SmartTool v3 "
-		read -r -p "请设置服务器域名：" yourHostName
-			if [ $yourHostName ]; then
+		read -r -p "请设置服务器域名：" inputHostName
+			if [ $inputHostName ]; then
 				print_info "----- 服务器域名 ----"
-				print_error "${yourHostName}"
+				print_error "${inputHostName}"
 				print_info "----- 服务器域名 ----"
+				echo "MYHOSTDOMAIN=${inputHostName}" >> $HOME/.bash_profile
+				source $HOME/.bash_profile
 			else
 				print_error "未输入域名，使用默认域名: ${currentHost}"
 				print_info "----- 默认服务器域名 ----"
 				print_error "${currentHost}"
 				print_info "----- 默认服务器域名 ----"
+				echo "MYHOSTDOMAIN=${currentHost}" >> $HOME/.bash_profile
+				source $HOME/.bash_profile
+			else
 			fi
 		touch $HOME/.check
 		sleep 1
 	fi
+	currentHost=${MYHOSTDOMAIN}
 }
 #-----------------------------------------------------------------------------#
 #打印Start
@@ -2404,7 +2410,7 @@ function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=================================================================="
-	echoContent green "SmartTool：v0.237"
+	echoContent green "SmartTool：v0.238"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "logserver：https://github.com/linfengzhong/logserver"
 	echoContent green "初始化服务器、安装Docker、执行容器 on \c" 
