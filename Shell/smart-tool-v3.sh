@@ -414,6 +414,7 @@ function git_clone_logserver () {
 	mkdir -p $HOME/git/logserver/$currentHost/prometheus
 	mkdir -p $HOME/git/logserver/$currentHost/grafana/
 	mkdir -p $HOME/git/logserver/$currentHost/grafana/lib
+	chmod 777 -R $HOME/git/logserver/$currentHost/grafana/lib
 }
 #-----------------------------------------------------------------------------#
 # 同步下载Git文件夹
@@ -422,6 +423,7 @@ function github_pull_logserver () {
 	print_start "下载 -> Local logserver Repo "
 	cd $GITHUB_REPO_LOGSERVER
 	sudo git pull
+	chmod 777 -R $HOME/git/logserver/$currentHost/grafana/lib	
 	judge "下载 -> Local logserver Repo "
 }
 #-----------------------------------------------------------------------------#
@@ -1023,7 +1025,7 @@ rule_files:
 # A scrape configuration containing exactly one endpoint to scrape:
 # Here it's Prometheus itself.
 scrape_configs:
-  # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
+  # The job name is added as a label `job=job_name` to any timeseries scraped from this config.
   - job_name: 'prometheus'
 
     # metrics_path defaults to '/metrics'
