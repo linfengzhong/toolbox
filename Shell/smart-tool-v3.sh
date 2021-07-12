@@ -2366,7 +2366,7 @@ function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=================================================================="
-	echoContent green "SmartTool：v0.232"
+	echoContent green "SmartTool：v0.233"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "logserver：https://github.com/linfengzhong/logserver"
 	echoContent green "初始化服务器、安装Docker、执行容器 on \c" 
@@ -2463,6 +2463,9 @@ function menu() {
 	30)
 		generate_docker_compose_yml
 		shutdown_docker_compose
+		github_pull_toolbox
+		github_pull_logserver
+		generate_docker_compose_yml
 		generate_ca
 		renewalTLS
 		generate_nginx_conf
@@ -2473,8 +2476,6 @@ function menu() {
 		generate_grafana_ini
 		generate_access_log_error_log
 		generate_fake_website
-		github_pull_toolbox
-		github_pull_logserver
 		github_push_toolbox
 		github_push_logserver
 		start_docker_compose
