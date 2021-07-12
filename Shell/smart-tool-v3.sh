@@ -17,6 +17,8 @@ function initVar() {
 	currentHost="k8s-node.cf"
 	# UUID
 	currentUUID="d8206743-b292-43d1-8200-5606238a5abb"
+	# 随机路径
+	customPath="rdxyzukwofngusfpmheud"
 
 	#定义变量
 	# WORKDIR="/root/git/toolbox/Docker/docker-compose/${currentHost}/"
@@ -27,6 +29,8 @@ function initVar() {
 	GITHUB_REPO_LOGSERVER="/root/git/logserver/"
 	EMAIL="fred.zhong@outlook.com"
 	myDate=date
+	fallbacksList=
+
 	#fonts color 字体颜色配置
 	Red="\033[31m"
 	Yellow="\033[33m"
@@ -76,8 +80,7 @@ function initVar() {
 	selectCoreType=
 	# 默认core版本
 	v2rayCoreVersion=
-	# 随机路径
-	customPath=
+
 	# centos version
 	centosVersion=
 	# pingIPv6 pingIPv4
@@ -741,7 +744,7 @@ server {
 }
 
 server {
-    listen 31300;
+    listen 443;
     server_name ${currentHost};
     root /usr/share/nginx/html;
 
@@ -772,6 +775,12 @@ function generate_xray_conf {
 	#	"warning"：发生了一些并不影响正常运行的问题时输出的信息，但有可能影响用户的体验。同时包含所有 "error" 内容。
 	#	"error"：Xray 遇到了无法正常运行的问题，需要立即解决。
 	#	"none"：不记录任何内容。
+
+	fallbacksList='{"dest":'trojan-go:443',"xver":0}'
+	fallbacksList=${fallbacksList}',{"path":"/'${customPath}'vlessws","dest":37211,"xver":1}'
+	fallbacksList=${fallbacksList}',{"path":"/'${customPath}'vmessws","dest":37212,"xver":1}'
+	fallbacksList=${fallbacksList}',{"path":"/'${customPath}'v2rayws","dest":'v2ray:443',"xver":1}'
+
 	print_start "生成 xray 配置文件 "
 	print_info "/etc/fuckGFW/xray/config.json"
 	cat <<EOF >/etc/fuckGFW/xray/config.json
@@ -798,20 +807,7 @@ function generate_xray_conf {
         ],
         "decryption": "none",
         "fallbacks": [
-          {
-            "dest": "trojan-go:31296",
-            "xver": 0
-          },
-          {
-            "path": "/rdxryws",
-            "dest": 31297,
-            "xver": 1
-          },
-          {
-            "path": "/rdtov2rayxyz",
-            "dest": "v2ray:443",
-            "xver": 1
-          }
+		  ${fallbacksList}
         ]
       },
       "streamSettings": {
@@ -835,7 +831,7 @@ function generate_xray_conf {
       }
     },
     {
-      "port": 31297,
+      "port": 37211,
       "listen": "127.0.0.1",
       "protocol": "vless",
       "tag": "VLESSWS",
@@ -853,10 +849,33 @@ function generate_xray_conf {
         "security": "none",
         "wsSettings": {
           "acceptProxyProtocol": true,
-          "path": "/rdxryws"
+          "path": "/${customPath}vlessws"
         }
       }
+    },
+    {
+      "port": 37212,
+      "protocol": "vmess",
+      "tag":"VMessWS",
+      "settings": {
+        "clients": [
+          {
+            "id": "${currentUUID}",
+            "alterId": 64,
+            "add": "${currentHost}"",
+            "email": "${currentHost}_vmess_ws"
+          }
+        ]
+       },
+      "streamSettings": {
+        "network": "ws",
+        "security": "none",
+        "wsSettings": {
+          "acceptProxyProtocol": true,
+          "path": "/${customPath}vmessws"
     }
+  }
+}
   ],
 
   "outbounds": [
@@ -898,9 +917,9 @@ function generate_trojan_go_conf {
 {
     "run_type": "server",
     "local_addr": "trojan-go",
-    "local_port": 31296,
+    "local_port": 443,
     "remote_addr": "nginx",
-    "remote_port": 31300,
+    "remote_port": 443,
     "disable_http_check":true,
     "log_level":0,
     "log_file":"/etc/trojan-go/error.log",
@@ -916,7 +935,7 @@ function generate_trojan_go_conf {
     },
     "websocket": {
         "enabled": true,
-        "path": "/rrdatws",
+        "path": "/${customPath}trojanws",
         "host": "${currentHost}",
         "add": "${currentHost}"
     },
@@ -964,7 +983,7 @@ function generate_v2ray_conf {
 			}
           ],
         "fallbacks":[
-          {"dest":"nginx:31300"}
+          {"dest":"nginx:443"}
           ]
         },
         "streamSettings": {
@@ -972,7 +991,7 @@ function generate_v2ray_conf {
 			"security": "auto",
 			"wsSettings": {
 			"acceptProxyProtocol": true,
-			"path": "/rdtov2rayxyz"
+			"path": "/${customPath}v2rayws"
           }
         }
     }
@@ -1998,7 +2017,7 @@ version: '3.8'
 services:
     #1. Nginx -> proxy server
     #--> Working
-    # listen 80, 31300 --> Mock website https://${currentHost}
+    # listen 80, 443 --> Mock website https://${currentHost}
     # proxy pass
     # /portainer/ --> proxy_pass http://portainer:9000/;
     nginx:
@@ -2008,7 +2027,7 @@ services:
         environment: 
             TZ: Asia/Shanghai
         expose:
-            - 31300
+            - 443
         ports:
             - 80:80
         volumes: 
@@ -2028,7 +2047,7 @@ services:
         environment: 
             TZ: Asia/Shanghai
         expose:
-            - 31296
+            - 443
         volumes:
             - /etc/fuckGFW/trojan-go/config.json:/etc/trojan-go/config.json
             # Store data on logserver
@@ -2047,6 +2066,9 @@ services:
         restart: always
         environment: 
             TZ: Asia/Shanghai
+        expose:
+            - 37211
+            - 37212		
         ports: 
             - 443:443
         volumes: 
@@ -2339,7 +2361,7 @@ function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=================================================================="
-	echoContent green "SmartTool：v0.229"
+	echoContent green "SmartTool：v0.230"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "logserver：https://github.com/linfengzhong/logserver"
 	echoContent green "初始化服务器、安装Docker、执行容器 on \c" 
