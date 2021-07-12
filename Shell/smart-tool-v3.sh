@@ -2414,10 +2414,10 @@ function menu() {
 		menu
 		;;
 	30)
-		generate_ca
-		renewalTLS
 		generate_docker_compose_yml
 		shutdown_docker_compose
+		generate_ca
+		renewalTLS
 		generate_nginx_conf
 		generate_xray_conf
 		generate_trojan_go_conf
