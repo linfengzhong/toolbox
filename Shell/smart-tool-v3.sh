@@ -2492,9 +2492,10 @@ function generate_vmess_trojan_account {
     password: ${currentUUID}
     sni: ${currentHost}
 
-  - ${currentHost}-xrayWS-${currentIP}
-  - ${currentHost}-v2rayWS-${currentIP}
-  - ${currentHost}-trojan-${currentIP}
+      - ${currentHost}-xrayWS-${currentIP}
+      - ${currentHost}-v2rayWS-${currentIP}
+      - ${currentHost}-trojan-${currentIP}
+
 EOF
 	cat /etc/fuckGFW/clash/config.yml
 	judge "生成 clash -> account 配置文件 "
@@ -2505,7 +2506,7 @@ function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=================================================================="
-	echoContent green "SmartTool：v0.251"
+	echoContent green "SmartTool：v0.252"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "logserver：https://github.com/linfengzhong/logserver"
 	echoContent green "初始化服务器、安装Docker、执行容器 on \c" 
