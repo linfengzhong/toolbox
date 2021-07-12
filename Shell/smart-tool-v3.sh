@@ -673,6 +673,7 @@ function generate_uuid () {
 function set_timezone () {
 	print_start "设置时区： Asia/Shanghai "
 	timedatectl set-timezone Asia/Shanghai
+	echoContent yellow "当前时间： ${date}"
 	judge "设置时区： Asia/Shanghai "
 }
 #-----------------------------------------------------------------------------#
@@ -1392,7 +1393,7 @@ function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=================================================================="
-	echoContent green "SmartTool：v0.216"
+	echoContent green "SmartTool：v0.217"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "logserver：https://github.com/linfengzhong/logserver"
 	echoContent green "初始化服务器、安装Docker、执行容器 on \c" 
