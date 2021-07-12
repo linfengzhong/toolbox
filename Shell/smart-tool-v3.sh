@@ -2358,14 +2358,21 @@ function init_webmin_ssl {
 
 	if [[ -d "$HOME/.acme.sh/${currentHost}" ]] && [[ -f "$HOME/.acme.sh/${currentHost}/${currentHost}.key" ]] && [[ -f "$HOME/.acme.sh/${currentHost}/${currentHost}.cer" ]]; then
 		print_info "写入 ${currentHost} SSL证书 "
-		cat $HOME/.acme.sh/${currentHost}/${currentHost}.key > /etc/webmin/miniserv.pem
-		cat $HOME/.acme.sh/${currentHost}/${currentHost}.cer >> /etc/webmin/miniserv.pem
-		cat $HOME/.acme.sh/$currentHost/ca.cer > /etc/webmin/miniserv.ca
-		echo "extracas=/etc/webmin/miniserv.ca" >> /etc/webmin/miniserv.conf
-		print_info "重启 webmin.service "
-		systemctl stop webmin.service
-		sleep 2
-		systemctl start webmin.service
+
+		if [[ -f "/etc/webmin/check" ]]; then
+			print_error "已经写入过SSL证书，不需重复写入！"
+		else
+			cd /etc/webmin
+			touch check
+			cat $HOME/.acme.sh/${currentHost}/${currentHost}.key > /etc/webmin/miniserv.pem
+			cat $HOME/.acme.sh/${currentHost}/${currentHost}.cer >> /etc/webmin/miniserv.pem
+			cat $HOME/.acme.sh/$currentHost/ca.cer > /etc/webmin/miniserv.ca
+			echo "extracas=/etc/webmin/miniserv.ca" >> /etc/webmin/miniserv.conf
+			print_info "重启 webmin.service "
+			systemctl stop webmin.service
+			sleep 2
+			systemctl start webmin.service
+		fi
 	else
 		print_error "未找到SSL证书！ "
 	fi
@@ -2377,7 +2384,7 @@ function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=================================================================="
-	echoContent green "SmartTool：v0.235"
+	echoContent green "SmartTool：v0.236"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "logserver：https://github.com/linfengzhong/logserver"
 	echoContent green "初始化服务器、安装Docker、执行容器 on \c" 
