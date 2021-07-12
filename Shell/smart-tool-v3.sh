@@ -776,10 +776,10 @@ function generate_xray_conf {
 	#	"error"：Xray 遇到了无法正常运行的问题，需要立即解决。
 	#	"none"：不记录任何内容。
 
-	fallbacksList='{"dest":'trojan-go:443',"xver":0}'
+	fallbacksList='{"dest":"trojan-go:443","xver":0}'
 	fallbacksList=${fallbacksList}',{"path":"/'${customPath}'vlessws","dest":37211,"xver":1}'
 	fallbacksList=${fallbacksList}',{"path":"/'${customPath}'vmessws","dest":37212,"xver":1}'
-	fallbacksList=${fallbacksList}',{"path":"/'${customPath}'v2rayws","dest":'v2ray:443',"xver":1}'
+	fallbacksList=${fallbacksList}',{"path":"/'${customPath}'v2rayws","dest":"v2ray:443","xver":1}'
 
 	print_start "生成 xray 配置文件 "
 	print_info "/etc/fuckGFW/xray/config.json"
@@ -807,7 +807,7 @@ function generate_xray_conf {
         ],
         "decryption": "none",
         "fallbacks": [
-		  ${fallbacksList}
+          ${fallbacksList}
         ]
       },
       "streamSettings": {
@@ -2366,7 +2366,7 @@ function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=================================================================="
-	echoContent green "SmartTool：v0.231"
+	echoContent green "SmartTool：v0.232"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "logserver：https://github.com/linfengzhong/logserver"
 	echoContent green "初始化服务器、安装Docker、执行容器 on \c" 
