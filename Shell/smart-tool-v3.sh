@@ -2499,15 +2499,15 @@ function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=================================================================="
-	echoContent green "SmartTool：v0.248"
+	echoContent green "SmartTool：v0.249"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "logserver：https://github.com/linfengzhong/logserver"
 	echoContent green "初始化服务器、安装Docker、执行容器 on \c" 
-	echoContent yellow "${currentHost}"
+	echoContent red "${currentHost}"
 	echoContent green "当前主机外部IP地址： \c" 
-	echoContent yellow "${currentIP}"	
+	echoContent red "${currentIP}"	
 	echoContent green "当前UUID： \c" 
-	echoContent yellow "${currentUUID}"
+	echoContent red "${currentUUID}"
 	echoContent green "当前系统Linux版本 : \c" 
 	checkSystem
 	echoContent red "=================================================================="
@@ -2537,7 +2537,7 @@ function menu() {
 	echoContent yellow "50.安装 v2ray-agent | 快捷方式 [vasma] | 51.安装 BBR"	
 	echoContent skyBlue "---------------------------脚本管理-------------------------------"
 	echoContent yellow "61.generate UUID | 62.show IP | 63.bpytop | 64.set timezone"
-	echoContent yellow "0.更新脚本 | 1.设置域名 | 2.设置UUID | 3.webmin ssl | 9.退出"
+	echoContent yellow "0.更新脚本 | 1.设置域名 | 2.设置UUID | 3.默认UUID | 4.webmin ssl | 9.退出"
 	echoContent red "=================================================================="
 	mkdirTools
 	aliasInstall
@@ -2703,7 +2703,12 @@ function menu() {
 		clear_currentUUID
 		set_current_uuid
 		;;
+
 	3)
+		clear_currentUUID
+		st
+		;;
+	4)
 		init_webmin_ssl
 		;;
 	9)
