@@ -108,7 +108,6 @@ function initVar() {
 				print_info "----- 默认服务器域名 ----"
 				echo "MYHOSTDOMAIN=${currentHost}" >> $HOME/.bash_profile
 				source $HOME/.bash_profile
-			else
 			fi
 		touch $HOME/.check
 		sleep 1
@@ -2405,12 +2404,20 @@ function init_webmin_ssl {
 	judge "初始化webmin SSL证书 "
 }
 #-----------------------------------------------------------------------------#
+# 清理域名
+function clear_check {
+	print_start "重新初始化 服务器域名 "
+	rm -f $HOME/.check
+	print_info "清理完成"
+	judge "重新初始化 服务器域名 "
+}
+#-----------------------------------------------------------------------------#
 # 主菜单
 function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=================================================================="
-	echoContent green "SmartTool：v0.238"
+	echoContent green "SmartTool：v0.239"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "logserver：https://github.com/linfengzhong/logserver"
 	echoContent green "初始化服务器、安装Docker、执行容器 on \c" 
@@ -2444,7 +2451,7 @@ function menu() {
 	echoContent yellow "50.安装 v2ray-agent | 快捷方式 [vasma] | 51.安装 BBR"	
 	echoContent skyBlue "---------------------------脚本管理-------------------------------"
 	echoContent yellow "61.generate UUID | 62.show IP | 63.bpytop | 64.set timezone"
-	echoContent yellow "0.更新脚本 | 9.退出"
+	echoContent yellow "0.更新脚本 | 1.清理域名 | 9.退出"
 	echoContent red "=================================================================="
 	mkdirTools
 	aliasInstall
