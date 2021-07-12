@@ -17,6 +17,7 @@ function initVar() {
 	currentHost="k8s-node.cf"
 	# UUID
 	currentUUID="d8206743-b292-43d1-8200-5606238a5abb"
+	
 	# 随机路径
 	customPath="rdxyzukwofngusfpmheud"
 
@@ -89,27 +90,7 @@ function initVar() {
 	# 集成更新证书逻辑不再使用单独的脚本--RenewTLS
 	renewTLS=$1
 
-	if [[ -f "$HOME/.MYHOSTDOMAIN" ]]; then
-		print_error "已经设置服务器域名，无需重复设置！"
-		# sleep 1
-	else
-		print_info "初始化 SmartTool v3 "
-		read -r -p "请设置服务器域名：" inputHostName
-			if [ $inputHostName ]; then
-				print_info "----- 服务器域名 ----"
-				print_error "${inputHostName}"
-				print_info "----- 服务器域名 ----"
-				echo "${inputHostName}" > $HOME/.MYHOSTDOMAIN
-			else
-				print_error "未输入域名，使用默认域名: ${currentHost}"
-				print_info "----- 默认服务器域名 ----"
-				print_error "${currentHost}"
-				print_info "----- 默认服务器域名 ----"
-				echo "${currentHost}" > $HOME/.MYHOSTDOMAIN
-			fi
-		sleep 1
-	fi
-	currentHost=$(cat $HOME/.MYHOSTDOMAIN)
+	currentIP=$(curl -s https://ipinfo.io/ip)
 }
 #-----------------------------------------------------------------------------#
 #打印Start
@@ -685,7 +666,8 @@ function mkdirTools() {
 	mkdir -p /etc/fuckGFW/prometheus/groups
 	mkdir -p /etc/fuckGFW/prometheus/rules
 	mkdir -p /etc/fuckGFW/grafana/
-	mkdir -p /etc/fuckGFW/webmin/	
+	mkdir -p /etc/fuckGFW/webmin/
+	mkdir -p /etc/fuckGFW/clash
 #	mkdir -p /etc/systemd/system/
 #	mkdir -p /tmp/fuckGFW-tls/
 
@@ -694,8 +676,8 @@ function mkdirTools() {
 #-----------------------------------------------------------------------------#
 # Show IP
 function show_ip () {
-	local zIP=$(curl -s https://ipinfo.io/ip)
-	print_info "服务器外部 IP: $zIP "
+	# local zIP=$(curl -s https://ipinfo.io/ip)
+	print_info "服务器外部 IP: ${currentIP} "
 }
 #-----------------------------------------------------------------------------#
 # Generate UUID
@@ -2404,9 +2386,92 @@ function init_webmin_ssl {
 # 清理域名
 function clear_check {
 	print_start "重新初始化 服务器域名 "
-	rm -f $HOME/.MYHOSTDOMAIN
+	rm -f $HOME/.myHostDomain
 	print_info "清理完成"
 	judge "重新初始化 服务器域名 "
+}
+#-----------------------------------------------------------------------------#
+# 设置 current Host Domain 
+function set_current_host_domain {
+	print_start "设置 current Host Domain "
+	if [[ -f "$HOME/.myHostDomain" ]]; then
+		print_error "已经设置服务器域名，无需重复设置！"
+		currentHost=$(cat $HOME/.myHostDomain)
+	else
+		print_info "初始化 SmartTool v3 "
+		read -r -p "请设置服务器域名：" inputHostName
+			if [ $inputHostName ]; then
+				print_info "----- 服务器域名 ----"
+				print_error "${inputHostName}"
+				print_info "----- 服务器域名 ----"
+				echo "${inputHostName}" > $HOME/.myHostDomain
+			else
+				print_error "未输入域名，使用默认域名: ${currentHost}"
+				print_info "----- 默认服务器域名 ----"
+				print_error "${currentHost}"
+				print_info "----- 默认服务器域名 ----"
+				echo "${currentHost}" > $HOME/.myHostDomain
+			fi
+		currentHost=$(cat $HOME/.myHostDomain)
+	fi
+	judge "设置 current Host Domain "
+}
+#-----------------------------------------------------------------------------#
+# 设置 current UUID 
+function set_current_uuid {
+	print_start "设置 current UUID "
+	if [[ -f "$HOME/.currentUUID" ]]; then
+		currentUUID=$(cat $HOME/.currentUUID)
+	else
+		print_info "$HOME/.currentUUID"
+		local tempUUID
+		tempUUID=$(cat /proc/sys/kernel/random/uuid)
+		cat <<EOF >$HOME/.currentUUID
+${tempUUID}
+EOF
+	currentUUID=$(cat $HOME/.currentUUID)
+	fi
+	judge "设置 current UUID "
+}
+#-----------------------------------------------------------------------------#
+# 生成 clash -> account 配置文件 
+function generate_vmess_trojan_account {
+	print_start "生成 clash -> account 配置文件 "
+	print_info "/etc/fuckGFW/clash/config.yml"
+	cat <<EOF >/etc/fuckGFW/clash/config.yml
+  # VMess 的配置
+  - name: "${currentHost}-xrayWS-${currentIP}"
+    type: vmess
+    server: ${currentHost}
+    port: 443
+    uuid: ${currentUUID}
+    alterId: 64
+    cipher: auto
+    tls: true
+    network: ws
+    ws-path: /${customPath}vmessws
+    Host: ${currentHost}
+  
+  - name: "${currentHost}-v2rayWS-${currentIP}"
+    type: vmess
+    server: ${currentHost}
+    port: 443
+    uuid: ${currentUUID}
+    alterId: 64
+    cipher: auto
+    tls: true
+    network: ws
+    ws-path: /${customPath}v2rayws
+    Host: ${currentHost}
+  
+  - name: "${currentHost}-trojan-${currentIP}"
+    type: trojan
+    server: ${currentHost}
+    port: 443
+    password: ${currentUUID}
+    sni: ${currentHost}
+EOF
+	judge "生成 clash -> account 配置文件 "
 }
 #-----------------------------------------------------------------------------#
 # 主菜单
@@ -2414,11 +2479,13 @@ function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=================================================================="
-	echoContent green "SmartTool：v0.243"
+	echoContent green "SmartTool：v0.244"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "logserver：https://github.com/linfengzhong/logserver"
 	echoContent green "初始化服务器、安装Docker、执行容器 on \c" 
 	echoContent yellow "${currentHost}"
+	echoContent green "当前UUID： \c" 
+	echoContent yellow "${currentUUID}"
 	echoContent green "当前系统Linux版本 : \c" 
 	checkSystem
 	echoContent red "=================================================================="
@@ -2448,7 +2515,7 @@ function menu() {
 	echoContent yellow "50.安装 v2ray-agent | 快捷方式 [vasma] | 51.安装 BBR"	
 	echoContent skyBlue "---------------------------脚本管理-------------------------------"
 	echoContent yellow "61.generate UUID | 62.show IP | 63.bpytop | 64.set timezone"
-	echoContent yellow "0.更新脚本 | 1.清理域名 | 9.退出"
+	echoContent yellow "0.更新脚本 | 1.设置域名 | 2.设置UUID | 9.退出"
 	echoContent red "=================================================================="
 	mkdirTools
 	aliasInstall
@@ -2608,6 +2675,10 @@ function menu() {
 		;;
 	1)
 		clear_check
+		set_current_host_domain
+		;;
+	2)
+		set_current_uuid
 		;;
 	9)
 	    exit 0
@@ -2621,5 +2692,7 @@ function menu() {
 
 cleanScreen
 initVar $1
+set_current_host_domain
+set_current_uuid
 cronRenewTLS
 menu
