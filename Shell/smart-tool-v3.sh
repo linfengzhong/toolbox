@@ -14,7 +14,7 @@ function initVar() {
 	# 网站 域名 配置文件的host
 	# WEBSITE="k8s-master.ml"
 	# domain="k8s-master.tk"
-	currentHost="k8s-master.gq"
+	currentHost="k8s-node.cf"
 	# UUID
 	currentUUID="d8206743-b292-43d1-8200-5606238a5abb"
 
@@ -660,6 +660,7 @@ function mkdirTools() {
 	mkdir -p /etc/fuckGFW/prometheus/groups
 	mkdir -p /etc/fuckGFW/prometheus/rules
 	mkdir -p /etc/fuckGFW/grafana/
+	mkdir -p /etc/fuckGFW/webmin/	
 #	mkdir -p /etc/systemd/system/
 #	mkdir -p /tmp/fuckGFW-tls/
 
@@ -2308,10 +2309,14 @@ function upload_logs_configuration_dynamic_data () {
 }
 function init_webmin_ssl {
 	print_start "初始化webmin SSL证书 "
+	cp -pf /etc/webmin/miniserv.conf /etc/fuckGFW/webmin/
+	cp -pf /etc/webmin/miniserv.pem /etc/fuckGFW/webmin/
+
 	cat $HOME/.acme.sh/${currentHost}/${currentHost}.key > /etc/webmin/miniserv.pem
 	cat $HOME/.acme.sh/${currentHost}/${currentHost}.cer >> /etc/webmin/miniserv.pem
 	cat $HOME/.acme.sh/$currentHost/ca.cer > /etc/webmin/miniserv.ca
 	echo "extracas=/etc/webmin/miniserv.ca" >> /etc/webmin/miniserv.conf
+
 	systemctl restart webmin
 	judge "初始化webmin SSL证书 "	
 }
@@ -2321,7 +2326,7 @@ function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=================================================================="
-	echoContent green "SmartTool：v0.223"
+	echoContent green "SmartTool：v0.224"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "logserver：https://github.com/linfengzhong/logserver"
 	echoContent green "初始化服务器、安装Docker、执行容器 on \c" 
