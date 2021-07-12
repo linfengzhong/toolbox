@@ -11,12 +11,10 @@
 # 初始化全局变量
 export LANG=en_US.UTF-8
 function initVar() {
-	# 网站 域名 配置文件的host
-	# WEBSITE="k8s-master.ml"
-	# domain="k8s-master.tk"
-	currentHost="k8s-node.cf"
-	# UUID
-	currentUUID="d8206743-b292-43d1-8200-5606238a5abb"
+	# default Host
+	defaultHost="k8s-node.cf"
+	# default UUID
+	defaultUUID="d8206743-b292-43d1-8200-5606238a5abb"
 	
 	# 随机路径
 	customPath="rdxyzukwofngusfpmheud"
@@ -54,6 +52,10 @@ function initVar() {
 	upgrade="yum -y update"
 	echoType='echo -e'
 
+	# current Domain
+	currentHost=
+	# UUID
+	currentUUID=
 	# CDN节点的address
 	add=
 	# 安装总进度
@@ -91,6 +93,12 @@ function initVar() {
 	renewTLS=$1
 
 	currentIP=$(curl -s https://ipinfo.io/ip)
+
+	if [[ -f "$HOME/.currentUUID" ]]; then
+		currentUUID=$(cat $HOME/.currentUUID)
+	else
+		currentUUID=${defaultUUID}
+	fi
 }
 #-----------------------------------------------------------------------------#
 #打印Start
@@ -2407,6 +2415,7 @@ function set_current_host_domain {
 		currentHost=$(cat $HOME/.myHostDomain)
 	else
 		print_info "初始化 SmartTool v3 "
+		print_info "$HOME/.myHostDomain "
 		read -r -p "请设置服务器域名：" inputHostName
 			if [ $inputHostName ]; then
 				print_info "----- 服务器域名 ----"
@@ -2414,11 +2423,11 @@ function set_current_host_domain {
 				print_info "----- 服务器域名 ----"
 				echo "${inputHostName}" > $HOME/.myHostDomain
 			else
-				print_error "未输入域名，使用默认域名: ${currentHost}"
+				print_error "未输入域名，使用默认域名: ${defaultHost}"
 				print_info "----- 默认服务器域名 ----"
-				print_error "${currentHost}"
+				print_error "${defaultHost}"
 				print_info "----- 默认服务器域名 ----"
-				echo "${currentHost}" > $HOME/.myHostDomain
+				echo "${defaultHost}" > $HOME/.myHostDomain
 			fi
 		currentHost=$(cat $HOME/.myHostDomain)
 	fi
@@ -2488,11 +2497,13 @@ function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=================================================================="
-	echoContent green "SmartTool：v0.246"
+	echoContent green "SmartTool：v0.247"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "logserver：https://github.com/linfengzhong/logserver"
 	echoContent green "初始化服务器、安装Docker、执行容器 on \c" 
 	echoContent yellow "${currentHost}"
+	echoContent green "当前主机外部IP地址： \c" 
+	echoContent yellow "${currentIP}"	
 	echoContent green "当前UUID： \c" 
 	echoContent yellow "${currentUUID}"
 	echoContent green "当前系统Linux版本 : \c" 
@@ -2706,6 +2717,5 @@ function menu() {
 cleanScreen
 initVar $1
 set_current_host_domain
-set_current_uuid
 cronRenewTLS
 menu
