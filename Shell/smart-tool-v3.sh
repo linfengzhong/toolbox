@@ -2404,7 +2404,7 @@ function init_webmin_ssl {
 # 清理域名
 function clear_check {
 	print_start "重新初始化 服务器域名 "
-	rm -f $HOME/.check
+	rm -f $HOME/.MYHOSTDOMAIN
 	print_info "清理完成"
 	judge "重新初始化 服务器域名 "
 }
