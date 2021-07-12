@@ -2308,9 +2308,10 @@ function upload_logs_configuration_dynamic_data () {
 }
 function init_webmin_ssl {
 	print_start "初始化webmin SSL证书 "
-	cp -pf $HOME/.acme.sh/$currentHost/$currentHost.cer /etc/webmin/miniserv.cert
-	cp -pf $HOME/.acme.sh/$currentHost/$currentHost.key /etc/webmin/miniserv.pem
-	cp -pf $HOME/.acme.sh/$currentHost/ca.cer /etc/webmin/miniserv.ca
+	cat $HOME/.acme.sh/${currentHost}/${currentHost}.key > /etc/webmin/miniserv.pem
+	cat $HOME/.acme.sh/${currentHost}/${currentHost}.cer > /etc/webmin/miniserv.pem
+	cat $HOME/.acme.sh/$currentHost/ca.cer >> /etc/webmin/miniserv.ca
+	cat "extracas=/etc/webmin/miniserv.ca" > /etc/webmin/miniserv.conf
 	systemctl restart webmin
 	judge "初始化webmin SSL证书 "	
 }
