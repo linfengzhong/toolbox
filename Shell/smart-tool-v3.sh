@@ -22,8 +22,8 @@ function initVar() {
 	#定义变量
 	# WORKDIR="/root/git/toolbox/Docker/docker-compose/${currentHost}/"
 	SmartToolDir="/root/git/toolbox/Shell"
-	WORKDIR="/etc/fuckGFW/docker/${currentHost}/"
-	LOGDIR="/root/git/logserver/${currentHost}/"
+	# WORKDIR="/etc/fuckGFW/docker/${currentHost}/"
+	# LOGDIR="/root/git/logserver/${currentHost}/"
 	GITHUB_REPO_TOOLBOX="/root/git/toolbox/"
 	GITHUB_REPO_LOGSERVER="/root/git/logserver/"
 	EMAIL="fred.zhong@outlook.com"
@@ -2431,6 +2431,8 @@ function set_current_host_domain {
 			fi
 		currentHost=$(cat $HOME/.myHostDomain)
 	fi
+	WORKDIR="/etc/fuckGFW/docker/${currentHost}/"
+	LOGDIR="/root/git/logserver/${currentHost}/"
 	judge "设置 current Host Domain "
 }
 #-----------------------------------------------------------------------------#
@@ -2497,7 +2499,7 @@ function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=================================================================="
-	echoContent green "SmartTool：v0.247"
+	echoContent green "SmartTool：v0.248"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "logserver：https://github.com/linfengzhong/logserver"
 	echoContent green "初始化服务器、安装Docker、执行容器 on \c" 
