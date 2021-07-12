@@ -157,9 +157,10 @@ function echoContent() {
 # Install Prerequisite
 # 安装必要程序
 function install_prerequisite () {
-	print_start "安装 wget lsof tar unzip curl socat nmap "
-	yum -y install wget lsof tar unzip curl socat nmap
-	judge "安装 wget lsof tar unzip curl socat nmap "
+	print_start "安装 wget lsof tar unzip curl socat nmap bind-utils"
+	yum -y install wget lsof tar unzip curl socat nmap bind-utils
+	#  install dig and nslookup --> bind-utils
+	judge "安装 wget lsof tar unzip curl socat nmap bind-utils"
 }
 #-----------------------------------------------------------------------------#
 # Install acme.sh
@@ -1380,7 +1381,7 @@ function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=================================================================="
-	echoContent green "SmartTool：v0.213"
+	echoContent green "SmartTool：v0.214"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "logserver：https://github.com/linfengzhong/logserver"
 	echoContent green "初始化服务器、安装Docker、执行容器 on \c" 
@@ -1475,6 +1476,7 @@ function menu() {
 		menu
 		;;
 	30)
+		generate_ca
 		renewalTLS
 		generate_docker_compose_yml
 		shutdown_docker_compose
