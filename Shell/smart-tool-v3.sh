@@ -677,7 +677,8 @@ function generate_uuid () {
 function set_timezone () {
 	print_start "设置时区： Asia/Shanghai "
 	timedatectl set-timezone Asia/Shanghai
-	echoContent yellow " ---> 当前时间： \c" date
+	echoContent yellow " ---> 当前时间： \c"
+	sudo date
 	judge "设置时区： Asia/Shanghai "
 }
 #-----------------------------------------------------------------------------#
@@ -1184,7 +1185,7 @@ services:
             GF_SERVER_ROOT_URL: "%(protocol)s://%(domain)s:%(http_port)s/grafana/"
             GF_SERVER_SERVE_FROM_SUB_PATH: "true"
             GF_SECURITY_ADMIN_USER: root
-            GF_SECURITY_ADMIN_PASSWORD: etL#flk*r4KDo$32Ulfe$%3
+            GF_SECURITY_ADMIN_PASSWORD: "etL#flk*r4KDo$32Ulfe$%3"
             GF_SERVER_ENABLE_GZIP: 'true'
             GF_USERS_ALLOW_SIGN_UP: 'true'
             GF_USERS_VIEWERS_CAN_EDIT: 'true'
@@ -1382,7 +1383,7 @@ function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=================================================================="
-	echoContent green "SmartTool：v0.221"
+	echoContent green "SmartTool：v0.222"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "logserver：https://github.com/linfengzhong/logserver"
 	echoContent green "初始化服务器、安装Docker、执行容器 on \c" 
