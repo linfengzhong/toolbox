@@ -11,6 +11,27 @@
 # 初始化全局变量
 export LANG=en_US.UTF-8
 function initVar() {
+
+	if [[ -f "$HOME/.check" ]]; then
+		print_error "已经设置currentHost，无需重复设置！"
+		sleep 1
+	else
+		print_info "初始化 SmartTool v3 "
+		read -r -p "请设置服务器域名：" yourHostName
+			if [ $yourHostName ]; then
+				print_info "----- 服务器域名 ----"
+				print_error "${yourHostName}"
+				print_info "----- 服务器域名 ----"
+			else
+				print_error "未输入域名，使用默认域名: ${currentHost}"
+				print_info "----- 默认服务器域名 ----"
+				print_error "${currentHost}"
+				print_info "----- 默认服务器域名 ----"
+			fi
+		touch $HOME/.check
+		sleep 1
+	fi
+
 	# 网站 域名 配置文件的host
 	# WEBSITE="k8s-master.ml"
 	# domain="k8s-master.tk"
@@ -2384,7 +2405,7 @@ function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=================================================================="
-	echoContent green "SmartTool：v0.236"
+	echoContent green "SmartTool：v0.237"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "logserver：https://github.com/linfengzhong/logserver"
 	echoContent green "初始化服务器、安装Docker、执行容器 on \c" 
