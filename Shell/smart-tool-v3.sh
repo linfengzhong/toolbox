@@ -2417,7 +2417,7 @@ function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=================================================================="
-	echoContent green "SmartTool：v0.239"
+	echoContent green "SmartTool：v0.240"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "logserver：https://github.com/linfengzhong/logserver"
 	echoContent green "初始化服务器、安装Docker、执行容器 on \c" 
@@ -2608,6 +2608,9 @@ function menu() {
 		;;
 	0)
 		updateSmartTool 1
+		;;
+	1)
+		clear_check
 		;;
 	9)
 	    exit 0
