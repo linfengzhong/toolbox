@@ -39,7 +39,7 @@ function initVar() {
 	# Notification information 通知信息
 	# Info="${Green}[Message信息]${Font}"
 	Start="${Yellow}[Start开始]${Font}"
-	Info="${Blue}[Info信息]${Font}"
+	Info="${Magenta}[Info信息]${Font}"
 	OK="${Green}[OK正常]${Font}"
 	Error="${Red}[ERROR错误]${Font}"
 	DONE="${Magenta}[Done完成]${Font}"
@@ -89,22 +89,22 @@ function initVar() {
 #-----------------------------------------------------------------------------#
 #打印Start
 function print_start() {
-	echo -e "${Start} ${Green} $1 ${Font}"
+	echo -e "${Start} ${Blue} $1 ${Font}"
 }
 #-----------------------------------------------------------------------------#
 #打印Info
 function print_info() {
-	echo -e "${Info} ${Green}  $1 ${Font}"
+	echo -e "${Info} ${Blue}  $1 ${Font}"
 }
 #-----------------------------------------------------------------------------#
 #打印OK
 function print_ok() {
-	echo -e "${OK} ${Green} $1 ${Font}"
+	echo -e "${OK} ${Blue} $1 ${Font}"
 }
 #-----------------------------------------------------------------------------#
 #打印Done
 function print_done() {
-	echo -e "${DONE} ${Green}  $1 ${Font}"
+	echo -e "${DONE} ${Blue}  $1 ${Font}"
 }
 #-----------------------------------------------------------------------------#
 #打印Error
@@ -2326,7 +2326,7 @@ function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=================================================================="
-	echoContent green "SmartTool：v0.224"
+	echoContent green "SmartTool：v0.225"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "logserver：https://github.com/linfengzhong/logserver"
 	echoContent green "初始化服务器、安装Docker、执行容器 on \c" 
