@@ -13,12 +13,13 @@ function initVar() {
 	# 网站 域名 配置文件的host
 	# WEBSITE="k8s-master.ml"
 	# domain="k8s-master.tk"
-	currentHost="k8s-master.tk"
+	currentHost="k8s-master.ga"
 	# UUID
 	currentUUID="d8206743-b292-43d1-8200-5606238a5abb"
 
 	#定义变量
-	WORKDIR="/root/git/toolbox/Docker/docker-compose/${currentHost}/"
+	# WORKDIR="/root/git/toolbox/Docker/docker-compose/${currentHost}/"
+	WORKDIR="/etc/fuckGFW/docker/${currentHost}/"
 	LOGDIR="/root/git/logserver/${currentHost}/"
 	GITHUB_REPO_TOOLBOX="/root/git/toolbox/"
 	GITHUB_REPO_LOGSERVER="/root/git/logserver/"
@@ -299,14 +300,7 @@ function shutdown_docker_compose () {
 # 启动docker-compose
 function start_docker_compose () {
 	print_start "启动 Docker Compose "
-	cd $LOGDIR
-	sudo chmod 777 -R grafana
-	sudo chmod 777 -R jenkins
-	sudo chmod 777 -R gitea
 	cd $WORKDIR
-	sudo chmod 777 -R grafana
-	sudo chmod 777 -R jenkins
-	sudo chmod 777 -R gitea
 	sudo docker-compose build
 	sudo docker-compose up -d
 	judge "启动 Docker Compose "
@@ -338,8 +332,6 @@ function git_init () {
 		cd ~
 		mkdir -p git
 		cd git
-		# /root/.ssh/id_rsa
-		# /root/.ssh/id_rsa.pub
 		ssh-keygen -t rsa -C fred.zhong@outlook.com
 		print_info "请复制下面的Public key到GitHub "
 		print_info "======== Public key========= "
@@ -352,6 +344,7 @@ function git_init () {
 # Git clone toolbox.git
 function git_clone_toolbox () {
 	print_start "Git clone ToolBox "
+	mkdir -p git
 	if [[ -d "$HOME/git/toolbox" ]];then
 		echoContent yellow "toolbox文件夹已存在，无需重新clone！"
 	else
@@ -366,23 +359,9 @@ function github_pull_toolbox () {
 	echoContent yellow " ---> ToolBox"
 	print_start "下载 -> Local toolbox Repo "
 	cd $GITHUB_REPO_TOOLBOX
-	# 查询git repo状态
-	# sudo git status
-	# 暂存未提交的变更 可用来暂存当前正在进行的工作
-	# sudo git stash
-	# Commit
-	# sudo git commit -am "$date update logs"
-	# 抽取数据
 	sudo git pull
-	#sudo git pull --rebase
-	#sleep 1
-	#sudo cp -rf ~/git/toolbox/Docker/docker-compose/all-in-one/ ~/
-	#sleep 1
-	#sudo cp -rf ~/git/toolbox/Docker/docker-compose/k8s-master.ml/ ~/
-	#sudo chown -R root:root ~/all-in-one/
-	#sudo chown -R root:root ~/k8s-master.ml/
-	cp -pf $GITHUB_REPO_TOOLBOX/Shell/smart-tool-v3.sh $HOME
-	chmod 766 $HOME/smart-tool-v3.sh
+	cp -pf $HOME/git/toolbox/Docker/docker-compose/$currentHost/smart-tool-v3.sh $HOME
+	chmod 700 $HOME/smart-tool-v3.sh
 	aliasInstall
 	judge "下载 -> Local toolbox Repo "
 }
@@ -392,20 +371,10 @@ function github_push_toolbox () {
 	echoContent yellow " ---> ToolBox"
 	print_start "上传 -> GitHub "
 	cd $GITHUB_REPO_TOOLBOX
-	# 查询git repo状态
-	# sudo git status
-	# 从Git栈中读取最近一次保存的内容
-	# sudo git stash pop
 	sudo git add .
 	sudo git commit -m "$date sync_all_config_log_data"
 	sudo git push
 	judge "上传 -> GitHub "
-	#sleep 1
-	#sudo cp -rf ~/git/toolbox/Docker/docker-compose/all-in-one/ ~/
-	#sleep 1
-	#sudo cp -rf ~/git/toolbox/Docker/docker-compose/k8s-master.ml/ ~/
-	#sudo chown -R root:root ~/all-in-one/
-	#sudo chown -R root:root ~/k8s-master.ml/
 }
 #-----------------------------------------------------------------------------#
 # Git clone logserver.git
@@ -418,6 +387,12 @@ function git_clone_logserver () {
 		git clone git@github.com:linfengzhong/logserver.git
 		judge "Git clone logserver "
 	fi
+	mkdir -p $HOME/git/logserver/$currentHost
+	mkdir -p $HOME/git/logserver/$currentHost/nginx
+	mkdir -p $HOME/git/logserver/$currentHost/portainer/data
+	mkdir -p $HOME/git/logserver/$currentHost/trojan-go
+	mkdir -p $HOME/git/logserver/$currentHost/v2ray
+	mkdir -p $HOME/git/logserver/$currentHost/xray
 }
 #-----------------------------------------------------------------------------#
 # 同步下载Git文件夹
@@ -425,11 +400,6 @@ function github_pull_logserver () {
 	echoContent yellow " ---> logserver"
 	print_start "下载 -> Local logserver Repo "
 	cd $GITHUB_REPO_LOGSERVER
-	# 查询git repo状态
-	# sudo git status
-	# Commit
-	# sudo git commit -am "$date update logs"
-	# 抽取数据
 	sudo git pull
 	judge "下载 -> Local logserver Repo "
 }
@@ -439,8 +409,6 @@ function github_push_logserver () {
 	echoContent yellow " ---> logserver"
 	print_start "上传 -> GitHub "
 	cd $GITHUB_REPO_LOGSERVER
-	# 查询git repo状态
-	# sudo git status
 	sudo git add .
 	sudo git commit -m "$date sync_all_config_log_data"
 	sudo git push
@@ -625,9 +593,9 @@ function updateSmartTool() {
 	rm -rf /etc/smart-tool/smart-tool-v3.sh
 	echoContent skyBlue "开始下载： "
 	if wget --help | grep -q show-progress; then
-		wget -c -q --show-progress -P /etc/smart-tool/ -N --no-check-certificate "https://raw.githubusercontent.com/linfengzhong/toolbox/main/Shell/smart-tool-v3.sh"
+		wget -c -q --show-progress -P /etc/smart-tool/ -N --no-check-certificate "https://raw.githubusercontent.com/linfengzhong/toolbox/main/Docker/docker-compose/${currentHost}/smart-tool-v3.sh"
   	else
-		wget -c -q -P /etc/smart-tool/ -N --no-check-certificate "https://raw.githubusercontent.com/linfengzhong/toolbox/main/Shell/smart-tool-v3.sh"
+		wget -c -q -P /etc/smart-tool/ -N --no-check-certificate "https://raw.githubusercontent.com/linfengzhong/toolbox/main/Docker/docker-compose/${currentHost}/smart-tool-v3.sh"
 	fi
 
 	sudo chmod 700 /etc/smart-tool/smart-tool-v3.sh
@@ -648,17 +616,18 @@ function updateSmartTool() {
 function mkdirTools() {
 	mkdir -p /etc/smart-tool
 
+	mkdir -p /etc/fuckGFW/docker/${currentHost}
 	mkdir -p /etc/fuckGFW/website/html
 	mkdir -p /etc/fuckGFW/tls
 #	mkdir -p /etc/fuckGFW/mtg
-	mkdir -p /etc/fuckGFW/subscribe
+#	mkdir -p /etc/fuckGFW/subscribe
 #	mkdir -p /etc/fuckGFW/subscribe_tmp
 	mkdir -p /etc/fuckGFW/nginx/conf.d
 	mkdir -p /etc/fuckGFW/v2ray/
 	mkdir -p /etc/fuckGFW/xray/${currentHost}
 	mkdir -p /etc/fuckGFW/trojan-go/
 #	mkdir -p /etc/systemd/system/
-	mkdir -p /tmp/fuckGFW-tls/
+#	mkdir -p /tmp/fuckGFW-tls/
 
 }
 
@@ -720,7 +689,6 @@ function generate_nginx_conf {
 	# /etc/fuckGFW/nginx/conf
 	print_start "生成 NGINX 配置文件 "
 	print_info "/etc/fuckGFW/nginx/conf.d/${currentHost}.conf"
-
 	cat <<EOF >/etc/fuckGFW/nginx/conf.d/${currentHost}.conf
 server {
     listen 80;
@@ -740,31 +708,9 @@ server {
     location /portainer/ {
         proxy_pass http://portainer:9000/;
     }
-
-    location /httpd/ {
-        proxy_pass http://httpd:80/;
-    }
-
-    location /grafana/ {
-        proxy_pass http://grafana:3000/;
-    }
-
-    location /adminer/ {
-        proxy_pass http://adminer:8080/;
-    }
-        
-    location /gitea/ {
-        proxy_pass http://gitea:3000/;
-    }
-
-    location /jenkins/ {
-        proxy_pass http://jenkins:8080;
-    }
 }
 EOF
-	cat /etc/fuckGFW/nginx/conf.d/${currentHost}.conf
 	judge "生成 NGINX 配置文件 "
-
 }
 
 #-----------------------------------------------------------------------------#
@@ -778,10 +724,8 @@ function generate_xray_conf {
 	#	"warning"：发生了一些并不影响正常运行的问题时输出的信息，但有可能影响用户的体验。同时包含所有 "error" 内容。
 	#	"error"：Xray 遇到了无法正常运行的问题，需要立即解决。
 	#	"none"：不记录任何内容。
-
 	print_start "生成 xray 配置文件 "
 	print_info "/etc/fuckGFW/xray/config.json"
-
 	cat <<EOF >/etc/fuckGFW/xray/config.json
 {
   "log": {
@@ -879,12 +823,9 @@ function generate_xray_conf {
   }
 }
 EOF
-
-	cat /etc/fuckGFW/xray/config.json
-	judge "生成 xray 配置文件 "
 	print_info "复制证书到xray配置文件夹 "
 	cp -pf /etc/fuckGFW/tls/*.* /etc/fuckGFW/xray/${currentHost}/
-
+	judge "生成 xray 配置文件 "
 }
 #-----------------------------------------------------------------------------#
 # 生成 trojan-go 配置文件
@@ -898,10 +839,8 @@ function generate_trojan_go_conf {
 	#	3 输出Error及以上日志
 	#	4 输出Fatal及以上日志
 	#	5 完全不输出日志
-
 	print_start "生成 trojan-go 配置文件 "
 	print_info "/etc/fuckGFW/trojan-go/config.json"
-
 	cat <<EOF >/etc/fuckGFW/trojan-go/config.json
 {
     "run_type": "server",
@@ -911,7 +850,7 @@ function generate_trojan_go_conf {
     "remote_port": 31300,
     "disable_http_check":true,
     "log_level":0,
-    "log_file":"/etc/trojan-go/trojan.log",
+    "log_file":"/etc/trojan-go/error.log",
     "password": [
         "${currentUUID}"
     ],
@@ -933,10 +872,7 @@ function generate_trojan_go_conf {
     }
 }
 EOF
-
-	cat /etc/fuckGFW/trojan-go/config.json
 	judge "生成 trojan-go 配置文件 "
-
 }
 #-----------------------------------------------------------------------------#
 # 生成 v2ray 配置文件
@@ -950,10 +886,8 @@ function generate_v2ray_conf {
 	#	"warning"：V2Ray 遇到了一些问题，通常是外部问题，不影响 V2Ray 的正常运行，但有可能影响用户的体验。同时包含所有 "error" 内容。
 	#	"error"：V2Ray 遇到了无法正常运行的问题，需要立即解决。
 	#	"none"：不记录任何内容。
-
 	print_start "生成 v2ray 配置文件 "
 	print_info "/etc/fuckGFW/v2ray/config.json"
-
 	cat <<EOF >/etc/fuckGFW/v2ray/config.json
 {
   "log": {
@@ -1015,10 +949,226 @@ function generate_v2ray_conf {
   }
 }
 EOF
-
-	cat /etc/fuckGFW/v2ray/config.json
 	judge "生成 v2ray 配置文件 "
-
+}
+#-----------------------------------------------------------------------------#
+# 生成 docker-compose.yml 配置文件
+function generate_docker_compose_yml {
+	print_start "生成 docker-compose.yml 配置文件 "
+	print_info "/etc/fuckGFW/docker/${currentHost}/docker-compose.yml"
+	cat <<EOF >/etc/fuckGFW/docker/${currentHost}/docker-compose.yml
+version: '3.8'
+services:
+    #1. Nginx -> proxy server
+    #--> Working
+    # listen 80, 31300 --> Mock website https://${currentHost}
+    # proxy pass
+    # /portainer/ --> proxy_pass http://portainer:9000/;
+    nginx:
+        image: nginx:alpine
+        container_name: nginx
+        restart: always
+        environment: 
+            TZ: Asia/Shanghai
+        expose:
+            - 31300
+        ports:
+            - 80:80
+        volumes: 
+            - /etc/fuckGFW/nginx/conf.d/:/etc/nginx/conf.d
+            - /etc/fuckGFW/website/html:/usr/share/nginx/html
+            # Store data on logserver
+            - /root/git/logserver/${currentHost}/nginx/error.log:/var/log/nginx/error.log
+            - /root/git/logserver/${currentHost}/nginx/access.log:/var/log/nginx/access.log
+        networks: 
+            - net
+    #2. trojan go -> fuck GFW
+    #--> Working
+    trojan-go:
+        image: p4gefau1t/trojan-go:latest
+        container_name: trojan-go
+        restart: always
+        environment: 
+            TZ: Asia/Shanghai
+        expose:
+            - 31296
+        volumes:
+            - /etc/fuckGFW/trojan-go/config.json:/etc/trojan-go/config.json
+            # Store data on logserver
+            - /root/git/logserver/${currentHost}/trojan-go/error.log:/etc/trojan-go/error.log           
+        networks: 
+            - net
+        depends_on:
+            - nginx
+    #3. xray -> fuck GFW * Proxy Server
+    # VLESS_XTLS/TLS-direct_TCP
+    # VLESS_WS
+    #--> Working
+    xray:
+        image: teddysun/xray:latest
+        container_name: xray
+        restart: always
+        environment: 
+            TZ: Asia/Shanghai
+        ports: 
+            - 443:443
+        volumes: 
+            - /etc/fuckGFW/xray/config.json:/etc/xray/config.json
+            # CA & Key
+            - /etc/fuckGFW/xray/${currentHost}:/etc/xray/${currentHost}
+            # Store date on logserver
+            - /root/git/logserver/${currentHost}/xray/error.log:/etc/xray/error.log
+            - /root/git/logserver/${currentHost}/xray/access.log:/etc/xray/access.log
+        networks: 
+            - net
+        depends_on:
+            - nginx
+    #4. v2ray -> fuck GFW * Proxy Server
+    #--> Working
+    v2ray:
+        image: v2fly/v2fly-core:latest
+        container_name: v2ray
+        restart: always
+        environment: 
+            TZ: Asia/Shanghai
+        expose:
+            - 443
+        volumes:
+            - /etc/fuckGFW/v2ray/config.json:/etc/v2ray/config.json
+            # Store data on logserver
+            - /root/git/logserver/${currentHost}/v2ray/error.log:/etc/v2ray/error.log
+            - /root/git/logserver/${currentHost}/v2ray/access.log:/etc/v2ray/access.log   
+        networks: 
+            - net
+        depends_on:
+            - nginx
+    #5. Portainer -> Docker UI
+    #--> Working
+    portainer:
+        image: portainer/portainer-ce:alpine
+        container_name: portainer
+        restart: always
+        environment: 
+            TZ: Asia/Shanghai
+        expose: 
+            - 8000
+            - 9000
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock
+            # 持久化配置文件
+            # Store data on logserver
+            - /root/git/logserver/${currentHost}/portainer/data:/data
+        networks: 
+            - net
+networks: 
+    net:
+        driver: bridge
+EOF
+	judge "生成 docker-compose.yml 配置文件 "
+}
+#-----------------------------------------------------------------------------#
+# 查看 Nginx 配置文件
+function show_nginx_conf {
+	print_start "查看 Nginx 配置文件 "
+	cat /etc/fuckGFW/nginx/conf.d/${currentHost}.conf
+	judge "查看 Nginx 配置文件 "
+}
+#-----------------------------------------------------------------------------#
+# 查看 xray 配置文件
+function show_xray_conf {
+	print_start "查看 xray 配置文件 "
+	cat /etc/fuckGFW/xray/config.json
+	judge "查看 xray 配置文件 "	
+}
+#-----------------------------------------------------------------------------#
+# 查看 trojan-go 配置文件
+function show_trojan_go_conf {
+	print_start "查看 trojan-go 配置文件 "
+	cat /etc/fuckGFW/trojan-go/config.json
+	judge "查看 trojan-go 配置文件 "	
+}
+#-----------------------------------------------------------------------------#
+# 查看 v2ray 配置文件
+function show_v2ray_conf {
+	print_start "查看 v2ray 配置文件 "
+	cat /etc/fuckGFW/v2ray/config.json
+	judge "查看 v2ray 配置文件 "	
+}
+#-----------------------------------------------------------------------------#
+# 查看 docker-compose.yml 配置文件
+function show_docker_compose_yml {
+	print_start "查看 docker-compose.yml 配置文件 "
+	cat /etc/fuckGFW/docker/${currentHost}/docker-compose.yml
+	judge "查看 docker-compose.yml 配置文件 "
+}
+#-----------------------------------------------------------------------------#
+# generate access.log & error.log
+function generate_access_log_error_log {
+	print_start "Generate access.log & error.log for nginx trojan-go v2ray xray "
+	if [[ -f "$HOME/git/logserver/${currentHost}/nginx/access.log" ]];then
+		echoContent yellow "nginx access.log 文件已存在，无需新建！ "
+	else
+		cd $HOME/git/logserver/${currentHost}/nginx/
+		touch access.log
+		judge "Generate nginx access.log "
+	fi
+	if [[ -f "$HOME/git/logserver/${currentHost}/nginx/error.log" ]];then
+		echoContent yellow "nginx error.log 文件已存在，无需新建！ "
+	else
+		cd $HOME/git/logserver/${currentHost}/nginx/
+		touch error.log
+		judge "Generate nginx error.log "
+	fi
+	if [[ -f "$HOME/git/logserver/${currentHost}/trojan-go/error.log" ]];then
+		echoContent yellow "trojan-go error.log 文件已存在，无需新建！ "
+	else
+		cd $HOME/git/logserver/${currentHost}/trojan-go/
+		touch error.log
+		judge "Generate trojan-go error.log "
+	fi
+	if [[ -f "$HOME/git/logserver/${currentHost}/v2ray/access.log" ]];then
+		echoContent yellow "v2ray access.log 文件已存在，无需新建！ "
+	else
+		cd $HOME/git/logserver/${currentHost}/v2ray/
+		touch access.log
+		judge "Generate v2ray access.log "
+	fi
+	if [[ -f "$HOME/git/logserver/${currentHost}/v2ray/error.log" ]];then
+		echoContent yellow "v2ray error.log 文件已存在，无需新建！ "
+	else
+		cd $HOME/git/logserver/${currentHost}/v2ray/
+		touch error.log
+		judge "Generate v2ray error.log "
+	fi
+	if [[ -f "$HOME/git/logserver/${currentHost}/xray/access.log" ]];then
+		echoContent yellow "xray access.log 文件已存在，无需新建！ "
+	else
+		cd $HOME/git/logserver/${currentHost}/xray/
+		touch access.log
+		judge "Generate xray access.log "
+	fi
+	if [[ -f "$HOME/git/logserver/${currentHost}/xray/error.log" ]];then
+		echoContent yellow "xray error.log 文件已存在，无需新建！ "
+	else
+		cd $HOME/git/logserver/${currentHost}/xray/
+		touch error.log
+		judge "Generate xray error.log "
+	fi
+	judge "Generate access.log & error.log for nginx trojan-go v2ray xray "
+}
+#-----------------------------------------------------------------------------#
+# show access.log & error.log
+function show_error_log {
+	print_start "Show error.log for nginx trojan-go v2ray xray "
+	echoContent yellow " ---> nginx"
+	tail -n 20 $HOME/git/logserver/${currentHost}/nginx/error.log
+	echoContent yellow " ---> trojan-go"
+	tail -n 20 $HOME/git/logserver/${currentHost}/trojan-go/error.log
+	echoContent yellow " ---> v2ray"
+	tail -n 20 $HOME/git/logserver/${currentHost}/v2ray/error.log
+	echoContent yellow " ---> xray"
+	tail -n 20 $HOME/git/logserver/${currentHost}/xray/error.log
+	judge "Show error.log for nginx trojan-go v2ray xray "
 }
 #-----------------------------------------------------------------------------#
 # Website
@@ -1060,46 +1210,56 @@ function upload_logs_configuration_dynamic_data () {
 	github_push_logserver
 	#judge "更新日志、配置文件、动态数据到GitHub "	
 }
+function init_webmin_ssl {
+	print_start "初始化webmin SSL证书 "
+	cp -pf $HOME/.acme.sh/$currentHost/$currentHost.cer /etc/webmin/miniserv.cert
+	cp -pf $HOME/.acme.sh/$currentHost/$currentHost.key /etc/webmin/miniserv.pem
+	cp -pf $HOME/.acme.sh/$currentHost/ca.cer /etc/webmin/miniserv.ca
+	systemctl restart webmin
+	judge "初始化webmin SSL证书 "	
+}
 #-----------------------------------------------------------------------------#
 # 主菜单
 function menu() {
 	clear
 	cd "$HOME" || exit
-	echoContent red "\n=============================================================="
-	echoContent green "SmartTool：v0.178"
+	echoContent red "\n=================================================================="
+	echoContent green "SmartTool：v0.212"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "logserver：https://github.com/linfengzhong/logserver"
-	echoContent green "初始化服务器、安装Docker、执行容器"
+	echoContent green "初始化服务器、安装Docker、执行容器 on \c" 
+	echoContent yellow "${currentHost}"
 	echoContent green "当前系统Linux版本 : \c" 
 	checkSystem
-	echoContent red "=============================================================="
-	echoContent skyBlue "-------------------------安装软件-----------------------------"
+	echoContent red "=================================================================="
+	echoContent skyBlue "---------------------------安装软件-------------------------------"
 	echoContent yellow "10.安装 全部程序"
 	echoContent yellow "11.安装 prerequisite"
-	echoContent yellow "12.安装 acme.sh"
-	echoContent yellow "13.安装 bpytop"
-	echoContent yellow "14.安装 webmin"
-	echoContent yellow "15.安装 docker CE"
-	echoContent yellow "16.安装 docker compose"
+	echoContent yellow "12.安装 acme.sh | 13.安装 bpytop | 14.安装 webmin"
+	echoContent yellow "15.安装 docker CE | 16.安装 docker compose"
 	echoContent yellow "17.安装 git"
-	echoContent skyBlue "-------------------------版本控制-----------------------------"  
+	echoContent skyBlue "---------------------------版本控制-------------------------------"  
 	echoContent yellow "20.git init | 21.git clone | 22.git pull | 23.git push"
-	echoContent skyBlue "-------------------------容器相关-----------------------------"
+	echoContent yellow "24.更新日志、配置文件、动态数据到GitHub"
+	echoContent skyBlue "---------------------------容器相关-------------------------------"
 	echoContent yellow "30.One-key"
-	echoContent yellow "31.docker-compose up"
-	echoContent yellow "32.docker-compose down"
-	echoContent yellow "33.docker status"
-	echoContent yellow "34.generate config [Nginx] [Xray] [Trojan-go] [v2ray]"
-	echoContent yellow "35.添加随机伪装站点"
-	echoContent yellow "36.更新日志、配置文件、动态数据到GitHub"
-	echoContent skyBlue "-------------------------证书管理-----------------------------"
-	echoContent yellow "40.show CA | 41.generate CA | 42.renew CA"	
-	echoContent skyBlue "-------------------------科学上网-----------------------------"
+	echoContent yellow "31.generate conf [Nginx] [Trojan-go] [v2ray] [Xray] - fuckGFW"
+	echoContent yellow "32.generate log  [Nginx] [Trojan-go] [v2ray] [Xray] - logserver"
+	echoContent yellow "33.generate docker-compose.yml - fuckGFW"
+	echoContent yellow "34.generate fake website - fuckGFW"
+	echoContent yellow "35.docker-compose up | 36.docker-compose down | 37.docker status"
+	echoContent skyBlue "---------------------------证书管理-------------------------------"
+	echoContent yellow "40.show CA | 41.generate CA | 42.renew CA | 49.webmin ssl"
+	echoContent skyBlue "---------------------------查看文件-------------------------------"
+	echoContent yellow "43.show nginx | 44.show docker-compose.yml"
+	echoContent yellow "45.Show trojan-go | 46.show v2ray | 47.show xray"
+	echoContent yellow "48.Show log [Nginx] [Trojan-go] [v2ray] [Xray] - logserver"
+	echoContent skyBlue "---------------------------科学上网-------------------------------"
 	echoContent yellow "50.安装 v2ray-agent | 快捷方式 [vasma] | 51.安装 BBR"	
-	echoContent skyBlue "-------------------------脚本管理-----------------------------"
-	echoContent yellow "61.generate UUID | 62.show IP | 63.bpytop"	
+	echoContent skyBlue "---------------------------脚本管理-------------------------------"
+	echoContent yellow "61.generate UUID | 62.show IP | 63.bpytop"
 	echoContent yellow "0.更新脚本 | 9.退出"
-	echoContent red "=============================================================="
+	echoContent red "=================================================================="
 	mkdirTools
 	aliasInstall
 	read -r -p "Please choose the function (请选择) : " selectInstallType
@@ -1144,13 +1304,30 @@ function menu() {
 	22)
 		github_pull_toolbox
 		github_pull_logserver
+		sleep 2
+		menu
 		;;
 	23)
 		github_push_toolbox
 		github_push_logserver
+		sleep 2
+		menu
+		;;
+	24)
+		upload_logs_configuration_dynamic_data
+		sleep 2
+		menu
 		;;
 	30)
+		renewalTLS
+		generate_docker_compose_yml
 		shutdown_docker_compose
+		generate_nginx_conf
+		generate_xray_conf
+		generate_trojan_go_conf
+		generate_v2ray_conf
+		generate_access_log_error_log
+		generate_fake_website
 		github_pull_toolbox
 		github_pull_logserver
 		github_push_toolbox
@@ -1158,26 +1335,29 @@ function menu() {
 		start_docker_compose
 		;;
 	31)
-		start_docker_compose
-		;;
-	32)
-		shutdown_docker_compose
-		;;
-	33)
-		show_docker_images
-		show_docker_container
-		;;
-	34)
 		generate_nginx_conf
 		generate_xray_conf
 		generate_trojan_go_conf
 		generate_v2ray_conf
 		;;
-	35)
+	32)
+		generate_access_log_error_log
+		;;
+	33)
+		generate_docker_compose_yml
+		;;
+	34)
 		generate_fake_website
 		;;
+	35)
+		start_docker_compose
+		;;
 	36)
-		upload_logs_configuration_dynamic_data
+		shutdown_docker_compose
+		;;
+	37)
+		show_docker_images
+		show_docker_container
 		;;
 	40)
 		checkTLStatus "${currentHost}"
@@ -1187,6 +1367,27 @@ function menu() {
 		;;
 	42)
 		renewalTLS
+		;;
+	43)
+		show_nginx_conf
+		;;
+	44)
+		show_docker_compose_yml
+		;;
+	45)
+		show_trojan_go_conf
+		;;
+	46)
+		show_v2ray_conf
+		;;
+	47)
+		show_xray_conf
+		;;
+	48)
+		show_error_log
+		;;
+	49)
+		init_webmin_ssl
 		;;
 	50)
 		InstallV2rayAgent
