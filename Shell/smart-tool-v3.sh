@@ -2198,6 +2198,7 @@ EOF
 # 查看 Nginx 配置文件
 function show_nginx_conf {
 	print_start "查看 Nginx 配置文件 "
+	print_info "/etc/fuckGFW/nginx/conf.d/${currentHost}.conf"
 	cat /etc/fuckGFW/nginx/conf.d/${currentHost}.conf
 	judge "查看 Nginx 配置文件 "
 }
@@ -2205,6 +2206,7 @@ function show_nginx_conf {
 # 查看 xray 配置文件
 function show_xray_conf {
 	print_start "查看 xray 配置文件 "
+	print_info "/etc/fuckGFW/xray/config.json"
 	cat /etc/fuckGFW/xray/config.json
 	judge "查看 xray 配置文件 "	
 }
@@ -2212,6 +2214,7 @@ function show_xray_conf {
 # 查看 trojan-go 配置文件
 function show_trojan_go_conf {
 	print_start "查看 trojan-go 配置文件 "
+	print_info "/etc/fuckGFW/trojan-go/config.json"
 	cat /etc/fuckGFW/trojan-go/config.json
 	judge "查看 trojan-go 配置文件 "	
 }
@@ -2219,6 +2222,7 @@ function show_trojan_go_conf {
 # 查看 v2ray 配置文件
 function show_v2ray_conf {
 	print_start "查看 v2ray 配置文件 "
+	print_info "/etc/fuckGFW/v2ray/config.json"
 	cat /etc/fuckGFW/v2ray/config.json
 	judge "查看 v2ray 配置文件 "	
 }
@@ -2226,6 +2230,7 @@ function show_v2ray_conf {
 # 查看 docker-compose.yml 配置文件
 function show_docker_compose_yml {
 	print_start "查看 docker-compose.yml 配置文件 "
+	print_info "/etc/fuckGFW/docker/${currentHost}/docker-compose.yml"
 	cat /etc/fuckGFW/docker/${currentHost}/docker-compose.yml
 	judge "查看 docker-compose.yml 配置文件 "
 }
