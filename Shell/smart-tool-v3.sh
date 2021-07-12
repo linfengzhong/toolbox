@@ -2384,11 +2384,19 @@ function init_webmin_ssl {
 }
 #-----------------------------------------------------------------------------#
 # 清理域名
-function clear_check {
-	print_start "重新初始化 服务器域名 "
+function clear_myHostDomain {
+	# print_start "重新初始化 服务器域名 "
 	rm -f $HOME/.myHostDomain
-	print_info "清理完成"
-	judge "重新初始化 服务器域名 "
+	# print_info "清理完成"
+	# judge "重新初始化 服务器域名 "
+}
+#-----------------------------------------------------------------------------#
+# 清理UUID
+function clear_currentUUID {
+	# print_start "重新初始化 服务器域名 "
+	rm -f $HOME/.currentUUID
+	# print_info "清理完成"
+	# judge "重新初始化 服务器域名 "
 }
 #-----------------------------------------------------------------------------#
 # 设置 current Host Domain 
@@ -2480,7 +2488,7 @@ function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=================================================================="
-	echoContent green "SmartTool：v0.245"
+	echoContent green "SmartTool：v0.246"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "logserver：https://github.com/linfengzhong/logserver"
 	echoContent green "初始化服务器、安装Docker、执行容器 on \c" 
@@ -2675,10 +2683,11 @@ function menu() {
 		updateSmartTool 1
 		;;
 	1)
-		clear_check
+		clear_myHostDomain
 		set_current_host_domain
 		;;
 	2)
+		clear_currentUUID
 		set_current_uuid
 		;;
 	3)
