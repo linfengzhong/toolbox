@@ -42,7 +42,7 @@ function initVar() {
 	Info="${Magenta}[Info信息]${Font}"
 	OK="${Green}[OK正常]${Font}"
 	Error="${Red}[ERROR错误]${Font}"
-	DONE="${Magenta}[Done完成]${Font}"
+	DONE="${Green}[Done完成]${Font}"
 	
 	installType='yum -y install'
 	removeType='yum -y remove'
@@ -2326,7 +2326,7 @@ function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=================================================================="
-	echoContent green "SmartTool：v0.225"
+	echoContent green "SmartTool：v0.226"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "logserver：https://github.com/linfengzhong/logserver"
 	echoContent green "初始化服务器、安装Docker、执行容器 on \c" 
