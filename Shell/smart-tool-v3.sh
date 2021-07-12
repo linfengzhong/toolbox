@@ -39,7 +39,7 @@ function initVar() {
 	# Notification information 通知信息
 	# Info="${Green}[Message信息]${Font}"
 	Start="${Yellow}[Start开始]${Font}"
-	Info="${Green}[Info信息]${Font}"
+	Info="${Blue}[Info信息]${Font}"
 	OK="${Green}[OK正常]${Font}"
 	Error="${Red}[ERROR错误]${Font}"
 	DONE="${Magenta}[Done完成]${Font}"
@@ -89,22 +89,22 @@ function initVar() {
 #-----------------------------------------------------------------------------#
 #打印Start
 function print_start() {
-	echo -e "${Start} ${Blue} $1 ${Font}"
+	echo -e "${Start} ${Green} $1 ${Font}"
 }
 #-----------------------------------------------------------------------------#
 #打印Info
 function print_info() {
-	echo -e "${Info} ${Blue}  $1 ${Font}"
+	echo -e "${Info} ${Green}  $1 ${Font}"
 }
 #-----------------------------------------------------------------------------#
 #打印OK
 function print_ok() {
-	echo -e "${OK} ${Blue} $1 ${Font}"
+	echo -e "${OK} ${Green} $1 ${Font}"
 }
 #-----------------------------------------------------------------------------#
 #打印Done
 function print_done() {
-	echo -e "${DONE} ${Blue}  $1 ${Font}"
+	echo -e "${DONE} ${Green}  $1 ${Font}"
 }
 #-----------------------------------------------------------------------------#
 #打印Error
