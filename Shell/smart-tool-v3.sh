@@ -677,7 +677,7 @@ function generate_uuid () {
 function set_timezone () {
 	print_start "设置时区： Asia/Shanghai "
 	timedatectl set-timezone Asia/Shanghai
-	echoContent yellow " ---> 当前时间： \c"
+	echoContent yellow "[当前时间]  \c"
 	sudo date
 	judge "设置时区： Asia/Shanghai "
 }
