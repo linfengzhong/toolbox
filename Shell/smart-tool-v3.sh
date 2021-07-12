@@ -2499,15 +2499,15 @@ function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=================================================================="
-	echoContent green "SmartTool：v0.249"
+	echoContent green "SmartTool：v0.250"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "logserver：https://github.com/linfengzhong/logserver"
 	echoContent green "初始化服务器、安装Docker、执行容器 on \c" 
-	echoContent red "${currentHost}"
+	echoContent white "${currentHost}"
 	echoContent green "当前主机外部IP地址： \c" 
-	echoContent red "${currentIP}"	
+	echoContent white "${currentIP}"	
 	echoContent green "当前UUID： \c" 
-	echoContent red "${currentUUID}"
+	echoContent white "${currentUUID}"
 	echoContent green "当前系统Linux版本 : \c" 
 	checkSystem
 	echoContent red "=================================================================="
