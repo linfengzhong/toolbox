@@ -498,11 +498,12 @@ function checkSystem() {
 #-----------------------------------------------------------------------------#
 # Generate CA
 function generate_ca () {
+	print_start "生成网站证书 "
 	print_info "默认域名: $currentHost"	
-	local tempDomainName
 	show_ip
+	local tempDomainName
 	if [[ -d "$HOME/.acme.sh/${currentHost}" ]] && [[ -f "$HOME/.acme.sh/${currentHost}/${currentHost}.key" ]] && [[ -f "$HOME/.acme.sh/${currentHost}/${currentHost}.cer" ]]; then
-		echoContent yellow "证书已经存在，无需重新生成！！！"
+		print_info "证书已经存在，无需重新生成！！！"
 	else
 		read -r -p "如与默认域名不一致，请输入与本服务器绑定IP的新域名: " tempDomainName
 		if [ $tempDomainName ]; then
@@ -524,14 +525,13 @@ function generate_ca () {
 		print_info "复制证书到xray配置文件夹 "
 		cp -pf /etc/fuckGFW/tls/*.* /etc/fuckGFW/xray/${currentHost}/
 		installCronTLS
-		judge "生成网站证书 "
 	fi
+	judge "生成网站证书 "
 }
 #-----------------------------------------------------------------------------#
 # 更新证书
 function renewalTLS() {
-	echoContent skyBlue "更新证书 "
-
+	print_start "更新证书 "
 	if [[ -d "$HOME/.acme.sh/${currentHost}" ]] && [[ -f "$HOME/.acme.sh/${currentHost}/${currentHost}.key" ]] && [[ -f "$HOME/.acme.sh/${currentHost}/${currentHost}.cer" ]]; then
 		modifyTime=$(stat $HOME/.acme.sh/${currentHost}/${currentHost}.cer | sed -n '7,6p' | awk '{print $2" "$3" "$4" "$5}')
 
@@ -545,22 +545,23 @@ function renewalTLS() {
 			tlsStatus="已过期"
 		fi
 
-		print_info " ---> 证书检查日期:$(date "+%F %H:%M:%S")"
-		print_info " ---> 证书生成日期:$(date -d @"${modifyTime}" +"%F %H:%M:%S")"
-		print_info " ---> 证书生成天数:${days}"
-		print_info " ---> 证书剩余天数:"${tlsStatus}
-		print_info " ---> 证书过期前最后一天自动更新，如更新失败请手动更新"
+		print_info "证书检查日期:$(date "+%F %H:%M:%S")"
+		print_info "证书生成日期:$(date -d @"${modifyTime}" +"%F %H:%M:%S")"
+		print_info "证书生成天数:${days}"
+		print_info "证书剩余天数:"${tlsStatus}
+		print_info "证书过期前最后一天自动更新，如更新失败请手动更新"
 
 		if [[ ${remainingDays} -le 1 ]]; then
-			echoContent yellow " ---> 重新生成证书"
+			print_info " ---> 重新生成证书"
 			sh /root/.acme.sh/acme.sh  --issue  -d $currentHost --standalone --force
 
 		else
-			echoContent green " ---> 证书有效"
+			print_info " ---> 证书有效"
 		fi
 	else
 		echoContent red " ---> 未安装"
 	fi
+	judge "更新证书 "
 }
 #-----------------------------------------------------------------------------#
 # 查看TLS证书的状态
@@ -2201,49 +2202,49 @@ function show_docker_compose_yml {
 function generate_access_log_error_log {
 	print_start "Generate access.log & error.log for nginx trojan-go v2ray xray "
 	if [[ -f "$HOME/git/logserver/${currentHost}/nginx/access.log" ]];then
-		echoContent yellow "nginx access.log 文件已存在，无需新建！ "
+		print_info "nginx access.log 文件已存在，无需新建！ "
 	else
 		cd $HOME/git/logserver/${currentHost}/nginx/
 		touch access.log
 		judge "Generate nginx access.log "
 	fi
 	if [[ -f "$HOME/git/logserver/${currentHost}/nginx/error.log" ]];then
-		echoContent yellow "nginx error.log 文件已存在，无需新建！ "
+		print_info "nginx error.log 文件已存在，无需新建！ "
 	else
 		cd $HOME/git/logserver/${currentHost}/nginx/
 		touch error.log
 		judge "Generate nginx error.log "
 	fi
 	if [[ -f "$HOME/git/logserver/${currentHost}/trojan-go/error.log" ]];then
-		echoContent yellow "trojan-go error.log 文件已存在，无需新建！ "
+		print_info "trojan-go error.log 文件已存在，无需新建！ "
 	else
 		cd $HOME/git/logserver/${currentHost}/trojan-go/
 		touch error.log
 		judge "Generate trojan-go error.log "
 	fi
 	if [[ -f "$HOME/git/logserver/${currentHost}/v2ray/access.log" ]];then
-		echoContent yellow "v2ray access.log 文件已存在，无需新建！ "
+		print_info "v2ray access.log 文件已存在，无需新建！ "
 	else
 		cd $HOME/git/logserver/${currentHost}/v2ray/
 		touch access.log
 		judge "Generate v2ray access.log "
 	fi
 	if [[ -f "$HOME/git/logserver/${currentHost}/v2ray/error.log" ]];then
-		echoContent yellow "v2ray error.log 文件已存在，无需新建！ "
+		print_info "v2ray error.log 文件已存在，无需新建！ "
 	else
 		cd $HOME/git/logserver/${currentHost}/v2ray/
 		touch error.log
 		judge "Generate v2ray error.log "
 	fi
 	if [[ -f "$HOME/git/logserver/${currentHost}/xray/access.log" ]];then
-		echoContent yellow "xray access.log 文件已存在，无需新建！ "
+		print_info "xray access.log 文件已存在，无需新建！ "
 	else
 		cd $HOME/git/logserver/${currentHost}/xray/
 		touch access.log
 		judge "Generate xray access.log "
 	fi
 	if [[ -f "$HOME/git/logserver/${currentHost}/xray/error.log" ]];then
-		echoContent yellow "xray error.log 文件已存在，无需新建！ "
+		print_info "xray error.log 文件已存在，无需新建！ "
 	else
 		cd $HOME/git/logserver/${currentHost}/xray/
 		touch error.log
