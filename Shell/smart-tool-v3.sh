@@ -2309,16 +2309,20 @@ function upload_logs_configuration_dynamic_data () {
 }
 function init_webmin_ssl {
 	print_start "初始化webmin SSL证书 "
-	print_info "备份webmin配置文件 "
+	print_info "备份webmin配置文件到 /etc/fuckGFW/webmin/ "
 	cp -pf /etc/webmin/miniserv.* /etc/fuckGFW/webmin/
-	print_info "写入 ${currentHost} SSL证书 "
-	cat $HOME/.acme.sh/${currentHost}/${currentHost}.key > /etc/webmin/miniserv.pem
-	cat $HOME/.acme.sh/${currentHost}/${currentHost}.cer >> /etc/webmin/miniserv.pem
-	cat $HOME/.acme.sh/$currentHost/ca.cer > /etc/webmin/miniserv.ca
-	echo "extracas=/etc/webmin/miniserv.ca" >> /etc/webmin/miniserv.conf
-	print_info "重启 webmin.service "
-	systemctl restart webmin.service
-	judge "初始化webmin SSL证书 "	
+	if [[ -d "$HOME/.acme.sh/${currentHost}" ]] && [[ -f "$HOME/.acme.sh/${currentHost}/${currentHost}.key" ]] && [[ -f "$HOME/.acme.sh/${currentHost}/${currentHost}.cer" ]]; then
+		print_info "写入 ${currentHost} SSL证书 "
+		cat $HOME/.acme.sh/${currentHost}/${currentHost}.key > /etc/webmin/miniserv.pem
+		cat $HOME/.acme.sh/${currentHost}/${currentHost}.cer >> /etc/webmin/miniserv.pem
+		cat $HOME/.acme.sh/$currentHost/ca.cer > /etc/webmin/miniserv.ca
+		echo "extracas=/etc/webmin/miniserv.ca" >> /etc/webmin/miniserv.conf
+		print_info "重启 webmin.service "
+		systemctl restart webmin.service
+	else
+		print_error "未找到SSL证书！ "
+	fi
+	judge "初始化webmin SSL证书 "
 }
 #-----------------------------------------------------------------------------#
 # 主菜单
@@ -2326,7 +2330,7 @@ function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=================================================================="
-	echoContent green "SmartTool：v0.226"
+	echoContent green "SmartTool：v0.227"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "logserver：https://github.com/linfengzhong/logserver"
 	echoContent green "初始化服务器、安装Docker、执行容器 on \c" 
