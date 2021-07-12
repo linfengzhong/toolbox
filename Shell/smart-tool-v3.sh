@@ -2068,7 +2068,7 @@ services:
             TZ: Asia/Shanghai
         expose:
             - 37211
-            - 37212		
+            - 37212
         ports: 
             - 443:443
         volumes: 
@@ -2361,7 +2361,7 @@ function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=================================================================="
-	echoContent green "SmartTool：v0.230"
+	echoContent green "SmartTool：v0.231"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "logserver：https://github.com/linfengzhong/logserver"
 	echoContent green "初始化服务器、安装Docker、执行容器 on \c" 
