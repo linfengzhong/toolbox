@@ -669,6 +669,13 @@ function generate_uuid () {
 	print_info "随机生成 UUID: $zUUID "
 }
 #-----------------------------------------------------------------------------#
+# Set timezone
+function set_timezone () {
+	print_start "设置时区： Asia/Shanghai "
+	timedatectl set-timezone Asia/Shanghai
+	judge "设置时区： Asia/Shanghai "
+}
+#-----------------------------------------------------------------------------#
 # Security-Enhanced Linux
 # This guide is based on SELinux being disabled or in permissive mode. 
 # Steps to do this are as follows.
@@ -1181,7 +1188,7 @@ services:
             GF_SECURITY_ADMIN_PASSWORD: etL#flk*r4KDo$32Ulfe$%3
 
             GF_SERVER_ENABLE_GZIP: 'true'
-            GF_SECURITY_ADMIN_PASSWORD__FILE: /run/secrets/grafana_admin_password
+        #    GF_SECURITY_ADMIN_PASSWORD__FILE: /run/secrets/grafana_admin_password
             GF_USERS_ALLOW_SIGN_UP: 'true'
             GF_USERS_VIEWERS_CAN_EDIT: 'true'
             GF_AUTH_ANONYMOUS_ENABLED: 'true'
@@ -1385,7 +1392,7 @@ function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=================================================================="
-	echoContent green "SmartTool：v0.215"
+	echoContent green "SmartTool：v0.216"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "logserver：https://github.com/linfengzhong/logserver"
 	echoContent green "初始化服务器、安装Docker、执行容器 on \c" 
@@ -1418,7 +1425,7 @@ function menu() {
 	echoContent skyBlue "---------------------------科学上网-------------------------------"
 	echoContent yellow "50.安装 v2ray-agent | 快捷方式 [vasma] | 51.安装 BBR"	
 	echoContent skyBlue "---------------------------脚本管理-------------------------------"
-	echoContent yellow "61.generate UUID | 62.show IP | 63.bpytop"
+	echoContent yellow "61.generate UUID | 62.show IP | 63.bpytop | 64.set timezone"
 	echoContent yellow "0.更新脚本 | 9.退出"
 	echoContent red "=================================================================="
 	mkdirTools
@@ -1567,6 +1574,9 @@ function menu() {
 		;;
 	63)
 		execBpytop
+		;;
+	64)
+		set_timezone
 		;;
 	0)
 		updateSmartTool 1
