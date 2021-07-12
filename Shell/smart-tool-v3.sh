@@ -348,19 +348,23 @@ function git_init () {
 # Git clone toolbox.git
 function git_clone_toolbox () {
 	print_start "Git clone ToolBox "
-	mkdir -p git
-	if [[ -d "$HOME/git/toolbox" ]];then
-		echoContent yellow "toolbox文件夹已存在，无需重新clone！"
-	else
-		cd  $HOME/git/
-		git clone git@github.com:linfengzhong/toolbox.git
-		judge "Git clone ToolBox "
+	if [[ -d "$HOME/git/" ]];then
+		if [[ -d "$HOME/git/toolbox" ]];then
+			echoContent yellow "toolbox文件夹已存在，无需重新clone！"
+		else
+			cd  $HOME/git/
+			git clone git@github.com:linfengzhong/toolbox.git
+			judge "Git clone ToolBox "
 
-		echoContent green "同步下载 smart-tool-v3.sh 到根目录"
-		#cp -pf $HOME/git/toolbox/Docker/docker-compose/$currentHost/smart-tool-v3.sh $HOME
-		cp -pf ${SmartToolDir}/smart-tool-v3.sh $HOME
-		chmod 700 $HOME/smart-tool-v3.sh
-		aliasInstall
+			echoContent green "同步下载 smart-tool-v3.sh 到根目录"
+			#cp -pf $HOME/git/toolbox/Docker/docker-compose/$currentHost/smart-tool-v3.sh $HOME
+			cp -pf ${SmartToolDir}/smart-tool-v3.sh $HOME
+			chmod 700 $HOME/smart-tool-v3.sh
+			aliasInstall
+		fi
+	else
+		echoContent yellow "请先初始化Git！"
+		exit 0
 	fi
 }
 #-----------------------------------------------------------------------------#
@@ -1381,7 +1385,7 @@ function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=================================================================="
-	echoContent green "SmartTool：v0.214"
+	echoContent green "SmartTool：v0.215"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "logserver：https://github.com/linfengzhong/logserver"
 	echoContent green "初始化服务器、安装Docker、执行容器 on \c" 
