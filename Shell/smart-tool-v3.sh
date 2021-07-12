@@ -99,13 +99,13 @@ function initVar() {
 				print_info "----- 服务器域名 ----"
 				print_error "${inputHostName}"
 				print_info "----- 服务器域名 ----"
-				echo "MYHOSTDOMAIN=${inputHostName}" > $HOME/.MYHOSTDOMAIN
+				echo "${inputHostName}" > $HOME/.MYHOSTDOMAIN
 			else
 				print_error "未输入域名，使用默认域名: ${currentHost}"
 				print_info "----- 默认服务器域名 ----"
 				print_error "${currentHost}"
 				print_info "----- 默认服务器域名 ----"
-				echo "MYHOSTDOMAIN=${currentHost}" > $HOME/.MYHOSTDOMAIN
+				echo "${currentHost}" > $HOME/.MYHOSTDOMAIN
 			fi
 		sleep 1
 	fi
@@ -2414,7 +2414,7 @@ function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=================================================================="
-	echoContent green "SmartTool：v0.241"
+	echoContent green "SmartTool：v0.242"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "logserver：https://github.com/linfengzhong/logserver"
 	echoContent green "初始化服务器、安装Docker、执行容器 on \c" 
