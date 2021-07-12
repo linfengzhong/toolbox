@@ -499,26 +499,30 @@ function generate_ca () {
 	print_info "默认域名: $currentHost"	
 	local tempDomainName
 	show_ip
-	read -r -p "如与默认域名不一致，请输入与本服务器绑定IP的新域名: " tempDomainName
-	if [ $tempDomainName ]; then
-		print_info "----- 新域名证书 ----"
-		sh /root/.acme.sh/acme.sh  --issue  -d $tempDomainName --standalone --force
-		print_info "----- 新域名证书 ----"
-		print_info "----- 保存新域名证书到 /etc/fuckGFW/tls ----"
-		cp -pf $HOME/.acme.sh/$tempDomainName/*.cer /etc/fuckGFW/tls/
-		cp -pf $HOME/.acme.sh/$tempDomainName/*.key /etc/fuckGFW/tls/
+	if [[ -d "$HOME/.acme.sh/${currentHost}" ]] && [[ -f "$HOME/.acme.sh/${currentHost}/${currentHost}.key" ]] && [[ -f "$HOME/.acme.sh/${currentHost}/${currentHost}.cer" ]]; then
+		echoContent yellow "证书已经存在，无需重新生成！！！"
 	else
-		print_error "未输入域名，使用默认域名: $currentHost"
-		print_info "----- 默认域名证书 ----"
-		sh /root/.acme.sh/acme.sh  --issue  -d $currentHost --standalone --force
-		print_info "----- 默认域名证书 ----"
-		print_info "----- 保存默认域名证书到 /etc/fuckGFW/tls ----"	cp -pf $HOME/.acme.sh/$currentHost/*.cer /etc/fuckGFW/tls/
-		cp -pf $HOME/.acme.sh/$currentHost/*.key /etc/fuckGFW/tls/
+		read -r -p "如与默认域名不一致，请输入与本服务器绑定IP的新域名: " tempDomainName
+		if [ $tempDomainName ]; then
+			print_info "----- 新域名证书 ----"
+			sh /root/.acme.sh/acme.sh  --issue  -d $tempDomainName --standalone --force
+			print_info "----- 新域名证书 ----"
+			print_info "----- 保存新域名证书到 /etc/fuckGFW/tls ----"
+			cp -pf $HOME/.acme.sh/$tempDomainName/*.cer /etc/fuckGFW/tls/
+			cp -pf $HOME/.acme.sh/$tempDomainName/*.key /etc/fuckGFW/tls/
+		else
+			print_error "未输入域名，使用默认域名: $currentHost"
+			print_info "----- 默认域名证书 ----"
+			sh /root/.acme.sh/acme.sh  --issue  -d $currentHost --standalone --force
+			print_info "----- 默认域名证书 ----"
+			print_info "----- 保存默认域名证书到 /etc/fuckGFW/tls ----"	cp -pf $HOME/.acme.sh/$currentHost/*.cer /etc/fuckGFW/tls/
+			cp -pf $HOME/.acme.sh/$currentHost/*.key /etc/fuckGFW/tls/
+		fi
+		print_info "复制证书到xray配置文件夹 "
+		cp -pf /etc/fuckGFW/tls/*.* /etc/fuckGFW/xray/${currentHost}/
+		installCronTLS
+		judge "生成网站证书 "
 	fi
-	print_info "复制证书到xray配置文件夹 "
-	cp -pf /etc/fuckGFW/tls/*.* /etc/fuckGFW/xray/${currentHost}/
-	installCronTLS
-	judge "生成网站证书 "
 }
 #-----------------------------------------------------------------------------#
 # 更新证书
@@ -1174,22 +1178,13 @@ services:
         #https://grafana.com/docs/grafana/latest/administration/configuration/
         #GF_<SectionName>_<KeyName>
             TZ: Asia/Shanghai
-        #    GF_PATHS_CONFIG: /etc/grafana/grafana.ini
-        #    GF_PATHS_DATA: /var/lib/grafana
-        #    GF_PATHS_HOME: /usr/share/grafana
-        #    GF_PATHS_LOGS: /var/log/grafana
-        #    GF_PATHS_PLUGINS: /var/lib/grafana/plugins
-        #    GF_PATHS_PROVISIONING: /etc/grafana/provisioning
-        #    GF_SERVER_PROTOCOL: https
             GF_SERVER_PROTOCOL: http
             GF_SERVER_HTTP_PORT: 3000
             GF_SERVER_DOMAIN: ${currentHost}
             GF_SERVER_ROOT_URL: "%(protocol)s://%(domain)s:%(http_port)s/grafana/"
             GF_SERVER_SERVE_FROM_SUB_PATH: "true"
             GF_SECURITY_ADMIN_PASSWORD: etL#flk*r4KDo$32Ulfe$%3
-
             GF_SERVER_ENABLE_GZIP: 'true'
-        #    GF_SECURITY_ADMIN_PASSWORD__FILE: /run/secrets/grafana_admin_password
             GF_USERS_ALLOW_SIGN_UP: 'true'
             GF_USERS_VIEWERS_CAN_EDIT: 'true'
             GF_AUTH_ANONYMOUS_ENABLED: 'true'
@@ -1197,13 +1192,6 @@ services:
             GF_AUTH_ANONYMOUS_ORG_ROLE: Viewer
             GF_ANALYTICS_REPORTING_ENABLED: 'false'
             GF_ANALYTICS_CHECK_FOR_UPDATES: 'false'
-        #    ROUSER: ocean  # read-only user name for postgres
-        #    ROPASSWORD__FILE: /run/secrets/postgres_ro_password  # postgres read-only user password
-            
-        #    GF_SERVER_CERT_FILE: /etc/grafana/shanghai3721.ml.crt
-        #    GF_SERVER_CERT_KEY: /etc/grafana/shanghai3721.ml.key
-        #secrets:
-        #    - grafana_admin_password
         volumes:
             - /root/git/logserver/${currentHost}/grafana/:/etc/grafana/
             - /root/git/logserver/${currentHost}/grafana/lib:/var/lib/grafana 
@@ -1393,7 +1381,7 @@ function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=================================================================="
-	echoContent green "SmartTool：v0.218"
+	echoContent green "SmartTool：v0.219"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "logserver：https://github.com/linfengzhong/logserver"
 	echoContent green "初始化服务器、安装Docker、执行容器 on \c" 
