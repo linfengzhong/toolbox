@@ -803,8 +803,13 @@ function generate_xray_conf {
             "xver": 0
           },
           {
-            "path": "/rrdaws",
+            "path": "/rdxryws",
             "dest": 31297,
+            "xver": 1
+          }
+          {
+            "path": "/rdtov2rayxyz",
+            "dest": "v2ray:443",
             "xver": 1
           }
         ]
@@ -848,7 +853,7 @@ function generate_xray_conf {
         "security": "none",
         "wsSettings": {
           "acceptProxyProtocol": true,
-          "path": "/rrdaws"
+          "path": "/rdxryws"
         }
       }
     }
@@ -947,23 +952,27 @@ function generate_v2ray_conf {
   "inbounds":[
     {
       "port": 443,
-      "listen": "127.0.0.1",
-      "protocol": "trojan",
-      "tag":"trojanTCP",
+      "protocol": "vmess",
+      "tag":"VMessWS",
       "settings": {
         "clients": [
-          {"password": "${currentUUID}",
-           "email": "${currentHost}_trojan_tcp"}
+			{
+				"id": "${currentUUID}",
+				"alterId": 64,
+				"level": 0,
+				"email": "${currentHost}_vmess_ws"
+			}
           ],
         "fallbacks":[
           {"dest":"nginx:31300"}
           ]
         },
         "streamSettings": {
-          "network": "tcp",
-          "security": "none",
-          "tcpSettings": {
-            "acceptProxyProtocol": true
+			"network": "ws",
+			"security": "auto",
+			"wsSettings": {
+			"acceptProxyProtocol": true,
+			"path": "/rdtov2rayxyz"
           }
         }
     }
