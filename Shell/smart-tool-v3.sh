@@ -218,7 +218,7 @@ enabled=1
 gpgcheck=1
 gpgkey=http://www.webmin.com/jcameron-key.asc" >/etc/yum.repos.d/webmin.repo;)
 	sleep 1
-	sudo yum -y install webmin
+	sudo yum -y install webmin >/dev/null 2>&1
 	judge "Install webmin "
 }
 #-----------------------------------------------------------------------------#
@@ -233,14 +233,14 @@ function install_docker () {
 					docker-latest \
 					docker-latest-logrotate \
 					docker-logrotate \
-					docker-engine
+					docker-engine >/dev/null 2>&1
 	judge "1/3 Uninstall old versions of Docker CE "
-	sudo yum -y install yum-utils
+	sudo yum -y install yum-utils >/dev/null 2>&1
 	sudo yum-config-manager \
 			--add-repo \
 			https://download.docker.com/linux/centos/docker-ce.repo
 	judge "2/3 Set up the repository for Docker "
-	sudo yum -y install docker-ce docker-ce-cli containerd.io
+	sudo yum -y install docker-ce docker-ce-cli containerd.io >/dev/null 2>&1
 	sudo systemctl start docker
 	sudo systemctl enable docker
 	judge "3/3 Install Docker Engine "
@@ -262,7 +262,7 @@ function install_docker_compose () {
 # https://git-scm.com
 function install_git () {
 	print_start "Install Git "
-	sudo yum -y install git
+	sudo yum -y install git >/dev/null 2>&1
 	judge "Install Git "
 }
 #-----------------------------------------------------------------------------#
@@ -2676,7 +2676,7 @@ function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=================================================================="
-	echoContent green "SmartTool：v0.254"
+	echoContent green "SmartTool：v0.255"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "logserver：https://github.com/linfengzhong/logserver"
 	echoContent green "初始化服务器、安装Docker、执行容器 on \c" 
