@@ -173,6 +173,7 @@ function echoContent() {
 function install_prerequisite () {
 	print_start "安装 wget lsof tar unzip curl socat nmap bind-utils jq "
 	yum -y install wget lsof tar unzip curl socat nmap bind-utils jq >/dev/null 2>&1
+	pring_info "安装进行中ing "
 	#  install dig and nslookup --> bind-utils
 	judge "安装 wget lsof tar unzip curl socat nmap bind-utils jq "
 }
@@ -181,6 +182,7 @@ function install_prerequisite () {
 function install_acme () {
 	print_start "Install acme.sh "
 	sudo curl https://get.acme.sh | sh -s email=$EMAIL >/dev/null 2>&1
+	pring_info "安装进行中ing "
 	judge "安装 acme.sh "
 }
 #-----------------------------------------------------------------------------#
@@ -193,10 +195,12 @@ function install_bpytop () {
 	sudo yum -y install gcc libffi-devel python3-devel \
                     openssl-devel \
                     automake autoconf libtool make >/dev/null 2>&1
+	pring_info "安装进行中ing "
 	judge "Install Prerequisites for Python3 "
 
 	print_start "Install bpytop "
 	sudo pip3 install bpytop --upgrade >/dev/null 2>&1
+	pring_info "安装进行中ing "
 	judge "1/2 Install bpytop "
 
 	echo 'alias bpytop=/usr/local/bin/bpytop'>>~/.bash_profile
@@ -217,7 +221,8 @@ baseurl=http://download.webmin.com/download/yum
 enabled=1
 gpgcheck=1
 gpgkey=http://www.webmin.com/jcameron-key.asc" >/etc/yum.repos.d/webmin.repo;)
-	sleep 1
+	sleep 0.5
+	pring_info "安装进行中ing "
 	sudo yum -y install webmin >/dev/null 2>&1
 	judge "Install webmin "
 }
@@ -235,11 +240,13 @@ function install_docker () {
 					docker-logrotate \
 					docker-engine >/dev/null 2>&1
 	judge "1/3 Uninstall old versions of Docker CE "
+	pring_info "安装进行中ing "
 	sudo yum -y install yum-utils >/dev/null 2>&1
 	sudo yum-config-manager \
 			--add-repo \
 			https://download.docker.com/linux/centos/docker-ce.repo  >/dev/null 2>&1
 	judge "2/3 Set up the repository for Docker "
+	pring_info "安装进行中ing "
 	sudo yum -y install docker-ce docker-ce-cli containerd.io >/dev/null 2>&1
 	sudo systemctl start docker
 	sudo systemctl enable docker
@@ -251,10 +258,11 @@ function install_docker () {
 # https://docs.docker.com/compose/install/#install-compose
 function install_docker_compose () {
 	print_start "Install docker compose "
-	sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-	sudo chmod +x /usr/local/bin/docker-compose
-	sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
-	docker-compose --version
+	sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose >/dev/null 2>&1
+	sudo chmod +x /usr/local/bin/docker-compose >/dev/null 2>&1
+	sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose >/dev/null 2>&1
+	docker-compose --version >/dev/null 2>&1
+	pring_info "安装进行中ing "
 	judge "Install docker compose "
 }
 #-----------------------------------------------------------------------------#
@@ -262,6 +270,7 @@ function install_docker_compose () {
 # https://git-scm.com
 function install_git () {
 	print_start "Install Git "
+	pring_info "安装进行中ing "
 	sudo yum -y install git >/dev/null 2>&1
 	judge "Install Git "
 }
