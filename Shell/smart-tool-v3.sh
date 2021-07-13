@@ -181,7 +181,7 @@ function install_prerequisite () {
 # Install acme.sh
 function install_acme () {
 	print_start "Install acme.sh "
-	sudo curl https://get.acme.sh | sh -s email=$EMAIL >/dev/null 2>&1
+	sudo curl -s https://get.acme.sh | sh -s email=$EMAIL >/dev/null 2>&1
 	print_info "安装进行中ing "
 	judge "安装 acme.sh "
 }
@@ -2550,12 +2550,12 @@ updateTrojanGo() {
 		version=$(curl -s https://api.github.com/repos/p4gefau1t/trojan-go/releases | jq -r .[0].tag_name)
 		echoContent green " ---> Trojan-Go版本:${version}"
 		if [[ -n $(wget --help | grep show-progress) ]]; then
-			wget -c -q --show-progress -P /etc/v2ray-agent/trojan/ "https://github.com/p4gefau1t/trojan-go/releases/download/${version}/${trojanGoCPUVendor}.zip"
+			wget -c -q --show-progress -P /etc/fuckGFW/standalone/trojan-go/ "https://github.com/p4gefau1t/trojan-go/releases/download/${version}/${trojanGoCPUVendor}.zip"
 		else
-			wget -c -P /etc/v2ray-agent/trojan/ "https://github.com/p4gefau1t/trojan-go/releases/download/${version}/${trojanGoCPUVendor}.zip" >/dev/null 2>&1
+			wget -c -P /etc/fuckGFW/standalone/trojan-go/ "https://github.com/p4gefau1t/trojan-go/releases/download/${version}/${trojanGoCPUVendor}.zip" >/dev/null 2>&1
 		fi
-		unzip -o /etc/v2ray-agent/trojan/${trojanGoCPUVendor}.zip -d /etc/v2ray-agent/trojan >/dev/null
-		rm -rf /etc/v2ray-agent/trojan/${trojanGoCPUVendor}.zip
+		unzip -o /etc/fuckGFW/standalone/trojan-go/${trojanGoCPUVendor}.zip -d /etc/v2ray-agent/trojan >/dev/null
+		rm -rf /etc/fuckGFW/standalone/trojan-go/${trojanGoCPUVendor}.zip
 		handleTrojanGo stop
 		handleTrojanGo start
 	else
@@ -2686,7 +2686,7 @@ function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=================================================================="
-	echoContent green "SmartTool：v0.259"
+	echoContent green "SmartTool：v0.260"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "logserver：https://github.com/linfengzhong/logserver"
 	echoContent green "初始化服务器、安装Docker、执行容器 on \c" 
