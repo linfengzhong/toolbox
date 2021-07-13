@@ -2519,7 +2519,7 @@ function install_standalone_trojan_go() {
 		unzip -o /etc/fuckGFW/standalone/trojan-go/trojan-go-linux-amd64.zip -d /etc/fuckGFW/standalone/trojan-go >/dev/null
 		rm -rf /etc/fuckGFW/standalone/trojan-go/trojan-go-linux-amd64.zip
 	else
-		echoContent green " ---> Trojan-Go版本:$(/etc/fuckGFW/standalone/trojan-go --version | awk '{print $2}' | head -1)"
+		echoContent green " ---> Trojan-Go版本:$(/etc/fuckGFW/standalone/trojan-go/trojan-go --version | awk '{print $2}' | head -1)"
 		local reInstallTrojanStatus
 		read -r -p "是否重新安装？[y/n]:" reInstallTrojanStatus
 		if [[ "${reInstallTrojanStatus}" == "y" ]]; then
@@ -2528,13 +2528,155 @@ function install_standalone_trojan_go() {
 		fi
 	fi
 }
+# 更新Trojan-Go
+updateTrojanGo() {
+	echoContent skyBlue "\n进度  $1/${totalProgress} : 更新Trojan-Go"
+	if [[ ! -d "/etc/v2ray-agent/trojan/" ]]; then
+		echoContent red " ---> 没有检测到安装目录，请执行脚本安装内容"
+		menu
+		exit 0
+	fi
+	if find /etc/v2ray-agent/trojan/ | grep -q "trojan-go"; then
+		version=$(curl -s https://api.github.com/repos/p4gefau1t/trojan-go/releases | jq -r .[0].tag_name)
+		echoContent green " ---> Trojan-Go版本:${version}"
+		if [[ -n $(wget --help | grep show-progress) ]]; then
+			wget -c -q --show-progress -P /etc/v2ray-agent/trojan/ "https://github.com/p4gefau1t/trojan-go/releases/download/${version}/${trojanGoCPUVendor}.zip"
+		else
+			wget -c -P /etc/v2ray-agent/trojan/ "https://github.com/p4gefau1t/trojan-go/releases/download/${version}/${trojanGoCPUVendor}.zip" >/dev/null 2>&1
+		fi
+		unzip -o /etc/v2ray-agent/trojan/${trojanGoCPUVendor}.zip -d /etc/v2ray-agent/trojan >/dev/null
+		rm -rf /etc/v2ray-agent/trojan/${trojanGoCPUVendor}.zip
+		handleTrojanGo stop
+		handleTrojanGo start
+	else
+		echoContent green " ---> 当前Trojan-Go版本:$(/etc/v2ray-agent/trojan/trojan-go --version | awk '{print $2}' | head -1)"
+		if [[ -n $(/etc/v2ray-agent/trojan/trojan-go --version) ]]; then
+			version=$(curl -s https://api.github.com/repos/p4gefau1t/trojan-go/releases | jq -r .[0].tag_name)
+			if [[ "${version}" == "$(/etc/v2ray-agent/trojan/trojan-go --version | awk '{print $2}' | head -1)" ]]; then
+				read -r -p "当前版本与最新版相同，是否重新安装？[y/n]:" reInstalTrojanGoStatus
+				if [[ "${reInstalTrojanGoStatus}" == "y" ]]; then
+					handleTrojanGo stop
+					rm -rf /etc/v2ray-agent/trojan/trojan-go
+					updateTrojanGo 1
+				else
+					echoContent green " ---> 放弃重新安装"
+				fi
+			else
+				read -r -p "最新版本为：${version}，是否更新？[y/n]：" installTrojanGoStatus
+				if [[ "${installTrojanGoStatus}" == "y" ]]; then
+					rm -rf /etc/v2ray-agent/trojan/trojan-go
+					updateTrojanGo 1
+				else
+					echoContent green " ---> 放弃更新"
+				fi
+			fi
+		fi
+	fi
+}
+# Trojan开机自启
+installTrojanService() {
+	echoContent skyBlue "\n进度  $1/${totalProgress} : 配置Trojan开机自启"
+	if [[ -n $(find /bin /usr/bin -name "systemctl") ]]; then
+		rm -rf /etc/systemd/system/trojan-go.service
+		touch /etc/systemd/system/trojan-go.service
+
+		cat <<EOF >/etc/systemd/system/trojan-go.service
+[Unit]
+Description=Trojan-Go - A unified platform for anti-censorship
+Documentation=Trojan-Go
+After=network.target nss-lookup.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=root
+CapabilityBoundingSet=CAP_NET_BIND_SERVICE CAP_NET_RAW
+NoNewPrivileges=yes
+ExecStart=/etc/v2ray-agent/trojan/trojan-go -config /etc/v2ray-agent/trojan/config_full.json
+Restart=on-failure
+RestartPreventExitStatus=23
+
+
+[Install]
+WantedBy=multi-user.target
+EOF
+		systemctl daemon-reload
+		systemctl enable trojan-go.service
+		echoContent green " ---> 配置Trojan开机自启成功"
+	fi
+}
+# 操作Trojan-Go
+handleTrojanGo() {
+	if [[ -n $(find /bin /usr/bin -name "systemctl") ]] && ls /etc/systemd/system/ | grep -q trojan-go.service; then
+		if [[ -z $(pgrep -f "trojan-go") ]] && [[ "$1" == "start" ]]; then
+			systemctl start trojan-go.service
+		elif [[ -n $(pgrep -f "trojan-go") ]] && [[ "$1" == "stop" ]]; then
+			systemctl stop trojan-go.service
+		fi
+	fi
+
+	sleep 0.5
+	if [[ "$1" == "start" ]]; then
+		if [[ -n $(pgrep -f "trojan-go") ]]; then
+			echoContent green " ---> Trojan-Go启动成功"
+		else
+			echoContent red "Trojan-Go启动失败"
+			echoContent red "请手动执行【/etc/v2ray-agent/trojan/trojan-go -config /etc/v2ray-agent/trojan/config_full.json】，查看错误日志"
+			exit 0
+		fi
+	elif [[ "$1" == "stop" ]]; then
+		if [[ -z $(pgrep -f "trojan-go") ]]; then
+			echoContent green " ---> Trojan-Go关闭成功"
+		else
+			echoContent red "Trojan-Go关闭失败"
+			echoContent red "请手动执行【ps -ef|grep -v grep|grep trojan-go|awk '{print \$2}'|xargs kill -9】"
+			exit 0
+		fi
+	fi
+}
+# 初始化Trojan-Go配置
+initTrojanGoConfig() {
+
+	echoContent skyBlue "\n进度 $1/${totalProgress} : 初始化Trojan配置"
+	cat <<EOF >/etc/v2ray-agent/trojan/config_full.json
+{
+    "run_type": "server",
+    "local_addr": "127.0.0.1",
+    "local_port": 31296,
+    "remote_addr": "127.0.0.1",
+    "remote_port": 31300,
+    "disable_http_check":true,
+    "log_level":3,
+    "log_file":"/etc/v2ray-agent/trojan/trojan.log",
+    "password": [
+        "${uuid}"
+    ],
+    "dns":[
+        "localhost"
+    ],
+    "transport_plugin":{
+        "enabled":true,
+        "type":"plaintext"
+    },
+    "websocket": {
+        "enabled": true,
+        "path": "/${customPath}tws",
+        "host": "${domain}",
+        "add":"${add}"
+    },
+    "router": {
+        "enabled": false
+    }
+}
+EOF
+}
 #-----------------------------------------------------------------------------#
 # 主菜单
 function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=================================================================="
-	echoContent green "SmartTool：v0.253"
+	echoContent green "SmartTool：v0.254"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "logserver：https://github.com/linfengzhong/logserver"
 	echoContent green "初始化服务器、安装Docker、执行容器 on \c" 
