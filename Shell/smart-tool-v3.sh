@@ -171,10 +171,10 @@ function echoContent() {
 # Install Prerequisite
 # 安装必要程序
 function install_prerequisite () {
-	print_start "安装 wget lsof tar unzip curl socat nmap bind-utils"
-	yum -y install wget lsof tar unzip curl socat nmap bind-utils
+	print_start "安装 wget lsof tar unzip curl socat nmap bind-utils jq "
+	yum -y install wget lsof tar unzip curl socat nmap bind-utils jq >/dev/null 2>&1
 	#  install dig and nslookup --> bind-utils
-	judge "安装 wget lsof tar unzip curl socat nmap bind-utils"
+	judge "安装 wget lsof tar unzip curl socat nmap bind-utils jq "
 }
 #-----------------------------------------------------------------------------#
 # Install acme.sh
@@ -676,6 +676,7 @@ function mkdirTools() {
 	mkdir -p /etc/fuckGFW/grafana/
 	mkdir -p /etc/fuckGFW/webmin/
 	mkdir -p /etc/fuckGFW/clash
+	mkdir -p /etc/fuckGFW/standalone/trojan-go
 #	mkdir -p /etc/systemd/system/
 #	mkdir -p /tmp/fuckGFW-tls/
 
@@ -2501,6 +2502,33 @@ EOF
 	judge "生成 clash -> account 配置文件 "
 }
 #-----------------------------------------------------------------------------#
+# 安装Trojan-go
+function install_standalone_trojan_go() {
+	print_start "安装 trojan-go "
+	print_info "项目地址 https://github.com/p4gefau1t/trojan-go "
+
+	if ! ls /etc/fuckGFW/standalone/trojan-go/ | grep -q trojan-go; then
+
+		version=$(curl -s https://api.github.com/repos/p4gefau1t/trojan-go/releases | jq -r .[0].tag_name)
+		echoContent green " ---> Trojan-Go版本:${version}"
+		if wget --help | grep -q show-progress; then
+			wget -c -q --show-progress -P /etc/fuckGFW/standalone/trojan-go/ "https://github.com/p4gefau1t/trojan-go/releases/download/${version}/trojan-go-linux-amd64.zip"
+		else
+			wget -c -P /etc/fuckGFW/standalone/trojan-go/ "https://github.com/p4gefau1t/trojan-go/releases/download/${version}/trojan-go-linux-amd64.zip" >/dev/null 2>&1
+		fi
+		unzip -o /etc/fuckGFW/standalone/trojan-go/trojan-go-linux-amd64.zip -d /etc/fuckGFW/standalone/trojan-go >/dev/null
+		rm -rf /etc/fuckGFW/standalone/trojan-go/trojan-go-linux-amd64.zip
+	else
+		echoContent green " ---> Trojan-Go版本:$(/etc/fuckGFW/standalone/trojan-go --version | awk '{print $2}' | head -1)"
+		local reInstallTrojanStatus
+		read -r -p "是否重新安装？[y/n]:" reInstallTrojanStatus
+		if [[ "${reInstallTrojanStatus}" == "y" ]]; then
+			rm -rf /etc/v2ray-agent/trojan/trojan-go*
+			install_standalone_trojan_go "$1"
+		fi
+	fi
+}
+#-----------------------------------------------------------------------------#
 # 主菜单
 function menu() {
 	clear
@@ -2520,10 +2548,8 @@ function menu() {
 	echoContent red "=================================================================="
 	echoContent skyBlue "---------------------------安装软件-------------------------------"
 	echoContent yellow "10.安装 全部程序"
-	echoContent yellow "11.安装 prerequisite"
-	echoContent yellow "12.安装 acme.sh | 13.安装 bpytop | 14.安装 webmin"
-	echoContent yellow "15.安装 docker CE | 16.安装 docker compose"
-	echoContent yellow "17.安装 git"
+	echoContent yellow "11.安装 prerequisite | 12.安装 acme.sh | 13.安装 bpytop | 14.安装 webmin"
+	echoContent yellow "15.安装 docker CE | 16.安装 docker compose | 17.安装 git"
 	echoContent skyBlue "---------------------------版本控制-------------------------------"  
 	echoContent yellow "20.git init | 21.git clone | 22.git pull | 23.git push"
 	echoContent yellow "24.更新日志、配置文件、动态数据到GitHub"
@@ -2542,6 +2568,8 @@ function menu() {
 	echoContent yellow "49.show log [Nginx] [Trojan-go] [v2ray] [Xray] - logserver"
 	echoContent skyBlue "---------------------------科学上网-------------------------------"
 	echoContent yellow "50.安装 v2ray-agent | 快捷方式 [vasma] | 51.安装 BBR"	
+	echoContent skyBlue "---------------------------单机版本-------------------------------"
+	echoContent yellow "71.安装单机版 trojan-go"
 	echoContent skyBlue "---------------------------脚本管理-------------------------------"
 	echoContent yellow "61.generate UUID | 62.show IP | 63.bpytop | 64.set timezone"
 	echoContent yellow "0.更新脚本 | 1.设置域名 | 2.设置UUID | 3.默认UUID | 4.webmin ssl | 9.退出"
@@ -2697,6 +2725,9 @@ function menu() {
 		execBpytop
 		;;
 	64)
+		set_timezone
+		;;
+	71)
 		set_timezone
 		;;
 	0)
