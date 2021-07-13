@@ -238,7 +238,7 @@ function install_docker () {
 	sudo yum -y install yum-utils >/dev/null 2>&1
 	sudo yum-config-manager \
 			--add-repo \
-			https://download.docker.com/linux/centos/docker-ce.repo
+			https://download.docker.com/linux/centos/docker-ce.repo  >/dev/null 2>&1
 	judge "2/3 Set up the repository for Docker "
 	sudo yum -y install docker-ce docker-ce-cli containerd.io >/dev/null 2>&1
 	sudo systemctl start docker
@@ -2677,7 +2677,7 @@ function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=================================================================="
-	echoContent green "SmartTool：v0.257"
+	echoContent green "SmartTool：v0.258"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "logserver：https://github.com/linfengzhong/logserver"
 	echoContent green "初始化服务器、安装Docker、执行容器 on \c" 
