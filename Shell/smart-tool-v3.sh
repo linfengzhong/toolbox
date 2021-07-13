@@ -2534,7 +2534,7 @@ function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=================================================================="
-	echoContent green "SmartTool：v0.252"
+	echoContent green "SmartTool：v0.253"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "logserver：https://github.com/linfengzhong/logserver"
 	echoContent green "初始化服务器、安装Docker、执行容器 on \c" 
@@ -2728,7 +2728,7 @@ function menu() {
 		set_timezone
 		;;
 	71)
-		set_timezone
+		install_standalone_trojan_go
 		;;
 	0)
 		updateSmartTool 1
