@@ -2528,15 +2528,16 @@ function install_standalone_trojan_go() {
 		fi
 	fi
 }
+#-----------------------------------------------------------------------------#
 # 更新Trojan-Go
 updateTrojanGo() {
-	echoContent skyBlue "\n进度  $1/${totalProgress} : 更新Trojan-Go"
-	if [[ ! -d "/etc/v2ray-agent/trojan/" ]]; then
+	print_start "更新Trojan-Go"
+	if [[ ! -d "/etc/fuckGFW/standalone/trojan-go/" ]]; then
 		echoContent red " ---> 没有检测到安装目录，请执行脚本安装内容"
 		menu
 		exit 0
 	fi
-	if find /etc/v2ray-agent/trojan/ | grep -q "trojan-go"; then
+	if find /etc/fuckGFW/standalone/trojan-go/ | grep -q "trojan-go"; then
 		version=$(curl -s https://api.github.com/repos/p4gefau1t/trojan-go/releases | jq -r .[0].tag_name)
 		echoContent green " ---> Trojan-Go版本:${version}"
 		if [[ -n $(wget --help | grep show-progress) ]]; then
