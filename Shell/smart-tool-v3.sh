@@ -180,7 +180,7 @@ function install_prerequisite () {
 # Install acme.sh
 function install_acme () {
 	print_start "Install acme.sh "
-	sudo curl https://get.acme.sh | sh -s email=$EMAIL
+	sudo curl https://get.acme.sh | sh -s email=$EMAIL >/dev/null 2>&1
 	judge "安装 acme.sh "
 }
 #-----------------------------------------------------------------------------#
@@ -192,11 +192,11 @@ function install_bpytop () {
 	print_start "Install Prerequisites for Python3 "
 	sudo yum -y install gcc libffi-devel python3-devel \
                     openssl-devel \
-                    automake autoconf libtool make
+                    automake autoconf libtool make >/dev/null 2>&1
 	judge "Install Prerequisites for Python3 "
 
 	print_start "Install bpytop "
-	sudo pip3 install bpytop --upgrade
+	sudo pip3 install bpytop --upgrade >/dev/null 2>&1
 	judge "1/2 Install bpytop "
 
 	echo 'alias bpytop=/usr/local/bin/bpytop'>>~/.bash_profile
@@ -2676,7 +2676,7 @@ function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=================================================================="
-	echoContent green "SmartTool：v0.255"
+	echoContent green "SmartTool：v0.257"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "logserver：https://github.com/linfengzhong/logserver"
 	echoContent green "初始化服务器、安装Docker、执行容器 on \c" 
