@@ -1,0 +1,6 @@
+applications:
+- path: .
+  command: '/app/htdocs/trojan-go'
+  name: '$appname'
+  random-route: true
+  memory: 256MB
