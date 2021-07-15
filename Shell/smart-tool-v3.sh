@@ -3087,7 +3087,7 @@ function menu() {
 	echoContent yellow "44.查看日志文件"
 	echoContent yellow "45.show Account"
 	echoContent skyBlue "---------------------------通用工具-------------------------------"
-	echoContent yellow "61.UUID | 62.show IP | 63.bpytop | 64.set timezone"
+	echoContent yellow "51.UUID | 52.show IP | 53.bpytop | 54.set timezone"
 	echoContent skyBlue "---------------------------脚本管理-------------------------------"
 	echoContent yellow "0.更新脚本"
 	echoContent yellow "1.设置域名 | 2.设置UUID | 3.默认UUID | 4.webmin ssl ｜ 5.外部工具"
@@ -3202,13 +3202,13 @@ function menu() {
 	45)
 		generate_vmess_trojan_account
 		;;
-	61)
+	51)
 		generate_uuid
 		;;
-	62)
+	52)
 		show_ip
 		;;
-	63)
+	53)
 		execBpytop
 		;;
 	64)
