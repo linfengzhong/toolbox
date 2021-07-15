@@ -3224,7 +3224,8 @@ function menu() {
 		init_webmin_ssl
 		;;
 	0)
-		updateSmartTool 1
+		updateSmartTool
+		st
 		;;
 	1)
 		clear_myHostDomain
