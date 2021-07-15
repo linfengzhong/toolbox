@@ -3059,7 +3059,7 @@ function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=================================================================="
-	echoContent green "SmartTool：v0.267"
+	echoContent green "SmartTool：v0.268"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "logserver：https://github.com/linfengzhong/logserver"
 	echoContent green "初始化服务器、安装Docker、执行容器 on \c" 
@@ -3094,7 +3094,7 @@ function menu() {
 	echoContent yellow "51.UUID | 52.show IP | 53.bpytop | 54.set timezone | 55.webmin ssl "
 	echoContent skyBlue "---------------------------脚本管理-------------------------------"
 	echoContent yellow "0.更新脚本"
-	echoContent yellow "1.设置域名 | 2.设置UUID | 3.默认UUID ｜ 5.外部工具 [Sub Menu]"
+	echoContent yellow "1.设置域名 | 2.设置UUID | 3.默认UUID ｜ 4.外部工具 [Sub Menu]"
 	echoContent yellow "9.退出"
 	echoContent red "=================================================================="
 	mkdirTools
