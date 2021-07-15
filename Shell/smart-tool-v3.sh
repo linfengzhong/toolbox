@@ -493,7 +493,7 @@ function checkSystem() {
 		installType='yum -y install'
 		removeType='yum -y remove'
 		upgrade="yum update -y --skip-broken"
-		echoContent white "CentOS 8.4"
+		# echoContent white "CentOS 8.4"
 
 	elif grep </etc/issue -q -i "debian" && [[ -f "/etc/issue" ]] || grep </etc/issue -q -i "debian" && [[ -f "/proc/version" ]]; then
 		if grep </etc/issue -i "8"; then
