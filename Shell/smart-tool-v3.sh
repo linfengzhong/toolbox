@@ -2681,12 +2681,16 @@ initTrojanGoConfig() {
 EOF
 }
 #-----------------------------------------------------------------------------#
+function install_v2_ui {
+	bash <(curl -Ls https://blog.sprov.xyz/v2-ui.sh)
+}
+#-----------------------------------------------------------------------------#
 # 主菜单
 function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=================================================================="
-	echoContent green "SmartTool：v0.260"
+	echoContent green "SmartTool：v0.261"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "logserver：https://github.com/linfengzhong/logserver"
 	echoContent green "初始化服务器、安装Docker、执行容器 on \c" 
@@ -2719,7 +2723,7 @@ function menu() {
 	echoContent yellow "45.show trojan-go | 46.show v2ray | 47.show xray | 48.show Account"
 	echoContent yellow "49.show log [Nginx] [Trojan-go] [v2ray] [Xray] - logserver"
 	echoContent skyBlue "---------------------------科学上网-------------------------------"
-	echoContent yellow "50.安装 v2ray-agent | 快捷方式 [vasma] | 51.安装 BBR"	
+	echoContent yellow "50.安装 v2ray-agent | 快捷方式 [vasma] | 51.安装 BBR | 52.安装v2-ui"	
 	echoContent skyBlue "---------------------------单机版本-------------------------------"
 	echoContent yellow "71.安装单机版 trojan-go"
 	echoContent skyBlue "---------------------------脚本管理-------------------------------"
@@ -2866,6 +2870,9 @@ function menu() {
 		;;
 	51)
 		install_bbr
+		;;
+	52)
+		install_v2_ui
 		;;
 	61)
 		generate_uuid
