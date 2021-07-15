@@ -3233,6 +3233,7 @@ function menu() {
 		;;
 	0)
 		updateSmartTool
+		sleep 2
 		st
 		;;
 	1)
