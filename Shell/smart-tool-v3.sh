@@ -2853,7 +2853,6 @@ function external_menu() {
 		;;
 	esac
 }
-}
 #-----------------------------------------------------------------------------#
 # 生成配置文件&Log文件菜单
 function generate_conf_log_menu() {
