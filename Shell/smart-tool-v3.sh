@@ -2849,7 +2849,7 @@ function external_menu() {
 		;;
 	*)
 		print_error "请输入正确的数字"
-		sleep 0.5
+		sleep 1
 		menu
 		;;
 	esac
@@ -2943,7 +2943,7 @@ function generate_conf_log_menu() {
 		;;
 	*)
 		print_error "请输入正确的数字"
-		sleep 0.5
+		sleep 1
 		menu
 		;;
 	esac
@@ -3000,7 +3000,7 @@ function log_menu() {
 		;;
 	*)
 		print_error "请输入正确的数字"
-		sleep 0.5
+		sleep 1
 		menu
 		;;
 	esac
@@ -3048,7 +3048,7 @@ function conf_menu() {
 		;;
 	*)
 		print_error "请输入正确的数字"
-		sleep 0.5
+		sleep 1
 		menu
 		;;
 	esac
