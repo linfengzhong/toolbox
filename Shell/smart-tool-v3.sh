@@ -5,6 +5,7 @@
 # 2021-June-25 [Add new functions] - Stop/Start docker-compose
 # 2021-July-09 [v3] - Remove non used functions
 # 2021-July-12 [logserver] - leverage logserver
+SmartToolVersion=0.269
 #-----------------------------------------------------------------------------#
 #================== RHEL 7/8 | CentOS 7/8 | Rocky Linux 8 ====================#
 #-----------------------------------------------------------------------------#
@@ -653,7 +654,7 @@ function updateSmartTool() {
 	fi
 
 	sudo chmod 700 /etc/smart-tool/smart-tool-v3.sh
-	local newversion=$(cat /etc/smart-tool/smart-tool-v3.sh | grep 'echoContent white "v' | awk -F "[v]" '{print $2}' | tail -n +2 | head -n 1 | awk -F "[\"]" '{print $1}')
+	local newversion=$(cat /etc/smart-tool/smart-tool-v3.sh | grep 'SmartToolVersion=' | awk -F "[v]" '{print $2}' | tail -n +2 | head -n 1 | awk -F "[\"]" '{print $1}')
 
 	print_info "---> 更新完毕"
 	print_info "---> 当前版本:${newversion}"
@@ -2816,6 +2817,8 @@ function external_menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=================================================================="
+	echoContent green "SmartTool：\c"
+	echoContent white "v${SmartToolVersion}"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "logserver：https://github.com/linfengzhong/logserver"
 	echoContent green "初始化服务器、安装Docker、执行容器 on \c" 
@@ -2860,6 +2863,8 @@ function generate_conf_log_menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=================================================================="
+	echoContent green "SmartTool：\c"
+	echoContent white "v${SmartToolVersion}"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "logserver：https://github.com/linfengzhong/logserver"
 	echoContent green "初始化服务器、安装Docker、执行容器 on \c" 
@@ -2954,6 +2959,8 @@ function log_menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=================================================================="
+	echoContent green "SmartTool：\c"
+	echoContent white "v${SmartToolVersion}"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "logserver：https://github.com/linfengzhong/logserver"
 	echoContent green "初始化服务器、安装Docker、执行容器 on \c" 
@@ -3011,6 +3018,8 @@ function conf_menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=================================================================="
+	echoContent green "SmartTool：\c"
+	echoContent white "v${SmartToolVersion}"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "logserver：https://github.com/linfengzhong/logserver"
 	echoContent green "初始化服务器、安装Docker、执行容器 on \c" 
@@ -3060,7 +3069,7 @@ function menu() {
 	cd "$HOME" || exit
 	echoContent red "=================================================================="
 	echoContent green "SmartTool：\c"
-	echoContent white "v0.268"
+	echoContent white "v${SmartToolVersion}"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "logserver：https://github.com/linfengzhong/logserver"
 	echoContent green "初始化服务器、安装Docker、执行容器 on \c" 
