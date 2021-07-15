@@ -172,8 +172,8 @@ function echoContent() {
 # 安装必要程序
 function install_prerequisite () {
 	print_start "安装 wget lsof tar unzip curl socat nmap bind-utils jq "
+	print_info "安装进行中ing "	
 	yum -y install wget lsof tar unzip curl socat nmap bind-utils jq >/dev/null 2>&1
-	print_info "安装进行中ing "
 	#  install dig and nslookup --> bind-utils
 	judge "安装 wget lsof tar unzip curl socat nmap bind-utils jq "
 }
@@ -181,8 +181,8 @@ function install_prerequisite () {
 # Install acme.sh
 function install_acme () {
 	print_start "Install acme.sh "
-	sudo curl -s https://get.acme.sh | sh -s email=$EMAIL >/dev/null 2>&1
 	print_info "安装进行中ing "
+	sudo curl -s https://get.acme.sh | sh -s email=$EMAIL >/dev/null 2>&1
 	judge "安装 acme.sh "
 }
 #-----------------------------------------------------------------------------#
