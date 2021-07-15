@@ -1898,6 +1898,11 @@ initTrojanGoConfig() {
 EOF
 }
 #-----------------------------------------------------------------------------#
+# 安装 xray_OneKey
+function install_xray_onekey {
+	wget -N --no-check-certificate -q -O xinstall.sh "https://raw.githubusercontent.com/wulabing/Xray_onekey/main/install.sh" && chmod +x xinstall.sh && bash xinstall.sh
+}
+#-----------------------------------------------------------------------------#
 # 安装 v2-ui
 function install_v2_ui {
 	bash <(curl -Ls https://blog.sprov.xyz/v2-ui.sh)
@@ -1922,10 +1927,11 @@ function external_menu() {
 	checkSystem
 	echoContent red "=================================================================="
 	echoContent skyBlue "--------------------------单机安装菜单----------------------------"
-	echoContent yellow "1.安装 v2ray-agent | 快捷方式 [vasma]"	
-	echoContent yellow "2.安装 BBR"
-	echoContent yellow "3.安装 v2-ui"
-	echoContent yellow "4.安装 trojan-go"
+	echoContent yellow "1.安装 v2ray-agent | 快捷方式 [vasma]"
+	echoContent yellow "2.安装 xray-OneKey"
+	echoContent yellow "3.安装 BBR"
+	echoContent yellow "4.安装 v2-ui"
+	echoContent yellow "5.安装 trojan-go"
 	echoContent red "=================================================================="
 	read -r -p "Please choose the function (请选择) : " selectInstallType
 	case ${selectInstallType} in
@@ -1933,12 +1939,15 @@ function external_menu() {
 		InstallV2rayAgent
 		;;
 	2)
-		install_bbr
+		install_xray_onekey
 		;;
 	3)
-		install_v2_ui
+		install_bbr
 		;;
 	4)
+		install_v2_ui
+		;;
+	5)
 		install_standalone_trojan_go
 		;;
 	*)
@@ -2362,7 +2371,7 @@ function menu() {
 		;;
 	esac
 }
-SmartToolVersion=v0.277
+SmartToolVersion=v0.278
 cleanScreen
 initVar $1
 set_current_host_domain
