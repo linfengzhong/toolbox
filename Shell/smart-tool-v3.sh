@@ -3058,7 +3058,7 @@ function conf_menu() {
 function menu() {
 	clear
 	cd "$HOME" || exit
-	echoContent red "\n=================================================================="
+	echoContent red "=================================================================="
 	echoContent green "SmartTool：v0.268"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "logserver：https://github.com/linfengzhong/logserver"
