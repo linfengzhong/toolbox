@@ -2848,7 +2848,7 @@ function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=================================================================="
-	echoContent green "SmartTool：v0.262"
+	echoContent green "SmartTool：v0.263"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "logserver：https://github.com/linfengzhong/logserver"
 	echoContent green "初始化服务器、安装Docker、执行容器 on \c" 
@@ -2879,7 +2879,7 @@ function menu() {
 	echoContent skyBlue "---------------------------查看文件-------------------------------"
 	echoContent yellow "43.查看配置文件"
 	echoContent yellow "44.查看日志文件"
-	echoContent yellow "48.show Account"
+	echoContent yellow "45.show Account"
 	echoContent skyBlue "---------------------------科学上网-------------------------------"
 	echoContent yellow "50.安装 v2ray-agent | 快捷方式 [vasma] | 51.安装 BBR | 52.安装v2-ui"	
 	echoContent skyBlue "---------------------------单机版本-------------------------------"
@@ -3003,25 +3003,13 @@ function menu() {
 		renewalTLS
 		;;
 	43)
-		show_nginx_conf
+		conf_menu
 		;;
 	44)
-		show_docker_compose_yml
+		log_menu
 		;;
 	45)
-		show_trojan_go_conf
-		;;
-	46)
-		show_v2ray_conf
-		;;
-	47)
-		show_xray_conf
-		;;
-	48)
 		generate_vmess_trojan_account
-		;;
-	49)
-		log_menu
 		;;
 	50)
 		InstallV2rayAgent
