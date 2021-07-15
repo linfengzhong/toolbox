@@ -2255,6 +2255,22 @@ function show_docker_compose_yml {
 	judge "查看 docker-compose.yml 配置文件 "
 }
 #-----------------------------------------------------------------------------#
+# 查看 prometheus 配置文件
+function show_prometheus_conf {
+	print_start "生成 prometheus 配置文件 "
+	print_info "/etc/fuckGFW/prometheus/prometheus.yml"
+	cat /etc/fuckGFW/prometheus/prometheus.yml
+	judge "查看 prometheus 配置文件 "
+}
+#-----------------------------------------------------------------------------#
+# 查看 grafana.ini 配置文件
+function show_grafana_ini {
+	print_start "查看 grafana.ini 配置文件 "
+	print_info "/etc/fuckGFW/grafana/grafana.ini"
+	cat /etc/fuckGFW/grafana/grafana.ini
+	judge "查看 grafana.ini 配置文件 "
+}
+#-----------------------------------------------------------------------------#
 # generate access.log & error.log for nginx
 function generate_access_log_error_log_nginx {
 	print_start "Generate access.log & error.log for nginx "
@@ -3030,10 +3046,12 @@ function conf_menu() {
 	echoContent red "=================================================================="
 	echoContent skyBlue "--------------------------查看配置文件----------------------------"
 	echoContent yellow "1.show docker-compose.yml"
-	echoContent yellow "2.show nginx"
-	echoContent yellow "3.show trojan-go"
-	echoContent yellow "4.show v2ray"
-	echoContent yellow "5.show xray"
+	echoContent yellow "2.show nginx 配置文件"
+	echoContent yellow "3.show trojan-go 配置文件"
+	echoContent yellow "4.show v2ray 配置文件"
+	echoContent yellow "5.show xray 配置文件"
+	echoContent yellow "6.show prometheus 配置文件"
+	echoContent yellow "7.show grafana 配置文件"
 	echoContent red "=================================================================="
 	read -r -p "Please choose the function (请选择) : " selectInstallType
 	case ${selectInstallType} in
@@ -3051,6 +3069,12 @@ function conf_menu() {
 		;;
 	5)
 		show_xray_conf
+		;;
+	6)
+		show_prometheus_conf
+		;;
+	7)
+		show_grafana_ini
 		;;
 	*)
 		print_error "请输入正确的数字"
@@ -3096,8 +3120,8 @@ function menu() {
 	echoContent skyBlue "---------------------------证书管理-------------------------------"
 	echoContent yellow "40.show CA | 41.generate CA | 42.renew CA"
 	echoContent skyBlue "---------------------------查看文件-------------------------------"
-	echoContent yellow "43.查看配置文件 [Sub Menu]"
-	echoContent yellow "44.查看日志文件 [Sub Menu]"
+	echoContent yellow "43.show configs [Sub Menu]"
+	echoContent yellow "44.show logs [Sub Menu]"
 	echoContent yellow "45.show Account"
 	echoContent skyBlue "---------------------------通用工具-------------------------------"
 	echoContent yellow "51.UUID | 52.show IP | 53.bpytop | 54.set timezone | 55.webmin ssl "
@@ -3260,7 +3284,7 @@ function menu() {
 		;;
 	esac
 }
-SmartToolVersion=v0.274
+SmartToolVersion=v0.275
 cleanScreen
 initVar $1
 set_current_host_domain
