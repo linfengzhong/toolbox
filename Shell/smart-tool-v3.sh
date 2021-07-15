@@ -5,7 +5,7 @@
 # 2021-June-25 [Add new functions] - Stop/Start docker-compose
 # 2021-July-09 [v3] - Remove non used functions
 # 2021-July-12 [logserver] - leverage logserver
-SmartToolVersion=0.269
+SmartToolVersion=0.271
 #-----------------------------------------------------------------------------#
 #================== RHEL 7/8 | CentOS 7/8 | Rocky Linux 8 ====================#
 #-----------------------------------------------------------------------------#
