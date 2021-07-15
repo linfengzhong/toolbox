@@ -2362,7 +2362,7 @@ function menu() {
 		;;
 	esac
 }
-SmartToolVersion=v0.276
+SmartToolVersion=v0.277
 cleanScreen
 initVar $1
 set_current_host_domain
