@@ -2257,6 +2257,75 @@ function show_docker_compose_yml {
 	judge "查看 docker-compose.yml 配置文件 "
 }
 #-----------------------------------------------------------------------------#
+# generate access.log & error.log for nginx
+function generate_access_log_error_log_nginx {
+	print_start "Generate access.log & error.log for nginx "
+	if [[ -f "$HOME/git/logserver/${currentHost}/nginx/access.log" ]];then
+		print_info "nginx access.log 文件已存在，无需新建！ "
+	else
+		cd $HOME/git/logserver/${currentHost}/nginx/
+		touch access.log
+		judge "Generate nginx access.log "
+	fi
+	if [[ -f "$HOME/git/logserver/${currentHost}/nginx/error.log" ]];then
+		print_info "nginx error.log 文件已存在，无需新建！ "
+	else
+		cd $HOME/git/logserver/${currentHost}/nginx/
+		touch error.log
+		judge "Generate nginx error.log "
+	fi
+}
+#-----------------------------------------------------------------------------#
+# generate access.log & error.log for trojan-go
+function generate_access_log_error_log_trojan_go {
+	print_start "Generate error.log for trojan-go "
+	if [[ -f "$HOME/git/logserver/${currentHost}/trojan-go/error.log" ]];then
+		print_info "trojan-go error.log 文件已存在，无需新建！ "
+	else
+		cd $HOME/git/logserver/${currentHost}/trojan-go/
+		touch error.log
+		judge "Generate trojan-go error.log "
+	fi
+}
+#-----------------------------------------------------------------------------#
+# generate access.log & error.log for v2ray
+function generate_access_log_error_log_v2ray {
+	print_start "Generate access.log & error.log for v2ray "
+	if [[ -f "$HOME/git/logserver/${currentHost}/v2ray/access.log" ]];then
+		print_info "v2ray access.log 文件已存在，无需新建！ "
+	else
+		cd $HOME/git/logserver/${currentHost}/v2ray/
+		touch access.log
+		judge "Generate v2ray access.log "
+	fi
+	if [[ -f "$HOME/git/logserver/${currentHost}/v2ray/error.log" ]];then
+		print_info "v2ray error.log 文件已存在，无需新建！ "
+	else
+		cd $HOME/git/logserver/${currentHost}/v2ray/
+		touch error.log
+		judge "Generate v2ray error.log "
+	fi
+}
+#-----------------------------------------------------------------------------#
+# generate access.log & error.log for xray
+function generate_access_log_error_log_xray {
+	print_start "Generate access.log & error.log for xray "
+	if [[ -f "$HOME/git/logserver/${currentHost}/xray/access.log" ]];then
+		print_info "xray access.log 文件已存在，无需新建！ "
+	else
+		cd $HOME/git/logserver/${currentHost}/xray/
+		touch access.log
+		judge "Generate xray access.log "
+	fi
+	if [[ -f "$HOME/git/logserver/${currentHost}/xray/error.log" ]];then
+		print_info "xray error.log 文件已存在，无需新建！ "
+	else
+		cd $HOME/git/logserver/${currentHost}/xray/
+		touch error.log
+		judge "Generate xray error.log "
+	fi
+}
+#-----------------------------------------------------------------------------#
 # generate access.log & error.log
 function generate_access_log_error_log {
 	print_start "Generate access.log & error.log for nginx trojan-go v2ray xray "
@@ -2742,6 +2811,100 @@ function install_v2_ui {
 	bash <(curl -Ls https://blog.sprov.xyz/v2-ui.sh)
 }
 #-----------------------------------------------------------------------------#
+# 生成配置文件&Log文件菜单
+function generate_conf_log_menu() {
+	clear
+	cd "$HOME" || exit
+	echoContent red "\n=================================================================="
+	echoContent green "SmartTool：v0.262"
+	echoContent green "Github：https://github.com/linfengzhong/toolbox"
+	echoContent green "logserver：https://github.com/linfengzhong/logserver"
+	echoContent green "初始化服务器、安装Docker、执行容器 on \c" 
+	echoContent white "${currentHost}"
+	echoContent green "当前主机外部IP地址： \c" 
+	echoContent white "${currentIP}"	
+	echoContent green "当前UUID： \c" 
+	echoContent white "${currentUUID}"
+	echoContent green "当前系统Linux版本 : \c" 
+	checkSystem
+	echoContent red "=================================================================="
+	echoContent skyBlue "---------------------------生成配置文件-----------------------------"
+	echoContent skyBlue "--> /etc/fuckGFW/"
+	echoContent yellow "0.generate all conf"
+	echoContent yellow "1.generate docker-compose.yml - fuckGFW"
+	echoContent yellow "2.generate conf [Nginx]"
+	echoContent yellow "3.generate conf [Trojan-go]"
+	echoContent yellow "4.generate conf [v2ray]"
+	echoContent yellow "5.generate conf [Xray]"
+	echoContent yellow "6.generate conf [Prometheus]"
+	echoContent yellow "7.generate conf [Grafana]"
+	echoContent yellow "8.generate fake website - fuckGFW"
+	echoContent skyBlue "---------------------------生成日志文件-----------------------------"
+	echoContent skyBlue "--> $HOME/git/logserver/${currentHost}/"
+	echoContent yellow "20.generate all logs"
+	echoContent yellow "21.generate log [Nginx]"
+	echoContent yellow "22.generate log [Trojan-go]"
+	echoContent yellow "23.generate log [v2ray]"
+	echoContent yellow "24.generate log [Xray]"
+	echoContent red "=================================================================="
+	read -r -p "Please choose the function (请选择) : " selectInstallType
+	case ${selectInstallType} in
+	0)
+		generate_docker_compose_yml
+		generate_nginx_conf
+		generate_trojan_go_conf
+		generate_v2ray_conf
+		generate_xray_conf
+		generate_prometheus_conf
+		generate_grafana_ini
+		generate_fake_website
+		;;
+	1)
+		generate_docker_compose_yml
+		;;
+	2)
+		generate_nginx_conf
+		;;
+	3)
+		generate_trojan_go_conf
+		;;
+	4)
+		generate_v2ray_conf
+		;;
+	5)
+		generate_xray_conf
+		;;
+	6)
+		generate_prometheus_conf
+		;;
+	7)
+		generate_grafana_ini
+		;;
+	8)
+		generate_fake_website
+		;;
+	20)
+		generate_access_log_error_log
+		;;
+	21)
+		generate_access_log_error_log_nginx
+		;;
+	22)
+		generate_access_log_error_log_trojan_go
+		;;
+	23)
+		generate_access_log_error_log_v2ray
+		;;
+	24)
+		generate_access_log_error_log_xray
+		;;
+	*)
+		print_error "请输入正确的数字"
+		menu
+		;;
+	esac
+}
+#-----------------------------------------------------------------------------#
 # 日志菜单
 function log_menu() {
 	clear
@@ -2852,7 +3015,7 @@ function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=================================================================="
-	echoContent green "SmartTool：v0.264"
+	echoContent green "SmartTool：v0.265"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "logserver：https://github.com/linfengzhong/logserver"
 	echoContent green "初始化服务器、安装Docker、执行容器 on \c" 
@@ -2873,11 +3036,10 @@ function menu() {
 	echoContent yellow "24.更新日志、配置文件、动态数据到GitHub"
 	echoContent skyBlue "---------------------------容器相关-------------------------------"
 	echoContent yellow "30.One-key"
-	echoContent yellow "31.generate conf [Nginx] [Trojan-go] [v2ray] [Xray] [Prometheus] [Grafana]- fuckGFW"
-	echoContent yellow "32.generate log  [Nginx] [Trojan-go] [v2ray] [Xray] - logserver"
-	echoContent yellow "33.generate docker-compose.yml - fuckGFW"
-	echoContent yellow "34.generate fake website - fuckGFW"
-	echoContent yellow "35.docker-compose up | 36.docker-compose down | 37.docker status"
+	echoContent yellow "31.docker-compose up"
+	echoContent yellow "32.docker-compose down"
+	echoContent yellow "33.docker status"
+	echoContent yellow "34.generate conf & logs"
 	echoContent skyBlue "---------------------------证书管理-------------------------------"
 	echoContent yellow "40.show CA | 41.generate CA | 42.renew CA"
 	echoContent skyBlue "---------------------------查看文件-------------------------------"
@@ -2971,31 +3133,17 @@ function menu() {
 		start_docker_compose
 		;;
 	31)
-		generate_nginx_conf
-		generate_xray_conf
-		generate_trojan_go_conf
-		generate_v2ray_conf
-		generate_prometheus_conf
-		generate_grafana_ini
-		;;
-	32)
-		generate_access_log_error_log
-		;;
-	33)
-		generate_docker_compose_yml
-		;;
-	34)
-		generate_fake_website
-		;;
-	35)
 		start_docker_compose
 		;;
-	36)
+	32)
 		shutdown_docker_compose
 		;;
-	37)
+	33)
 		show_docker_images
 		show_docker_container
+		;;
+	34)
+		generate_conf_log_menu
 		;;
 	40)
 		checkTLStatus "${currentHost}"
