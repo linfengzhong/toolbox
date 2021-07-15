@@ -654,7 +654,7 @@ function updateSmartTool() {
 	fi
 
 	sudo chmod 700 /etc/smart-tool/smart-tool-v3.sh
-	local newversion=$(cat /etc/smart-tool/smart-tool-v3.sh | grep 'echoContent white "v' | awk -F "[v]" '{print $2}' | tail -n +2 | head -n 1 | awk -F "[\"]" '{print $1}')
+	local newversion=$(cat /etc/smart-tool/smart-tool-v3.sh | grep '"SmartToolVersion="' | awk -F "[v]" '{print $2}' | tail -n +2 | head -n 1 | awk -F "[\"]" '{print $1}')
 
 	print_info "---> 更新完毕"
 	print_info "---> 当前版本:${newversion}"
@@ -663,8 +663,6 @@ function updateSmartTool() {
 #	echoContent skyBlue "wget -P /root -N --no-check-certificate\
 #  "https://raw.githubusercontent.com/linfengzhong/toolbox/main/Shell/smart-tool-v3.sh" &&\
 #  chmod 700 /root/smart-tool-v3.sh && /root/smart-tool-v3.sh"
-	echo
-	exit 0
 }
 #-----------------------------------------------------------------------------#
 # 初始化安装目录
