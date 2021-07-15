@@ -2811,12 +2811,55 @@ function install_v2_ui {
 	bash <(curl -Ls https://blog.sprov.xyz/v2-ui.sh)
 }
 #-----------------------------------------------------------------------------#
+# v2ray-agent BBR & 单机安装菜单
+function external_menu() {
+	clear
+	cd "$HOME" || exit
+	echoContent red "\n=================================================================="
+	echoContent green "Github：https://github.com/linfengzhong/toolbox"
+	echoContent green "logserver：https://github.com/linfengzhong/logserver"
+	echoContent green "初始化服务器、安装Docker、执行容器 on \c" 
+	echoContent white "${currentHost}"
+	echoContent green "当前主机外部IP地址： \c" 
+	echoContent white "${currentIP}"	
+	echoContent green "当前UUID： \c" 
+	echoContent white "${currentUUID}"
+	echoContent green "当前系统Linux版本 : \c" 
+	checkSystem
+	echoContent red "=================================================================="
+	echoContent skyBlue "---------------------------单机安装菜单-----------------------------"
+	echoContent yellow "1.安装 v2ray-agent | 快捷方式 [vasma]"	
+	echoContent yellow "2.安装 BBR"
+	echoContent yellow "3.安装 v2-ui"
+	echoContent yellow "4.安装 trojan-go"
+	echoContent red "=================================================================="
+	read -r -p "Please choose the function (请选择) : " selectInstallType
+	case ${selectInstallType} in
+	1)
+		InstallV2rayAgent
+		;;
+	2)
+		install_bbr
+		;;
+	3)
+		install_v2_ui
+		;;
+	4)
+		install_standalone_trojan_go
+		;;
+	*)
+		print_error "请输入正确的数字"
+		menu
+		;;
+	esac
+}
+}
+#-----------------------------------------------------------------------------#
 # 生成配置文件&Log文件菜单
 function generate_conf_log_menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=================================================================="
-	echoContent green "SmartTool：v0.262"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "logserver：https://github.com/linfengzhong/logserver"
 	echoContent green "初始化服务器、安装Docker、执行容器 on \c" 
@@ -2910,7 +2953,6 @@ function log_menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=================================================================="
-	echoContent green "SmartTool：v0.262"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "logserver：https://github.com/linfengzhong/logserver"
 	echoContent green "初始化服务器、安装Docker、执行容器 on \c" 
@@ -2967,7 +3009,6 @@ function conf_menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=================================================================="
-	echoContent green "SmartTool：v0.263"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "logserver：https://github.com/linfengzhong/logserver"
 	echoContent green "初始化服务器、安装Docker、执行容器 on \c" 
@@ -3015,7 +3056,7 @@ function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=================================================================="
-	echoContent green "SmartTool：v0.265"
+	echoContent green "SmartTool：v0.266"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "logserver：https://github.com/linfengzhong/logserver"
 	echoContent green "初始化服务器、安装Docker、执行容器 on \c" 
@@ -3046,13 +3087,12 @@ function menu() {
 	echoContent yellow "43.查看配置文件"
 	echoContent yellow "44.查看日志文件"
 	echoContent yellow "45.show Account"
-	echoContent skyBlue "---------------------------科学上网-------------------------------"
-	echoContent yellow "50.安装 v2ray-agent | 快捷方式 [vasma] | 51.安装 BBR | 52.安装v2-ui"	
-	echoContent skyBlue "---------------------------单机版本-------------------------------"
-	echoContent yellow "71.安装单机版 trojan-go"
+	echoContent skyBlue "---------------------------通用工具-------------------------------"
+	echoContent yellow "61.UUID | 62.show IP | 63.bpytop | 64.set timezone"
 	echoContent skyBlue "---------------------------脚本管理-------------------------------"
-	echoContent yellow "61.generate UUID | 62.show IP | 63.bpytop | 64.set timezone"
-	echoContent yellow "0.更新脚本 | 1.设置域名 | 2.设置UUID | 3.默认UUID | 4.webmin ssl | 9.退出"
+	echoContent yellow "0.更新脚本"
+	echoContent yellow "1.设置域名 | 2.设置UUID | 3.默认UUID | 4.webmin ssl ｜ 5.外部工具"
+	echoContent yellow "9.退出"
 	echoContent red "=================================================================="
 	mkdirTools
 	aliasInstall
@@ -3163,15 +3203,6 @@ function menu() {
 	45)
 		generate_vmess_trojan_account
 		;;
-	50)
-		InstallV2rayAgent
-		;;
-	51)
-		install_bbr
-		;;
-	52)
-		install_v2_ui
-		;;
 	61)
 		generate_uuid
 		;;
@@ -3183,9 +3214,6 @@ function menu() {
 		;;
 	64)
 		set_timezone
-		;;
-	71)
-		install_standalone_trojan_go
 		;;
 	0)
 		updateSmartTool 1
@@ -3205,6 +3233,9 @@ function menu() {
 		;;
 	4)
 		init_webmin_ssl
+		;;
+	5)
+		external_menu
 		;;
 	9)
 	    exit 0
