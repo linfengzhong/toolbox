@@ -5,7 +5,6 @@
 # 2021-June-25 [Add new functions] - Stop/Start docker-compose
 # 2021-July-09 [v3] - Remove non used functions
 # 2021-July-12 [logserver] - leverage logserver
-SmartToolVersion=v0.273
 #-----------------------------------------------------------------------------#
 #================== RHEL 7/8 | CentOS 7/8 | Rocky Linux 8 ====================#
 #-----------------------------------------------------------------------------#
@@ -3261,7 +3260,7 @@ function menu() {
 		;;
 	esac
 }
-
+SmartToolVersion=v0.274
 cleanScreen
 initVar $1
 set_current_host_domain
