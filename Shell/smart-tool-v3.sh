@@ -2326,6 +2326,62 @@ function show_error_log {
 	judge "Show error.log for nginx trojan-go v2ray xray "
 }
 #-----------------------------------------------------------------------------#
+# show error.log for nginx
+function show_error_log_nginx {
+	print_start "Show error.log for nginx "
+	echoContent yellow " ---> nginx"
+	tail -n 20 $HOME/git/logserver/${currentHost}/nginx/error.log
+	judge "Show error.log for nginx "
+}
+#-----------------------------------------------------------------------------#
+# show access.log for nginx
+function show_access_log_nginx {
+	print_start "Show access.log for nginx "
+	echoContent yellow " ---> nginx"
+	tail -n 20 $HOME/git/logserver/${currentHost}/nginx/access.log
+	judge "Show access.log for nginx "
+}
+#-----------------------------------------------------------------------------#
+# show error.log for trojan-go
+function show_error_log_trojan_go {
+	print_start "Show error.log for trojan-go "
+	echoContent yellow " ---> trojan-go"
+	tail -n 20 $HOME/git/logserver/${currentHost}/trojan-go/error.log
+	judge "Show error.log for trojan-go "
+}
+#-----------------------------------------------------------------------------#
+# show error.log for v2ray
+function show_error_log_v2ray {
+	print_start "Show error.log for v2ray "
+	echoContent yellow " ---> v2ray"
+	tail -n 20 $HOME/git/logserver/${currentHost}/v2ray/error.log
+	judge "Show error.log for v2ray "
+}
+#-----------------------------------------------------------------------------#
+# show access.log for v2ray
+function show_access_log_v2ray {
+	print_start "Show access.log for v2ray "
+	echoContent yellow " ---> v2ray"
+	tail -n 20 $HOME/git/logserver/${currentHost}/v2ray/access.log
+	judge "Show access.log for v2ray "
+}
+#-----------------------------------------------------------------------------#
+# show error.log for xray
+function show_error_log_xray {
+	print_start "Show error.log for xray "
+	echoContent yellow " ---> xray"
+	tail -n 20 $HOME/git/logserver/${currentHost}/xray/error.log
+	judge "Show error.log for xray "
+}
+#-----------------------------------------------------------------------------#
+# show access.log for xray
+function show_access_log_xray {
+	print_start "Show access.log for xray "
+	echoContent yellow " ---> xray"
+	tail -n 20 $HOME/git/logserver/${currentHost}/xray/access.log
+	judge "Show access.log for xray "
+}
+#-----------------------------------------------------------------------------#
 # Website
 function generate_fake_website {
 #	/etc/fuckGFW/website
@@ -2681,8 +2737,64 @@ initTrojanGoConfig() {
 EOF
 }
 #-----------------------------------------------------------------------------#
+# 安装 v2-ui
 function install_v2_ui {
 	bash <(curl -Ls https://blog.sprov.xyz/v2-ui.sh)
+}
+#-----------------------------------------------------------------------------#
+# 主菜单
+function log_menu() {
+	cd "$HOME" || exit
+	echoContent red "\n=================================================================="
+	echoContent green "SmartTool：v0.262"
+	echoContent green "Github：https://github.com/linfengzhong/toolbox"
+	echoContent green "logserver：https://github.com/linfengzhong/logserver"
+	echoContent green "初始化服务器、安装Docker、执行容器 on \c" 
+	echoContent white "${currentHost}"
+	echoContent green "当前主机外部IP地址： \c" 
+	echoContent white "${currentIP}"	
+	echoContent green "当前UUID： \c" 
+	echoContent white "${currentUUID}"
+	echoContent green "当前系统Linux版本 : \c" 
+	checkSystem
+	echoContent red "=================================================================="
+	echoContent skyBlue "---------------------------查看错误日志-----------------------------"
+	echoContent yellow "1.show error.log [Nginx] "
+	echoContent yellow "2.show error.log [Trojan-go]"
+	echoContent yellow "3.show error.log [v2ray]"
+	echoContent yellow "4.show error.log [vxray]"
+	echoContent skyBlue "---------------------------查看访问日志-----------------------------"
+	echoContent yellow "5.show access.log [Nginx] "
+	echoContent yellow "6.show access.log [v2ray]"
+	echoContent yellow "7.show access.log [vxray]"
+	echoContent red "=================================================================="
+	read -r -p "Please choose the function (请选择) : " selectInstallType
+	case ${selectInstallType} in
+	1)
+		show_error_log_nginx
+		;;
+	2)
+		show_error_log_trojan_go
+		;;
+	3)
+		show_error_log_v2ray
+		;;
+	4)
+		show_error_log_xray
+		;;
+	5)
+		show_access_log_nginx
+		;;
+	6)
+		show_access_log_v2ray
+		;;
+	6)
+		show_access_log_xray
+		;;
+	*)
+		print_error "请输入正确的数字"
+		menu
+		;;
 }
 #-----------------------------------------------------------------------------#
 # 主菜单
@@ -2690,7 +2802,7 @@ function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=================================================================="
-	echoContent green "SmartTool：v0.261"
+	echoContent green "SmartTool：v0.262"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "logserver：https://github.com/linfengzhong/logserver"
 	echoContent green "初始化服务器、安装Docker、执行容器 on \c" 
@@ -2721,7 +2833,7 @@ function menu() {
 	echoContent skyBlue "---------------------------查看文件-------------------------------"
 	echoContent yellow "43.show nginx | 44.show docker-compose.yml"
 	echoContent yellow "45.show trojan-go | 46.show v2ray | 47.show xray | 48.show Account"
-	echoContent yellow "49.show log [Nginx] [Trojan-go] [v2ray] [Xray] - logserver"
+	echoContent yellow "49.log_menu"
 	echoContent skyBlue "---------------------------科学上网-------------------------------"
 	echoContent yellow "50.安装 v2ray-agent | 快捷方式 [vasma] | 51.安装 BBR | 52.安装v2-ui"	
 	echoContent skyBlue "---------------------------单机版本-------------------------------"
@@ -2863,7 +2975,7 @@ function menu() {
 		generate_vmess_trojan_account
 		;;
 	49)
-		show_error_log
+		log_menu
 		;;
 	50)
 		InstallV2rayAgent
