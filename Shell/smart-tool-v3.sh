@@ -2742,7 +2742,7 @@ function install_v2_ui {
 	bash <(curl -Ls https://blog.sprov.xyz/v2-ui.sh)
 }
 #-----------------------------------------------------------------------------#
-# 主菜单
+# 日志菜单
 function log_menu() {
 	cd "$HOME" || exit
 	echoContent red "\n=================================================================="
@@ -2797,6 +2797,52 @@ function log_menu() {
 		;;
 }
 #-----------------------------------------------------------------------------#
+# 配置菜单
+function conf_menu() {
+	cd "$HOME" || exit
+	echoContent red "\n=================================================================="
+	echoContent green "SmartTool：v0.262"
+	echoContent green "Github：https://github.com/linfengzhong/toolbox"
+	echoContent green "logserver：https://github.com/linfengzhong/logserver"
+	echoContent green "初始化服务器、安装Docker、执行容器 on \c" 
+	echoContent white "${currentHost}"
+	echoContent green "当前主机外部IP地址： \c" 
+	echoContent white "${currentIP}"	
+	echoContent green "当前UUID： \c" 
+	echoContent white "${currentUUID}"
+	echoContent green "当前系统Linux版本 : \c" 
+	checkSystem
+	echoContent red "=================================================================="
+	echoContent skyBlue "---------------------------查看配置文件-----------------------------"
+	echoContent yellow "1.show docker-compose.yml"
+	echoContent yellow "2.show nginx"
+	echoContent yellow "3.show trojan-go"
+	echoContent yellow "4.show v2ray"
+	echoContent yellow "5.show xray"
+	echoContent red "=================================================================="
+	read -r -p "Please choose the function (请选择) : " selectInstallType
+	case ${selectInstallType} in
+	1)
+		show_docker_compose_yml
+		;;
+	2)
+		show_nginx_conf
+		;;
+	3)
+		show_trojan_go_conf
+		;;
+	4)
+		show_v2ray_conf
+		;;
+	5)
+		show_xray_conf
+		;;
+	*)
+		print_error "请输入正确的数字"
+		menu
+		;;
+}
+#-----------------------------------------------------------------------------#
 # 主菜单
 function menu() {
 	clear
@@ -2831,9 +2877,9 @@ function menu() {
 	echoContent skyBlue "---------------------------证书管理-------------------------------"
 	echoContent yellow "40.show CA | 41.generate CA | 42.renew CA"
 	echoContent skyBlue "---------------------------查看文件-------------------------------"
-	echoContent yellow "43.show nginx | 44.show docker-compose.yml"
-	echoContent yellow "45.show trojan-go | 46.show v2ray | 47.show xray | 48.show Account"
-	echoContent yellow "49.log_menu"
+	echoContent yellow "43.查看配置文件"
+	echoContent yellow "44.查看日志文件"
+	echoContent yellow "48.show Account"
 	echoContent skyBlue "---------------------------科学上网-------------------------------"
 	echoContent yellow "50.安装 v2ray-agent | 快捷方式 [vasma] | 51.安装 BBR | 52.安装v2-ui"	
 	echoContent skyBlue "---------------------------单机版本-------------------------------"
