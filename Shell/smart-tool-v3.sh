@@ -3059,7 +3059,7 @@ function menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "\n=================================================================="
-	echoContent green "SmartTool：v0.266"
+	echoContent green "SmartTool：v0.267"
 	echoContent green "Github：https://github.com/linfengzhong/toolbox"
 	echoContent green "logserver：https://github.com/linfengzhong/logserver"
 	echoContent green "初始化服务器、安装Docker、执行容器 on \c" 
@@ -3082,19 +3082,19 @@ function menu() {
 	echoContent yellow "30.One-key"
 	echoContent yellow "31.docker-compose up"
 	echoContent yellow "32.docker-compose down"
-	echoContent yellow "33.docker status"
+	echoContent yellow "33.docker status [Sub Menu]"
 	echoContent yellow "34.generate conf & logs"
 	echoContent skyBlue "---------------------------证书管理-------------------------------"
 	echoContent yellow "40.show CA | 41.generate CA | 42.renew CA"
 	echoContent skyBlue "---------------------------查看文件-------------------------------"
-	echoContent yellow "43.查看配置文件"
-	echoContent yellow "44.查看日志文件"
+	echoContent yellow "43.查看配置文件 [Sub Menu]"
+	echoContent yellow "44.查看日志文件 [Sub Menu]"
 	echoContent yellow "45.show Account"
 	echoContent skyBlue "---------------------------通用工具-------------------------------"
-	echoContent yellow "51.UUID | 52.show IP | 53.bpytop | 54.set timezone"
+	echoContent yellow "51.UUID | 52.show IP | 53.bpytop | 54.set timezone | 55.webmin ssl "
 	echoContent skyBlue "---------------------------脚本管理-------------------------------"
 	echoContent yellow "0.更新脚本"
-	echoContent yellow "1.设置域名 | 2.设置UUID | 3.默认UUID | 4.webmin ssl ｜ 5.外部工具"
+	echoContent yellow "1.设置域名 | 2.设置UUID | 3.默认UUID ｜ 5.外部工具 [Sub Menu]"
 	echoContent yellow "9.退出"
 	echoContent red "=================================================================="
 	mkdirTools
@@ -3215,8 +3215,11 @@ function menu() {
 	53)
 		execBpytop
 		;;
-	64)
+	54)
 		set_timezone
+		;;
+	55)
+		init_webmin_ssl
 		;;
 	0)
 		updateSmartTool 1
@@ -3235,9 +3238,6 @@ function menu() {
 		st
 		;;
 	4)
-		init_webmin_ssl
-		;;
-	5)
 		external_menu
 		;;
 	9)
