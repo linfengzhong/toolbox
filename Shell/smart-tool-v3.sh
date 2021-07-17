@@ -1916,273 +1916,211 @@ function install_v2_ui {
 #-----------------------------------------------------------------------------#
 # 安装 nagios server
 function install_nagios_server {
-# Security-Enhanced Linux
-# This guide is based on SELinux being disabled or in permissive mode. 
-# Steps to do this are as follows.
-	echo "开始安装Nagios Core"
-	echo "Step1: Security-Enhanced Linux"
+	# Security-Enhanced Linux
+	# This guide is based on SELinux being disabled or in permissive mode. 
+	# Steps to do this are as follows.
+	print_start "开始安装 Nagios Core"
+	print_info "Step 1: Security-Enhanced Linux"
 	sed -i 's/SELINUX=.*/SELINUX=disabled/g' /etc/selinux/config
 	setenforce 0
-	if ! command; then echo "Step1 failed"; exit 1; fi
-#-----------------------------------------------------------------------------
-# Prerequisites
-# Perform these steps to install the pre-requisite packages.
-# httpd -> Apache Web Server
-	echo "Step2: Prerequisites"
-	yum install -y gcc glibc glibc-common wget unzip httpd php gd gd-devel perl postfix
-	if ! command; then echo "Step2 failed"; exit 1; fi
-#-----------------------------------------------------------------------------
-# Downloading the Source
-	echo "Step3: Downloading the Source"
-	echo "nagios-4.4.5."
+	judge "Step 1: Security-Enhanced Linux"
+
+	# Prerequisites
+	# Perform these steps to install the pre-requisite packages.
+	# httpd -> Apache Web Server
+	print_info "Step 2: Prerequisites"
+	yum install -y gcc glibc glibc-common perl httpd php wget gd gd-devel
+	yum update -y
+	judge "Step 2: Prerequisites"
+
+	# Downloading the Source
+	print_info "Step 3: Downloading the Source"
+	print_info "nagios-4.4.6."
 	cd /tmp
-	wget -O nagioscore.tar.gz https://github.com/NagiosEnterprises/nagioscore/archive/nagios-4.4.5.tar.gz
+	wget -O nagioscore.tar.gz https://github.com/NagiosEnterprises/nagioscore/releases/download/nagios-4.4.6/nagios-4.4.6.tar.gz
 	tar xzf nagioscore.tar.gz
-	if ! command; then echo "Step3 failed"; exit 1; fi
-#-----------------------------------------------------------------------------
-# Compile
-	echo "Step4: Compile"
-	cd /tmp/nagioscore-nagios-4.4.5/
+	judge "Step 3: Downloading the Source"
+	
+	# Compile
+	print_info "Step 4: Compile"
+	cd /tmp/nagioscore-nagios-4.4.6/
 	./configure
 	make all
-	if ! command; then echo "Step4 failed"; exit 1; fi
-#-----------------------------------------------------------------------------
-# Create User And Group
-# This creates the nagios user and group. 
-# The apache user is also added to the nagios group.
-	echo "Step5: Create User And Group"
+	judge "Step 4: Compile"
+
+	# Create User And Group
+	# This creates the nagios user and group. 
+	# The apache user is also added to the nagios group.
+	print_info "Step 5: Create User And Group"
 	make install-groups-users
 	usermod -a -G nagios apache
-	if ! command; then echo "Step5 failed"; exit 1; fi
-#-----------------------------------------------------------------------------
-# Install Binaries
-# This step installs the binary files, CGIs, and HTML files.
-	echo "Step6: Install Binaries"
+	judge "Step 5: Create User And Group"
+
+	# Install Binaries
+	# This step installs the binary files, CGIs, and HTML files.
+	print_info "Step 6: Install Binaries"
 	make install
-	if ! command; then echo "Step6 failed"; exit 1; fi
-#-----------------------------------------------------------------------------
-# Install Service / Daemon
-# This installs the service or daemon files and also configures them to start on boot. 
-# The Apache httpd service is also configured at this point.
-	echo "Step7: Install Service / Daemon"
+	judge "Step 6: Install Binaries"
+
+	# Install Service / Daemon
+	# This installs the service or daemon files and also configures them to start on boot. 
+	# The Apache httpd service is also configured at this point.
+	print_info "Step 7: Install Service / Daemon"
 	make install-daemoninit
 	systemctl enable httpd.service
-	if ! command; then echo "Step7 failed"; exit 1; fi
-#-----------------------------------------------------------------------------
-# Install Command Mode
-# This installs and configures the external command file.
-	echo "Step8: Install Command Mode"
+	judge "Step 7: Install Service / Daemon"
+
+	# Install Command Mode
+	# This installs and configures the external command file.
+	print_info "Step 8: Install Command Mode"
 	make install-commandmode
-	if ! command; then echo "Step8 failed"; exit 1; fi
-#-----------------------------------------------------------------------------
-# Install Configuration Files
-# This installs the *SAMPLE* configuration files. 
-# These are required as Nagios needs some configuration files to allow it to start.
-	echo "Step9: Install Configuration Files"
+	judge "Step 8: Install Command Mode"
+
+	# Install Configuration Files
+	# This installs the *SAMPLE* configuration files. 
+	# These are required as Nagios needs some configuration files to allow it to start.
+	print_info "Step 9: Install Configuration Files"
 	make install-config
-	if ! command; then echo "Step9 failed"; exit 1; fi
-#-----------------------------------------------------------------------------
-# Install Apache Config Files
-# This installs the Apache web server configuration files. 
-# Also configure Apache settings if required.
-	echo "Step10: Install Apache Config Files"
+	judge "Step 9: Install Configuration Files"
+
+	# Install Apache Config Files
+	# This installs the Apache web server configuration files. 
+	# Also configure Apache settings if required.
+	print_info "Step 10: Install Apache Config Files"
 	make install-webconf
-	if ! command; then echo "Step10 failed"; exit 1; fi
-#-----------------------------------------------------------------------------
-# Configure Firewall
-# You need to allow port 80 inbound traffic on the local firewall 
-# so you can reach the Nagios Core web interface.
-	echo "Step11: Configure Firewall"
+	judge "Step 10: Install Apache Config Files"
+
+	# Configure Firewall
+	# You need to allow port 80 inbound traffic on the local firewall 
+	# so you can reach the Nagios Core web interface.
+	print_info "Step 11: Configure Firewall"
 	firewall-cmd --zone=public --add-port=8080/tcp
 	firewall-cmd --zone=public --add-port=8080/tcp --permanent
-	if ! command; then echo "Step11 failed"; exit 1; fi
-#-----------------------------------------------------------------------------
-# Create nagiosadmin User Account
-# You'll need to create an Apache user account to be able to log into Nagios.
-# The following command will create a user account called nagiosadmin and 
-# you will be prompted to provide a password for the account.
-	echo "Step12: Create nagiosadmin User Account"
+	judge "Step 11: Configure Firewall"
+
+	# Create nagiosadmin User Account
+	# You'll need to create an Apache user account to be able to log into Nagios.
+	# The following command will create a user account called nagiosadmin and 
+	# you will be prompted to provide a password for the account.
+	print_info "Step 12: Create nagiosadmin User Account"
 	htpasswd -c /usr/local/nagios/etc/htpasswd.users nagiosadmin
-	if ! command; then echo "Step12 failed"; exit 1; fi
-#-----------------------------------------------------------------------------
-# Start Apache Web Server
-	echo "Step13: Start Apache Web Server"
+	judge "Step 12: Create nagiosadmin User Account"
+
+	# Start Apache Web Server
+	print_info "Step 13: Start Apache Web Server"
 	systemctl start httpd.service
-	if ! command; then echo "Step13 failed"; exit 1; fi
-#-----------------------------------------------------------------------------
-# Start Service / Daemon
-# This command starts Nagios Core.
-	echo "Step14: Start Service / Daemon for Nagios Core"
+	judge "Step 13: Start Apache Web Server"
+
+	# Start Service / Daemon
+	# This command starts Nagios Core.
+	print_info "Step 14: Start Service / Daemon for Nagios Core"
 	systemctl start nagios.service
-	if ! command; then echo "Step14 failed"; exit 1; fi
-#-----------------------------------------------------------------------------
-# 
-# Test Nagios
-# Nagios is now running, to confirm this you need to log into the Nagios Web Interface.
-# Point your web browser to the ip address or FQDN of your Nagios Core server, 
-# for example:
-# http://10.25.5.143/nagios
-# http://core-013.domain.local/nagios
-#-----------------------------------------------------------------------------
-# 
+	judge "Step 14: Start Service / Daemon for Nagios Core"
+
+	# Test Nagios
+	# Nagios is now running, to confirm this you need to log into the Nagios Web Interface.
+	# Point your web browser to the ip address or FQDN of your Nagios Core server, 
+	# for example:
+	# http://10.25.5.143/nagios
+	# http://core-013.domain.local/nagios
 }
 #-----------------------------------------------------------------------------#
 # 安装 nagios plugins
 function install_nagios_plugins {
-#!/bin/sh
-#
-# Author: Linfeng Zhong (Fred)
-# 2021-April-06 [Initial Version] - Shell Script for Nagios Plugins installing
-# Nagios Plugins - Installing Nagios Plugins From Source
-#-----------------------------------------------------------------------------
-#===== RHEL 7/8 | CentOS 7/8 | Oracle Linux 7/8 =====
-#-----------------------------------------------------------------------------
-# Security-Enhanced Linux
-# This guide is based on SELinux being disabled or in permissive mode. 
-# Steps to do this are as follows.
-print_ok "开始安装Nagios Plugins 2.3.3"
-sleep 2
-print_ok "Step1: Security-Enhanced Linux"
-sleep 2
-sed -i 's/SELINUX=.*/SELINUX=disabled/g' /etc/selinux/config
-setenforce 0
-if ! command; then print_error "Step1 failed"; exit 1; fi
-print_ok "Step1: Security-Enhanced Linux   --> DONE"
-sleep 2
-#-----------------------------------------------------------------------------
-# Prerequisites
-# Perform these steps to install the pre-requisite packages.
-print_ok "Step2: Prerequisites"
-sleep 2
-yum install -y gcc glibc glibc-common make gettext automake autoconf wget openssl-devel net-snmp net-snmp-utils epel-release
-yum install -y perl-Net-SNMP
-yum install -y sysstat
-if ! command; then print_error "Step2 failed"; exit 1; fi
-print_ok "Step2: Prerequisites   --> DONE"
-sleep 2
-#-----------------------------------------------------------------------------
-#-----------------------------------------------------------------------------
-# Downloading the Source
-#-----------------------------------------------------------------------------
-#===== RHEL 5/6/7 | CentOS 5/6/7 | Oracle Linux 5/6/7 =========
-#===== Debian =================================================
-print_ok "Step3: 下载Nagios Plugins 2.2.3 到tmp文件夹"
-sleep 2
-cd /tmp
-wget --no-check-certificate https://github.com/nagios-plugins/nagios-plugins/releases/download/release-2.3.3/nagios-plugins-2.3.3.tar.gz
-tar xzf nagios-plugins-2.3.3.tar.gz
-cd nagios-plugins-2.3.3
-if ! command; then print_error "Step3 failed"; exit 1; fi
-print_ok "Step3: 下载Nagios Plugins 2.2.3 到tmp文件夹   --> DONE"
-sleep 2
-#-----------------------------------------------------------------------------
-# Nagios Plugins Installation
-print_ok "Step4: 安装nagios plugins, 并重新启动nrpe服务"
-sleep 2
-./tools/setup
-./configure
-make
-make install
-systemctl restart nrpe
-if ! command; then print_error "Step4 failed"; exit 1; fi
-print_ok "Step4: 安装nagios plugins, 并重新启动nrpe服务   --> DONE"
-sleep 2
-#-----------------------------------------------------------------------------
-# 这里是判断上条命令是否执行成功的语句块
-if [ $? -eq 0 ]; then
-   print_ok "Nagios Plugins 安装成功！"
-   sleep 2
-else
-   print_error "Nagios Plugins 安装失败！"
-   sleep 2
-fi
-# Plugin Installation Location
-# The plugins will now be located in /usr/local/nagios/libexec/.
+	# 2021-April-06 [Initial Version] - Shell Script for Nagios Plugins installing
+	# Nagios Plugins - Installing Nagios Plugins From Source
+
+	# Security-Enhanced Linux
+	# This guide is based on SELinux being disabled or in permissive mode. 
+	# Steps to do this are as follows.
+	print_start "开始安装 Nagios Plugins 2.3.3"
+	print_info "Step 1: Security-Enhanced Linux"
+	sed -i 's/SELINUX=.*/SELINUX=disabled/g' /etc/selinux/config
+	setenforce 0
+	judge "Step 1: Security-Enhanced Linux"
+
+	# Prerequisites
+	# Perform these steps to install the pre-requisite packages.
+	pring_info "Step 2: Prerequisites"
+	sleep 2
+	yum install -y gcc glibc glibc-common make gettext automake autoconf wget openssl-devel net-snmp net-snmp-utils epel-release
+	yum --enablerepo=PowerTools,epel install perl-Net-SNMP
+	yum -y install sysstat
+	judge "Step 2: Prerequisites"
+
+	# Downloading the Source
+	print_info "Step 3: 下载Nagios Plugins 2.2.3 到tmp文件夹"
+	cd /tmp
+	wget --no-check-certificate https://github.com/nagios-plugins/nagios-plugins/releases/download/release-2.3.3/nagios-plugins-2.3.3.tar.gz
+	tar xzf nagios-plugins-2.3.3.tar.gz
+	cd nagios-plugins-2.3.3
+	judge "Step 3: 下载Nagios Plugins 2.2.3 到tmp文件夹"
+
+	# Nagios Plugins Installation
+	print_info "Step 4: 安装nagios plugins, 并重新启动nrpe服务"
+	./tools/setup
+	./configure
+	make
+	make install
+	systemctl restart nrpe
+	judge "Step 4: 安装nagios plugins, 并重新启动nrpe服务"
 }
 #-----------------------------------------------------------------------------#
 # 安装 nagios nrpe
 function install_nagios_nrpe {
-# 安装Nagios NRPE
-# -------------------------------------------------------------
-#*** Configuration summary for nrpe 4.0.3 2020-04-28 ***:
-#
-# General Options:
-# -------------------------
-# NRPE port:    5666
-# NRPE user:    nagios
-# NRPE group:   nagios
-# Nagios user:  nagios
-# Nagios group: nagios
-#
-###################################################################
-#Security-Enhanced Linux
-#This guide is based on SELinux being disabled or in permissive mode. Steps to do this are as follows.
-echo "开始安装Nagios NRPE"
-sleep 2
-echo "Step1: SELINUX Disable"
-sleep 2
-sed -i 's/SELINUX=.*/SELINUX=disabled/g' /etc/selinux/config
-setenforce 0
-if ! command; then echo "Step1 failed"; exit 1; fi
-echo "Step1: SELINUX Disable  ---> DONE"
-sleep 2
-###################################################################
-#Prerequisites
-#Perform these steps to install the pre-requisite packages.
-#===== RHEL 5/6/7 | CentOS 5/6/7 | Oracle Linux 5/6/7 =====
-echo "Step2: Prerequisites"
-sleep 2
-yum install -y gcc glibc glibc-common make gettext automake autoconf wget openssl-devel net-snmp net-snmp-utils epel-release
-yum install -y perl-Net-SNMP
-if ! command; then echo "Step2 failed"; exit 1; fi
-echo "Step2: Prerequisites  ---> DONE"
-sleep 2
-###################################################################
-#Download NRPE package
-#下载NRPE包
-echo "Step3: 下载nrpe-4.0.3到tmp文件夹"
-sleep 2
-cd /tmp
-wget https://github.com/NagiosEnterprises/nrpe/releases/download/nrpe-4.0.3/nrpe-4.0.3.tar.gz
-tar xzf nrpe-4.0.3.tar.gz
-cd nrpe-4.0.3
-if ! command; then echo "Step2 failed"; exit 1; fi
-echo "Step3: 下载nrpe-4.0.3到tmp文件夹  ---> DONE"
-sleep 2
-# -------------------------------------------------------------
-#NPRE Installation
-echo "Step4: 安装nrpe，设置用户和用户组、并初始化和启动nrpe服务"
-sleep 2
-./configure
-make all
-make install-groups-users
-make install
-make install-config
-make install-init
-systemctl enable nrpe 
-systemctl start nrpe
-if ! command; then echo "Step3 failed"; exit 1; fi
-echo "Step4: 安装nrpe，设置用户和用户组、并初始化和启动nrpe服务  ---> DONE"
-sleep 2
-# -------------------------------------------------------------
-#firewall enable port 5666
-#===== RHEL 7/8 | CentOS 7/8 | Oracle Linux 7/8 =====
-echo "Step5: 设置防火墙开启端口5666"
-sleep 2
-firewall-cmd --zone=public --add-port=5666/tcp
-firewall-cmd --zone=public --add-port=5666/tcp --permanent
-if ! command; then echo "Step4 failed"; exit 1; fi
-echo "Step5: 设置防火墙开启端口5666  ---> DONE"
-sleep 2
+	#*** Configuration summary for nrpe 4.0.3 2020-04-28 ***:
+	#
+	# General Options:
+	# -------------------------
+	# NRPE port:    5666
+	# NRPE user:    nagios
+	# NRPE group:   nagios
+	# Nagios user:  nagios
+	# Nagios group: nagios
 
-# 这里是判断上条命令是否执行成功的语句块
-if [ $? -eq 0 ]; then
-   echo "nrpe 安装成功！"
-   sleep 1
-else
-   echo "nrpe 安装失败！"
-   sleep 1
-fi
+	#Security-Enhanced Linux
+	#This guide is based on SELinux being disabled or in permissive mode. Steps to do this are as follows.
+	print_start "开始安装 Nagios NRPE"
+	print_info "Step 1: SELINUX Disable"
+	sed -i 's/SELINUX=.*/SELINUX=disabled/g' /etc/selinux/config
+	setenforce 0
+	print_info "Step 1: SELINUX Disable"
+	echo "Step1: SELINUX Disable  ---> DONE"
+
+	#Prerequisites
+	#Perform these steps to install the pre-requisite packages.
+	print_info "Step 2: Prerequisites"
+	yum install -y gcc glibc glibc-common make gettext automake autoconf wget openssl-devel net-snmp net-snmp-utils epel-release
+	yum --enablerepo=PowerTools,epel install perl-Net-SNMP
+	judge "Step 2: Prerequisites"
+
+	#Download NRPE package
+	#下载NRPE包
+	print_info "Step 3: 下载nrpe-4.0.3到tmp文件夹"
+	cd /tmp
+	wget https://github.com/NagiosEnterprises/nrpe/releases/download/nrpe-4.0.3/nrpe-4.0.3.tar.gz
+	tar xzf nrpe-4.0.3.tar.gz
+	cd nrpe-4.0.3
+	judge "Step 3: 下载nrpe-4.0.3到tmp文件夹"
+
+	#NPRE Installation
+	print_info "Step 4: 安装nrpe，设置用户和用户组、并初始化和启动nrpe服务"
+	./configure
+	make all
+	make install-groups-users
+	make install
+	make install-config
+	make install-init
+	systemctl enable nrpe 
+	systemctl start nrpe
+	judge "Step 4: 安装nrpe，设置用户和用户组、并初始化和启动nrpe服务"
+
+	#firewall enable port 5666
+	#===== RHEL 7/8 | CentOS 7/8 | Oracle Linux 7/8 =====
+	print_info "Step 5: 设置防火墙开启端口 5666"
+	firewall-cmd --zone=public --add-port=5666/tcp
+	firewall-cmd --zone=public --add-port=5666/tcp --permanent
+	judge "Step 5: 设置防火墙开启端口 5666"
 }
 #-----------------------------------------------------------------------------#
 # v2ray-agent BBR & 单机安装菜单
@@ -2234,6 +2172,9 @@ function external_menu() {
 		;;
 	7)
 		install_nagios_server
+		;;
+	9)
+		install_nagios_nrpe
 		;;
 	*)
 		print_error "请输入正确的数字"
