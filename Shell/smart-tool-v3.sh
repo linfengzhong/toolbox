@@ -2167,7 +2167,7 @@ function install_nagios_nrpe {
 	#Perform these steps to install the pre-requisite packages.
 	print_info "Step 2: Prerequisites"
 	yum install -y gcc glibc glibc-common make gettext automake autoconf wget openssl-devel net-snmp net-snmp-utils epel-release
-	yum --enable repo=PowerTools,epel install perl-Net-SNMP
+	# yum --enablerepo=PowerTools,epel install perl-Net-SNMP
 	judge "Step 2: Prerequisites"
 
 	#Download NRPE package
@@ -2717,7 +2717,7 @@ function menu() {
 		;;
 	esac
 }
-SmartToolVersion=v0.288
+SmartToolVersion=v0.289
 cleanScreen
 initVar $1
 set_current_host_domain
