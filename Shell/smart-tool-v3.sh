@@ -2130,8 +2130,8 @@ function install_nagios_nrpe {
 	judge "Step 5: 设置防火墙开启端口 5666"
 }
 #-----------------------------------------------------------------------------#
-# v2ray-agent BBR & 单机安装菜单
-function external_menu() {
+# Nagios 安装菜单
+function nagios_menu() {
 	clear
 	cd "$HOME" || exit
 	echoContent red "=================================================================="
@@ -2148,17 +2148,59 @@ function external_menu() {
 	echoContent green "当前系统Linux版本 : \c" 
 	checkSystem
 	echoContent red "=================================================================="
-	echoContent skyBlue "--------------------------单机安装菜单----------------------------"
+	echoContent skyBlue "--------------------------监控安装菜单----------------------------"
+	echoContent yellow "1.安装 Apache httpd "
+	echoContent yellow "2.安装 nagios server "
+	echoContent yellow "3.安装 nagios nrpe "
+	echoContent yellow "4.安装 nagios plugins "
+	echoContent red "=================================================================="
+	read -r -p "Please choose the function (请选择) : " selectInstallType
+	case ${selectInstallType} in
+	1)
+		install_apache_httpd
+		;;
+	2)
+		install_nagios_server
+		;;
+	3)
+		install_nagios_nrpe
+		;;
+	4)
+		install_nagios_plugins
+		;;
+	*)
+		print_error "请输入正确的数字"
+		sleep 1
+		menu
+		;;
+	esac
+}
+#-----------------------------------------------------------------------------#
+# 科学上网菜单
+function kxsw_menu() {
+	clear
+	cd "$HOME" || exit
+	echoContent red "=================================================================="
+	echoContent green "SmartTool：\c"
+	echoContent white "${SmartToolVersion}"
+	echoContent green "Github：https://github.com/linfengzhong/toolbox"
+	echoContent green "logserver：https://github.com/linfengzhong/logserver"
+	echoContent green "初始化服务器、安装Docker、执行容器 on \c" 
+	echoContent white "${currentHost}"
+	echoContent green "当前主机外部IP地址： \c" 
+	echoContent white "${currentIP}"	
+	echoContent green "当前UUID： \c" 
+	echoContent white "${currentUUID}"
+	echoContent green "当前系统Linux版本 : \c" 
+	checkSystem
+	echoContent red "=================================================================="
+	echoContent skyBlue "--------------------------科学上网菜单----------------------------"
 	echoContent yellow "0.安装 v2ray-agent | 快捷方式 [vasma]"
 	echoContent yellow "1.安装 xray-OneKey"
 	echoContent yellow "2.安装 BBR"
 	echoContent yellow "3.安装 v2-ui"
 	echoContent yellow "4.安装 trojan-go 单机"
 	echoContent yellow "5.安装 v2ray 单机 - pending "
-	echoContent yellow "6.安装 Apache httpd "
-	echoContent yellow "7.安装 nagios server "
-	echoContent yellow "8.安装 nagios nrpe "
-	echoContent yellow "9.安装 nagios plugins "
 	echoContent red "=================================================================="
 	read -r -p "Please choose the function (请选择) : " selectInstallType
 	case ${selectInstallType} in
@@ -2176,18 +2218,6 @@ function external_menu() {
 		;;
 	4)
 		install_standalone_trojan_go
-		;;
-	6)
-		install_apache_httpd
-		;;
-	7)
-		install_nagios_server
-		;;
-	8)
-		install_nagios_nrpe
-		;;
-	9)
-		install_nagios_plugins
 		;;
 	*)
 		print_error "请输入正确的数字"
@@ -2452,9 +2482,9 @@ function menu() {
 	echoContent skyBlue "---------------------------通用工具-------------------------------"
 	echoContent yellow "51.UUID | 52.show IP | 53.bpytop | 54.set timezone | 55.webmin ssl "
 	echoContent skyBlue "---------------------------脚本管理-------------------------------"
-	echoContent yellow "0.更新脚本"
-	echoContent yellow "1.设置域名 | 2.设置UUID | 3.默认UUID ｜ 4.工具 [Sub Menu]"
-	echoContent yellow "9.退出"
+	echoContent yellow "0.更新脚本 | 9.退出"
+	echoContent yellow "1.设置域名 | 2.设置UUID | 3.默认UUID ｜ 4.科学上网工具 [Sub Menu]"
+	echoContent yellow "5.Nagios [Sub Menu]"
 	echoContent red "=================================================================="
 	mkdirTools
 	aliasInstall
@@ -2599,7 +2629,10 @@ function menu() {
 		st
 		;;
 	4)
-		external_menu
+		kxsw_menu
+		;;
+	5)
+		nagios_menu
 		;;
 	9)
 	    exit 0
@@ -2610,7 +2643,7 @@ function menu() {
 		;;
 	esac
 }
-SmartToolVersion=v0.281
+SmartToolVersion=v0.282
 cleanScreen
 initVar $1
 set_current_host_domain
