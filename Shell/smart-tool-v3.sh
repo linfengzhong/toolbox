@@ -2482,8 +2482,9 @@ function menu() {
 	echoContent yellow "51.UUID | 52.show IP | 53.bpytop | 54.set timezone | 55.webmin ssl "
 	echoContent skyBlue "---------------------------脚本管理-------------------------------"
 	echoContent yellow "0.更新脚本 | 9.退出"
-	echoContent yellow "1.设置域名 | 2.设置UUID | 3.默认UUID ｜ 4.科学上网工具 [Sub Menu]"
-	echoContent yellow "5.Nagios [Sub Menu]"
+	echoContent yellow "1.设置域名 | 2.设置UUID | 3.默认UUID"
+	echoContent yellow "4.科学上网工具 [Sub Menu] | 5.Nagios监控 [Sub Menu]"
+	echoContent yellow "9.退出"
 	echoContent red "=================================================================="
 	mkdirTools
 	aliasInstall
@@ -2642,7 +2643,7 @@ function menu() {
 		;;
 	esac
 }
-SmartToolVersion=v0.283
+SmartToolVersion=v0.284
 cleanScreen
 initVar $1
 set_current_host_domain
