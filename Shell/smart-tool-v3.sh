@@ -1914,6 +1914,13 @@ function install_v2_ui {
 	bash <(curl -Ls https://blog.sprov.xyz/v2-ui.sh)
 }
 #-----------------------------------------------------------------------------#
+# 安装 apache httpd
+function install_apache_httpd {
+	print_start "安装 apache httpd"
+	yum -y install httpd
+	judge "安装 apache httpd"
+}
+#-----------------------------------------------------------------------------#
 # 安装 nagios server
 function install_nagios_server {
 	# Security-Enhanced Linux
@@ -2148,10 +2155,10 @@ function external_menu() {
 	echoContent yellow "3.安装 v2-ui"
 	echoContent yellow "4.安装 trojan-go 单机"
 	echoContent yellow "5.安装 v2ray 单机 - pending "
-	echoContent yellow "6.安装 xray 单机 - pending "
+	echoContent yellow "6.安装 Apache httpd "
 	echoContent yellow "7.安装 nagios server "
-	echoContent yellow "8.安装 nagios plugins "
-	echoContent yellow "9.安装 nagios nrpe "
+	echoContent yellow "8.安装 nagios nrpe "
+	echoContent yellow "9.安装 nagios plugins "
 	echoContent red "=================================================================="
 	read -r -p "Please choose the function (请选择) : " selectInstallType
 	case ${selectInstallType} in
@@ -2170,11 +2177,17 @@ function external_menu() {
 	4)
 		install_standalone_trojan_go
 		;;
+	6)
+		install_apache_httpd
+		;;
 	7)
 		install_nagios_server
 		;;
-	9)
+	8)
 		install_nagios_nrpe
+		;;
+	9)
+		install_nagios_plugins
 		;;
 	*)
 		print_error "请输入正确的数字"
@@ -2597,7 +2610,7 @@ function menu() {
 		;;
 	esac
 }
-SmartToolVersion=v0.279
+SmartToolVersion=v0.280
 cleanScreen
 initVar $1
 set_current_host_domain
