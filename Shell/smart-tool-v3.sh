@@ -2000,7 +2000,7 @@ function install_nagios_server {
 	print_info "Step 1: Security-Enhanced Linux"
 	sed -i 's/SELINUX=.*/SELINUX=disabled/g' /etc/selinux/config
 	setenforce 0
-	judge "Step 1: Security-Enhanced Linux"
+	# judge "Step 1: Security-Enhanced Linux"
 
 	# Prerequisites
 	# Perform these steps to install the pre-requisite packages.
@@ -2114,7 +2114,7 @@ function install_nagios_plugins {
 	print_info "Step 1: Security-Enhanced Linux"
 	sed -i 's/SELINUX=.*/SELINUX=disabled/g' /etc/selinux/config
 	setenforce 0
-	judge "Step 1: Security-Enhanced Linux"
+	# judge "Step 1: Security-Enhanced Linux"
 
 	# Prerequisites
 	# Perform these steps to install the pre-requisite packages.
@@ -2161,7 +2161,7 @@ function install_nagios_nrpe {
 	print_info "Step 1: SELINUX Disable"
 	sed -i 's/SELINUX=.*/SELINUX=disabled/g' /etc/selinux/config
 	setenforce 0
-	judge "Step 1: SELINUX Disable"
+	# judge "Step 1: SELINUX Disable"
 
 	#Prerequisites
 	#Perform these steps to install the pre-requisite packages.
@@ -2717,7 +2717,7 @@ function menu() {
 		;;
 	esac
 }
-SmartToolVersion=v0.287
+SmartToolVersion=v0.288
 cleanScreen
 initVar $1
 set_current_host_domain
