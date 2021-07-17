@@ -1950,7 +1950,7 @@ function install_nagios_server {
 	
 	# Compile
 	print_info "Step 4: Compile"
-	cd /tmp/nagioscore-nagios-4.4.6/
+	cd /tmp/nagios-4.4.6/
 	./configure
 	make all
 	judge "Step 4: Compile"
@@ -2610,7 +2610,7 @@ function menu() {
 		;;
 	esac
 }
-SmartToolVersion=v0.280
+SmartToolVersion=v0.281
 cleanScreen
 initVar $1
 set_current_host_domain
