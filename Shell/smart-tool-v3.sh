@@ -1932,7 +1932,7 @@ function enable_nagios_dark_mode {
 	rm -rf /usr/local/nagios/share/stylesheets
 	rm -f /usr/local/nagios/share/index.php
 	cp -rpf /root/git/toolbox/Nagios/nagios4-dark-theme-master/stylesheets /usr/local/nagios/share/
-	cp -pf /usr/local/nagios/share/index.php /usr/local/nagios/share/index.php
+	cp -pf /root/git/toolbox/Nagios/nagios4-dark-theme-master/index.php /usr/local/nagios/share/index.php
 	print_info "Step 3: 重启 Nagios "
 	systemctl restart nagios
 	systemctl status nagios
