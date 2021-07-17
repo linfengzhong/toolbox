@@ -1,0 +1,79 @@
+/* exfoliation: a nagios makeover                                          */
+/* Copyright 2010 Matthew Wall, all rights reserved                        */
+/*                                                                         */
+/* Permission to use, copy, modify, and distribute this software for any   */
+/* purpose with or without fee is hereby granted, provided that the above  */
+/* copyright notice and this permission notice appear in all copies.       */
+
+.tac { font-size: 10pt; }
+table.tac { width: 85% !important; }
+table.tac table { width: 90% !important; }
+table.tac table td { padding: 4px;  }
+table.tac table td a {  }
+
+.title     { font-weight: bold; }
+.titleItem { font-size: 8pt; font-weight: bold; }
+
+td.perfTitle { font-size: 10pt; font-weight: bold; background-color: var(--color-background-darker); padding: 4px; }
+.perfBox     { background-color: var(--color-background-dark); padding: 2px;}
+.perfItem    { font-size: 8pt; font-weight: bold; }
+.perfValue   { font-size: 8pt; }
+
+.healthTitle { font-weight: bold; font-size: 10pt; background-color: var(--color-background-darker); padding: 4px; }
+.healthBox   { }
+.healthItem  { font-size: 10pt; font-weight: bold; }
+.healthBar   { background-color: grey; padding: 2 4 2 4; }
+
+.outageTitle     { font-weight: bold; background-color: var(--color-background-darker); padding: 4px; }
+.outageHeader    { font-weight: bold; border-bottom: 1px solid var(--color-alternate-gray); }
+
+.hostTitle       { font-weight: bold; background-color: var(--color-background-darker); padding: 4px; }
+td.hostHeader    { font-weight: bold; border-bottom: 1px solid var(--color-alternate-gray); }
+
+.serviceTitle    { font-weight: bold; background-color: var(--color-background-darker); padding: 4px; }
+td.serviceHeader { font-weight: bold; border-bottom: 1px solid var(--color-alternate-gray); }
+
+.featureTitle    { font-weight: bold; background-color: var(--color-background-darker); padding: 4px; }
+td.featureHeader { font-weight: bold; border-bottom: 1px solid var(--color-alternate-gray); }
+
+.featureEnabled  { text-align: center; background-color: #ccffcc; }
+.featureDisabled { text-align: center; background-color: #ffcccc; }
+
+.featureEnabledFlapDetection             { text-align: center; font-weight: bold; }
+.featureDisabledFlapDetection            { text-align: center; font-weight: bold; }
+.featureItemEnabledServiceFlapDetection  { font-size: 8pt; background-color: var(--color-ok); }
+.featureItemDisabledServiceFlapDetection { font-size: 8pt; background-color: var(--color-problem); }
+.featureItemEnabledHostFlapDetection     { font-size: 8pt; background-color: var(--color-ok); }
+.featureItemDisabledHostFlapDetection    { font-size: 8pt; background-color: var(--color-problem); }
+.featureItemServicesNotFlapping          { font-size: 8pt; background-color: var(--color-ok); }
+.featureItemServicesFlapping             { font-size: 8pt; background-color: var(--color-problem); }
+.featureItemHostsNotFlapping             { font-size: 8pt; background-color: var(--color-ok); }
+.featureItemHostsFlapping                { font-size: 8pt; background-color: var(--color-problem); }
+
+.featureEnabledNotifications             { text-align: center; font-weight: bold; }
+.featureDisabledNotifications            { text-align: center; font-weight: bold; }
+.featureItemEnabledServiceNotifications  { font-size: 8pt; background-color: var(--color-ok); border: 1px solid #777777; }
+.featureItemDisabledServiceNotifications { font-size: 8pt; background-color: var(--color-problem); border: 1px solid #777777; }
+.featureItemEnabledHostNotifications     { font-size: 8pt; background-color: var(--color-ok) border: 1px solid #777777; }
+.featureItemDisabledHostNotifications    { font-size: 8pt; background-color: var(--color-problem); border: 1px solid #777777; }
+
+.featureEnabledHandlers                  { text-align: center; font-weight: bold; }
+.featureDisabledHandlers                 { text-align: center; font-weight: bold; }
+.featureItemEnabledServiceHandlers       { font-size: 8pt; background-color: var(--color-ok); border: 1px solid #777777; }
+.featureItemDisabledServiceHandlers      { font-size: 8pt; background-color: var(--color-problem); border: 1px solid #777777; }
+.featureItemEnabledHostHandlers          { font-size: 8pt; background-color: var(--color-ok); border: 1px solid #777777; }
+.featureItemDisabledHostHandlers         { font-size: 8pt; background-color: var(--color-problem); }
+
+.featureEnabledActiveChecks              { text-align: center; font-weight: bold; }
+.featureDisabledActiveChecks             { text-align: center; font-weight: bold; }
+.featureItemEnabledActiveServiceChecks   { font-size: 8pt; background-color: var(--color-ok); border: 1px solid #777777; }
+.featureItemDisabledActiveServiceChecks  { font-size: 8pt; background-color: var(--color-problem); border: 1px solid #777777; }
+.featureItemEnabledActiveHostChecks      { font-size: 8pt; background-color: var(--color-ok); border: 1px solid #777777; }
+.featureItemDisabledActiveHostChecks     { font-size: 8pt; background-color: var(--color-problem); border: 1px solid #777777; }
+
+.featureEnabledPassiveChecks             { text-align: center; font-weight: bold; }
+.featureDisabledPassiveChecks            { text-align: center; font-weight: bold; }
+.featureItemEnabledPassiveServiceChecks  { font-size: 8pt; background-color: var(--color-ok); border: 1px solid #777777; }
+.featureItemDisabledPassiveServiceChecks { font-size: 8pt; background-color: var(--color-problem); border: 1px solid #777777; }
+.featureItemEnabledPassiveHostChecks     { font-size: 8pt; background-color: var(--color-ok); border: 1px solid #777777; }
+.featureItemDisabledPassiveHostChecks    { font-size: 8pt; background-color: var(--color-problem); border: 1px solid #777777; }
