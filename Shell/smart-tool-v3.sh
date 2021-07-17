@@ -1921,6 +1921,14 @@ function install_apache_httpd {
 	judge "安装 apache httpd"
 }
 #-----------------------------------------------------------------------------#
+# 激活 Nagios 黑暗模式 
+function enable_nagios_dark_mode {
+	print_start "激活 Nagios 黑暗模式 "
+	print_info "Step 1: 备份源文件 "
+	
+	judge "激活 Nagios 黑暗模式 "
+}
+#-----------------------------------------------------------------------------#
 # 激活 apache httpd SSL
 function enable_httpd_ssl {
 	print_start "激活 apache httpd SSL"
@@ -2223,6 +2231,7 @@ function nagios_menu() {
 	echoContent yellow "3.安装 nagios nrpe "
 	echoContent yellow "4.安装 nagios plugins "
 	echoContent yellow "5.激活 Apache httpd SSL "
+	echoContent yellow "6.激活 nagios dark mode "
 	echoContent red "=================================================================="
 	read -r -p "Please choose the function (请选择) : " selectInstallType
 	case ${selectInstallType} in
@@ -2240,6 +2249,9 @@ function nagios_menu() {
 		;;
 	5)
 		enable_httpd_ssl
+		;;
+	6)
+		enable_nagios_dark_mode
 		;;
 	*)
 		print_error "请输入正确的数字"
