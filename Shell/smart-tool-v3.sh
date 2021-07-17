@@ -1985,6 +1985,9 @@ EOF
 	systemctl restart httpd.service
 	#查看状态
 	systemctl status httpd.service
+	print_info "Nagio 访问地址 https://${currentHost}:8443/nagios"
+	print_info "Nagio 用户名：nagiosadmin"
+	print_info "Nagio 密码：xxxxxx"
 	judge "激活 apache httpd SSL"
 }
 #-----------------------------------------------------------------------------#
@@ -2714,7 +2717,7 @@ function menu() {
 		;;
 	esac
 }
-SmartToolVersion=v0.286
+SmartToolVersion=v0.287
 cleanScreen
 initVar $1
 set_current_host_domain
