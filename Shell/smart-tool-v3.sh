@@ -1926,8 +1926,12 @@ function install_apache_httpd {
 function enable_nagios_dark_mode {
 	print_start "激活 Nagios 黑暗模式 "
 	print_info "Step 1: 备份源文件 "
-	cp -rpf /usr/local/nagios/share/stylesheets /etc/fuckGFW/nagios/
-	cp -pf /usr/local/nagios/share/index.php /etc/fuckGFW/nagios/index.php
+	if [[ ! -d "/etc/fuckGFW/nagios/stylesheets" ]] ; then
+		cp -rpf /usr/local/nagios/share/stylesheets /etc/fuckGFW/nagios/
+		cp -pf /usr/local/nagios/share/index.php /etc/fuckGFW/nagios/index.php
+	else
+		print_error "备份已存在，无需重复备份！！！ "
+	fi
 	print_info "Step 2: 复制黑暗模式 "
 	rm -rf /usr/local/nagios/share/stylesheets
 	rm -f /usr/local/nagios/share/index.php
@@ -2757,7 +2761,7 @@ function menu() {
 		;;
 	esac
 }
-SmartToolVersion=v0.290
+SmartToolVersion=v0.291
 cleanScreen
 initVar $1
 set_current_host_domain
