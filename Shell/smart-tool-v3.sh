@@ -2227,7 +2227,7 @@ function nagios_menu() {
 	4)
 		install_nagios_plugins
 		;;
-	5）
+	5)
 		enable_httpd_ssl
 		;;
 	*)
