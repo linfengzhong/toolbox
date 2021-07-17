@@ -1972,7 +1972,15 @@ CustomLog logs/ssl_request_log \
 
 </VirtualHost>
 EOF
-	print_info "Step 3: 重新启动 httpd.service "
+	print_info "Step 3: 编辑 /etc/httpd/conf/httpd.conf "
+	cat <<EOF >>/etc/httpd/conf/httpd.conf
+
+RewriteEngine On
+RewriteCond %{HTTPS} off
+RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI}
+
+EOF
+	print_info "Step 4: 重新启动 httpd.service "
 	#重启http服务
 	systemctl restart httpd.service
 	#查看状态
@@ -2706,7 +2714,7 @@ function menu() {
 		;;
 	esac
 }
-SmartToolVersion=v0.285
+SmartToolVersion=v0.286
 cleanScreen
 initVar $1
 set_current_host_domain
