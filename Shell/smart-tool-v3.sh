@@ -2091,14 +2091,13 @@ function install_nagios_nrpe {
 	print_info "Step 1: SELINUX Disable"
 	sed -i 's/SELINUX=.*/SELINUX=disabled/g' /etc/selinux/config
 	setenforce 0
-	print_info "Step 1: SELINUX Disable"
-	echo "Step1: SELINUX Disable  ---> DONE"
+	judge "Step 1: SELINUX Disable"
 
 	#Prerequisites
 	#Perform these steps to install the pre-requisite packages.
 	print_info "Step 2: Prerequisites"
 	yum install -y gcc glibc glibc-common make gettext automake autoconf wget openssl-devel net-snmp net-snmp-utils epel-release
-	yum --enablerepo=PowerTools,epel install perl-Net-SNMP
+	yum --enable repo=PowerTools,epel install perl-Net-SNMP
 	judge "Step 2: Prerequisites"
 
 	#Download NRPE package
@@ -2643,7 +2642,7 @@ function menu() {
 		;;
 	esac
 }
-SmartToolVersion=v0.282
+SmartToolVersion=v0.283
 cleanScreen
 initVar $1
 set_current_host_domain
