@@ -1921,6 +1921,65 @@ function install_apache_httpd {
 	judge "安装 apache httpd"
 }
 #-----------------------------------------------------------------------------#
+# 激活 apache httpd SSL
+function enable_httpd_ssl {
+	print_start "激活 apache httpd SSL"
+	print_info "Step 1: 安装ssl认证模块 "
+	yum -y install mod_ssl
+	print_info "Step 2: 编辑 /etc/httpd/conf.d/ssl.conf"
+	cat <<EOF >/etc/httpd/conf.d/ssl.conf
+Listen 8443 https
+
+SSLPassPhraseDialog exec:/usr/libexec/httpd-ssl-pass-dialog
+SSLSessionCache         shmcb:/run/httpd/sslcache(512000)
+SSLSessionCacheTimeout  300
+SSLCryptoDevice builtin
+
+<VirtualHost _default_:8443>
+
+ErrorLog logs/ssl_error_log
+TransferLog logs/ssl_access_log
+LogLevel warn
+
+SSLEngine on
+
+#SSLProtocol all -SSLv3
+#SSLProxyProtocol all -SSLv3
+
+SSLHonorCipherOrder on
+
+SSLCipherSuite PROFILE=SYSTEM
+SSLProxyCipherSuite PROFILE=SYSTEM
+
+SSLCertificateFile /etc/fuckGFW/tls/${currentHost}.cer
+SSLCertificateKeyFile /etc/fuckGFW/tls/${currentHost}.key
+SSLCertificateChainFile /etc/fuckGFW/tls/fullchain.cer
+SSLCACertificateFile /etc/fuckGFW/tls/ca.cer
+
+<FilesMatch "\.(cgi|shtml|phtml|php)$">
+    SSLOptions +StdEnvVars
+</FilesMatch>
+<Directory "/var/www/cgi-bin">
+    SSLOptions +StdEnvVars
+</Directory>
+
+BrowserMatch "MSIE [2-5]" \
+         nokeepalive ssl-unclean-shutdown \
+         downgrade-1.0 force-response-1.0
+
+CustomLog logs/ssl_request_log \
+          "%t %h %{SSL_PROTOCOL}x %{SSL_CIPHER}x \"%r\" %b"
+
+</VirtualHost>
+EOF
+	print_info "Step 3: 重新启动 httpd.service "
+	#重启http服务
+	systemctl restart httpd.service
+	#查看状态
+	systemctl status httpd.service
+	judge "激活 apache httpd SSL"
+}
+#-----------------------------------------------------------------------------#
 # 安装 nagios server
 function install_nagios_server {
 	# Security-Enhanced Linux
@@ -2048,7 +2107,7 @@ function install_nagios_plugins {
 
 	# Prerequisites
 	# Perform these steps to install the pre-requisite packages.
-	pring_info "Step 2: Prerequisites"
+	print_info "Step 2: Prerequisites"
 	sleep 2
 	yum install -y gcc glibc glibc-common make gettext automake autoconf wget openssl-devel net-snmp net-snmp-utils epel-release
 	yum --enablerepo=PowerTools,epel install perl-Net-SNMP
@@ -2152,6 +2211,7 @@ function nagios_menu() {
 	echoContent yellow "2.安装 nagios server "
 	echoContent yellow "3.安装 nagios nrpe "
 	echoContent yellow "4.安装 nagios plugins "
+	echoContent yellow "5.激活 Apache httpd SSL "
 	echoContent red "=================================================================="
 	read -r -p "Please choose the function (请选择) : " selectInstallType
 	case ${selectInstallType} in
@@ -2166,6 +2226,9 @@ function nagios_menu() {
 		;;
 	4)
 		install_nagios_plugins
+		;;
+	5）
+		enable_httpd_ssl
 		;;
 	*)
 		print_error "请输入正确的数字"
@@ -2643,7 +2706,7 @@ function menu() {
 		;;
 	esac
 }
-SmartToolVersion=v0.284
+SmartToolVersion=v0.285
 cleanScreen
 initVar $1
 set_current_host_domain
