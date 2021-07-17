@@ -690,6 +690,7 @@ function mkdirTools() {
 	mkdir -p /etc/fuckGFW/webmin/
 	mkdir -p /etc/fuckGFW/clash
 	mkdir -p /etc/fuckGFW/standalone/trojan-go
+	mkdir -p /etc/fuckGFW/nagios
 #	mkdir -p /etc/systemd/system/
 #	mkdir -p /tmp/fuckGFW-tls/
 
@@ -1925,8 +1926,31 @@ function install_apache_httpd {
 function enable_nagios_dark_mode {
 	print_start "激活 Nagios 黑暗模式 "
 	print_info "Step 1: 备份源文件 "
-	
+	cp -rpf /usr/local/nagios/share/stylesheets /etc/fuckGFW/nagios/
+	cp -pf /usr/local/nagios/share/index.php /etc/fuckGFW/nagios/index.php
+	print_info "Step 2: 复制黑暗模式 "
+	rm -rf /usr/local/nagios/share/stylesheets
+	rm -f /usr/local/nagios/share/index.php
+	cp -rpf /root/git/toolbox/Nagios/nagios4-dark-theme-master/stylesheets /usr/local/nagios/share/
+	cp -pf /usr/local/nagios/share/index.php /usr/local/nagios/share/index.php
+	print_info "Step 3: 重启 Nagios "
+	systemctl restart nagios
+	systemctl status nagios
 	judge "激活 Nagios 黑暗模式 "
+}
+#-----------------------------------------------------------------------------#
+# 恢复 Nagios 普通模式 
+function enable_nagios_normal_mode {
+	print_start "恢复 Nagios 普通模式 "
+	print_info "Step 1: 复制普通模式 "
+	rm -rf /usr/local/nagios/share/stylesheets
+	rm -f /usr/local/nagios/share/index.php
+	cp -rpf /etc/fuckGFW/nagios/stylesheets /usr/local/nagios/share/
+	cp -pf /etc/fuckGFW/nagios/index.php /usr/local/nagios/share/index.php
+	print_info "Step 2: 重启 Nagios "
+	systemctl restart nagios
+	systemctl status nagios
+	judge "恢复 Nagios 普通模式 "
 }
 #-----------------------------------------------------------------------------#
 # 激活 apache httpd SSL
@@ -2232,6 +2256,7 @@ function nagios_menu() {
 	echoContent yellow "4.安装 nagios plugins "
 	echoContent yellow "5.激活 Apache httpd SSL "
 	echoContent yellow "6.激活 nagios dark mode "
+	echoContent yellow "7.激活 nagios normal mode "
 	echoContent red "=================================================================="
 	read -r -p "Please choose the function (请选择) : " selectInstallType
 	case ${selectInstallType} in
@@ -2252,6 +2277,9 @@ function nagios_menu() {
 		;;
 	6)
 		enable_nagios_dark_mode
+		;;
+	7)
+		enable_nagios_normal_mode
 		;;
 	*)
 		print_error "请输入正确的数字"
@@ -2729,7 +2757,7 @@ function menu() {
 		;;
 	esac
 }
-SmartToolVersion=v0.289
+SmartToolVersion=v0.290
 cleanScreen
 initVar $1
 set_current_host_domain
