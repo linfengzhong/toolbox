@@ -1996,7 +1996,7 @@ EOF
 	fi
 
 	print_info "配置 myserver/template.cfg"
-	if [[ -f "${GITHUB_REPO_TOOLBOX}/Nagios/myservers/template.cfg" ]] ; then
+	if [[ -f "${GITHUB_REPO_TOOLBOX}/Nagios/server/myservers/template.cfg" ]] ; then
 		read -r -p "请输入Nagios client address : " NagiosClientDomain1
 		if [ $NagiosClientDomain1 ]; then
 		cp -pf 	${GITHUB_REPO_TOOLBOX}/Nagios/myservers/template.cfg /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
