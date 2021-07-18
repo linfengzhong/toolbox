@@ -1952,7 +1952,7 @@ function customize_nagios_server {
 define hostgroup{
 	hostgroup_name  GFW_Servers
 	alias           Fuck Great Firewall
-	members         studyaws.tk,router3721.tk,taiwan3721.ml
+	members         k8s-master.ml
 	}
 EOF
 		print_info "配置 /usr/local/nagios/etc/objects/myservers/service_group.cfg"
@@ -1960,31 +1960,31 @@ EOF
 define servicegroup{
 	servicegroup_name	V2ray
 	alias			V2ray
-	members			studyaws.tk,Service V2ray,router3721.tk,Service V2ray,taiwan3721.ml,Service V2ray
+	members			k8s-master.ml,Service V2ray
 	}
 
 define servicegroup{
 	servicegroup_name	Xray
 	alias			Xray
-	members			studyaws.tk,Service Xray,router3721.tk,Service Xray,taiwan3721.ml,Service Xray
+	members			k8s-master.ml,Service Xray
 	}
 
 define servicegroup{
 	servicegroup_name	Trojan.go
 	alias			Trojan.go
-	members			studyaws.tk,Service Trojan.go,router3721.tk,Service Trojan.go,taiwan3721.ml,Service Trojan.go
+	members			k8s-master.ml,Service Trojan.go
 	}
 
 define servicegroup{
 	servicegroup_name	Nginx
 	alias			Nginx
-	members			studyaws.tk,Service Nginx,router3721.tk,Service Nginx,taiwan3721.ml,Service Nginx
+	members			k8s-master.ml,Service Nginx
 	}
 
 define servicegroup{
 	servicegroup_name	Apache
 	alias			Apache
-	members			studyaws.tk,Service Apache,router3721.tk,Service Apache,taiwan3721.ml,Service Apache
+	members			k8s-master.ml,Service Apache
 	}
 EOF
 	chown nagios:nagios /usr/local/nagios/etc/objects/myservers
@@ -2007,6 +2007,9 @@ EOF
 		exit 0
 	fi
 	
+	print_info "重启 Nagios 服务"
+	systemctl restart nagios
+	systemctl status nagios
 	print_complete "定制 Nagios Server "
 }
 #-----------------------------------------------------------------------------#
