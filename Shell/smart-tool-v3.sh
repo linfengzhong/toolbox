@@ -2754,8 +2754,7 @@ function menu() {
 	echoContent yellow "24.更新日志、配置文件、动态数据到GitHub"
 	echoContent skyBlue "---------------------------容器相关-------------------------------"
 	echoContent yellow "30.One-key"
-	echoContent yellow "31.docker-compose up"
-	echoContent yellow "32.docker-compose down"
+	echoContent yellow "31.docker-compose up ｜ 32.docker-compose down"
 	echoContent yellow "33.docker status"
 	echoContent yellow "34.generate conf & logs [Sub Menu]"
 	echoContent skyBlue "---------------------------证书管理-------------------------------"
@@ -2768,8 +2767,9 @@ function menu() {
 	echoContent yellow "51.UUID | 52.show IP | 53.bpytop | 54.set timezone | 55.webmin ssl "
 	echoContent skyBlue "---------------------------脚本管理-------------------------------"
 	echoContent yellow "0.更新脚本 | 9.退出"
-	echoContent yellow "1.设置域名 | 2.设置UUID | 3.默认UUID"
-	echoContent yellow "4.科学上网工具 [Sub Menu] | 5.Nagios监控 [Sub Menu]"
+	echoContent yellow "1.科学上网工具 [Sub Menu] "
+	echoContent yellow "2.Nagios监控 [Sub Menu]"
+	echoContent yellow "3.设置域名 | 4.设置UUID | 5.默认UUID"
 	echoContent yellow "9.退出"
 	echoContent red "=================================================================="
 	mkdirTools
@@ -2902,23 +2902,22 @@ function menu() {
 		st
 		;;
 	1)
+		kxsw_menu
+		;;
+	2)
+		nagios_menu
+		;;
+	3)
 		clear_myHostDomain
 		set_current_host_domain
 		;;
-	2)
+	4)
 		clear_currentUUID
 		set_current_uuid
 		;;
-
-	3)
+	5)
 		clear_currentUUID
 		st
-		;;
-	4)
-		kxsw_menu
-		;;
-	5)
-		nagios_menu
 		;;
 	9)
 	    exit 0
@@ -2929,7 +2928,7 @@ function menu() {
 		;;
 	esac
 }
-SmartToolVersion=v0.292
+SmartToolVersion=v0.293
 cleanScreen
 initVar $1
 set_current_host_domain
