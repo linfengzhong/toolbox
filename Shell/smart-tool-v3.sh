@@ -2411,7 +2411,7 @@ function nagios_menu() {
 	echoContent green "当前系统Linux版本 : \c" 
 	checkSystem
 	echoContent red "=================================================================="
-	echoContent skyBlue "--------------------------监控安装菜单----------------------------"
+	echoContent skyBlue "--------------------------监控安装前继----------------------------"
 	echoContent yellow "1.安装 Apache httpd "
 	echoContent yellow "2.激活 Apache httpd SSL "
 	echoContent skyBlue "--------------------------监控安装菜单----------------------------"
@@ -2928,7 +2928,7 @@ function menu() {
 		;;
 	esac
 }
-SmartToolVersion=v0.293
+SmartToolVersion=v0.295
 cleanScreen
 initVar $1
 set_current_host_domain
