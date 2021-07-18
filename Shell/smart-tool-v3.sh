@@ -1934,7 +1934,6 @@ function customize_nagios_server {
 	else
 		if cat /usr/local/nagios/etc/nagios.cfg | grep "cfg_dir=/usr/local/nagios/etc/objects/myservers" >/dev/null; then
    			print_info "已定制过，无需重复操作！"
-			exit 0
 		else
 			# 注释掉内容
 			sed -i 's!cfg_file=/usr/local/nagios/etc/objects/localhost.cfg!#cfg_file=/usr/local/nagios/etc/objects/localhost.cfg!g' /usr/local/nagios/etc/nagios.cfg
