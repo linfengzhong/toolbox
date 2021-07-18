@@ -1933,7 +1933,7 @@ function customize_nagios_server {
 		exit 0
 	else
 		if cat /usr/local/nagios/etc/nagios.cfg | grep "cfg_dir=/usr/local/nagios/etc/objects/myservers" >/dev/null; then
-   			print_info "已定制过，无需重复操作！"
+   			print_error "nagios.cfg 已定制过，无需重复操作！"
 		else
 			# 注释掉内容
 			sed -i 's!cfg_file=/usr/local/nagios/etc/objects/localhost.cfg!#cfg_file=/usr/local/nagios/etc/objects/localhost.cfg!g' /usr/local/nagios/etc/nagios.cfg
@@ -1944,8 +1944,7 @@ function customize_nagios_server {
 
 	print_info "cfg_dir=/usr/local/nagios/etc/objects/myservers"
 	if [[ -d "/usr/local/nagios/etc/objects/myservers" ]]; then
-		print_error "Nagios 已经配置过！"
-		exit 0
+		print_error "Nagios myservers 已经配置过！"
 	else
 		mkdir -p /usr/local/nagios/etc/objects/myservers
 		print_info "配置 /usr/local/nagios/etc/objects/myservers/host_group.cfg"
