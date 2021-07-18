@@ -1996,12 +1996,20 @@ EOF
 	fi
 
 	print_info "配置 myserver/template.cfg"
+	local NagiosClientDomain1
+	local NagiosClientIP1
 	if [[ -f "${GITHUB_REPO_TOOLBOX}/Nagios/server/myservers/template.cfg" ]] ; then
 		read -r -p "请输入Nagios client address : " NagiosClientDomain1
 		if [ $NagiosClientDomain1 ]; then
-		cp -pf 	${GITHUB_REPO_TOOLBOX}/Nagios/server/myservers/template.cfg /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
-		# 双引号可以用shell变量
-		sed -i "s/NagiosClientDomain/$NagiosClientDomain1/g" /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
+			cp -pf 	${GITHUB_REPO_TOOLBOX}/Nagios/server/myservers/template.cfg /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
+			# 双引号可以用shell变量
+			sed -i "s/NagiosClientDomain/$NagiosClientDomain1/g" /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
+
+			read -r -p "请输入Nagios client IP : " NagiosClientIP1
+			if [ $NagiosClientIP1 ]; then
+				# 双引号可以用shell变量
+				sed -i "s/NagiosClientIP/$NagiosClientIP1/g" /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
+			fi
 		fi
 		chown nagios:nagios /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
 		chmod 777 /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
