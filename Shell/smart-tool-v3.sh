@@ -2017,7 +2017,25 @@ EOF
 		print_error "请先Git同步toolbox到本地，再进行设置！"
 		exit 0
 	fi
-	
+	print_info "定义 command"
+	cat <<EOF >> /usr/local/nagios/etc/objects/commands.cfg
+################################################################################
+#
+# Linfeng Zhong defined COMMANDS
+#
+#
+################################################################################
+
+define command {
+    command_name    check_nrpe
+    command_line    $USER1$/check_nrpe -H $HOSTADDRESS$ -t 30 -c $ARG1$ $ARG2$
+}
+
+define command {
+    command_name    check_load
+    command_line    $USER1$/check_load -w $ARG1$ -c $ARG2$
+}
+EOF
 	print_info "重启 Nagios 服务"
 	systemctl restart nagios
 	systemctl status nagios
