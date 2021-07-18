@@ -1999,7 +1999,7 @@ EOF
 	if [[ -f "${GITHUB_REPO_TOOLBOX}/Nagios/server/myservers/template.cfg" ]] ; then
 		read -r -p "请输入Nagios client address : " NagiosClientDomain1
 		if [ $NagiosClientDomain1 ]; then
-		cp -pf 	${GITHUB_REPO_TOOLBOX}/Nagios/myservers/template.cfg /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
+		cp -pf 	${GITHUB_REPO_TOOLBOX}/Nagios/server/myservers/template.cfg /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
 		sed -i 's!NagiosClientDomain!${NagiosClientDomain1}!g' /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
 		fi
 	else
