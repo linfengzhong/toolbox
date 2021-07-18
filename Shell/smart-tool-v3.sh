@@ -2000,7 +2000,7 @@ EOF
 		read -r -p "请输入Nagios client address : " NagiosClientDomain1
 		if [ $NagiosClientDomain1 ]; then
 		cp -pf 	${GITHUB_REPO_TOOLBOX}/Nagios/server/myservers/template.cfg /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
-		sed -i 's!NagiosClientDomain!${NagiosClientDomain1}!g' /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
+		sed -i 's!NagiosClientDomain!$NagiosClientDomain1!g' /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
 		fi
 		chown nagios:nagios /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
 		chmod 777 /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
@@ -2037,7 +2037,7 @@ function customize_nagios_client {
 				TMPnagiosHostIP=${nagiosHostIP}
 				print_info "使用默认 Nagios Server IP : ${TMPnagiosHostIP}"
 			fi
-			sed -i 's!allowed_hosts=127.0.0.1,::1!allowed_hosts=127.0.0.1,::1,${TMPnagiosHostIP}!g' /usr/local/nagios/etc/nrpe.cfg
+			sed -i 's!allowed_hosts=127.0.0.1,::1!allowed_hosts=127.0.0.1,::1,$TMPnagiosHostIP!g' /usr/local/nagios/etc/nrpe.cfg
 			print_info "添加Command "
 			cat <<EOF >> /usr/local/nagios/etc/nrpe.cfg
 # 定制命令 - 2021 July 18th
