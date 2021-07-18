@@ -1990,9 +1990,9 @@ EOF
 	chown nagios:nagios /usr/local/nagios/etc/objects/myservers
 	chown nagios:nagios /usr/local/nagios/etc/objects/myservers/host_group.cfg
 	chown nagios:nagios /usr/local/nagios/etc/objects/myservers/service_group.cfg
-	chmod 666 /usr/local/nagios/etc/objects/myservers
-	chmod 666 /usr/local/nagios/etc/objects/myservers/host_group.cfg
-	chmod 666 /usr/local/nagios/etc/objects/myservers/service_group.cfg
+	chmod 777 /usr/local/nagios/etc/objects/myservers
+	chmod 777 /usr/local/nagios/etc/objects/myservers/host_group.cfg
+	chmod 777 /usr/local/nagios/etc/objects/myservers/service_group.cfg
 	fi
 
 	print_info "配置 myserver/template.cfg"
@@ -2002,6 +2002,8 @@ EOF
 		cp -pf 	${GITHUB_REPO_TOOLBOX}/Nagios/server/myservers/template.cfg /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
 		sed -i 's!NagiosClientDomain!${NagiosClientDomain1}!g' /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
 		fi
+		chown nagios:nagios /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
+		chmod 777 /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
 	else
 		print_error "请先Git同步toolbox到本地，再进行设置！"
 		exit 0
