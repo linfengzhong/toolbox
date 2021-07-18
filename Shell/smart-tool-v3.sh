@@ -15,7 +15,8 @@ function initVar() {
 	defaultHost="k8s-node.cf"
 	# default UUID
 	defaultUUID="d8206743-b292-43d1-8200-5606238a5abb"
-	
+	# default Nagios server ip
+	nagiosHostIP = "104.199.212.122"
 	# 随机路径
 	customPath="rdxyzukwofngusfpmheud"
 
@@ -127,7 +128,7 @@ function print_error() {
 }
 #-----------------------------------------------------------------------------#
 #判定 成功 or 失败
-function judge() {
+function print_complete() {
 	if [[ 0 -eq $? ]]; then
 		print_done "$1" 
 		#echoContent magenta "[Done完成]"
@@ -175,7 +176,7 @@ function install_prerequisite () {
 	print_info "安装进行中ing "	
 	yum -y install wget lsof tar unzip curl socat nmap bind-utils jq >/dev/null 2>&1
 	#  install dig and nslookup --> bind-utils
-	judge "安装 wget lsof tar unzip curl socat nmap bind-utils jq "
+	print_complete "安装 wget lsof tar unzip curl socat nmap bind-utils jq "
 }
 #-----------------------------------------------------------------------------#
 # Install acme.sh
@@ -183,7 +184,7 @@ function install_acme () {
 	print_start "Install acme.sh "
 	print_info "安装进行中ing "
 	sudo curl -s https://get.acme.sh | sh -s email=$EMAIL >/dev/null 2>&1
-	judge "安装 acme.sh "
+	print_complete "安装 acme.sh "
 }
 #-----------------------------------------------------------------------------#
 # Install bpytop
@@ -196,18 +197,18 @@ function install_bpytop () {
                     openssl-devel \
                     automake autoconf libtool make >/dev/null 2>&1
 	print_info "安装进行中ing "
-	judge "Install Prerequisites for Python3 "
+	print_complete "Install Prerequisites for Python3 "
 
 	print_start "Install bpytop "
 	sudo pip3 install bpytop --upgrade >/dev/null 2>&1
 	print_info "安装进行中ing "
-	judge "1/2 Install bpytop "
+	print_complete "1/2 Install bpytop "
 
 	echo 'alias bpytop=/usr/local/bin/bpytop'>>~/.bash_profile
 	source ~/.bash_profile 
-	judge "2/2 添加 bpytop 命令到.bash_profile"
+	print_complete "2/2 添加 bpytop 命令到.bash_profile"
 
-	judge "Install bpytop"
+	print_complete "Install bpytop"
 }
 #-----------------------------------------------------------------------------#
 # Install webmin
@@ -224,7 +225,7 @@ gpgkey=http://www.webmin.com/jcameron-key.asc" >/etc/yum.repos.d/webmin.repo;)
 	sleep 0.5
 	print_info "安装进行中ing "
 	sudo yum -y install webmin >/dev/null 2>&1
-	judge "Install webmin "
+	print_complete "Install webmin "
 }
 #-----------------------------------------------------------------------------#
 # Install Docker CE
@@ -239,19 +240,19 @@ function install_docker () {
 					docker-latest-logrotate \
 					docker-logrotate \
 					docker-engine >/dev/null 2>&1
-	judge "1/3 Uninstall old versions of Docker CE "
+	print_complete "1/3 Uninstall old versions of Docker CE "
 	print_info "安装进行中ing "
 	sudo yum -y install yum-utils >/dev/null 2>&1
 	sudo yum-config-manager \
 			--add-repo \
 			https://download.docker.com/linux/centos/docker-ce.repo  >/dev/null 2>&1
-	judge "2/3 Set up the repository for Docker "
+	print_complete "2/3 Set up the repository for Docker "
 	print_info "安装进行中ing "
 	sudo yum -y install docker-ce docker-ce-cli containerd.io >/dev/null 2>&1
 	sudo systemctl start docker
 	sudo systemctl enable docker
-	judge "3/3 Install Docker Engine "
-	judge "Install Docker CE "
+	print_complete "3/3 Install Docker Engine "
+	print_complete "Install Docker CE "
 }
 #-----------------------------------------------------------------------------#
 # Install Docker Compose
@@ -263,7 +264,7 @@ function install_docker_compose () {
 	sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose >/dev/null 2>&1
 	docker-compose --version >/dev/null 2>&1
 	print_info "安装进行中ing "
-	judge "Install docker compose "
+	print_complete "Install docker compose "
 }
 #-----------------------------------------------------------------------------#
 # Install Git
@@ -272,7 +273,7 @@ function install_git () {
 	print_start "Install Git "
 	print_info "安装进行中ing "
 	sudo yum -y install git >/dev/null 2>&1
-	judge "Install Git "
+	print_complete "Install Git "
 }
 #-----------------------------------------------------------------------------#
 # 安装 v2ray-agent
@@ -281,7 +282,7 @@ function InstallV2rayAgent {
 	print_start "安装 v2ray-agent "
 	wget -c -q --show-progress -P /root -N --no-check-certificate "https://raw.githubusercontent.com/mack-a/v2ray-agent/master/install.sh" 
 	chmod 700 /root/install.sh
-	judge "安装 v2ray-agent "
+	print_complete "安装 v2ray-agent "
 	print_info "运行 v2ray-agent "
 	sleep 2
 	cd $HOME
@@ -321,7 +322,7 @@ function shutdown_docker_compose () {
 	print_info "关闭 Docker Compose VM "
 	cd $WORKDIR
 	sudo docker-compose down
-	judge "关闭 Docker Compose VM "
+	print_complete "关闭 Docker Compose VM "
 }
 #-----------------------------------------------------------------------------#
 # 启动docker-compose
@@ -330,7 +331,7 @@ function start_docker_compose () {
 	cd $WORKDIR
 	sudo docker-compose build
 	sudo docker-compose up -d
-	judge "启动 Docker Compose "
+	print_complete "启动 Docker Compose "
 }
 #-----------------------------------------------------------------------------#
 # 查看Docker Images
@@ -364,7 +365,7 @@ function git_init () {
 		print_info "======== Public key========= "
 		cat ~/.ssh/id_rsa.pub
 		print_info "======== Public key End========= "
-		judge "初始化 Git "
+		print_complete "初始化 Git "
 	fi
 }
 #-----------------------------------------------------------------------------#
@@ -377,7 +378,7 @@ function git_clone_toolbox () {
 		else
 			cd  $HOME/git/
 			git clone git@github.com:linfengzhong/toolbox.git
-			judge "Git clone ToolBox "
+			print_complete "Git clone ToolBox "
 
 			echoContent green "同步下载 smart-tool-v3.sh 到根目录"
 			#cp -pf $HOME/git/toolbox/Docker/docker-compose/$currentHost/smart-tool-v3.sh $HOME
@@ -397,7 +398,7 @@ function github_pull_toolbox () {
 	print_start "下载 -> Local ToolBox Repo "
 	cd $GITHUB_REPO_TOOLBOX
 	sudo git pull
-	judge "下载 -> Local ToolBox Repo "
+	print_complete "下载 -> Local ToolBox Repo "
 
 	echoContent green "同步下载 smart-tool-v3.sh 到根目录"
 	#cp -pf $HOME/git/toolbox/Docker/docker-compose/$currentHost/smart-tool-v3.sh $HOME
@@ -415,7 +416,7 @@ function github_push_toolbox () {
 	sudo git add .
 	sudo git commit -m "${myDate} fix"
 	sudo git push
-	judge "上传ToolBox -> GitHub "
+	print_complete "上传ToolBox -> GitHub "
 }
 #-----------------------------------------------------------------------------#
 # Git clone logserver.git
@@ -426,7 +427,7 @@ function git_clone_logserver () {
 	else
 		cd  $HOME/git/
 		git clone git@github.com:linfengzhong/logserver.git
-		judge "Git clone logserver "
+		print_complete "Git clone logserver "
 	fi
 	mkdir -p $HOME/git/logserver/$currentHost
 	mkdir -p $HOME/git/logserver/$currentHost/nginx
@@ -447,7 +448,7 @@ function github_pull_logserver () {
 	cd $GITHUB_REPO_LOGSERVER
 	sudo git pull
 	chmod 777 -R $HOME/git/logserver/$currentHost/grafana/lib	
-	judge "下载 -> Local logserver Repo "
+	print_complete "下载 -> Local logserver Repo "
 }
 #-----------------------------------------------------------------------------#
 # 同步上传Git文件夹
@@ -458,7 +459,7 @@ function github_push_logserver () {
 	sudo git add .
 	sudo git commit -m "${myDate} sync_all_config_log_data"
 	sudo git push
-	judge "上传logserver -> GitHub "
+	print_complete "上传logserver -> GitHub "
 }
 #-----------------------------------------------------------------------------#
 # 检查系统
@@ -555,7 +556,7 @@ function generate_ca () {
 		cp -pf /etc/fuckGFW/tls/*.* /etc/fuckGFW/xray/${currentHost}/
 		installCronTLS
 	fi
-	judge "生成网站证书 "
+	print_complete "生成网站证书 "
 }
 #-----------------------------------------------------------------------------#
 # 更新证书
@@ -590,7 +591,7 @@ function renewalTLS() {
 	else
 		echoContent red " ---> 未安装"
 	fi
-	judge "更新证书 "
+	print_complete "更新证书 "
 }
 #-----------------------------------------------------------------------------#
 # 查看TLS证书的状态
@@ -715,7 +716,7 @@ function set_timezone () {
 	timedatectl set-timezone Asia/Shanghai
 	echoContent yellow "[当前时间]  \c"
 	sudo date
-	judge "设置时区： Asia/Shanghai "
+	print_complete "设置时区： Asia/Shanghai "
 }
 #-----------------------------------------------------------------------------#
 # Security-Enhanced Linux
@@ -725,7 +726,7 @@ function turn_off_selinux () {
 	print_start "配置 Linux Rocky 8.4 / CentOS 8 服务器"
 	sed -i 's/SELINUX=.*/SELINUX=disabled/g' /etc/selinux/config
 	setenforce 0
-	#judge "Step 1: Security-Enhanced Linux"
+	#print_complete "Step 1: Security-Enhanced Linux"
 	print_info "Security-Enhanced Linux <--- 完成"
 }
 #-----------------------------------------------------------------------------#
@@ -788,7 +789,7 @@ server {
     }
 }
 EOF
-	judge "生成 NGINX 配置文件 "
+	print_complete "生成 NGINX 配置文件 "
 }
 
 #-----------------------------------------------------------------------------#
@@ -924,7 +925,7 @@ function generate_xray_conf {
 EOF
 	print_info "复制证书到xray配置文件夹 "
 	cp -pf /etc/fuckGFW/tls/*.* /etc/fuckGFW/xray/${currentHost}/
-	judge "生成 xray 配置文件 "
+	print_complete "生成 xray 配置文件 "
 }
 #-----------------------------------------------------------------------------#
 # 生成 trojan-go 配置文件
@@ -971,7 +972,7 @@ function generate_trojan_go_conf {
     }
 }
 EOF
-	judge "生成 trojan-go 配置文件 "
+	print_complete "生成 trojan-go 配置文件 "
 }
 #-----------------------------------------------------------------------------#
 # 生成 v2ray 配置文件
@@ -1052,7 +1053,7 @@ function generate_v2ray_conf {
   }
 }
 EOF
-	judge "生成 v2ray 配置文件 "
+	print_complete "生成 v2ray 配置文件 "
 }
 #-----------------------------------------------------------------------------#
 # 生成 prometheus 配置文件
@@ -1101,7 +1102,7 @@ scrape_configs:
     static_configs:
     - targets: ['35.185.165.176:9100','34.80.73.27:9100','35.221.170.54:9100']
 EOF
-	judge "生成 prometheus 配置文件 "
+	print_complete "生成 prometheus 配置文件 "
 }
 #-----------------------------------------------------------------------------#
 # 生成 grafana.ini 配置文件
@@ -1110,7 +1111,7 @@ function generate_grafana_ini {
 	print_info "copy from GitHub to /etc/fuckGFW/grafana/grafana.ini"
 	cp -pf ${GITHUB_REPO_TOOLBOX}/grafana/grafana.ini /etc/fuckGFW/grafana/
 	chmod 666 /etc/fuckGFW/grafana/grafana.ini
-	judge "生成 grafana.ini 配置文件 "
+	print_complete "生成 grafana.ini 配置文件 "
 }
 #-----------------------------------------------------------------------------#
 # 生成 docker-compose.yml 配置文件
@@ -1297,7 +1298,7 @@ networks:
     net:
         driver: bridge
 EOF
-	judge "生成 docker-compose.yml 配置文件 "
+	print_complete "生成 docker-compose.yml 配置文件 "
 }
 #-----------------------------------------------------------------------------#
 # 查看 Nginx 配置文件
@@ -1305,7 +1306,7 @@ function show_nginx_conf {
 	print_start "查看 Nginx 配置文件 "
 	print_info "/etc/fuckGFW/nginx/conf.d/${currentHost}.conf"
 	cat /etc/fuckGFW/nginx/conf.d/${currentHost}.conf
-	judge "查看 Nginx 配置文件 "
+	print_complete "查看 Nginx 配置文件 "
 }
 #-----------------------------------------------------------------------------#
 # 查看 xray 配置文件
@@ -1313,7 +1314,7 @@ function show_xray_conf {
 	print_start "查看 xray 配置文件 "
 	print_info "/etc/fuckGFW/xray/config.json"
 	cat /etc/fuckGFW/xray/config.json
-	judge "查看 xray 配置文件 "	
+	print_complete "查看 xray 配置文件 "	
 }
 #-----------------------------------------------------------------------------#
 # 查看 trojan-go 配置文件
@@ -1321,7 +1322,7 @@ function show_trojan_go_conf {
 	print_start "查看 trojan-go 配置文件 "
 	print_info "/etc/fuckGFW/trojan-go/config.json"
 	cat /etc/fuckGFW/trojan-go/config.json
-	judge "查看 trojan-go 配置文件 "	
+	print_complete "查看 trojan-go 配置文件 "	
 }
 #-----------------------------------------------------------------------------#
 # 查看 v2ray 配置文件
@@ -1329,7 +1330,7 @@ function show_v2ray_conf {
 	print_start "查看 v2ray 配置文件 "
 	print_info "/etc/fuckGFW/v2ray/config.json"
 	cat /etc/fuckGFW/v2ray/config.json
-	judge "查看 v2ray 配置文件 "	
+	print_complete "查看 v2ray 配置文件 "	
 }
 #-----------------------------------------------------------------------------#
 # 查看 docker-compose.yml 配置文件
@@ -1337,7 +1338,7 @@ function show_docker_compose_yml {
 	print_start "查看 docker-compose.yml 配置文件 "
 	print_info "/etc/fuckGFW/docker/${currentHost}/docker-compose.yml"
 	cat /etc/fuckGFW/docker/${currentHost}/docker-compose.yml
-	judge "查看 docker-compose.yml 配置文件 "
+	print_complete "查看 docker-compose.yml 配置文件 "
 }
 #-----------------------------------------------------------------------------#
 # 查看 prometheus 配置文件
@@ -1345,7 +1346,7 @@ function show_prometheus_conf {
 	print_start "生成 prometheus 配置文件 "
 	print_info "/etc/fuckGFW/prometheus/prometheus.yml"
 	cat /etc/fuckGFW/prometheus/prometheus.yml
-	judge "查看 prometheus 配置文件 "
+	print_complete "查看 prometheus 配置文件 "
 }
 #-----------------------------------------------------------------------------#
 # 查看 grafana.ini 配置文件
@@ -1353,7 +1354,7 @@ function show_grafana_ini {
 	print_start "查看 grafana.ini 配置文件 "
 	print_info "/etc/fuckGFW/grafana/grafana.ini"
 	cat /etc/fuckGFW/grafana/grafana.ini
-	judge "查看 grafana.ini 配置文件 "
+	print_complete "查看 grafana.ini 配置文件 "
 }
 #-----------------------------------------------------------------------------#
 # generate access.log & error.log for nginx
@@ -1364,14 +1365,14 @@ function generate_access_log_error_log_nginx {
 	else
 		cd $HOME/git/logserver/${currentHost}/nginx/
 		touch access.log
-		judge "Generate nginx access.log "
+		print_complete "Generate nginx access.log "
 	fi
 	if [[ -f "$HOME/git/logserver/${currentHost}/nginx/error.log" ]];then
 		print_info "nginx error.log 文件已存在，无需新建！ "
 	else
 		cd $HOME/git/logserver/${currentHost}/nginx/
 		touch error.log
-		judge "Generate nginx error.log "
+		print_complete "Generate nginx error.log "
 	fi
 }
 #-----------------------------------------------------------------------------#
@@ -1383,7 +1384,7 @@ function generate_access_log_error_log_trojan_go {
 	else
 		cd $HOME/git/logserver/${currentHost}/trojan-go/
 		touch error.log
-		judge "Generate trojan-go error.log "
+		print_complete "Generate trojan-go error.log "
 	fi
 }
 #-----------------------------------------------------------------------------#
@@ -1395,14 +1396,14 @@ function generate_access_log_error_log_v2ray {
 	else
 		cd $HOME/git/logserver/${currentHost}/v2ray/
 		touch access.log
-		judge "Generate v2ray access.log "
+		print_complete "Generate v2ray access.log "
 	fi
 	if [[ -f "$HOME/git/logserver/${currentHost}/v2ray/error.log" ]];then
 		print_info "v2ray error.log 文件已存在，无需新建！ "
 	else
 		cd $HOME/git/logserver/${currentHost}/v2ray/
 		touch error.log
-		judge "Generate v2ray error.log "
+		print_complete "Generate v2ray error.log "
 	fi
 }
 #-----------------------------------------------------------------------------#
@@ -1414,14 +1415,14 @@ function generate_access_log_error_log_xray {
 	else
 		cd $HOME/git/logserver/${currentHost}/xray/
 		touch access.log
-		judge "Generate xray access.log "
+		print_complete "Generate xray access.log "
 	fi
 	if [[ -f "$HOME/git/logserver/${currentHost}/xray/error.log" ]];then
 		print_info "xray error.log 文件已存在，无需新建！ "
 	else
 		cd $HOME/git/logserver/${currentHost}/xray/
 		touch error.log
-		judge "Generate xray error.log "
+		print_complete "Generate xray error.log "
 	fi
 }
 #-----------------------------------------------------------------------------#
@@ -1433,51 +1434,51 @@ function generate_access_log_error_log {
 	else
 		cd $HOME/git/logserver/${currentHost}/nginx/
 		touch access.log
-		judge "Generate nginx access.log "
+		print_complete "Generate nginx access.log "
 	fi
 	if [[ -f "$HOME/git/logserver/${currentHost}/nginx/error.log" ]];then
 		print_info "nginx error.log 文件已存在，无需新建！ "
 	else
 		cd $HOME/git/logserver/${currentHost}/nginx/
 		touch error.log
-		judge "Generate nginx error.log "
+		print_complete "Generate nginx error.log "
 	fi
 	if [[ -f "$HOME/git/logserver/${currentHost}/trojan-go/error.log" ]];then
 		print_info "trojan-go error.log 文件已存在，无需新建！ "
 	else
 		cd $HOME/git/logserver/${currentHost}/trojan-go/
 		touch error.log
-		judge "Generate trojan-go error.log "
+		print_complete "Generate trojan-go error.log "
 	fi
 	if [[ -f "$HOME/git/logserver/${currentHost}/v2ray/access.log" ]];then
 		print_info "v2ray access.log 文件已存在，无需新建！ "
 	else
 		cd $HOME/git/logserver/${currentHost}/v2ray/
 		touch access.log
-		judge "Generate v2ray access.log "
+		print_complete "Generate v2ray access.log "
 	fi
 	if [[ -f "$HOME/git/logserver/${currentHost}/v2ray/error.log" ]];then
 		print_info "v2ray error.log 文件已存在，无需新建！ "
 	else
 		cd $HOME/git/logserver/${currentHost}/v2ray/
 		touch error.log
-		judge "Generate v2ray error.log "
+		print_complete "Generate v2ray error.log "
 	fi
 	if [[ -f "$HOME/git/logserver/${currentHost}/xray/access.log" ]];then
 		print_info "xray access.log 文件已存在，无需新建！ "
 	else
 		cd $HOME/git/logserver/${currentHost}/xray/
 		touch access.log
-		judge "Generate xray access.log "
+		print_complete "Generate xray access.log "
 	fi
 	if [[ -f "$HOME/git/logserver/${currentHost}/xray/error.log" ]];then
 		print_info "xray error.log 文件已存在，无需新建！ "
 	else
 		cd $HOME/git/logserver/${currentHost}/xray/
 		touch error.log
-		judge "Generate xray error.log "
+		print_complete "Generate xray error.log "
 	fi
-	judge "Generate access.log & error.log for nginx trojan-go v2ray xray "
+	print_complete "Generate access.log & error.log for nginx trojan-go v2ray xray "
 }
 #-----------------------------------------------------------------------------#
 # show access.log & error.log
@@ -1491,7 +1492,7 @@ function show_error_log {
 	tail -n 20 $HOME/git/logserver/${currentHost}/v2ray/error.log
 	echoContent yellow " ---> xray"
 	tail -n 20 $HOME/git/logserver/${currentHost}/xray/error.log
-	judge "Show error.log for nginx trojan-go v2ray xray "
+	print_complete "Show error.log for nginx trojan-go v2ray xray "
 }
 #-----------------------------------------------------------------------------#
 # show error.log for nginx
@@ -1499,7 +1500,7 @@ function show_error_log_nginx {
 	print_start "Show error.log for nginx "
 	echoContent yellow " ---> nginx"
 	tail -n 20 $HOME/git/logserver/${currentHost}/nginx/error.log
-	judge "Show error.log for nginx "
+	print_complete "Show error.log for nginx "
 }
 #-----------------------------------------------------------------------------#
 # show access.log for nginx
@@ -1507,7 +1508,7 @@ function show_access_log_nginx {
 	print_start "Show access.log for nginx "
 	echoContent yellow " ---> nginx"
 	tail -n 20 $HOME/git/logserver/${currentHost}/nginx/access.log
-	judge "Show access.log for nginx "
+	print_complete "Show access.log for nginx "
 }
 #-----------------------------------------------------------------------------#
 # show error.log for trojan-go
@@ -1515,7 +1516,7 @@ function show_error_log_trojan_go {
 	print_start "Show error.log for trojan-go "
 	echoContent yellow " ---> trojan-go"
 	tail -n 20 $HOME/git/logserver/${currentHost}/trojan-go/error.log
-	judge "Show error.log for trojan-go "
+	print_complete "Show error.log for trojan-go "
 }
 #-----------------------------------------------------------------------------#
 # show error.log for v2ray
@@ -1523,7 +1524,7 @@ function show_error_log_v2ray {
 	print_start "Show error.log for v2ray "
 	echoContent yellow " ---> v2ray"
 	tail -n 20 $HOME/git/logserver/${currentHost}/v2ray/error.log
-	judge "Show error.log for v2ray "
+	print_complete "Show error.log for v2ray "
 }
 #-----------------------------------------------------------------------------#
 # show access.log for v2ray
@@ -1531,7 +1532,7 @@ function show_access_log_v2ray {
 	print_start "Show access.log for v2ray "
 	echoContent yellow " ---> v2ray"
 	tail -n 20 $HOME/git/logserver/${currentHost}/v2ray/access.log
-	judge "Show access.log for v2ray "
+	print_complete "Show access.log for v2ray "
 }
 #-----------------------------------------------------------------------------#
 # show error.log for xray
@@ -1539,7 +1540,7 @@ function show_error_log_xray {
 	print_start "Show error.log for xray "
 	echoContent yellow " ---> xray"
 	tail -n 20 $HOME/git/logserver/${currentHost}/xray/error.log
-	judge "Show error.log for xray "
+	print_complete "Show error.log for xray "
 }
 #-----------------------------------------------------------------------------#
 # show access.log for xray
@@ -1547,7 +1548,7 @@ function show_access_log_xray {
 	print_start "Show access.log for xray "
 	echoContent yellow " ---> xray"
 	tail -n 20 $HOME/git/logserver/${currentHost}/xray/access.log
-	judge "Show access.log for xray "
+	print_complete "Show access.log for xray "
 }
 #-----------------------------------------------------------------------------#
 # Website
@@ -1579,7 +1580,7 @@ function generate_fake_website {
 		rm -f /etc/fuckGFW/website/html${randomNum}.zip*
 		echoContent green " ---> 添加伪装站点成功"
 	fi
-	judge "添加随机伪装站点  "	
+	print_complete "添加随机伪装站点  "	
 }
 #-----------------------------------------------------------------------------#
 # Upload logs & configuration & dynamic data
@@ -1587,7 +1588,7 @@ function upload_logs_configuration_dynamic_data () {
 	#print_info "更新日志、配置文件、动态数据到GitHub "
 	github_pull_logserver
 	github_push_logserver
-	#judge "更新日志、配置文件、动态数据到GitHub "	
+	#print_complete "更新日志、配置文件、动态数据到GitHub "	
 }
 function init_webmin_ssl {
 	print_start "初始化webmin SSL证书 "
@@ -1622,7 +1623,7 @@ function init_webmin_ssl {
 	else
 		print_error "未找到SSL证书！ "
 	fi
-	judge "初始化webmin SSL证书 "
+	print_complete "初始化webmin SSL证书 "
 }
 #-----------------------------------------------------------------------------#
 # 清理域名
@@ -1630,7 +1631,7 @@ function clear_myHostDomain {
 	# print_start "重新初始化 服务器域名 "
 	rm -f $HOME/.myHostDomain
 	# print_info "清理完成"
-	# judge "重新初始化 服务器域名 "
+	# print_complete "重新初始化 服务器域名 "
 }
 #-----------------------------------------------------------------------------#
 # 清理UUID
@@ -1638,7 +1639,7 @@ function clear_currentUUID {
 	# print_start "重新初始化 服务器域名 "
 	rm -f $HOME/.currentUUID
 	# print_info "清理完成"
-	# judge "重新初始化 服务器域名 "
+	# print_complete "重新初始化 服务器域名 "
 }
 #-----------------------------------------------------------------------------#
 # 设置 current Host Domain 
@@ -1667,7 +1668,7 @@ function set_current_host_domain {
 	fi
 	WORKDIR="/etc/fuckGFW/docker/${currentHost}/"
 	LOGDIR="/root/git/logserver/${currentHost}/"
-	judge "设置 current Host Domain "
+	print_complete "设置 current Host Domain "
 }
 #-----------------------------------------------------------------------------#
 # 设置 current UUID 
@@ -1684,7 +1685,7 @@ ${tempUUID}
 EOF
 	currentUUID=$(cat $HOME/.currentUUID)
 	fi
-	judge "设置 current UUID "
+	print_complete "设置 current UUID "
 }
 #-----------------------------------------------------------------------------#
 # 生成 clash -> account 配置文件 
@@ -1732,7 +1733,7 @@ function generate_vmess_trojan_account {
 
 EOF
 	cat /etc/fuckGFW/clash/config.yml
-	judge "生成 clash -> account 配置文件 "
+	print_complete "生成 clash -> account 配置文件 "
 }
 #-----------------------------------------------------------------------------#
 # 安装Trojan-go
@@ -1919,7 +1920,162 @@ function install_v2_ui {
 function install_apache_httpd {
 	print_start "安装 apache httpd"
 	yum -y install httpd
-	judge "安装 apache httpd"
+	print_complete "安装 apache httpd"
+}
+#-----------------------------------------------------------------------------#
+# 定制 Nagios Server
+function customize_nagios_server {
+	print_start "定制 Nagios Server "
+
+	print_info "Nagios 主配置文件： /usr/local/nagios/etc/nagios.cfg"
+	if [[ ! -f "/usr/local/nagios/etc/nagios.cfg" ]]; then
+		print_error "Nagios 主配置文件不存在，请确认是否正确安装Nagios core！"
+		exit 0
+	else
+		if cat /usr/local/nagios/etc/nagios.cfg | grep "cfg_dir=/usr/local/nagios/etc/objects/myservers" >/dev/null; then
+   			print_info "已定制过，无需重复操作！"
+			exit 0
+		else
+			# 注释掉内容
+			sed -i 's!cfg_file=/usr/local/nagios/etc/objects/localhost.cfg!#cfg_file=/usr/local/nagios/etc/objects/localhost.cfg!g' /usr/local/nagios/etc/nagios.cfg
+			# 添加myserver文件夹
+			sed -i 's!#cfg_dir=/usr/local/nagios/etc/servers!cfg_dir=/usr/local/nagios/etc/objects/myservers!g' /usr/local/nagios/etc/nagios.cfg
+		fi
+	fi
+
+	print_info "cfg_dir=/usr/local/nagios/etc/objects/myservers"
+	if [[ -d "/usr/local/nagios/etc/objects/myservers" ]]; then
+		print_error "Nagios 已经配置过！"
+		exit 0
+	else
+		mkdir -p /usr/local/nagios/etc/objects/myservers
+		cat <<EOF > /usr/local/nagios/etc/objects/myservers/host_group.cfg
+define hostgroup{
+	hostgroup_name  GFW_Servers
+	alias           Fuck Great Firewall
+	members         studyaws.tk,router3721.tk,taiwan3721.ml
+	}
+EOF
+		cat <<EOF > /usr/local/nagios/etc/objects/myservers/service_group.cfg
+define servicegroup{
+	servicegroup_name	V2ray
+	alias			V2ray
+	members			studyaws.tk,Service V2ray,router3721.tk,Service V2ray,taiwan3721.ml,Service V2ray
+	}
+
+define servicegroup{
+	servicegroup_name	Xray
+	alias			Xray
+	members			studyaws.tk,Service Xray,router3721.tk,Service Xray,taiwan3721.ml,Service Xray
+	}
+
+define servicegroup{
+	servicegroup_name	Trojan.go
+	alias			Trojan.go
+	members			studyaws.tk,Service Trojan.go,router3721.tk,Service Trojan.go,taiwan3721.ml,Service Trojan.go
+	}
+
+define servicegroup{
+	servicegroup_name	Nginx
+	alias			Nginx
+	members			studyaws.tk,Service Nginx,router3721.tk,Service Nginx,taiwan3721.ml,Service Nginx
+	}
+
+define servicegroup{
+	servicegroup_name	Apache
+	alias			Apache
+	members			studyaws.tk,Service Apache,router3721.tk,Service Apache,taiwan3721.ml,Service Apache
+	}
+EOF
+	chown nagios:nagios /usr/local/nagios/etc/objects/myservers
+	chown nagios:nagios /usr/local/nagios/etc/objects/myservers/host_group.cfg
+	chown nagios:nagios /usr/local/nagios/etc/objects/myservers/service_group.cfg
+	chmod 775 /usr/local/nagios/etc/objects/myservers
+	chmod 775 /usr/local/nagios/etc/objects/myservers/host_group.cfg
+	chmod 775 /usr/local/nagios/etc/objects/myservers/service_group.cfg
+	fi
+
+	print_info "配置 myserver/template.cfg"
+	if [[ -f "${GITHUB_REPO_TOOLBOX}/Nagios/myservers/template.cfg" ]] ; then
+		read -r -p "请输入Nagios client address : " NagiosClientDomain1
+		if [ $NagiosClientDomain1 ]; then
+		cp -pf 	${GITHUB_REPO_TOOLBOX}/Nagios/myservers/template.cfg /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
+		sed -i 's!NagiosClientDomain!${NagiosClientDomain1}!g' /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
+		fi
+	else
+		print_error "请先Git同步toolbox到本地，再进行设置！"
+		exit 0
+	fi
+	
+	print_complete "定制 Nagios Server "
+}
+#-----------------------------------------------------------------------------#
+# 定制 Nagios Client
+function customize_nagios_client {
+	print_start "定制 Nagios Client "
+	print_info "Nagios 客户端配置文件： /usr/local/nagios/etc/nrpe.cfg "
+	if [[ ! -f "/usr/local/nagios/etc/nrpe.cfg" ]]; then
+		print_error "Nagios 客户端配置文件不存在，请确认是否正确安装Nagios NRPE！"
+		exit 0
+	else
+		if cat /usr/local/nagios/etc/nrpe.cfg | grep "定制命令 - 2021 July 18th" >/dev/null; then
+   			print_info "已定制过，无需重复操作！"
+			exit 0
+		else
+			print_info "添加Nagios 服务端IP # ALLOWED HOST ADDRESSES "
+			# 注释掉内容
+			local TMPnagiosHostIP
+			read -r -p "请输入Nagios Server IP (留空使用默认地址): " TMPnagiosHostIP
+			if [ $TMPnagiosHostIP ]; then
+				print_info "Nagios Server IP : ${TMPnagiosHostIP}"
+			else
+				TMPnagiosHostIP=nagiosHostIP
+				print_info "使用默认 Nagios Server IP : ${nagiosHostIP}"
+			fi
+			sed -i 's!allowed_hosts=127.0.0.1,::1!allowed_hosts=127.0.0.1,::1,${TMPnagiosHostIP}!g' /usr/local/nagios/etc/nrpe.cfg
+			print_info "添加Command "
+			cat <<EOF >> /usr/local/nagios/etc/nrpe.cfg
+# 定制命令 - 2021 July 18th
+command[check_users]=/usr/local/nagios/libexec/check_users -w 5 -c 10
+command[check_load]=/usr/local/nagios/libexec/check_load -r -w .15,.10,.05 -c .30,.25,.20
+command[check_hda1]=/usr/local/nagios/libexec/check_disk -w 20% -c 10% -p /dev/hda1
+command[check_zombie_procs]=/usr/local/nagios/libexec/check_procs -w 5 -c 10 -s Z
+command[check_total_procs]=/usr/local/nagios/libexec/check_procs -w 150 -c 200
+
+command[check_ping]=/usr/local/nagios/libexec/check_ping -H 35.185.165.176 -w 100.0,20% -c 500.0,60% -p 5
+command[check_mem]=/usr/local/nagios/libexec/check_mem.pl -u -w 95 -c 100 -C
+command[check_swap]=/usr/local/nagios/libexec/check_swap -c 0
+
+command[check_disk]=/usr/local/nagios/libexec/check_disk -w 30% -c 20% -p /
+command[check_kernel]=/usr/local/nagios/libexec/check_kernel --warn-only
+
+command[check_netint]=/usr/local/nagios/libexec/check_netinterfaces -n -f -k -Y -B -w 95000000,95000000 -c 98000000,98000000
+command[check_cpu_stats]=/usr/local/nagios/libexec/check_cpu_stats.sh
+command[check_ssh]=/usr/local/nagios/libexec/check_ssh -H localhost
+
+command[check_v2ray1]=/usr/local/nagios/libexec/check_services -p v2ray
+command[check_v2ray2]=/usr/local/nagios/libexec/check_init_service v2ray
+command[check_v2ray3]=/usr/local/nagios/libexec/check_service.sh -s v2ray
+
+command[check_xray1]=/usr/local/nagios/libexec/check_services -p xray
+command[check_xray2]=/usr/local/nagios/libexec/check_init_service xray
+command[check_xray3]=/usr/local/nagios/libexec/check_service.sh -s xray
+
+command[check_trojan.go1]=/usr/local/nagios/libexec/check_services -p trojan-go
+command[check_trojan.go2]=/usr/local/nagios/libexec/check_init_service trojan-go
+command[check_trojan.go3]=/usr/local/nagios/libexec/check_service.sh -s trojan-go
+
+command[check_nginx1]=/usr/local/nagios/libexec/check_services -p nginx
+command[check_nginx2]=/usr/local/nagios/libexec/check_init_service nginx
+command[check_nginx3]=/usr/local/nagios/libexec/check_service.sh -s nginx
+
+command[check_httpd1]=/usr/local/nagios/libexec/check_services -p httpd
+command[check_httpd2]=/usr/local/nagios/libexec/check_init_service httpd
+command[check_httpd3]=/usr/local/nagios/libexec/check_service.sh -s httpd
+EOF
+		fi
+	fi
+	print_complete "定制 Nagios Client "
 }
 #-----------------------------------------------------------------------------#
 # 激活 Nagios 黑暗模式 
@@ -1940,7 +2096,7 @@ function enable_nagios_dark_mode {
 	print_info "Step 3: 重启 Nagios "
 	systemctl restart nagios
 	systemctl status nagios
-	judge "激活 Nagios 黑暗模式 "
+	print_complete "激活 Nagios 黑暗模式 "
 }
 #-----------------------------------------------------------------------------#
 # 恢复 Nagios 普通模式 
@@ -1954,7 +2110,7 @@ function enable_nagios_normal_mode {
 	print_info "Step 2: 重启 Nagios "
 	systemctl restart nagios
 	systemctl status nagios
-	judge "恢复 Nagios 普通模式 "
+	print_complete "恢复 Nagios 普通模式 "
 }
 #-----------------------------------------------------------------------------#
 # 激活 apache httpd SSL
@@ -2024,7 +2180,7 @@ EOF
 	print_info "Nagio 访问地址 https://${currentHost}:8443/nagios"
 	print_info "Nagio 用户名：nagiosadmin"
 	print_info "Nagio 密码：xxxxxx"
-	judge "激活 apache httpd SSL"
+	print_complete "激活 apache httpd SSL"
 }
 #-----------------------------------------------------------------------------#
 # 安装 nagios server
@@ -2036,7 +2192,7 @@ function install_nagios_server {
 	print_info "Step 1: Security-Enhanced Linux"
 	sed -i 's/SELINUX=.*/SELINUX=disabled/g' /etc/selinux/config
 	setenforce 0
-	# judge "Step 1: Security-Enhanced Linux"
+	# print_complete "Step 1: Security-Enhanced Linux"
 
 	# Prerequisites
 	# Perform these steps to install the pre-requisite packages.
@@ -2044,7 +2200,7 @@ function install_nagios_server {
 	print_info "Step 2: Prerequisites"
 	yum install -y gcc glibc glibc-common perl httpd php wget gd gd-devel
 	yum update -y
-	judge "Step 2: Prerequisites"
+	print_complete "Step 2: Prerequisites"
 
 	# Downloading the Source
 	print_info "Step 3: Downloading the Source"
@@ -2052,14 +2208,14 @@ function install_nagios_server {
 	cd /tmp
 	wget -O nagioscore.tar.gz https://github.com/NagiosEnterprises/nagioscore/releases/download/nagios-4.4.6/nagios-4.4.6.tar.gz
 	tar xzf nagioscore.tar.gz
-	judge "Step 3: Downloading the Source"
+	print_complete "Step 3: Downloading the Source"
 	
 	# Compile
 	print_info "Step 4: Compile"
 	cd /tmp/nagios-4.4.6/
 	./configure
 	make all
-	judge "Step 4: Compile"
+	print_complete "Step 4: Compile"
 
 	# Create User And Group
 	# This creates the nagios user and group. 
@@ -2067,13 +2223,13 @@ function install_nagios_server {
 	print_info "Step 5: Create User And Group"
 	make install-groups-users
 	usermod -a -G nagios apache
-	judge "Step 5: Create User And Group"
+	print_complete "Step 5: Create User And Group"
 
 	# Install Binaries
 	# This step installs the binary files, CGIs, and HTML files.
 	print_info "Step 6: Install Binaries"
 	make install
-	judge "Step 6: Install Binaries"
+	print_complete "Step 6: Install Binaries"
 
 	# Install Service / Daemon
 	# This installs the service or daemon files and also configures them to start on boot. 
@@ -2081,27 +2237,27 @@ function install_nagios_server {
 	print_info "Step 7: Install Service / Daemon"
 	make install-daemoninit
 	systemctl enable httpd.service
-	judge "Step 7: Install Service / Daemon"
+	print_complete "Step 7: Install Service / Daemon"
 
 	# Install Command Mode
 	# This installs and configures the external command file.
 	print_info "Step 8: Install Command Mode"
 	make install-commandmode
-	judge "Step 8: Install Command Mode"
+	print_complete "Step 8: Install Command Mode"
 
 	# Install Configuration Files
 	# This installs the *SAMPLE* configuration files. 
 	# These are required as Nagios needs some configuration files to allow it to start.
 	print_info "Step 9: Install Configuration Files"
 	make install-config
-	judge "Step 9: Install Configuration Files"
+	print_complete "Step 9: Install Configuration Files"
 
 	# Install Apache Config Files
 	# This installs the Apache web server configuration files. 
 	# Also configure Apache settings if required.
 	print_info "Step 10: Install Apache Config Files"
 	make install-webconf
-	judge "Step 10: Install Apache Config Files"
+	print_complete "Step 10: Install Apache Config Files"
 
 	# Configure Firewall
 	# You need to allow port 80 inbound traffic on the local firewall 
@@ -2109,7 +2265,7 @@ function install_nagios_server {
 	print_info "Step 11: Configure Firewall"
 	firewall-cmd --zone=public --add-port=8080/tcp
 	firewall-cmd --zone=public --add-port=8080/tcp --permanent
-	judge "Step 11: Configure Firewall"
+	print_complete "Step 11: Configure Firewall"
 
 	# Create nagiosadmin User Account
 	# You'll need to create an Apache user account to be able to log into Nagios.
@@ -2117,18 +2273,18 @@ function install_nagios_server {
 	# you will be prompted to provide a password for the account.
 	print_info "Step 12: Create nagiosadmin User Account"
 	htpasswd -c /usr/local/nagios/etc/htpasswd.users nagiosadmin
-	judge "Step 12: Create nagiosadmin User Account"
+	print_complete "Step 12: Create nagiosadmin User Account"
 
 	# Start Apache Web Server
 	print_info "Step 13: Start Apache Web Server"
 	systemctl start httpd.service
-	judge "Step 13: Start Apache Web Server"
+	print_complete "Step 13: Start Apache Web Server"
 
 	# Start Service / Daemon
 	# This command starts Nagios Core.
 	print_info "Step 14: Start Service / Daemon for Nagios Core"
 	systemctl start nagios.service
-	judge "Step 14: Start Service / Daemon for Nagios Core"
+	print_complete "Step 14: Start Service / Daemon for Nagios Core"
 
 	# Test Nagios
 	# Nagios is now running, to confirm this you need to log into the Nagios Web Interface.
@@ -2150,7 +2306,7 @@ function install_nagios_plugins {
 	print_info "Step 1: Security-Enhanced Linux"
 	sed -i 's/SELINUX=.*/SELINUX=disabled/g' /etc/selinux/config
 	setenforce 0
-	# judge "Step 1: Security-Enhanced Linux"
+	# print_complete "Step 1: Security-Enhanced Linux"
 
 	# Prerequisites
 	# Perform these steps to install the pre-requisite packages.
@@ -2159,7 +2315,7 @@ function install_nagios_plugins {
 	yum install -y gcc glibc glibc-common make gettext automake autoconf wget openssl-devel net-snmp net-snmp-utils epel-release
 	yum --enablerepo=PowerTools,epel install perl-Net-SNMP
 	yum -y install sysstat
-	judge "Step 2: Prerequisites"
+	print_complete "Step 2: Prerequisites"
 
 	# Downloading the Source
 	print_info "Step 3: 下载Nagios Plugins 2.2.3 到tmp文件夹"
@@ -2167,7 +2323,7 @@ function install_nagios_plugins {
 	wget --no-check-certificate https://github.com/nagios-plugins/nagios-plugins/releases/download/release-2.3.3/nagios-plugins-2.3.3.tar.gz
 	tar xzf nagios-plugins-2.3.3.tar.gz
 	cd nagios-plugins-2.3.3
-	judge "Step 3: 下载Nagios Plugins 2.2.3 到tmp文件夹"
+	print_complete "Step 3: 下载Nagios Plugins 2.2.3 到tmp文件夹"
 
 	# Nagios Plugins Installation
 	print_info "Step 4: 安装nagios plugins, 并重新启动nrpe服务"
@@ -2176,7 +2332,7 @@ function install_nagios_plugins {
 	make
 	make install
 	systemctl restart nrpe
-	judge "Step 4: 安装nagios plugins, 并重新启动nrpe服务"
+	print_complete "Step 4: 安装nagios plugins, 并重新启动nrpe服务"
 }
 #-----------------------------------------------------------------------------#
 # 安装 nagios nrpe
@@ -2197,14 +2353,14 @@ function install_nagios_nrpe {
 	print_info "Step 1: SELINUX Disable"
 	sed -i 's/SELINUX=.*/SELINUX=disabled/g' /etc/selinux/config
 	setenforce 0
-	# judge "Step 1: SELINUX Disable"
+	# print_complete "Step 1: SELINUX Disable"
 
 	#Prerequisites
 	#Perform these steps to install the pre-requisite packages.
 	print_info "Step 2: Prerequisites"
 	yum install -y gcc glibc glibc-common make gettext automake autoconf wget openssl-devel net-snmp net-snmp-utils epel-release
 	# yum --enablerepo=PowerTools,epel install perl-Net-SNMP
-	judge "Step 2: Prerequisites"
+	print_complete "Step 2: Prerequisites"
 
 	#Download NRPE package
 	#下载NRPE包
@@ -2213,7 +2369,7 @@ function install_nagios_nrpe {
 	wget https://github.com/NagiosEnterprises/nrpe/releases/download/nrpe-4.0.3/nrpe-4.0.3.tar.gz
 	tar xzf nrpe-4.0.3.tar.gz
 	cd nrpe-4.0.3
-	judge "Step 3: 下载nrpe-4.0.3到tmp文件夹"
+	print_complete "Step 3: 下载nrpe-4.0.3到tmp文件夹"
 
 	#NPRE Installation
 	print_info "Step 4: 安装nrpe，设置用户和用户组、并初始化和启动nrpe服务"
@@ -2225,14 +2381,14 @@ function install_nagios_nrpe {
 	make install-init
 	systemctl enable nrpe 
 	systemctl start nrpe
-	judge "Step 4: 安装nrpe，设置用户和用户组、并初始化和启动nrpe服务"
+	print_complete "Step 4: 安装nrpe，设置用户和用户组、并初始化和启动nrpe服务"
 
 	#firewall enable port 5666
 	#===== RHEL 7/8 | CentOS 7/8 | Oracle Linux 7/8 =====
 	print_info "Step 5: 设置防火墙开启端口 5666"
 	firewall-cmd --zone=public --add-port=5666/tcp
 	firewall-cmd --zone=public --add-port=5666/tcp --permanent
-	judge "Step 5: 设置防火墙开启端口 5666"
+	print_complete "Step 5: 设置防火墙开启端口 5666"
 }
 #-----------------------------------------------------------------------------#
 # Nagios 安装菜单
@@ -2261,6 +2417,8 @@ function nagios_menu() {
 	echoContent yellow "5.激活 Apache httpd SSL "
 	echoContent yellow "6.激活 nagios dark mode "
 	echoContent yellow "7.激活 nagios normal mode "
+	echoContent yellow "8.定制 nagios server "
+	echoContent yellow "9.定制 nagios client "
 	echoContent red "=================================================================="
 	read -r -p "Please choose the function (请选择) : " selectInstallType
 	case ${selectInstallType} in
@@ -2284,6 +2442,12 @@ function nagios_menu() {
 		;;
 	7)
 		enable_nagios_normal_mode
+		;;
+	8)
+		customize_nagios_server
+		;;
+	9)
+		customize_nagios_client
 		;;
 	*)
 		print_error "请输入正确的数字"
@@ -2761,7 +2925,7 @@ function menu() {
 		;;
 	esac
 }
-SmartToolVersion=v0.291
+SmartToolVersion=v0.292
 cleanScreen
 initVar $1
 set_current_host_domain
