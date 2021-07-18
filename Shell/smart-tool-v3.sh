@@ -1944,7 +1944,7 @@ function customize_nagios_server {
 
 	print_info "cfg_dir=/usr/local/nagios/etc/objects/myservers"
 	if [[ -d "/usr/local/nagios/etc/objects/myservers" ]]; then
-		print_error "Nagios myservers 已经配置过！"
+		print_error "Nagios myservers/host_group.cfg & service_group.cfg 已经配置过！"
 	else
 		mkdir -p /usr/local/nagios/etc/objects/myservers
 		print_info "配置 /usr/local/nagios/etc/objects/myservers/host_group.cfg"
