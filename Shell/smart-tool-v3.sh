@@ -1949,6 +1949,7 @@ function customize_nagios_server {
 		exit 0
 	else
 		mkdir -p /usr/local/nagios/etc/objects/myservers
+		print_info "配置 /usr/local/nagios/etc/objects/myservers/host_group.cfg"
 		cat <<EOF > /usr/local/nagios/etc/objects/myservers/host_group.cfg
 define hostgroup{
 	hostgroup_name  GFW_Servers
@@ -1956,6 +1957,7 @@ define hostgroup{
 	members         studyaws.tk,router3721.tk,taiwan3721.ml
 	}
 EOF
+		print_info "配置 /usr/local/nagios/etc/objects/myservers/service_group.cfg"
 		cat <<EOF > /usr/local/nagios/etc/objects/myservers/service_group.cfg
 define servicegroup{
 	servicegroup_name	V2ray
@@ -1990,9 +1992,9 @@ EOF
 	chown nagios:nagios /usr/local/nagios/etc/objects/myservers
 	chown nagios:nagios /usr/local/nagios/etc/objects/myservers/host_group.cfg
 	chown nagios:nagios /usr/local/nagios/etc/objects/myservers/service_group.cfg
-	chmod 775 /usr/local/nagios/etc/objects/myservers
-	chmod 775 /usr/local/nagios/etc/objects/myservers/host_group.cfg
-	chmod 775 /usr/local/nagios/etc/objects/myservers/service_group.cfg
+	chmod 666 /usr/local/nagios/etc/objects/myservers
+	chmod 666 /usr/local/nagios/etc/objects/myservers/host_group.cfg
+	chmod 666 /usr/local/nagios/etc/objects/myservers/service_group.cfg
 	fi
 
 	print_info "配置 myserver/template.cfg"
