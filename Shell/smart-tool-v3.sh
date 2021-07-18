@@ -2413,14 +2413,16 @@ function nagios_menu() {
 	echoContent red "=================================================================="
 	echoContent skyBlue "--------------------------监控安装菜单----------------------------"
 	echoContent yellow "1.安装 Apache httpd "
-	echoContent yellow "2.安装 nagios server "
-	echoContent yellow "3.安装 nagios nrpe "
-	echoContent yellow "4.安装 nagios plugins "
-	echoContent yellow "5.激活 Apache httpd SSL "
-	echoContent yellow "6.激活 nagios dark mode "
-	echoContent yellow "7.激活 nagios normal mode "
-	echoContent yellow "8.定制 nagios server "
-	echoContent yellow "9.定制 nagios client "
+	echoContent yellow "2.激活 Apache httpd SSL "
+	echoContent skyBlue "--------------------------监控安装菜单----------------------------"
+	echoContent yellow "3.安装 nagios server "
+	echoContent yellow "4.安装 nagios nrpe "
+	echoContent yellow "5.安装 nagios plugins "
+	echoContent skyBlue "--------------------------监控配置菜单----------------------------"
+	echoContent yellow "6.定制 nagios server "
+	echoContent yellow "7.定制 nagios client "
+	echoContent yellow "8.激活 nagios dark mode "
+	echoContent yellow "9.激活 nagios normal mode "
 	echoContent red "=================================================================="
 	read -r -p "Please choose the function (请选择) : " selectInstallType
 	case ${selectInstallType} in
@@ -2428,28 +2430,28 @@ function nagios_menu() {
 		install_apache_httpd
 		;;
 	2)
-		install_nagios_server
-		;;
-	3)
-		install_nagios_nrpe
-		;;
-	4)
-		install_nagios_plugins
-		;;
-	5)
 		enable_httpd_ssl
 		;;
+	3)
+		install_nagios_server
+		;;
+	4)
+		install_nagios_nrpe
+		;;
+	5)
+		install_nagios_plugins
+		;;
 	6)
-		enable_nagios_dark_mode
-		;;
-	7)
-		enable_nagios_normal_mode
-		;;
-	8)
 		customize_nagios_server
 		;;
-	9)
+	7)
 		customize_nagios_client
+		;;
+	8)
+		enable_nagios_dark_mode
+		;;
+	9)
+		enable_nagios_normal_mode
 		;;
 	*)
 		print_error "请输入正确的数字"
