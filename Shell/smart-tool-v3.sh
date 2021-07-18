@@ -276,6 +276,22 @@ function install_git () {
 	print_complete "Install Git "
 }
 #-----------------------------------------------------------------------------#
+# Install nginx
+function install_nginx () {
+	print_start "Install Nginx "
+	print_info "安装进行中ing "
+	sudo yum -y install nginx #>/dev/null 2>&1
+	print_complete "Install Nginx "
+}
+#-----------------------------------------------------------------------------#
+# Install nginx
+function install_tomcat () {
+	print_start "Install Tomcat "
+	print_info "安装进行中ing "
+	sudo yum -y install tomcat #>/dev/null 2>&1
+	print_complete "Install Tomcat "
+}
+#-----------------------------------------------------------------------------#
 # 安装 v2ray-agent
 function InstallV2rayAgent {
 	# https://github.com/mack-a/v2ray-agent
@@ -2792,7 +2808,7 @@ function menu() {
 	echoContent yellow "11.安装 prerequisite"
 	echoContent yellow "12.安装 acme.sh | 13.安装 bpytop | 14.安装 webmin"
 	echoContent yellow "15.安装 docker CE | 16.安装 docker compose"
-	echoContent yellow "17.安装 git"
+	echoContent yellow "17.安装 git | 18.nginx [alone]| 19.tomcat [alone]"
 	echoContent skyBlue "---------------------------版本控制-------------------------------"  
 	echoContent yellow "20.git init | 21.git clone | 22.git pull | 23.git push"
 	echoContent yellow "24.更新日志、配置文件、动态数据到GitHub"
@@ -2849,6 +2865,12 @@ function menu() {
 		;;
 	17)
 		install_git
+		;;
+	18)
+		install_nginx
+		;;
+	19)
+		install_tomcat
 		;;
 	20)
 		git_init
