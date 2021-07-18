@@ -2031,8 +2031,8 @@ function customize_nagios_client {
 			if [ $TMPnagiosHostIP ]; then
 				print_info "Nagios Server IP : ${TMPnagiosHostIP}"
 			else
-				TMPnagiosHostIP=nagiosHostIP
-				print_info "使用默认 Nagios Server IP : ${nagiosHostIP}"
+				TMPnagiosHostIP=${nagiosHostIP}
+				print_info "使用默认 Nagios Server IP : ${TMPnagiosHostIP}"
 			fi
 			sed -i 's!allowed_hosts=127.0.0.1,::1!allowed_hosts=127.0.0.1,::1,${TMPnagiosHostIP}!g' /usr/local/nagios/etc/nrpe.cfg
 			print_info "添加Command "
@@ -2077,6 +2077,19 @@ command[check_httpd3]=/usr/local/nagios/libexec/check_service.sh -s httpd
 EOF
 		fi
 	fi
+
+	print_info "拷贝libexec 到本地"
+	if [[ -d "${GITHUB_REPO_TOOLBOX}/Nagios/Libexec" ]] ; then
+		cp -pf 	${GITHUB_REPO_TOOLBOX}/Nagios/Libexec/*.* /usr/local/nagios/libexec/
+		chmod 755 /usr/local/nagios/libexec/*.*
+	else
+		print_error "请先Git同步toolbox到本地，再进行设置！"
+		exit 0
+	fi
+
+	print_info "重启NRPE服务"
+	systemctl restart nrpe
+	systemctl status nrpe
 	print_complete "定制 Nagios Client "
 }
 #-----------------------------------------------------------------------------#
