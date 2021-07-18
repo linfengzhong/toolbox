@@ -2766,7 +2766,7 @@ function menu() {
 	echoContent skyBlue "---------------------------通用工具-------------------------------"
 	echoContent yellow "51.UUID | 52.show IP | 53.bpytop | 54.set timezone | 55.webmin ssl "
 	echoContent skyBlue "---------------------------脚本管理-------------------------------"
-	echoContent yellow "0.更新脚本 | 9.退出"
+	echoContent yellow "0.更新脚本"
 	echoContent yellow "1.科学上网工具 [Sub Menu] "
 	echoContent yellow "2.Nagios监控 [Sub Menu]"
 	echoContent yellow "3.设置域名 | 4.设置UUID | 5.默认UUID"
@@ -2928,7 +2928,7 @@ function menu() {
 		;;
 	esac
 }
-SmartToolVersion=v0.295
+SmartToolVersion=v0.296
 cleanScreen
 initVar $1
 set_current_host_domain
