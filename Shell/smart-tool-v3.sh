@@ -2034,12 +2034,12 @@ EOF
 		exit 0
 	fi
 	print_info "定义 command"
-	cat <<EOF >> /usr/local/nagios/etc/objects/commands.cfg
+	if cat /usr/local/nagios/etc/objects/commands.cfg | grep "# 2021 July 19th defined COMMANDS" >/dev/null; then
+   			print_error "commands.cfg 已定制过，无需重复操作！"
+	else
+		cat <<EOF >> /usr/local/nagios/etc/objects/commands.cfg
 ################################################################################
-#
-# Linfeng Zhong defined COMMANDS
-#
-#
+# 2021 July 19th defined COMMANDS
 ################################################################################
 
 define command {
@@ -2052,6 +2052,7 @@ define command {
     command_line    $USER1$/check_load -w $ARG1$ -c $ARG2$
 }
 EOF
+	fi
 	print_info "重启 Nagios 服务"
 	systemctl restart nagios
 	systemctl status nagios
@@ -2994,7 +2995,7 @@ function menu() {
 		;;
 	esac
 }
-SmartToolVersion=v0.296
+SmartToolVersion=v0.297
 cleanScreen
 initVar $1
 set_current_host_domain
