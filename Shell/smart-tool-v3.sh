@@ -2482,7 +2482,7 @@ function webmin_menu() {
 	echoContent green "当前系统Linux版本 : \c" 
 	checkSystem
 	echoContent red "=================================================================="
-	echoContent skyBlue "---------------------------主机管理-----------------------------"
+	echoContent skyBlue "----------------------------主机管理------------------------------"
 	echoContent yellow "1.安装 webmin "
 	echoContent yellow "2.激活 webmin SSL "
 	echoContent red "=================================================================="
