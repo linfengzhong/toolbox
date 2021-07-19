@@ -2819,7 +2819,7 @@ function menu() {
 	echoContent yellow "11.安装 prerequisite"
 	echoContent yellow "12.安装 acme.sh | 13.安装 bpytop | 14.安装 webmin"
 	echoContent yellow "15.安装 docker CE | 16.安装 docker compose"
-	echoContent yellow "17.安装 git | 18.nginx [alone] "
+	echoContent yellow "17.安装 git | 18.安装 nginx "
 	echoContent skyBlue "---------------------------版本控制-------------------------------"  
 	echoContent yellow "20.git init | 21.git clone | 22.git pull | 23.git push"
 	echoContent yellow "24.更新日志、配置文件、动态数据到GitHub"
@@ -2833,13 +2833,13 @@ function menu() {
 	echoContent yellow "37.show account"
 	echoContent skyBlue "---------------------------证书管理-------------------------------"
 	echoContent yellow "40.show CA | 41.generate CA | 42.renew CA"
-	echoContent skyBlue "---------------------------通用工具-------------------------------"
-	echoContent yellow "51.UUID | 52.show IP | 53.bpytop | 54.set timezone | 55.webmin ssl "
+	echoContent skyBlue "---------------------------常用工具-------------------------------"
+	echoContent yellow "50.bpytop | 51.webmin ssl "
 	echoContent skyBlue "---------------------------脚本管理-------------------------------"
 	echoContent yellow "0.更新脚本"
 	echoContent yellow "1.科学上网工具 [Sub Menu] "
 	echoContent yellow "2.Nagios监控 [Sub Menu]"
-	echoContent yellow "3.设置域名 | 4.设置UUID | 5.默认UUID"
+	echoContent yellow "3.设置域名 | 4.设置UUID | 5.默认UUID | 6.设置时区：上海"
 	echoContent yellow "9.退出"
 	echoContent red "=================================================================="
 	mkdirTools
@@ -2957,19 +2957,10 @@ function menu() {
 	42)
 		renewalTLS
 		;;
-	51)
-		generate_uuid
-		;;
-	52)
-		show_ip
-		;;
-	53)
+	50)
 		execBpytop
 		;;
-	54)
-		set_timezone
-		;;
-	55)
+	51)
 		init_webmin_ssl
 		;;
 	0)
@@ -2995,6 +2986,11 @@ function menu() {
 		;;
 	5)
 		clear_currentUUID
+		st
+		;;
+	6)
+		set_timezone
+		sleep 1
 		st
 		;;
 	9)
