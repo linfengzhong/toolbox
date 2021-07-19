@@ -2073,16 +2073,16 @@ EOF
 # 定制 Nagios Client
 function customize_nagios_client {
 	print_start "定制 Nagios Client "
-	print_info "Nagios 客户端配置文件： /usr/local/nagios/etc/nrpe.cfg "
+	print_info "Step 1: Nagios 客户端配置文件： /usr/local/nagios/etc/nrpe.cfg "
 	if [[ ! -f "/usr/local/nagios/etc/nrpe.cfg" ]]; then
 		print_error "Nagios 客户端配置文件不存在，请确认是否正确安装Nagios NRPE！"
 		exit 0
 	else
 		if cat /usr/local/nagios/etc/nrpe.cfg | grep "定制命令 - 2021 July 18th" >/dev/null; then
-   			print_info "已定制过，无需重复操作！"
+   			print_error "已定制过，无需重复操作！"
 			exit 0
 		else
-			print_info "添加Nagios 服务端IP # ALLOWED HOST ADDRESSES "
+			print_info "Step 1-1: 添加Nagios 服务端IP # ALLOWED HOST ADDRESSES "
 			# 注释掉内容
 			local TMPnagiosHostIP
 			read -r -p "请输入Nagios Server IP (留空使用默认地址): " TMPnagiosHostIP
@@ -2137,7 +2137,7 @@ EOF
 		fi
 	fi
 
-	print_info "拷贝libexec 到本地"
+	print_info "Step 2: 拷贝libexec 到本地"
 	if [[ -d "${GITHUB_REPO_TOOLBOX}/Nagios/Libexec" ]] ; then
 		cp -pf 	${GITHUB_REPO_TOOLBOX}/Nagios/Libexec/*.* /usr/local/nagios/libexec/
 		chmod 755 /usr/local/nagios/libexec/*.*
