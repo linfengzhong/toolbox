@@ -2855,7 +2855,9 @@ function menu() {
 	echoContent skyBlue "---------------------------安装软件-------------------------------"
 	echoContent yellow "10.安装 全部程序"
 	echoContent yellow "11.安装 prerequisite"
-	echoContent yellow "12.安装 acme.sh | 13.安装 bpytop | 14.安装 webmin"
+	echoContent yellow "12.安装 acme.sh"
+	echoContent yellow "13.安装 bpytop"
+	echoContent yellow "14.安装 webmin"
 	echoContent yellow "15.安装 docker CE | 16.安装 docker compose"
 	echoContent yellow "17.安装 git | 18.安装 nginx "
 	echoContent skyBlue "---------------------------版本控制-------------------------------"  
@@ -3040,7 +3042,7 @@ function menu() {
 		;;
 	esac
 }
-SmartToolVersion=v0.300
+SmartToolVersion=v0.301
 cleanScreen
 initVar $1
 set_current_host_domain
