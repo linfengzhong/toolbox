@@ -2819,7 +2819,7 @@ function menu() {
 	echoContent yellow "11.安装 prerequisite"
 	echoContent yellow "12.安装 acme.sh | 13.安装 bpytop | 14.安装 webmin"
 	echoContent yellow "15.安装 docker CE | 16.安装 docker compose"
-	echoContent yellow "17.安装 git | 18.nginx [alone]| 19.tomcat [alone]"
+	echoContent yellow "17.安装 git | 18.nginx [alone] "
 	echoContent skyBlue "---------------------------版本控制-------------------------------"  
 	echoContent yellow "20.git init | 21.git clone | 22.git pull | 23.git push"
 	echoContent yellow "24.更新日志、配置文件、动态数据到GitHub"
@@ -2828,12 +2828,11 @@ function menu() {
 	echoContent yellow "31.docker-compose up ｜ 32.docker-compose down"
 	echoContent yellow "33.docker status"
 	echoContent yellow "34.generate conf & logs [Sub Menu]"
+	echoContent yellow "35.show configs [Sub Menu]"
+	echoContent yellow "36.show logs [Sub Menu]"
+	echoContent yellow "37.show account"
 	echoContent skyBlue "---------------------------证书管理-------------------------------"
 	echoContent yellow "40.show CA | 41.generate CA | 42.renew CA"
-	echoContent skyBlue "---------------------------查看文件-------------------------------"
-	echoContent yellow "43.show configs [Sub Menu]"
-	echoContent yellow "44.show logs [Sub Menu]"
-	echoContent yellow "45.show account"
 	echoContent skyBlue "---------------------------通用工具-------------------------------"
 	echoContent yellow "51.UUID | 52.show IP | 53.bpytop | 54.set timezone | 55.webmin ssl "
 	echoContent skyBlue "---------------------------脚本管理-------------------------------"
@@ -2940,6 +2939,15 @@ function menu() {
 	34)
 		generate_conf_log_menu
 		;;
+	35)
+		conf_menu
+		;;
+	36)
+		log_menu
+		;;
+	37)
+		generate_vmess_trojan_account
+		;;
 	40)
 		checkTLStatus "${currentHost}"
 		;;
@@ -2948,15 +2956,6 @@ function menu() {
 		;;
 	42)
 		renewalTLS
-		;;
-	43)
-		conf_menu
-		;;
-	44)
-		log_menu
-		;;
-	45)
-		generate_vmess_trojan_account
 		;;
 	51)
 		generate_uuid
@@ -3005,7 +3004,7 @@ function menu() {
 		;;
 	esac
 }
-SmartToolVersion=v0.298
+SmartToolVersion=v0.299
 cleanScreen
 initVar $1
 set_current_host_domain
