@@ -2037,6 +2037,7 @@ EOF
 	if cat /usr/local/nagios/etc/objects/commands.cfg | grep "# 2021 July 19th defined COMMANDS" >/dev/null; then
    			print_error "commands.cfg 已定制过，无需重复操作！"
 	else
+		# \ --> 不转译
 		cat <<EOF >> /usr/local/nagios/etc/objects/commands.cfg
 ################################################################################
 # 2021 July 19th defined COMMANDS
@@ -2044,12 +2045,12 @@ EOF
 
 define command {
     command_name    check_nrpe
-    command_line    $USER1$/check_nrpe -H $HOSTADDRESS$ -t 30 -c $ARG1$ $ARG2$
+    command_line    \$USER1\$/check_nrpe -H \$HOSTADDRESS$ -t 30 -c \$ARG1\$ \$ARG2\$
 }
 
 define command {
     command_name    check_load
-    command_line    $USER1$/check_load -w $ARG1$ -c $ARG2$
+    command_line    \$USER1\$/check_load -w \$ARG1\$ -c \$ARG2\$
 }
 EOF
 	fi
@@ -2995,7 +2996,7 @@ function menu() {
 		;;
 	esac
 }
-SmartToolVersion=v0.297
+SmartToolVersion=v0.298
 cleanScreen
 initVar $1
 set_current_host_domain
