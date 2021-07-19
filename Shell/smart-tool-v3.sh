@@ -599,8 +599,8 @@ function renewalTLS() {
 
 		if [[ ${remainingDays} -le 1 ]]; then
 			print_info " ---> 重新生成证书"
-			sh /root/.acme.sh/acme.sh  --issue  -d $currentHost --standalone --force
-
+			# sh /root/.acme.sh/acme.sh  --issue  -d $currentHost --standalone --force
+			generate_ca
 		else
 			print_info " ---> 证书有效"
 		fi
