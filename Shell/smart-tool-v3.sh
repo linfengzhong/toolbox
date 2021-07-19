@@ -2464,6 +2464,43 @@ function install_nagios_nrpe {
 	print_complete "Step 5: 设置防火墙开启端口 5666"
 }
 #-----------------------------------------------------------------------------#
+# webmin 安装菜单
+function webmin_menu() {
+	clear
+	cd "$HOME" || exit
+	echoContent red "=================================================================="
+	echoContent green "SmartTool：\c"
+	echoContent white "${SmartToolVersion}"
+	echoContent green "Github：https://github.com/linfengzhong/toolbox"
+	echoContent green "logserver：https://github.com/linfengzhong/logserver"
+	echoContent green "初始化服务器、安装Docker、执行容器 on \c" 
+	echoContent white "${currentHost}"
+	echoContent green "当前主机外部IP地址： \c" 
+	echoContent white "${currentIP}"	
+	echoContent green "当前UUID： \c" 
+	echoContent white "${currentUUID}"
+	echoContent green "当前系统Linux版本 : \c" 
+	checkSystem
+	echoContent red "=================================================================="
+	echoContent skyBlue "---------------------------主机管理-----------------------------"
+	echoContent yellow "1.安装 webmin "
+	echoContent yellow "2.激活 webmin SSL "
+	read -r -p "Please choose the function (请选择) : " selectInstallType
+	case ${selectInstallType} in
+	1)
+		install_webmin
+		;;
+	2)
+		init_webmin_ssl
+		;;
+	*)
+		print_error "请输入正确的数字"
+		sleep 1
+		menu
+		;;
+	esac
+}
+#-----------------------------------------------------------------------------#
 # Nagios 安装菜单
 function nagios_menu() {
 	clear
@@ -2833,13 +2870,13 @@ function menu() {
 	echoContent yellow "37.show account"
 	echoContent skyBlue "---------------------------证书管理-------------------------------"
 	echoContent yellow "40.show CA | 41.generate CA | 42.renew CA"
-	echoContent skyBlue "---------------------------常用工具-------------------------------"
-	echoContent yellow "50.bpytop | 51.webmin ssl "
 	echoContent skyBlue "---------------------------脚本管理-------------------------------"
 	echoContent yellow "0.更新脚本"
-	echoContent yellow "1.科学上网工具 [Sub Menu] "
+	echoContent yellow "1.科学上网工具 [Sub Menu]"
 	echoContent yellow "2.Nagios监控 [Sub Menu]"
-	echoContent yellow "3.设置域名 | 4.设置UUID | 5.默认UUID | 6.设置时区：上海"
+	echoContent yellow "3.Webmin管理 [Sub Menu]"
+	echoContent yellow "4.设置域名 | 5.设置UUID | 6.恢复默认UUID | 7.设置时区：上海"
+	echoContent yellow "8.bpytop "
 	echoContent yellow "9.退出"
 	echoContent red "=================================================================="
 	mkdirTools
@@ -2957,12 +2994,6 @@ function menu() {
 	42)
 		renewalTLS
 		;;
-	50)
-		execBpytop
-		;;
-	51)
-		init_webmin_ssl
-		;;
 	0)
 		updateSmartTool
 		sleep 2
@@ -2975,23 +3006,29 @@ function menu() {
 		nagios_menu
 		;;
 	3)
+		webmin_menu
+		;;
+	4)
 		clear_myHostDomain
 		set_current_host_domain
 		;;
-	4)
+	5)
 		clear_currentUUID
 		set_current_uuid
 		sleep 1
 		st
 		;;
-	5)
+	6)
 		clear_currentUUID
 		st
 		;;
-	6)
+	7)
 		set_timezone
 		sleep 1
 		st
+		;;
+	8)
+		execBpytop
 		;;
 	9)
 	    exit 0
@@ -3002,7 +3039,7 @@ function menu() {
 		;;
 	esac
 }
-SmartToolVersion=v0.299
+SmartToolVersion=v0.300
 cleanScreen
 initVar $1
 set_current_host_domain
