@@ -16,7 +16,7 @@ function initVar() {
 	# default UUID
 	defaultUUID="d8206743-b292-43d1-8200-5606238a5abb"
 	# default Nagios server ip
-	nagiosHostIP = "104.199.212.122"
+	nagiosHostIP="104.199.212.122"
 	# 随机路径
 	customPath="rdxyzukwofngusfpmheud"
 
@@ -638,7 +638,7 @@ function installCronTLS() {
 	echoContent skyBlue "添加定时维护证书"
 	crontab -l >/etc/fuckGFW/backup_crontab.cron
 	sed '/fuckGFW/d;/acme.sh/d' /etc/fuckGFW/backup_crontab.cron >/etc/fuckGFW/backup_crontab.cron
-	echo "30 1 * * * /bin/bash /etc/fuckGFW/install.sh RenewTLS" >>/etc/fuckGFW/backup_crontab.cron
+	echo "30 1 * * * /bin/bash /etc/smart-tool/smart-tool-v3.sh RenewTLS" >>/etc/fuckGFW/backup_crontab.cron
 	crontab /etc/fuckGFW/backup_crontab.cron
 	echoContent green "\n ---> 添加定时维护证书成功"
 }
