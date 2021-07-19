@@ -1987,7 +1987,7 @@ function customize_nagios_server {
 	fi
 
 	print_info "Step 4: Nagios 配置服务器文件： /usr/local/nagios/etc/objects/myservers/host_group.cfg"
-	if [[ -f "/usr/local/nagios/etc/objects/myservers/host_group.cfg" && cat /usr/local/nagios/etc/objects/myservers/host_group.cfg | grep "# 2021 July 19th" ]] >/dev/null; then
+	if [ -f "/usr/local/nagios/etc/objects/myservers/host_group.cfg" ] && [ cat /usr/local/nagios/etc/objects/myservers/host_group.cfg | grep "# 2021 July 19th" ] >/dev/null; then
 		print_error "host_group.cfg 已经配置过了！"
 	else
 		cat <<EOF > /usr/local/nagios/etc/objects/myservers/host_group.cfg
@@ -2003,7 +2003,7 @@ EOF
 	fi
 
 	print_info "Step 5: 配置 /usr/local/nagios/etc/objects/myservers/service_group.cfg"
-	if [[ -f "/usr/local/nagios/etc/objects/myservers/service_group.cfg" && cat /usr/local/nagios/etc/objects/myservers/service_group.cfg | grep "# 2021 July 19th" ]] >/dev/null; then
+	if [ -f "/usr/local/nagios/etc/objects/myservers/service_group.cfg" ] && [ cat /usr/local/nagios/etc/objects/myservers/service_group.cfg | grep "# 2021 July 19th" ] >/dev/null; then
 		print_error "service_group.cfg 已经配置过了！"
 	else
 		cat <<EOF > /usr/local/nagios/etc/objects/myservers/service_group.cfg
