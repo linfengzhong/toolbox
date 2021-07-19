@@ -1943,7 +1943,12 @@ function install_apache_httpd {
 function customize_nagios_server {
 	print_start "定制 Nagios Server "
 
-	print_info "Step 1: Nagios 主配置文件： /usr/local/nagios/etc/nagios.cfg"
+	print_info "Step 1: 检查文件夹：/usr/local/nagios/etc/objects/myservers 如未存在则新建。 "
+	mkdir -p /usr/local/nagios/etc/objects/myservers
+	chown nagios:nagios /usr/local/nagios/etc/objects/myservers
+	chmod 777 /usr/local/nagios/etc/objects/myservers
+
+	print_info "Step 2: Nagios 主配置文件： /usr/local/nagios/etc/nagios.cfg"
 	if [[ ! -f "/usr/local/nagios/etc/nagios.cfg" ]]; then
 		print_error "Nagios 主配置文件不存在，请确认是否正确安装Nagios core！"
 		exit 0
@@ -1958,63 +1963,7 @@ function customize_nagios_server {
 		fi
 	fi
 
-	print_info "Step 2: Nagios 配置服务器文件： cfg_dir=/usr/local/nagios/etc/objects/myservers"
-	if [[ -d "/usr/local/nagios/etc/objects/myservers" ]]; then
-		print_error "myservers/host_group.cfg & service_group.cfg 已经配置过了！"
-	else
-		mkdir -p /usr/local/nagios/etc/objects/myservers
-
-		print_info "Step 2-1: 配置 /usr/local/nagios/etc/objects/myservers/host_group.cfg"
-		cat <<EOF > /usr/local/nagios/etc/objects/myservers/host_group.cfg
-define hostgroup{
-	hostgroup_name  GFW_Servers
-	alias           Fuck Great Firewall
-	members         k8s-master.ml,studayaws.tk,router3721.tk,taiwan3721.ml
-	}
-EOF
-
-		print_info "Step 2-2: 配置 /usr/local/nagios/etc/objects/myservers/service_group.cfg"
-		cat <<EOF > /usr/local/nagios/etc/objects/myservers/service_group.cfg
-define servicegroup{
-	servicegroup_name	V2ray
-	alias			V2ray
-	members			k8s-master.ml,Service V2ray,studayaws.tk,Service V2ray,router3721.tk,Service V2ray,taiwan3721.ml,Service V2ray
-	}
-
-define servicegroup{
-	servicegroup_name	Xray
-	alias			Xray
-	members			k8s-master.ml,Service Xray,studayaws.tk,Service Xray,router3721.tk,Service Xray,taiwan3721.ml,Service Xray
-	}
-
-define servicegroup{
-	servicegroup_name	Trojan.go
-	alias			Trojan.go
-	members			k8s-master.ml,Service Trojan.go,studayaws.tk,Service Trojan.go,router3721.tk,Service Trojan.go,taiwan3721.ml,Service Trojan.go
-	}
-
-define servicegroup{
-	servicegroup_name	Nginx
-	alias			Nginx
-	members			k8s-master.ml,Service Nginx,studayaws.tk,Service Nginx,router3721.tk,Service Nginx,taiwan3721.ml,Service Nginx
-	}
-
-define servicegroup{
-	servicegroup_name	Apache
-	alias			Apache
-	members			k8s-master.ml,Service Apache,studayaws.tk,Service Apache,router3721.tk,Service Apache,taiwan3721.ml,Service Apache
-	}
-EOF
-	print_info "Step 2-3: 文件及文件夹赋权限，改变所有者为nagios "
-	chown nagios:nagios /usr/local/nagios/etc/objects/myservers
-	chown nagios:nagios /usr/local/nagios/etc/objects/myservers/host_group.cfg
-	chown nagios:nagios /usr/local/nagios/etc/objects/myservers/service_group.cfg
-	chmod 777 /usr/local/nagios/etc/objects/myservers
-	chmod 777 /usr/local/nagios/etc/objects/myservers/host_group.cfg
-	chmod 777 /usr/local/nagios/etc/objects/myservers/service_group.cfg
-	fi
-
-	print_info "Step 3: 配置 myserver/template.cfg"
+	print_info "Step 3: 配置 /usr/local/nagios/etc/objects/myserver/template.cfg"
 	local NagiosClientDomain1
 	local NagiosClientIP1
 	if [[ -f "${GITHUB_REPO_TOOLBOX}/Nagios/server/myservers/template.cfg" ]] ; then
@@ -2028,15 +1977,72 @@ EOF
 			if [ $NagiosClientIP1 ]; then
 				# 双引号可以用shell变量
 				sed -i "s/NagiosClientIP/$NagiosClientIP1/g" /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
+				chown nagios:nagios /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
+				chmod 777 /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
 			fi
 		fi
-		chown nagios:nagios /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
-		chmod 777 /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
 	else
 		print_error "请先Git同步toolbox到本地，再进行设置！"
 		exit 0
 	fi
-	print_info "Step 4: 添加自定义命令到文件 /usr/local/nagios/etc/objects/commands.cfg"
+
+	print_info "Step 4: Nagios 配置服务器文件： /usr/local/nagios/etc/objects/myservers/host_group.cfg"
+	if [[ -f "/usr/local/nagios/etc/objects/myservers/host_group.cfg" ]] && [[ cat /usr/local/nagios/etc/objects/myservers/host_group.cfg | grep "# 2021 July 19th" ]] >/dev/null; then
+		print_error "host_group.cfg 已经配置过了！"
+	else
+		cat <<EOF > /usr/local/nagios/etc/objects/myservers/host_group.cfg
+# 2021 July 19th
+define hostgroup{
+	hostgroup_name  GFW_Servers
+	alias           Fuck Great Firewall
+	members         k8s-master.ml,studyaws.tk,router3721.tk,taiwan3721.ml
+	}
+EOF
+	chown nagios:nagios /usr/local/nagios/etc/objects/myservers/host_group.cfg
+	chmod 777 /usr/local/nagios/etc/objects/myservers/host_group.cfg
+	fi
+
+	print_info "Step 5: 配置 /usr/local/nagios/etc/objects/myservers/service_group.cfg"
+	if [[ -f "/usr/local/nagios/etc/objects/myservers/service_group.cfg" ]] && [[ cat /usr/local/nagios/etc/objects/myservers/service_group.cfg | grep "# 2021 July 19th" ]] >/dev/null; then
+		print_error "service_group.cfg 已经配置过了！"
+	else
+		cat <<EOF > /usr/local/nagios/etc/objects/myservers/service_group.cfg
+# 2021 July 19th
+define servicegroup{
+	servicegroup_name	V2ray
+	alias			V2ray
+	members			k8s-master.ml,Service V2ray,studyaws.tk,Service V2ray,router3721.tk,Service V2ray,taiwan3721.ml,Service V2ray
+	}
+
+define servicegroup{
+	servicegroup_name	Xray
+	alias			Xray
+	members			k8s-master.ml,Service Xray,studyaws.tk,Service Xray,router3721.tk,Service Xray,taiwan3721.ml,Service Xray
+	}
+
+define servicegroup{
+	servicegroup_name	Trojan.go
+	alias			Trojan.go
+	members			k8s-master.ml,Service Trojan.go,studyaws.tk,Service Trojan.go,router3721.tk,Service Trojan.go,taiwan3721.ml,Service Trojan.go
+	}
+
+define servicegroup{
+	servicegroup_name	Nginx
+	alias			Nginx
+	members			k8s-master.ml,Service Nginx,studyaws.tk,Service Nginx,router3721.tk,Service Nginx,taiwan3721.ml,Service Nginx
+	}
+
+define servicegroup{
+	servicegroup_name	Apache
+	alias			Apache
+	members			k8s-master.ml,Service Apache,studyaws.tk,Service Apache,router3721.tk,Service Apache,taiwan3721.ml,Service Apache
+	}
+EOF
+	chown nagios:nagios /usr/local/nagios/etc/objects/myservers/service_group.cfg
+	chmod 777 /usr/local/nagios/etc/objects/myservers/service_group.cfg
+	fi
+
+	print_info "Step 6: 添加自定义命令到文件 /usr/local/nagios/etc/objects/commands.cfg"
 	if cat /usr/local/nagios/etc/objects/commands.cfg | grep "# 2021 July 19th defined COMMANDS" >/dev/null; then
    			print_error "commands.cfg 已定制过，无需重复操作！"
 	else
@@ -2057,7 +2063,8 @@ define command {
 }
 EOF
 	fi
-	print_info "Step 5: 重启 Nagios 服务"
+
+	print_info "Step 7: 重启 Nagios 服务"
 	systemctl restart nagios
 	systemctl status nagios
 	print_complete "定制 Nagios Server "
