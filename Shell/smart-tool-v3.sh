@@ -2880,7 +2880,8 @@ function menu() {
 	echoContent yellow "1.科学上网工具 [Sub Menu]"
 	echoContent yellow "2.Nagios监控 [Sub Menu]"
 	echoContent yellow "3.Webmin管理 [Sub Menu]"
-	echoContent yellow "4.设置域名 | 5.设置UUID | 6.恢复默认UUID | 7.设置时区：上海"
+	echoContent yellow "4.设置域名 | 5.设置时区：上海"
+	echoContent yellow "6.设置UUID | 7.恢复默认UUID"
 	echoContent yellow "8.bpytop "
 	echoContent yellow "9.退出"
 	echoContent red "=================================================================="
@@ -3019,18 +3020,18 @@ function menu() {
 		set_current_host_domain
 		;;
 	5)
-		clear_currentUUID
-		set_current_uuid
+		set_timezone
 		sleep 1
 		st
 		;;
 	6)
 		clear_currentUUID
+		set_current_uuid
+		sleep 1
 		st
 		;;
 	7)
-		set_timezone
-		sleep 1
+		clear_currentUUID
 		st
 		;;
 	8)
