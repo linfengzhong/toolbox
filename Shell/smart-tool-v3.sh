@@ -2080,7 +2080,6 @@ function customize_nagios_client {
 	else
 		if cat /usr/local/nagios/etc/nrpe.cfg | grep "定制命令 - 2021 July 18th" >/dev/null; then
    			print_error "已定制过，无需重复操作！"
-			exit 0
 		else
 			print_info "Step 1-1: 添加Nagios 服务端IP # ALLOWED HOST ADDRESSES "
 			# 注释掉内容
