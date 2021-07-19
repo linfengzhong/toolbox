@@ -1960,47 +1960,49 @@ function customize_nagios_server {
 
 	print_info "Step 2: Nagios 配置服务器文件： cfg_dir=/usr/local/nagios/etc/objects/myservers"
 	if [[ -d "/usr/local/nagios/etc/objects/myservers" ]]; then
-		print_error "Nagios myservers/host_group.cfg & service_group.cfg 已经配置过了！"
+		print_error "myservers/host_group.cfg & service_group.cfg 已经配置过了！"
 	else
 		mkdir -p /usr/local/nagios/etc/objects/myservers
+
 		print_info "Step 2-1: 配置 /usr/local/nagios/etc/objects/myservers/host_group.cfg"
 		cat <<EOF > /usr/local/nagios/etc/objects/myservers/host_group.cfg
 define hostgroup{
 	hostgroup_name  GFW_Servers
 	alias           Fuck Great Firewall
-	members         k8s-master.ml
+	members         k8s-master.ml,studayaws.tk,router3721.tk,taiwan3721.ml
 	}
 EOF
+
 		print_info "Step 2-2: 配置 /usr/local/nagios/etc/objects/myservers/service_group.cfg"
 		cat <<EOF > /usr/local/nagios/etc/objects/myservers/service_group.cfg
 define servicegroup{
 	servicegroup_name	V2ray
 	alias			V2ray
-	members			k8s-master.ml,Service V2ray
+	members			k8s-master.ml,Service V2ray,studayaws.tk,Service V2ray,router3721.tk,Service V2ray,taiwan3721.ml,Service V2ray
 	}
 
 define servicegroup{
 	servicegroup_name	Xray
 	alias			Xray
-	members			k8s-master.ml,Service Xray
+	members			k8s-master.ml,Service Xray,studayaws.tk,Service Xray,router3721.tk,Service Xray,taiwan3721.ml,Service Xray
 	}
 
 define servicegroup{
 	servicegroup_name	Trojan.go
 	alias			Trojan.go
-	members			k8s-master.ml,Service Trojan.go
+	members			k8s-master.ml,Service Trojan.go,studayaws.tk,Service Trojan.go,router3721.tk,Service Trojan.go,taiwan3721.ml,Service Trojan.go
 	}
 
 define servicegroup{
 	servicegroup_name	Nginx
 	alias			Nginx
-	members			k8s-master.ml,Service Nginx
+	members			k8s-master.ml,Service Nginx,studayaws.tk,Service Nginx,router3721.tk,Service Nginx,taiwan3721.ml,Service Nginx
 	}
 
 define servicegroup{
 	servicegroup_name	Apache
 	alias			Apache
-	members			k8s-master.ml,Service Apache
+	members			k8s-master.ml,Service Apache,studayaws.tk,Service Apache,router3721.tk,Service Apache,taiwan3721.ml,Service Apache
 	}
 EOF
 	print_info "Step 2-3: 文件及文件夹赋权限，改变所有者为nagios "
