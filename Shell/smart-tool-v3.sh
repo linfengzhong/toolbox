@@ -1932,6 +1932,11 @@ function install_v2_ui {
 	bash <(curl -Ls https://blog.sprov.xyz/v2-ui.sh)
 }
 #-----------------------------------------------------------------------------#
+# 安装 x-ui
+function install_x_ui {
+	bash <(curl -Ls https://raw.githubusercontent.com/sprov065/x-ui/master/install.sh) 0.2.0
+}
+#-----------------------------------------------------------------------------#
 # 安装 apache httpd
 function install_apache_httpd {
 	print_start "安装 apache httpd"
@@ -2592,9 +2597,9 @@ function kxsw_menu() {
 	echoContent yellow "0.安装 v2ray-agent | 快捷方式 [vasma]"
 	echoContent yellow "1.安装 xray-OneKey"
 	echoContent yellow "2.安装 BBR"
-	echoContent yellow "3.安装 v2-ui"
-	echoContent yellow "4.安装 trojan-go 单机"
-	echoContent yellow "5.安装 v2ray 单机 - pending "
+	echoContent yellow "3.安装 v2-ui | 快捷方式 [v2-ui]"
+	echoContent yellow "4.安装 x-ui  | 快捷方式 [x-ui]"
+	echoContent yellow "5.安装 trojan-go 单机"
 	echoContent red "=================================================================="
 	read -r -p "Please choose the function (请选择) : " selectInstallType
 	case ${selectInstallType} in
@@ -2611,6 +2616,9 @@ function kxsw_menu() {
 		install_v2_ui
 		;;
 	4)
+		install_x_ui
+		;;
+	5)
 		install_standalone_trojan_go
 		;;
 	*)
@@ -3046,7 +3054,7 @@ function menu() {
 		;;
 	esac
 }
-SmartToolVersion=v0.302
+SmartToolVersion=v0.303
 cleanScreen
 initVar $1
 set_current_host_domain
