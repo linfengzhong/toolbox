@@ -1963,7 +1963,7 @@ function customize_nagios_server {
 		fi
 	fi
 
-	print_info "Step 3: 配置 /usr/local/nagios/etc/objects/myserver/template.cfg"
+	print_info "Step 3: Nagios 服务器配置文件： /usr/local/nagios/etc/objects/myserver/template.cfg"
 	local NagiosClientDomain1
 	local NagiosClientIP1
 	if [[ -f "${GITHUB_REPO_TOOLBOX}/Nagios/server/myservers/template.cfg" ]] ; then
@@ -1986,7 +1986,7 @@ function customize_nagios_server {
 		exit 0
 	fi
 
-	print_info "Step 4: Nagios 配置服务器文件： /usr/local/nagios/etc/objects/myservers/host_group.cfg"
+	print_info "Step 4: Nagios 服务器组配置文件： /usr/local/nagios/etc/objects/myservers/host_group.cfg"
 	if [ -f "/usr/local/nagios/etc/objects/myservers/host_group.cfg" ] && [ cat /usr/local/nagios/etc/objects/myservers/host_group.cfg | grep "# 2021 July 19th" ] >/dev/null; then
 		print_error "host_group.cfg 已经配置过了！"
 	else
@@ -2002,7 +2002,7 @@ EOF
 	chmod 777 /usr/local/nagios/etc/objects/myservers/host_group.cfg
 	fi
 
-	print_info "Step 5: 配置 /usr/local/nagios/etc/objects/myservers/service_group.cfg"
+	print_info "Step 5: 服务组配置文件： /usr/local/nagios/etc/objects/myservers/service_group.cfg"
 	if [ -f "/usr/local/nagios/etc/objects/myservers/service_group.cfg" ] && [ cat /usr/local/nagios/etc/objects/myservers/service_group.cfg | grep "# 2021 July 19th" ] >/dev/null; then
 		print_error "service_group.cfg 已经配置过了！"
 	else
