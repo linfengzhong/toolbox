@@ -2858,8 +2858,10 @@ function menu() {
 	echoContent yellow "12.安装 acme.sh"
 	echoContent yellow "13.安装 bpytop"
 	echoContent yellow "14.安装 webmin"
-	echoContent yellow "15.安装 docker CE | 16.安装 docker compose"
-	echoContent yellow "17.安装 git | 18.安装 nginx "
+	echoContent yellow "15.安装 docker CE"
+	echoContent yellow "16.安装 docker compose"
+	echoContent yellow "17.安装 git"
+	echoContent yellow "18.安装 nginx"
 	echoContent skyBlue "---------------------------版本控制-------------------------------"  
 	echoContent yellow "20.git init | 21.git clone | 22.git pull | 23.git push"
 	echoContent yellow "24.更新日志、配置文件、动态数据到GitHub"
@@ -2894,6 +2896,7 @@ function menu() {
 		install_docker
 		install_docker_compose
 		install_git
+		install_nginx
 		;;
 	11)
 		install_prerequisite
@@ -3042,7 +3045,7 @@ function menu() {
 		;;
 	esac
 }
-SmartToolVersion=v0.301
+SmartToolVersion=v0.302
 cleanScreen
 initVar $1
 set_current_host_domain
