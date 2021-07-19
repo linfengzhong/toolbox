@@ -590,7 +590,7 @@ function renewalTLS() {
 		if [[ ${remainingDays} -le 0 ]]; then
 			tlsStatus="已过期"
 		fi
-
+		print_info "${currentHost}"
 		print_info "证书检查日期:$(date "+%F %H:%M:%S")"
 		print_info "证书生成日期:$(date -d @"${modifyTime}" +"%F %H:%M:%S")"
 		print_info "证书生成天数:${days}"
