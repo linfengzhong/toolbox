@@ -2990,6 +2990,8 @@ function menu() {
 	4)
 		clear_currentUUID
 		set_current_uuid
+		sleep 1
+		st
 		;;
 	5)
 		clear_currentUUID
