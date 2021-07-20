@@ -2095,6 +2095,13 @@ EOF
 	fi
 }
 #-----------------------------------------------------------------------------#
+# 定制 Nagios Server 重启
+function customize_nagios_server_restart {
+	print_info "Step 7: 重启 Nagios 服务"
+	systemctl restart nagios
+	systemctl status nagios
+}
+#-----------------------------------------------------------------------------#
 # 定制 Nagios Server
 function customize_nagios_server {
 	print_start "定制 Nagios Server "
@@ -2106,13 +2113,11 @@ function customize_nagios_server {
 
 	customize_nagios_server_nagios_cfg
 	customize_nagios_server_myservers
-	customize_nagios_server_host_group
-	customize_nagios_server_service_group
+	# customize_nagios_server_host_group
+	# customize_nagios_server_service_group
 	customize_nagios_server_command
+	customize_nagios_server_restart
 
-	print_info "Step 7: 重启 Nagios 服务"
-	systemctl restart nagios
-	systemctl status nagios
 	print_complete "定制 Nagios Server "
 }
 #-----------------------------------------------------------------------------#
@@ -2583,6 +2588,7 @@ function nagios_menu() {
 	echoContent yellow "7.定制 nagios client "
 	echoContent yellow "8.激活 nagios dark mode "
 	echoContent yellow "9.激活 nagios normal mode "
+	echoContent yellow "11.添加 nagios client server "
 	echoContent red "=================================================================="
 	read -r -p "Please choose the function (请选择) : " selectInstallType
 	case ${selectInstallType} in
@@ -2612,6 +2618,10 @@ function nagios_menu() {
 		;;
 	9)
 		enable_nagios_normal_mode
+		;;
+	11)
+		customize_nagios_server_myservers
+		customize_nagios_server_restart
 		;;
 	*)
 		print_error "请输入正确的数字"
