@@ -1974,22 +1974,18 @@ function customize_nagios_server_myservers {
 			cp -pf 	${GITHUB_REPO_TOOLBOX}/Nagios/server/myservers/template.cfg /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
 			# 双引号可以用shell变量
 			sed -i "s/NagiosClientDomain/$NagiosClientDomain1/g" /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
-
 			NagiosClientIP1=$(ping ${NagiosClientDomain1} -c 1 | sed '1{s/[^(]*(//;s/).*//;q}')
-			read -r -p "请确认IP地址 ${NagiosClientIP1} 是否正确：[y/n] " anwser_y_n
-			if (( anwser_y_n=="y" )) || (( anwser_y_n=="Y" )) ; then
-				# 双引号可以用shell变量
-				print_done "选择成功！"
-				sed -i "s/NagiosClientIP/$NagiosClientIP1/g" /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
-				chown nagios:nagios /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
-				chmod 777 /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
-			else
-				print_error "请重新输入正确的服务器域名！"
-			fi
+			print_info "输入的服务器IP地址: \c"
+			echoContent white "${NagiosClientIP1}"
+			# 双引号可以用shell变量
+			sed -i "s/NagiosClientIP/$NagiosClientIP1/g" /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
+			chown nagios:nagios /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
+			chmod 777 /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
+		else
+			print_error "请输入正确的服务器地址！"
 		fi
 	else
 		print_error "请先Git同步toolbox到本地，再进行设置！"
-		exit 0
 	fi
 }
 #-----------------------------------------------------------------------------#
