@@ -1965,8 +1965,11 @@ function customize_nagios_server_nagios_cfg {
 #-----------------------------------------------------------------------------#
 # 定制 Nagios Server Myservers
 function customize_nagios_server_myservers {
-	print_info "Step 3: Nagios 服务器配置文件： /usr/local/nagios/etc/objects/myservers/template.cfg"
+	print_info "Step 1: 检查文件夹：/usr/local/nagios/etc/objects/myservers 如未存在则新建。 "
 	mkdir -p /usr/local/nagios/etc/objects/myservers
+	chown nagios:nagios /usr/local/nagios/etc/objects/myservers
+	chmod 777 /usr/local/nagios/etc/objects/myservers
+	print_info "Step 3: Nagios 服务器配置文件： /usr/local/nagios/etc/objects/myservers/template.cfg"
 	local NagiosClientDomain1
 	local NagiosClientIP1
 	if [[ -f "${GITHUB_REPO_TOOLBOX}/Nagios/server/myservers/template.cfg" ]] ; then
@@ -2111,11 +2114,6 @@ function customize_nagios_server_restart {
 function customize_nagios_server {
 	print_start "定制 Nagios Server "
 
-	print_info "Step 1: 检查文件夹：/usr/local/nagios/etc/objects/myservers 如未存在则新建。 "
-	mkdir -p /usr/local/nagios/etc/objects/myservers
-	chown nagios:nagios /usr/local/nagios/etc/objects/myservers
-	chmod 777 /usr/local/nagios/etc/objects/myservers
-
 	customize_nagios_server_nagios_cfg
 	customize_nagios_server_myservers
 	# customize_nagios_server_host_group
@@ -2124,6 +2122,13 @@ function customize_nagios_server {
 	customize_nagios_server_restart
 
 	print_complete "定制 Nagios Server "
+}
+#-----------------------------------------------------------------------------#
+# 定制 Nagios Server Myservers Show
+function customize_nagios_server_myservers_show {
+	print_start "Nagios Myservers "
+	ls -al /usr/local/nagios/etc/objects/myservers
+	print_complete "Nagios Myservers "
 }
 #-----------------------------------------------------------------------------#
 # 定制 Nagios Client NRPE.cfg
@@ -2614,6 +2619,7 @@ function nagios_menu() {
 	echoContent yellow "8.激活 nagios dark mode "
 	echoContent yellow "9.激活 nagios normal mode "
 	echoContent yellow "11.添加 nagios client server "
+	echoContent yellow "12.展示 nagios client myservers "
 	echoContent red "=================================================================="
 	read -r -p "Please choose the function (请选择) : " selectInstallType
 	case ${selectInstallType} in
@@ -2647,6 +2653,9 @@ function nagios_menu() {
 	11)
 		customize_nagios_server_myservers
 		customize_nagios_server_restart
+		;;
+	12)
+		customize_nagios_server_myservers_show
 		;;
 	*)
 		print_error "请输入正确的数字"
