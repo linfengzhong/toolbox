@@ -1946,15 +1946,8 @@ function install_apache_httpd {
 	print_complete "安装 apache httpd"
 }
 #-----------------------------------------------------------------------------#
-# 定制 Nagios Server
-function customize_nagios_server {
-	print_start "定制 Nagios Server "
-
-	print_info "Step 1: 检查文件夹：/usr/local/nagios/etc/objects/myservers 如未存在则新建。 "
-	mkdir -p /usr/local/nagios/etc/objects/myservers
-	chown nagios:nagios /usr/local/nagios/etc/objects/myservers
-	chmod 777 /usr/local/nagios/etc/objects/myservers
-
+# 定制 Nagios Server Nagios.cfg
+function customize_nagios_server_nagios_cfg {
 	print_info "Step 2: Nagios 主配置文件： /usr/local/nagios/etc/nagios.cfg"
 	if [[ ! -f "/usr/local/nagios/etc/nagios.cfg" ]]; then
 		print_error "Nagios 主配置文件不存在，请确认是否正确安装Nagios core！"
@@ -1969,7 +1962,10 @@ function customize_nagios_server {
 			sed -i 's!#cfg_dir=/usr/local/nagios/etc/servers!cfg_dir=/usr/local/nagios/etc/objects/myservers!g' /usr/local/nagios/etc/nagios.cfg
 		fi
 	fi
-
+}
+#-----------------------------------------------------------------------------#
+# 定制 Nagios Server Myservers
+function customize_nagios_server_myservers {
 	print_info "Step 3: Nagios 服务器配置文件： /usr/local/nagios/etc/objects/myserver/template.cfg"
 	local NagiosClientDomain1
 	local NagiosClientIP1
@@ -1992,7 +1988,10 @@ function customize_nagios_server {
 		print_error "请先Git同步toolbox到本地，再进行设置！"
 		exit 0
 	fi
-
+}
+#-----------------------------------------------------------------------------#
+# 定制 Nagios Server Host Group
+function customize_nagios_server_host_group {
 	print_info "Step 4: Nagios 服务器组配置文件： /usr/local/nagios/etc/objects/myservers/host_group.cfg"
 	if [[ -f "/usr/local/nagios/etc/objects/myservers/host_group.cfg" ]] && cat /usr/local/nagios/etc/objects/myservers/host_group.cfg | grep "# 2021 July 19th" >/dev/null; then
 		print_error "host_group.cfg 已经配置过了！"
@@ -2008,7 +2007,10 @@ EOF
 	chown nagios:nagios /usr/local/nagios/etc/objects/myservers/host_group.cfg
 	chmod 777 /usr/local/nagios/etc/objects/myservers/host_group.cfg
 	fi
-
+}
+#-----------------------------------------------------------------------------#
+# 定制 Nagios Server Service Group
+function customize_nagios_server_service_group {
 	print_info "Step 5: 服务组配置文件： /usr/local/nagios/etc/objects/myservers/service_group.cfg"
 	if [[ -f "/usr/local/nagios/etc/objects/myservers/service_group.cfg" ]] && cat /usr/local/nagios/etc/objects/myservers/service_group.cfg | grep "# 2021 July 19th" >/dev/null; then
 		print_error "service_group.cfg 已经配置过了！"
@@ -2066,7 +2068,10 @@ EOF
 	chown nagios:nagios /usr/local/nagios/etc/objects/myservers/service_group.cfg
 	chmod 777 /usr/local/nagios/etc/objects/myservers/service_group.cfg
 	fi
-
+}
+#-----------------------------------------------------------------------------#
+# 定制 Nagios Server Command
+function customize_nagios_server_command {
 	print_info "Step 6: 添加自定义命令到文件 /usr/local/nagios/etc/objects/commands.cfg"
 	if cat /usr/local/nagios/etc/objects/commands.cfg | grep "# 2021 July 19th defined COMMANDS" >/dev/null; then
    			print_error "commands.cfg 已定制过，无需重复操作！"
@@ -2088,6 +2093,22 @@ define command {
 }
 EOF
 	fi
+}
+#-----------------------------------------------------------------------------#
+# 定制 Nagios Server
+function customize_nagios_server {
+	print_start "定制 Nagios Server "
+
+	print_info "Step 1: 检查文件夹：/usr/local/nagios/etc/objects/myservers 如未存在则新建。 "
+	mkdir -p /usr/local/nagios/etc/objects/myservers
+	chown nagios:nagios /usr/local/nagios/etc/objects/myservers
+	chmod 777 /usr/local/nagios/etc/objects/myservers
+
+	customize_nagios_server_nagios_cfg
+	customize_nagios_server_myservers
+	customize_nagios_server_host_group
+	customize_nagios_server_service_group
+	customize_nagios_server_command
 
 	print_info "Step 7: 重启 Nagios 服务"
 	systemctl restart nagios
