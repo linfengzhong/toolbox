@@ -2121,9 +2121,8 @@ function customize_nagios_server {
 	print_complete "定制 Nagios Server "
 }
 #-----------------------------------------------------------------------------#
-# 定制 Nagios Client
-function customize_nagios_client {
-	print_start "定制 Nagios Client "
+# 定制 Nagios Client NRPE.cfg
+function customize_nagios_client_nrpe_cfg {
 	print_info "Step 1: Nagios 客户端配置文件： /usr/local/nagios/etc/nrpe.cfg "
 	if [[ ! -f "/usr/local/nagios/etc/nrpe.cfg" ]]; then
 		print_error "Nagios 客户端配置文件不存在，请确认是否正确安装Nagios NRPE！"
@@ -2144,7 +2143,7 @@ function customize_nagios_client {
 			fi
 			# 双引号可以用shell变量
 			sed -i "s/allowed_hosts=127.0.0.1,::1/allowed_hosts=127.0.0.1,::1,$TMPnagiosHostIP/g" /usr/local/nagios/etc/nrpe.cfg
-			print_info "添加Command "
+			print_info "Step 1-2: 添加Command "
 			cat <<EOF >> /usr/local/nagios/etc/nrpe.cfg
 # 定制命令 - 2021 July 18th
 command[check_users]=/usr/local/nagios/libexec/check_users -w 5 -c 10
@@ -2192,7 +2191,10 @@ command[check_docker]=/usr/local/nagios/libexec/check_service.sh -s docker
 EOF
 		fi
 	fi
-
+}
+#-----------------------------------------------------------------------------#
+# 定制 Nagios Client Copy Libexec
+function customize_nagios_client_copy_libexec {
 	print_info "Step 2: 拷贝libexec 到本地"
 	if [[ -d "${GITHUB_REPO_TOOLBOX}/Nagios/Libexec" ]] ; then
 		cp -pf 	${GITHUB_REPO_TOOLBOX}/Nagios/Libexec/*.* /usr/local/nagios/libexec/
@@ -2201,10 +2203,23 @@ EOF
 		print_error "请先Git同步toolbox到本地，再进行设置！"
 		exit 0
 	fi
-
+}
+#-----------------------------------------------------------------------------#
+# 定制 Nagios Client Restart
+function customize_nagios_client_restart {
 	print_info "重启NRPE服务"
 	systemctl restart nrpe
 	systemctl status nrpe
+}
+#-----------------------------------------------------------------------------#
+# 定制 Nagios Client
+function customize_nagios_client {
+	print_start "定制 Nagios Client "
+
+	customize_nagios_client_nrpe_cfg
+	customize_nagios_client_copy_libexec
+	customize_nagios_client_restart
+
 	print_complete "定制 Nagios Client "
 }
 #-----------------------------------------------------------------------------#
