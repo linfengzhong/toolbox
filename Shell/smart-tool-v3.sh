@@ -368,7 +368,7 @@ function show_docker_container () {
 function git_init () {
 	print_start "初始化 Git "
 	if [[ -d "$HOME/git" ]];then
-		echoContent yellow "Git文件夹已存在，无需初始化Git！"
+		print_error "Git文件夹已存在，无需初始化Git！"
 	else
 		git config --global user.name "root" 
 		git config --global user.email "root@${currentHost}"
@@ -392,7 +392,7 @@ function git_clone_toolbox () {
 	print_start "Git clone ToolBox "
 	if [[ -d "$HOME/git/" ]];then
 		if [[ -d "$HOME/git/toolbox" ]];then
-			echoContent yellow "toolbox文件夹已存在，无需重新clone！"
+			print_error "toolbox文件夹已存在，无需重新clone！"
 		else
 			cd  $HOME/git/
 			git clone git@github.com:linfengzhong/toolbox.git
@@ -405,7 +405,7 @@ function git_clone_toolbox () {
 			aliasInstall
 		fi
 	else
-		echoContent yellow "请先初始化Git！"
+		print_error "请先初始化Git！"
 		exit 0
 	fi
 }
