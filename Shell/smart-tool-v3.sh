@@ -376,7 +376,9 @@ function git_init () {
 		cd ~
 		mkdir -p git
 		cd git
-		ssh-keygen -t rsa -C fred.zhong@outlook.com
+		# ssh-keygen -t rsa -C fred.zhong@outlook.com
+		# 免互动
+		ssh-keygen -t rsa -C fred.zhong@outlook.com -P "" -f ~/.ssh/id_rsa
 		print_info "请复制下面的Public key到GitHub "
 		print_info "======== Public key========= "
 		cat ~/.ssh/id_rsa.pub
@@ -3054,7 +3056,7 @@ function menu() {
 		;;
 	esac
 }
-SmartToolVersion=v0.303
+SmartToolVersion=v0.304
 cleanScreen
 initVar $1
 set_current_host_domain
