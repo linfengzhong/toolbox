@@ -2139,6 +2139,11 @@ command[check_nginx3]=/usr/local/nagios/libexec/check_service.sh -s nginx
 command[check_httpd1]=/usr/local/nagios/libexec/check_services -p httpd
 command[check_httpd2]=/usr/local/nagios/libexec/check_init_service httpd
 command[check_httpd3]=/usr/local/nagios/libexec/check_service.sh -s httpd
+
+command[check_v2_ui]=/usr/local/nagios/libexec/check_service.sh -s v2-ui
+command[check_x_ui]=/usr/local/nagios/libexec/check_service.sh -s x-ui
+command[check_webmin]=/usr/local/nagios/libexec/check_service.sh -s webmin
+
 EOF
 		fi
 	fi
