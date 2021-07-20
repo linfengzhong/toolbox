@@ -2187,6 +2187,7 @@ command[check_httpd3]=/usr/local/nagios/libexec/check_service.sh -s httpd
 command[check_v2_ui]=/usr/local/nagios/libexec/check_service.sh -s v2-ui
 command[check_x_ui]=/usr/local/nagios/libexec/check_service.sh -s x-ui
 command[check_webmin]=/usr/local/nagios/libexec/check_service.sh -s webmin
+command[check_docker]=/usr/local/nagios/libexec/check_service.sh -s docker
 
 EOF
 		fi
