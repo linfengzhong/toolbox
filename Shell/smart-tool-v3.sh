@@ -1977,7 +1977,7 @@ function customize_nagios_server_myservers {
 
 			NagiosClientIP1=$(ping ${NagiosClientDomain1} -c 1 | sed '1{s/[^(]*(//;s/).*//;q}')
 			read -r -p "请确认IP地址 ${NagiosClientIP1} 是否正确：[y/n] " anwser_y_n
-			if [[ anwser_y_n=="y" || anwser_y_n=="Y" ]] ; then
+			if [[ anwser_y_n=="y" ]] || [[ anwser_y_n=="Y" ]] ; then
 				# 双引号可以用shell变量
 				print_done "选择成功！"
 				sed -i "s/NagiosClientIP/$NagiosClientIP1/g" /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
