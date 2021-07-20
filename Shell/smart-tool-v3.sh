@@ -2598,7 +2598,7 @@ function kxsw_menu() {
 	echoContent skyBlue "--------------------------科学上网菜单----------------------------"
 	echoContent yellow "0.安装 v2ray-agent | 快捷方式 [vasma]"
 	echoContent yellow "1.安装 xray-OneKey"
-	echoContent yellow "2.安装 BBR"
+	echoContent yellow "2.安装 BBR 拥塞控制算法加速"
 	echoContent yellow "3.安装 v2-ui | 快捷方式 [v2-ui]"
 	echoContent yellow "4.安装 x-ui  | 快捷方式 [x-ui]"
 	echoContent yellow "5.安装 trojan-go 单机"
