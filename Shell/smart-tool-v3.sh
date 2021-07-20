@@ -1966,6 +1966,7 @@ function customize_nagios_server_nagios_cfg {
 # 定制 Nagios Server Myservers
 function customize_nagios_server_myservers {
 	print_info "Step 3: Nagios 服务器配置文件： /usr/local/nagios/etc/objects/myserver/template.cfg"
+	mkdir -p /usr/local/nagios/etc/objects/myserver
 	local NagiosClientDomain1
 	local NagiosClientIP1
 	if [[ -f "${GITHUB_REPO_TOOLBOX}/Nagios/server/myservers/template.cfg" ]] ; then
