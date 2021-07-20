@@ -2016,33 +2016,51 @@ EOF
 		cat <<EOF > /usr/local/nagios/etc/objects/myservers/service_group.cfg
 # 2021 July 19th
 define servicegroup{
-	servicegroup_name	V2ray
-	alias			V2ray
-	members			k8s-master.ml,Service V2ray,studyaws.tk,Service V2ray,router3721.tk,Service V2ray,taiwan3721.ml,Service V2ray
+	servicegroup_name	v2ray
+	alias			v2ray
+	members			k8s-master.ml,Service v2ray,studyaws.tk,Service v2ray,router3721.tk,Service v2ray,taiwan3721.ml,Service v2ray
 	}
 
 define servicegroup{
-	servicegroup_name	Xray
-	alias			Xray
-	members			k8s-master.ml,Service Xray,studyaws.tk,Service Xray,router3721.tk,Service Xray,taiwan3721.ml,Service Xray
+	servicegroup_name	xray
+	alias			xray
+	members			k8s-master.ml,Service xray,studyaws.tk,Service xray,router3721.tk,Service xray,taiwan3721.ml,Service xray
 	}
 
 define servicegroup{
-	servicegroup_name	Trojan.go
-	alias			Trojan.go
-	members			k8s-master.ml,Service Trojan.go,studyaws.tk,Service Trojan.go,router3721.tk,Service Trojan.go,taiwan3721.ml,Service Trojan.go
+	servicegroup_name	trojan.go
+	alias			trojan.go
+	members			k8s-master.ml,Service trojan.go,studyaws.tk,Service trojan.go,router3721.tk,Service trojan.go,taiwan3721.ml,Service trojan.go
 	}
 
 define servicegroup{
-	servicegroup_name	Nginx
-	alias			Nginx
-	members			k8s-master.ml,Service Nginx,studyaws.tk,Service Nginx,router3721.tk,Service Nginx,taiwan3721.ml,Service Nginx
+	servicegroup_name	nginx
+	alias			nginx
+	members			k8s-master.ml,Service nginx,studyaws.tk,Service nginx,router3721.tk,Service nginx,taiwan3721.ml,Service nginx
 	}
 
 define servicegroup{
-	servicegroup_name	Apache
-	alias			Apache
-	members			k8s-master.ml,Service Apache,studyaws.tk,Service Apache,router3721.tk,Service Apache,taiwan3721.ml,Service Apache
+	servicegroup_name	httpd
+	alias			httpd
+	members			k8s-master.ml,Service httpd,studyaws.tk,Service httpd,router3721.tk,Service httpd,taiwan3721.ml,Service httpd
+	}
+
+define servicegroup{
+	servicegroup_name	v2-ui
+	alias			v2-ui
+	members			k8s-master.ml,Service v2-ui,studyaws.tk,Service v2-ui,router3721.tk,Service v2-ui,taiwan3721.ml,Service v2-ui
+	}
+
+define servicegroup{
+	servicegroup_name	x-ui
+	alias			x-ui
+	members			k8s-master.ml,Service x-ui,studyaws.tk,Service x-ui,router3721.tk,Service x-ui,taiwan3721.ml,Service x-ui
+	}
+
+define servicegroup{
+	servicegroup_name	webmin
+	alias			webmin
+	members			k8s-master.ml,Service webmin,studyaws.tk,Service webmin,router3721.tk,Service webmin,taiwan3721.ml,Service webmin
 	}
 EOF
 	chown nagios:nagios /usr/local/nagios/etc/objects/myservers/service_group.cfg
