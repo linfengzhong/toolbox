@@ -2127,7 +2127,7 @@ function customize_nagios_server {
 # 定制 Nagios Server Myservers Show
 function customize_nagios_server_myservers_show {
 	print_start "Nagios Myservers "
-	ls /usr/local/nagios/etc/objects/myservers
+	ls -l /usr/local/nagios/etc/objects/myservers
 	print_complete "Nagios Myservers "
 }
 #-----------------------------------------------------------------------------#
