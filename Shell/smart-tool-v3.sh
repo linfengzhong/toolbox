@@ -1999,9 +1999,14 @@ function customize_nagios_server_host_group {
 		cat <<EOF > /usr/local/nagios/etc/objects/myservers/host_group.cfg
 # 2021 July 19th
 define hostgroup{
-	hostgroup_name  GFW_Servers
-	alias           Fuck Great Firewall
-	members         k8s-master.ml,studyaws.tk,router3721.tk,taiwan3721.ml
+	hostgroup_name  Shanghai
+	alias           Shanghai
+	members         ???
+	}
+define hostgroup{
+	hostgroup_name  Taiwan
+	alias           Taiwan
+	members         ???
 	}
 EOF
 	chown nagios:nagios /usr/local/nagios/etc/objects/myservers/host_group.cfg
