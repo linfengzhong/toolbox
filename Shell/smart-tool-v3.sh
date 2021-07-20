@@ -2925,8 +2925,10 @@ function menu() {
 	echoContent red "=================================================================="
 	echoContent green "SmartTool：\c"
 	echoContent white "${SmartToolVersion}"
-	echoContent green "Github：https://github.com/linfengzhong/toolbox"
-	echoContent green "logserver：https://github.com/linfengzhong/logserver"
+	echoContent green "Github：\c"
+	echoContent white "https://github.com/linfengzhong/toolbox"
+	echoContent green "logserver：\c"
+	echoContent white "https://github.com/linfengzhong/logserver"
 	echoContent green "初始化服务器、安装Docker、执行容器 on \c" 
 	echoContent white "${currentHost}"
 	echoContent green "当前主机外部IP地址： \c" 
@@ -3130,7 +3132,7 @@ function menu() {
 		;;
 	esac
 }
-SmartToolVersion=v0.304
+SmartToolVersion=v0.305
 cleanScreen
 initVar $1
 set_current_host_domain
