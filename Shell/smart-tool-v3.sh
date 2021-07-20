@@ -1975,7 +1975,7 @@ function customize_nagios_server_myservers {
 			# 双引号可以用shell变量
 			sed -i "s/NagiosClientDomain/$NagiosClientDomain1/g" /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
 
-			NagiosClientIP1='ping ${NagiosClientDomain1} -c 1 | sed '1{s/[^(]*(//;s/).*//;q}''
+			NagiosClientIP1=$(ping ${NagiosClientDomain1} -c 1 | sed '1{s/[^(]*(//;s/).*//;q}')
 			read -r -p "请确认IP地址 ${NagiosClientIP1} 是否正确：[y/n] " anwser_y_n
 			if [ anwser_y_n="y" or anwser_y_n="Y" ]; then
 				# 双引号可以用shell变量
