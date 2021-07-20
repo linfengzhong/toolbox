@@ -441,7 +441,7 @@ function github_push_toolbox () {
 function git_clone_logserver () {
 	print_start "Git clone logserver "
 	if [[ -d "$HOME/git/logserver" ]];then
-		echoContent yellow "logserver文件夹已存在，无需重新clone！"
+		print_error "logserver文件夹已存在，无需重新clone！"
 	else
 		cd  $HOME/git/
 		git clone git@github.com:linfengzhong/logserver.git
