@@ -12,7 +12,7 @@
 export LANG=en_US.UTF-8
 function initVar() {
 	# default Host
-	defaultHost="k8s-node.cf"
+	defaultHost="k8s-master.cf"
 	# default UUID
 	defaultUUID="d8206743-b292-43d1-8200-5606238a5abb"
 	# default Nagios server ip
@@ -26,7 +26,7 @@ function initVar() {
 	# WORKDIR="/etc/fuckGFW/docker/${currentHost}/"
 	# LOGDIR="/root/git/logserver/${currentHost}/"
 	GITHUB_REPO_TOOLBOX="/root/git/toolbox"
-	GITHUB_REPO_LOGSERVER="/root/git/logserver/"
+	GITHUB_REPO_LOGSERVER="/root/git/logserver"
 	EMAIL="fred.zhong@outlook.com"
 	myDate=date
 	fallbacksList=
@@ -333,7 +333,7 @@ function execBpytop() {
 #-----------------------------------------------------------------------------#
 # Shutdown Docker Compose, Delete All-In-One folder & Docker Compose Up
 # 关闭docker-compose
-function shutdown_docker_compose () {
+function docker_compose_down () {
 	print_start "Shutdown Docker Compose "
 	print_info "关闭 Docker Compose VM "
 	cd $WORKDIR
@@ -342,7 +342,7 @@ function shutdown_docker_compose () {
 }
 #-----------------------------------------------------------------------------#
 # 启动docker-compose
-function start_docker_compose () {
+function docker_compose_up () {
 	print_start "启动 Docker Compose "
 	cd $WORKDIR
 	sudo docker-compose build
@@ -351,13 +351,13 @@ function start_docker_compose () {
 }
 #-----------------------------------------------------------------------------#
 # 查看Docker Images
-function show_docker_images () {
+function docker_images () {
 	print_info "查看Docker Images "
 	sudo docker images
 }
 #-----------------------------------------------------------------------------#
 # 列出所有运行的docker container
-function show_docker_container () {
+function docker_container_ps () {
 	print_info "列出所有运行的docker container "
 	sudo docker container ps
 }
@@ -423,7 +423,6 @@ function github_pull_toolbox () {
 	cp -pf ${SmartToolDir}/smart-tool-v3.sh $HOME
 	chmod 700 $HOME/smart-tool-v3.sh
 	aliasInstall
-
 }
 #-----------------------------------------------------------------------------#
 # 同步上传Git文件夹
@@ -3037,7 +3036,7 @@ function menu() {
 		;;
 	30)
 		generate_docker_compose_yml
-		shutdown_docker_compose
+		docker_compose_down
 		github_pull_toolbox
 		github_pull_logserver
 		generate_docker_compose_yml
@@ -3053,17 +3052,17 @@ function menu() {
 		generate_fake_website
 		github_push_toolbox
 		github_push_logserver
-		start_docker_compose
+		docker_compose_up
 		;;
 	31)
-		start_docker_compose
+		docker_compose_up
 		;;
 	32)
-		shutdown_docker_compose
+		docker_compose_down
 		;;
 	33)
-		show_docker_images
-		show_docker_container
+		docker_images
+		docker_container_ps
 		;;
 	34)
 		generate_conf_log_menu
