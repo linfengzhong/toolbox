@@ -2107,7 +2107,7 @@ EOF
 function customize_nagios_server_restart {
 	print_info "Step 7: 重启 Nagios 服务"
 	systemctl restart nagios
-	systemctl status nagios
+	# systemctl status nagios
 }
 #-----------------------------------------------------------------------------#
 # 定制 Nagios Server
