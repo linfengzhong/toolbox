@@ -1976,11 +1976,11 @@ function install_x_ui {
 
 function customize_nagios_server_check_myservers_folder {
 	print_info "Step 1: 检查文件夹：/usr/local/nagios/etc/objects/myservers 如未存在则新建。 "
-	if ! -d /usr/local/nagios/etc/objects/myservers ; then
+	if [[ -d /usr/local/nagios/etc/objects/myservers]] ; then
+	else
 	mkdir /usr/local/nagios/etc/objects/myservers
 	chown nagios:nagios /usr/local/nagios/etc/objects/myservers
 	chmod 777 /usr/local/nagios/etc/objects/myservers
-	else
 	fi
 }
 #-----------------------------------------------------------------------------#
