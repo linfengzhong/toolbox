@@ -307,7 +307,7 @@ function install_nginx () {
 # 安装 apache httpd
 function install_apache_httpd {
 	print_start "安装 apache httpd, 并设置端口：8080"
-	yum -y install httpd
+	yum -y install httpd >/dev/null 2>&1
 	# /etc/httpd/conf/httpd.conf
 	if cat /etc/httpd/conf/httpd.conf | grep "Listen 8080" ; then
 		print_error "已经设置端口：8080，无需重复设置！"
@@ -2298,10 +2298,10 @@ function enable_nagios_normal_mode {
 }
 #-----------------------------------------------------------------------------#
 # 激活 apache httpd SSL
-function enable_httpd_ssl {
+function enable_apache_httpd_ssl {
 	print_start "激活 apache httpd SSL - Port: 8443"
 	print_info "Step 1: 安装ssl认证模块 "
-	yum -y install mod_ssl
+	yum -y install mod_ssl >/dev/null 2>&1
 	print_info "Step 2: 编辑 /etc/httpd/conf.d/ssl.conf"
 	cat <<EOF >/etc/httpd/conf.d/ssl.conf
 Listen 8443 https
@@ -2349,13 +2349,16 @@ CustomLog logs/ssl_request_log \
 </VirtualHost>
 EOF
 	print_info "Step 3: 编辑 /etc/httpd/conf/httpd.conf "
-	cat <<EOF >>/etc/httpd/conf/httpd.conf
-
+	if cat /etc/httpd/conf/httpd.conf | grep "# 2021 July 21st" ; then
+		print_error "已经设置跳转https，无需重复！"
+	else
+		cat <<EOF >>/etc/httpd/conf/httpd.conf
+# 2021 July 21st
 RewriteEngine On
 RewriteCond %{HTTPS} off
 RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI}
-
 EOF
+	fi
 	print_info "Step 4: 重新启动 httpd.service "
 	#重启http服务
 	systemctl restart httpd.service
@@ -3053,7 +3056,7 @@ function menu() {
 		;;
 	18)
 		install_apache_httpd
-		enable_httpd_ssl
+		enable_apache_httpd_ssl
 		;;
 	20)
 		git_init
