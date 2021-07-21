@@ -1998,25 +1998,28 @@ function customize_nagios_server_myservers {
 	mkdir -p /usr/local/nagios/etc/objects/myservers
 	chown nagios:nagios /usr/local/nagios/etc/objects/myservers
 	chmod 777 /usr/local/nagios/etc/objects/myservers
+	
 	print_info "Step 3: Nagios 服务器配置文件： /usr/local/nagios/etc/objects/myservers/template.cfg"
 	local NagiosClientDomain1
 	local NagiosClientIP1
 	if [[ -f "${GITHUB_REPO_TOOLBOX}/Nagios/server/myservers/template.cfg" ]] ; then
 		read -r -p "请输入Nagios client address : " NagiosClientDomain1
 		if [ $NagiosClientDomain1 ]; then
-			cp -pf 	${GITHUB_REPO_TOOLBOX}/Nagios/server/myservers/template.cfg /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
-			# 双引号可以用shell变量
-			sed -i "s/NagiosClientDomain/$NagiosClientDomain1/g" /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
-			NagiosClientIP1=$(ping ${NagiosClientDomain1} -c 1 | sed '1{s/[^(]*(//;s/).*//;q}')
-			print_info "输入的服务器IP地址: \c"
-			echoContent white "${NagiosClientIP1}"
-			# 双引号可以用shell变量
-			sed -i "s/NagiosClientIP/$NagiosClientIP1/g" /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
-			chown nagios:nagios /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
-			chmod 777 /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
+			print_info "使用输入地址：${NagiosClientDomain1}"
 		else
-			print_error "请输入正确的服务器地址！"
+			print_error "未检测到输入，使用默认地址 ${currentHost}"
+			NagiosClientDomain1=${currentHost}
 		fi
+		cp -pf 	${GITHUB_REPO_TOOLBOX}/Nagios/server/myservers/template.cfg /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
+		# 双引号可以用shell变量
+		sed -i "s/NagiosClientDomain/$NagiosClientDomain1/g" /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
+		NagiosClientIP1=$(ping ${NagiosClientDomain1} -c 1 | sed '1{s/[^(]*(//;s/).*//;q}')
+		print_info "输入的服务器IP地址: \c"
+		echoContent white "${NagiosClientIP1}"
+		# 双引号可以用shell变量
+		sed -i "s/NagiosClientIP/$NagiosClientIP1/g" /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
+		chown nagios:nagios /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
+		chmod 777 /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
 	else
 		print_error "请先Git同步toolbox到本地，再进行设置！"
 	fi
