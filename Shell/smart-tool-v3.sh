@@ -2210,8 +2210,14 @@ function customize_nagios_server_myservers_show {
 	for i in ${arr[*]}
 	do
 	# 正则表达式 ${var##*/}  --> 左边算起的最后一个/字符左边的内容
-	print_info "${${arr[myservers_index]##*/}%.*}"
-	let myservers_index++
+	tmpMyservers_Member=${arr[myservers_index]##*/}
+		if [[ "${tmpMyservers_Member}" == "host_group.cfg" ]] || [[ "${tmpMyservers_Member}" == "service_group.cfg" ]] ; then
+			let myservers_index++
+		else
+			Myservers_Member=${tmpMyservers_Member%.*}
+			print_info "$Myservers_Member"
+			let myservers_index++
+		fi
 	done
 	
 	print_complete "Nagios Myservers "
