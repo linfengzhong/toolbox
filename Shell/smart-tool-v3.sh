@@ -2709,10 +2709,9 @@ function nagios_menu() {
 	echoContent skyBlue "---------------------------配置菜单-----------------------------"
 	echoContent yellow "4.定制 nagios server "
 	echoContent yellow "5.定制 nagios client "
-	echoContent yellow "6.添加 nagios client myservers "
 	echoContent skyBlue "---------------------------主题选择-----------------------------"
-	echoContent yellow "7.激活 nagios dark mode "
-	echoContent yellow "8.激活 nagios normal mode "
+	echoContent yellow "6.激活 nagios dark mode "
+	echoContent yellow "7.激活 nagios normal mode "
 	echoContent red "=================================================================="
 	read -r -p "Please choose the function (请选择) : " selectInstallType
 	case ${selectInstallType} in
@@ -2733,13 +2732,9 @@ function nagios_menu() {
 		customize_nagios_client
 		;;
 	6)
-		customize_nagios_server_myservers
-		customize_nagios_server_restart
-		;;
-	7)
 		enable_nagios_dark_mode
 		;;
-	8)
+	7)
 		enable_nagios_normal_mode
 		;;
 	*)
@@ -3045,6 +3040,15 @@ function menu() {
 	echoContent green "当前系统Linux版本 : \c" 
 	checkSystem
 	echoContent red "=================================================================="
+	echoContent skyBlue "---------------------------脚本管理-------------------------------"
+	echoContent yellow "0.更新脚本"
+	echoContent yellow "1.科学上网工具 [Sub Menu]"
+	echoContent yellow "2.Nagios监控 - port: 8443 [Sub Menu]"
+	echoContent yellow "3.Webmin管理 - port: 10000[Sub Menu]"
+	echoContent yellow "4.设置域名 | 5.设置时区：上海"
+	echoContent yellow "6.设置UUID | 7.恢复默认UUID"
+	echoContent yellow "8.bpytop "
+	echoContent yellow "9.退出"
 	echoContent skyBlue "---------------------------安装软件-------------------------------"
 	echoContent yellow "10.安装 全部程序"
 	echoContent yellow "11.安装 prerequisite"
@@ -3068,15 +3072,6 @@ function menu() {
 	echoContent yellow "37.show account"
 	echoContent skyBlue "---------------------------证书管理-------------------------------"
 	echoContent yellow "40.show CA | 41.generate CA | 42.renew CA"
-	echoContent skyBlue "---------------------------脚本管理-------------------------------"
-	echoContent yellow "0.更新脚本"
-	echoContent yellow "1.科学上网工具 [Sub Menu]"
-	echoContent yellow "2.Nagios监控 - port: 8443 [Sub Menu]"
-	echoContent yellow "3.Webmin管理 - port: 10000[Sub Menu]"
-	echoContent yellow "4.设置域名 | 5.设置时区：上海"
-	echoContent yellow "6.设置UUID | 7.恢复默认UUID"
-	echoContent yellow "8.bpytop "
-	echoContent yellow "9.退出"
 	echoContent red "=================================================================="
 	mkdirTools
 	aliasInstall
@@ -3240,7 +3235,7 @@ function menu() {
 		;;
 	esac
 }
-SmartToolVersion=v0.311
+SmartToolVersion=v0.312
 cleanScreen
 initVar $1
 set_current_host_domain
