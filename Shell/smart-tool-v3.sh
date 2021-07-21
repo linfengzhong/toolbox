@@ -2633,48 +2633,49 @@ function nagios_menu() {
 	echoContent green "当前系统Linux版本 : \c" 
 	checkSystem
 	echoContent red "=================================================================="
-	echoContent skyBlue "--------------------------监控安装菜单----------------------------"
-	echoContent yellow "3.安装 nagios server "
-	echoContent yellow "4.安装 nagios nrpe "
-	echoContent yellow "5.安装 nagios plugins "
-	echoContent skyBlue "--------------------------监控配置菜单----------------------------"
-	echoContent yellow "6.定制 nagios server "
-	echoContent yellow "7.定制 nagios client "
+	echoContent skyBlue "---------------------------安装菜单-----------------------------"
+	echoContent yellow "1.安装 nagios server "
+	echoContent yellow "2.安装 nagios nrpe "
+	echoContent yellow "3.安装 nagios plugins "
+	echoContent skyBlue "---------------------------配置菜单-----------------------------"
+	echoContent yellow "4.定制 nagios server "
+	echoContent yellow "5.定制 nagios client "
+	echoContent yellow "7.添加 nagios client myservers "
+	echoContent yellow "8.展示 nagios client myservers "
+	echoContent skyBlue "---------------------------主题选择-----------------------------"
 	echoContent yellow "8.激活 nagios dark mode "
 	echoContent yellow "9.激活 nagios normal mode "
-	echoContent yellow "11.添加 nagios client server "
-	echoContent yellow "12.展示 nagios client myservers "
 	echoContent red "=================================================================="
 	read -r -p "Please choose the function (请选择) : " selectInstallType
 	case ${selectInstallType} in
 
-	3)
+	1)
 		install_nagios_server
 		;;
-	4)
+	2)
 		install_nagios_nrpe
 		;;
-	5)
+	3)
 		install_nagios_plugins
 		;;
-	6)
+	4)
 		customize_nagios_server
 		;;
-	7)
+	5)
 		customize_nagios_client
+		;;
+	6)
+		customize_nagios_server_myservers
+		customize_nagios_server_restart
+		;;
+	7)
+		customize_nagios_server_myservers_show
 		;;
 	8)
 		enable_nagios_dark_mode
 		;;
 	9)
 		enable_nagios_normal_mode
-		;;
-	11)
-		customize_nagios_server_myservers
-		customize_nagios_server_restart
-		;;
-	12)
-		customize_nagios_server_myservers_show
 		;;
 	*)
 		print_error "请输入正确的数字"
@@ -3172,7 +3173,7 @@ function menu() {
 		;;
 	esac
 }
-SmartToolVersion=v0.308
+SmartToolVersion=v0.309
 cleanScreen
 initVar $1
 set_current_host_domain
