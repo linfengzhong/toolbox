@@ -2100,7 +2100,6 @@ EOF
 	local Service_Group_Member=$currentHost
 	local tmpService_Group_Member
 	local Service_Type_Index=0
-	local Myservers_Host_Index=0
 	local array_service=(v2ray xray trojan.go nginx httpd v2-ui x-ui webmin docker)
 	for i in ${array_service[*]}
 	do
@@ -2108,6 +2107,7 @@ EOF
 		Service_Group_Member=$Service_Group_Member",Service "${Service_Type}
 
 		local e=0
+		local Myservers_Host_Index=0
 		for e in ${array_host[*]}
 		do
 		tmpService_Group_Member=${array_host[Myservers_Host_Index]##*/}
