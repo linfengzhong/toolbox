@@ -2189,6 +2189,7 @@ function customize_nagios_server {
 	customize_nagios_server_service_group
 	customize_nagios_server_command
 	customize_nagios_server_restart
+	customize_nagios_server_myservers_show
 
 	print_complete "定制 Nagios Server "
 }
@@ -2702,12 +2703,11 @@ function nagios_menu() {
 	echoContent yellow "4.定制 nagios server "
 	echoContent yellow "5.定制 nagios client "
 	echoContent yellow "6.添加 nagios client myservers "
-	echoContent yellow "7.展示 nagios client myservers "
-	echoContent yellow "11.添加 nagios client myservers - Host group "
-	echoContent yellow "22.添加 nagios client myservers - Service group "
+	echoContent yellow "7.添加 nagios client myservers - Host group "
+	echoContent yellow "8.添加 nagios client myservers - Service group "
 	echoContent skyBlue "---------------------------主题选择-----------------------------"
-	echoContent yellow "8.激活 nagios dark mode "
-	echoContent yellow "9.激活 nagios normal mode "
+	echoContent yellow "9.激活 nagios dark mode "
+	echoContent yellow "10.激活 nagios normal mode "
 	echoContent red "=================================================================="
 	read -r -p "Please choose the function (请选择) : " selectInstallType
 	case ${selectInstallType} in
@@ -2732,21 +2732,18 @@ function nagios_menu() {
 		customize_nagios_server_restart
 		;;
 	7)
-		customize_nagios_server_myservers_show
-		;;
-	8)
-		enable_nagios_dark_mode
-		;;
-	9)
-		enable_nagios_normal_mode
-		;;
-	11)
 		customize_nagios_server_host_group
 		customize_nagios_server_restart
 		;;
-	22)
+	8)
 		customize_nagios_server_service_group
 		customize_nagios_server_restart
+		;;
+	9)
+		enable_nagios_dark_mode
+		;;
+	10)
+		enable_nagios_normal_mode
 		;;
 	*)
 		print_error "请输入正确的数字"
