@@ -2163,7 +2163,7 @@ function customize_nagios_server_myservers_show {
 			arr=(${arr[*]} $entry)
 		fi
 	done
-	echo ${arr[@]}
+	echo "${arr[@]} \n"
 	print_complete "Nagios Myservers "
 }
 #-----------------------------------------------------------------------------#
