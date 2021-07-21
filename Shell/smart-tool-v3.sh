@@ -2157,13 +2157,13 @@ function customize_nagios_server {
 function customize_nagios_server_myservers_show {
 	print_start "Nagios Myservers "
 	local search_dir="/usr/local/nagios/etc/objects/myservers"
-	for entry in $search_dir/*
+	for entry in $(ls $search_dir)
 	do
 		if [ -f $entry ]; then
 			arr=(${arr[*]} $entry)
 		fi
 	done
-	print_info "${arr[*]} \n"
+	print_info "${arr[*]}"
 	print_complete "Nagios Myservers "
 }
 #-----------------------------------------------------------------------------#
