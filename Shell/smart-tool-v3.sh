@@ -2168,7 +2168,8 @@ function customize_nagios_server_myservers_show {
 	local myservers_index=0
 	for i in ${arr[*]}
 	do
-	print_info "${arr[myservers_index]}"
+	# 正则表达式 ${var##*/}  --> 左边算起的最后一个/字符左边的内容
+	print_info "${arr[myservers_index]##*/}"
 	let myservers_index++
 	done
 	
