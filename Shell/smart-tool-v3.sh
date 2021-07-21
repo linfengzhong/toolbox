@@ -2025,24 +2025,47 @@ function customize_nagios_server_myservers {
 # 定制 Nagios Server Host Group
 function customize_nagios_server_host_group {
 	print_info "Step 4: Nagios 服务器组配置文件： /usr/local/nagios/etc/objects/myservers/host_group.cfg"
+
+	# 读取文件名到数组
+	local search_dir="/usr/local/nagios/etc/objects/myservers"
+	for entry in $search_dir/*
+	do
+		if [ -f $entry ]; then
+			arr=(${arr[*]} $entry)
+		fi
+	done
+
+	local Myservers_Host_Group=$currentHost
 	if [[ -f "/usr/local/nagios/etc/objects/myservers/host_group.cfg" ]] && cat /usr/local/nagios/etc/objects/myservers/host_group.cfg | grep "# 2021 July 19th" >/dev/null; then
 		print_error "host_group.cfg 已经配置过了！"
 	else
+	# 遍历数组，生成myservers
+		local myservers_index=0
+		for i in ${arr[*]}
+		do
+		# 正则表达式 ${var##*/}  --> 左边算起的最后一个/字符左边的内容
+		print_info "${arr[myservers_index]##*/}"
+		if [[ ${arr[myservers_index]##*/}=="host_group.cfg" ]] || [[ ${arr[myservers_index]##*/}=="service_group.cfg" ]] ; then
+			# skip
+			let myservers_index++
+		else
+			Myservers_Host_Group=$Myservers_Host_Group","${arr[myservers_index]##*/}
+			let myservers_index++
+		fi
+		done
+
+	# 写入文件
 		cat <<EOF > /usr/local/nagios/etc/objects/myservers/host_group.cfg
 # 2021 July 19th
 define hostgroup{
-	hostgroup_name  Shanghai
-	alias           Shanghai
-	members         ???
-	}
-define hostgroup{
-	hostgroup_name  Taiwan
-	alias           Taiwan
-	members         ???
+	hostgroup_name  Fuck GFW
+	alias           Fuck GFW
+	members         $Myservers_Host_Group
 	}
 EOF
-	chown nagios:nagios /usr/local/nagios/etc/objects/myservers/host_group.cfg
-	chmod 777 /usr/local/nagios/etc/objects/myservers/host_group.cfg
+
+		chown nagios:nagios /usr/local/nagios/etc/objects/myservers/host_group.cfg
+		chmod 777 /usr/local/nagios/etc/objects/myservers/host_group.cfg
 	fi
 }
 #-----------------------------------------------------------------------------#
@@ -2663,6 +2686,7 @@ function nagios_menu() {
 	echoContent yellow "5.定制 nagios client "
 	echoContent yellow "6.添加 nagios client myservers "
 	echoContent yellow "7.展示 nagios client myservers "
+	echoContent yellow "11.添加 nagios client myservers host groups "
 	echoContent skyBlue "---------------------------主题选择-----------------------------"
 	echoContent yellow "8.激活 nagios dark mode "
 	echoContent yellow "9.激活 nagios normal mode "
@@ -2697,6 +2721,9 @@ function nagios_menu() {
 		;;
 	9)
 		enable_nagios_normal_mode
+		;;
+	11)
+		customize_nagios_server_host_group
 		;;
 	*)
 		print_error "请输入正确的数字"
