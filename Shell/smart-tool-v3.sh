@@ -298,7 +298,7 @@ function install_nginx () {
 		print_info "设置IPv6 端口为 7080"
 		sed -i 's!listen       [::]:80 default_server;!listen       [::]:7080 default_server;;!g' /etc/nginx/nginx.conf
 	fi
-	systemctl reload nginx
+	# systemctl reload nginx
 	systemctl enable nginx
 	systemctl restart nginx
 	print_complete "Install Nginx - port: 7080 "
