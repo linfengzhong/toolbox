@@ -2082,15 +2082,6 @@ EOF
 function customize_nagios_server_service_group {
 	print_info "Step 5: 服务组配置文件： /usr/local/nagios/etc/objects/myservers/service_group.cfg"
 
-	# 读取文件名到数组
-	local search_dir="/usr/local/nagios/etc/objects/myservers"
-	local array_host
-	for host_group_member in $search_dir/*
-	do
-		if [ -f $host_group_member ]; then
-			array_host=(${array_host[*]} $host_group_member)
-		fi
-	done
 
 	cat <<EOF > /usr/local/nagios/etc/objects/myservers/service_group.cfg
 # 2021 July 21st
@@ -2106,7 +2097,16 @@ EOF
 	for i in ${array_service[*]}
 	do
 		Service_Type=${array_service[Service_Type_Index]}
-		Service_Group_Member=$Service_Group_Member", Service "${Service_Type}
+		Service_Group_Member=$Service_Group_Member",Service "${Service_Type}
+		# 读取文件名到数组
+		local search_dir="/usr/local/nagios/etc/objects/myservers"
+		local array_host
+		for host_group_member in $search_dir/*
+		do
+			if [ -f $host_group_member ]; then
+				array_host=(${array_host[*]} $host_group_member)
+			fi
+		done
 		local e=0
 		for e in ${array_host[*]}
 		do
