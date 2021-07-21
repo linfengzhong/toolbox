@@ -2110,7 +2110,7 @@ EOF
 	local Service_Group_Member=$currentHost
 	local tmpService_Group_Member
 	local Service_Type_Index=0
-	local array_service=(v2ray xray trojan.go nginx httpd v2-ui x-ui webmin docker)
+	local array_service=(v2ray xray trojan.go nginx httpd v2-ui x-ui webmin docker "CPU statistics" "Memory usage" Ping)
 	for i in ${array_service[*]}
 	do
 		Service_Type=${array_service[Service_Type_Index]}
