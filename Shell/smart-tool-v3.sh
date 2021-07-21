@@ -2053,7 +2053,7 @@ function customize_nagios_server_host_group {
 			print_error "skip file"
 			let myservers_index++
 		else
-			Myservers_Host_Group=$Myservers_Host_Group","${arr[myservers_index]##*/}
+			Myservers_Host_Group=$Myservers_Host_Group","${tmpMyservers_Host_Group%.*}
 			print_info "$Myservers_Host_Group"
 			let myservers_index++
 		fi
