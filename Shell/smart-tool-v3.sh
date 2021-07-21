@@ -2159,7 +2159,7 @@ function customize_nagios_server_myservers_show {
 	local search_dir="/usr/local/nagios/etc/objects/myservers"
 	for entry in $(ls $search_dir)
 	do
-		if [ -f "$entry" ]; then
+		if [ -f $entry ]; then
 			echo "$entry"
 		fi
 	done
