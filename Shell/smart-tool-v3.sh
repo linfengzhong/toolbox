@@ -2160,9 +2160,10 @@ function customize_nagios_server_myservers_show {
 	for entry in $search_dir/*
 	do
 		if [ -f $entry ]; then
-			echo "$entry"
+			arr=(${arr[*]} $entry)
 		fi
 	done
+	echo ${arr[@]}
 	print_complete "Nagios Myservers "
 }
 #-----------------------------------------------------------------------------#
