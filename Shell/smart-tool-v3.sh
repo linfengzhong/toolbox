@@ -280,7 +280,7 @@ function install_git () {
 function install_nginx () {
 	print_start "Install Nginx - port: 7080"
 	print_info "安装进行中ing "
-	sudo yum -y install nginx #>/dev/null 2>&1
+	sudo yum -y install nginx >/dev/null 2>&1
 
 	# /etc/nginx/nginx.conf
 	# listen       80 default_server;
