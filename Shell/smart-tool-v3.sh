@@ -2711,6 +2711,7 @@ function nagios_menu() {
 	echoContent skyBlue "---------------------------配置菜单-----------------------------"
 	echoContent yellow "4.定制 nagios server "
 	echoContent yellow "5.定制 nagios client "
+	echoContent yellow "8.测试 nagios server 配置文件 "
 	echoContent skyBlue "---------------------------主题选择-----------------------------"
 	echoContent yellow "6.激活 nagios dark mode "
 	echoContent yellow "7.激活 nagios normal mode "
@@ -2738,6 +2739,9 @@ function nagios_menu() {
 		;;
 	7)
 		enable_nagios_normal_mode
+		;;
+	8)
+		/usr/local/nagios/bin/nagios -v /usr/local/nagios/etc/nagios.cfg
 		;;
 	*)
 		print_error "请输入正确的数字"
