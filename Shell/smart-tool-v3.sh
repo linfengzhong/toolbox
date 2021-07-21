@@ -2156,7 +2156,7 @@ function customize_nagios_server {
 # 定制 Nagios Server Myservers Show
 function customize_nagios_server_myservers_show {
 	print_start "Nagios Myservers "
-	local $search_dir="/usr/local/nagios/etc/objects/myservers"
+	local search_dir="/usr/local/nagios/etc/objects/myservers"
 	for entry in "$search_dir"
 	do
 		if [ -f "$entry" ]; then
