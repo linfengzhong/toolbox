@@ -2244,9 +2244,9 @@ function customize_nagios_client_nrpe_cfg {
 			print_info "已备份 nrpe.cfg"
 		fi
 
-		if cat /usr/local/nagios/etc/nrpe.cfg | grep "定制命令 - 2021 July 18th" >/dev/null; then
-   			print_error "已定制过，无需重复操作！"
-		else
+		# if cat /usr/local/nagios/etc/nrpe.cfg | grep "定制命令 - 2021 July 18th" >/dev/null; then
+   		#	print_error "已定制过，无需重复操作！"
+		# else
 			print_info "Step 1-1: 添加Nagios 服务端IP # ALLOWED HOST ADDRESSES "
 			# 注释掉内容
 			local TMPnagiosHostIP
@@ -2328,10 +2328,10 @@ command[check_webmin]=/usr/local/nagios/libexec/check_service.sh -s webmin
 command[check_docker]=/usr/local/nagios/libexec/check_service.sh -s docker
 
 EOF
-		fi
-	fi
+		# fi
 	chown nagios:nagios /usr/local/nagios/etc/nrpe.cfg
 	chmod 644 /usr/local/nagios/etc/nrpe.cfg
+	fi
 }
 #-----------------------------------------------------------------------------#
 # 定制 Nagios Client Copy Libexec
