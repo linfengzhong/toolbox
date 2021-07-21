@@ -1981,6 +1981,7 @@ function customize_nagios_server_check_myservers_folder {
 	chown nagios:nagios /usr/local/nagios/etc/objects/myservers
 	chmod 777 /usr/local/nagios/etc/objects/myservers
 	else
+
 	fi
 }
 #-----------------------------------------------------------------------------#
@@ -3249,7 +3250,7 @@ function menu() {
 		;;
 	esac
 }
-SmartToolVersion=v0.310
+SmartToolVersion=v0.311
 cleanScreen
 initVar $1
 set_current_host_domain
