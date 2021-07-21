@@ -2129,6 +2129,8 @@ define servicegroup{
 	members			${Service_Group_Member}
 	}
 EOF
+		Service_Group_Member=$currentHost
+		tmpService_Group_Member=""
 		let Service_Type_Index++
 	done
 	chown nagios:nagios /usr/local/nagios/etc/objects/myservers/service_group.cfg
@@ -2693,7 +2695,7 @@ function nagios_menu() {
 	echoContent yellow "6.添加 nagios client myservers "
 	echoContent yellow "7.展示 nagios client myservers "
 	echoContent yellow "11.添加 nagios client myservers - Host group "
-	echoContent yellow "12.添加 nagios client myservers - Service group "
+	echoContent yellow "22.添加 nagios client myservers - Service group "
 	echoContent skyBlue "---------------------------主题选择-----------------------------"
 	echoContent yellow "8.激活 nagios dark mode "
 	echoContent yellow "9.激活 nagios normal mode "
@@ -2733,7 +2735,7 @@ function nagios_menu() {
 		customize_nagios_server_host_group
 		customize_nagios_server_restart
 		;;
-	12)
+	22)
 		customize_nagios_server_service_group
 		customize_nagios_server_restart
 		;;
