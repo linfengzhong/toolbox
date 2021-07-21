@@ -2238,6 +2238,12 @@ function customize_nagios_client_nrpe_cfg {
 		print_error "Nagios 客户端配置文件不存在，请确认是否正确安装Nagios NRPE！"
 		exit 0
 	else
+		if [[ ! -f "/usr/local/nagios/etc/nrpe.cfg.bakcup" ]]; then
+		cp -pf /usr/local/nagios/etc/nrpe.cfg /usr/local/nagios/etc/nrpe.cfg.backup
+		else
+			print_info "已备份 nrpe.cfg"
+		fi
+
 		if cat /usr/local/nagios/etc/nrpe.cfg | grep "定制命令 - 2021 July 18th" >/dev/null; then
    			print_error "已定制过，无需重复操作！"
 		else
@@ -2252,9 +2258,32 @@ function customize_nagios_client_nrpe_cfg {
 				print_info "使用默认 Nagios Server IP : ${TMPnagiosHostIP}"
 			fi
 			# 双引号可以用shell变量
-			sed -i "s/allowed_hosts=127.0.0.1,::1/allowed_hosts=127.0.0.1,::1,$TMPnagiosHostIP/g" /usr/local/nagios/etc/nrpe.cfg
+			# sed -i "s/allowed_hosts=127.0.0.1,::1/allowed_hosts=127.0.0.1,::1,$TMPnagiosHostIP/g" /usr/local/nagios/etc/nrpe.cfg
 			print_info "Step 1-2: 添加Command "
-			cat <<EOF >> /usr/local/nagios/etc/nrpe.cfg
+			cat <<EOF > /usr/local/nagios/etc/nrpe.cfg
+log_facility=daemon
+log_file=/usr/local/nagios/var/nrpe.log
+# Values: 0=debugging off, 1=debugging on
+debug=0
+pid_file=/usr/local/nagios/var/nrpe.pid
+server_port=5666
+nrpe_user=nagios
+nrpe_group=nagios
+allowed_hosts=127.0.0.1,::1,$TMPnagiosHostIP
+dont_blame_nrpe=0
+# Values: 0=do not allow bash command substitutions,
+#         1=allow bash command substitutions
+allow_bash_command_substitution=0
+command_timeout=60
+connection_timeout=300
+disable_syslog=0
+
+command[check_users]=/usr/local/nagios/libexec/check_users -w 5 -c 10
+command[check_load]=/usr/local/nagios/libexec/check_load -r -w .15,.10,.05 -c .30,.25,.20
+command[check_hda1]=/usr/local/nagios/libexec/check_disk -w 20% -c 10% -p /dev/hda1
+command[check_zombie_procs]=/usr/local/nagios/libexec/check_procs -w 5 -c 10 -s Z
+command[check_total_procs]=/usr/local/nagios/libexec/check_procs -w 150 -c 200
+
 # 定制命令 - 2021 July 18th
 command[check_users]=/usr/local/nagios/libexec/check_users -w 5 -c 10
 command[check_load]=/usr/local/nagios/libexec/check_load -r -w .15,.10,.05 -c .30,.25,.20
@@ -2301,6 +2330,8 @@ command[check_docker]=/usr/local/nagios/libexec/check_service.sh -s docker
 EOF
 		fi
 	fi
+	chown nagios:nagios /usr/local/nagios/etc/nrpe.cfg
+	chmod 644 /usr/local/nagios/etc/nrpe.cfg
 }
 #-----------------------------------------------------------------------------#
 # 定制 Nagios Client Copy Libexec
