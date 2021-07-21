@@ -2044,10 +2044,10 @@ function customize_nagios_server_host_group {
 		for i in ${arr[*]}
 		do
 		# 正则表达式 ${var##*/}  --> 左边算起的最后一个/字符左边的内容
-		print_info "${arr[myservers_index]##*/}"
+		# print_info "${arr[myservers_index]##*/}"
 		
 		tmpMyservers_Host_Group=${arr[myservers_index]##*/}
-		if [[ ${arr[myservers_index]##*/}=="host_group.cfg" ]] || [[ ${arr[myservers_index]##*/}=="service_group.cfg" ]] ; then
+		if [[ $tmpMyservers_Host_Group="host_group.cfg" ]] || [[ $tmpMyservers_Host_Group="service_group.cfg" ]]; then
 			# skip
 			print_error "skip file"
 			let myservers_index++
@@ -2071,6 +2071,9 @@ EOF
 		chown nagios:nagios /usr/local/nagios/etc/objects/myservers/host_group.cfg
 		chmod 777 /usr/local/nagios/etc/objects/myservers/host_group.cfg
 	#fi
+	print_info "展示 host_group.cfg"
+	cat /usr/local/nagios/etc/objects/myservers/host_group.cfg
+
 }
 #-----------------------------------------------------------------------------#
 # 定制 Nagios Server Service Group
