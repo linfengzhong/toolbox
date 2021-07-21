@@ -2036,20 +2036,23 @@ function customize_nagios_server_host_group {
 	done
 
 	local Myservers_Host_Group=$currentHost
-	if [[ -f "/usr/local/nagios/etc/objects/myservers/host_group.cfg" ]] && cat /usr/local/nagios/etc/objects/myservers/host_group.cfg | grep "# 2021 July 19th" >/dev/null; then
-		print_error "host_group.cfg 已经配置过了！"
-	else
+	#if [[ -f "/usr/local/nagios/etc/objects/myservers/host_group.cfg" ]] && cat /usr/local/nagios/etc/objects/myservers/host_group.cfg | grep "# 2021 July 19th" >/dev/null; then
+	#	print_error "host_group.cfg 已经配置过了！"
+	#else
 	# 遍历数组，生成myservers
 		local myservers_index=0
 		for i in ${arr[*]}
 		do
 		# 正则表达式 ${var##*/}  --> 左边算起的最后一个/字符左边的内容
 		print_info "${arr[myservers_index]##*/}"
+		
+		tmpMyservers_Host_Group=${arr[myservers_index]##*/}
 		if [[ ${arr[myservers_index]##*/}=="host_group.cfg" ]] || [[ ${arr[myservers_index]##*/}=="service_group.cfg" ]] ; then
 			# skip
 			let myservers_index++
 		else
 			Myservers_Host_Group=$Myservers_Host_Group","${arr[myservers_index]##*/}
+			print_info "$Myservers_Host_Group"
 			let myservers_index++
 		fi
 		done
@@ -2066,7 +2069,7 @@ EOF
 
 		chown nagios:nagios /usr/local/nagios/etc/objects/myservers/host_group.cfg
 		chmod 777 /usr/local/nagios/etc/objects/myservers/host_group.cfg
-	fi
+	#fi
 }
 #-----------------------------------------------------------------------------#
 # 定制 Nagios Server Service Group
