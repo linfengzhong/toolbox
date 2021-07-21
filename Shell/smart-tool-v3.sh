@@ -2157,7 +2157,7 @@ function customize_nagios_server {
 function customize_nagios_server_myservers_show {
 	print_start "Nagios Myservers "
 	local search_dir="/usr/local/nagios/etc/objects/myservers"
-	for entry in $(ls $search_dir)
+	for entry in $search_dir/*
 	do
 		if [ -f $entry ]; then
 			arr=(${arr[*]} $entry)
