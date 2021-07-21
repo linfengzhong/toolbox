@@ -2051,6 +2051,7 @@ function customize_nagios_server_host_group {
 		#if [[ "${coreInstallType}" == "1" ]] && [[ -n $(pgrep -f xray/xray) ]]; then
 			# skip
 			print_error "skip file"
+			echoContent white "${tmpMyservers_Host_Group}"
 			let myservers_index++
 		else
 			Myservers_Host_Group=$Myservers_Host_Group","${tmpMyservers_Host_Group%.*}
@@ -2732,6 +2733,7 @@ function nagios_menu() {
 		;;
 	11)
 		customize_nagios_server_host_group
+		customize_nagios_server_restart
 		;;
 	*)
 		print_error "请输入正确的数字"
