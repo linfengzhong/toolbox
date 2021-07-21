@@ -2207,7 +2207,7 @@ function customize_nagios_server_myservers_show {
 	done
 
 	local myservers_index=0
-	for i in ${arr[*]}
+	for f in ${arr[*]}
 	do
 	# 正则表达式 ${var##*/}  --> 左边算起的最后一个/字符左边的内容
 	tmpMyservers_Member=${arr[myservers_index]##*/}
