@@ -2081,62 +2081,59 @@ EOF
 # 定制 Nagios Server Service Group
 function customize_nagios_server_service_group {
 	print_info "Step 5: 服务组配置文件： /usr/local/nagios/etc/objects/myservers/service_group.cfg"
-	if [[ -f "/usr/local/nagios/etc/objects/myservers/service_group.cfg" ]] && cat /usr/local/nagios/etc/objects/myservers/service_group.cfg | grep "# 2021 July 19th" >/dev/null; then
-		print_error "service_group.cfg 已经配置过了！"
-	else
-		cat <<EOF > /usr/local/nagios/etc/objects/myservers/service_group.cfg
-# 2021 July 19th
-define servicegroup{
-	servicegroup_name	v2ray
-	alias			v2ray
-	members			k8s-master.ml,Service v2ray,studyaws.tk,Service v2ray,router3721.tk,Service v2ray,taiwan3721.ml,Service v2ray
-	}
 
-define servicegroup{
-	servicegroup_name	xray
-	alias			xray
-	members			k8s-master.ml,Service xray,studyaws.tk,Service xray,router3721.tk,Service xray,taiwan3721.ml,Service xray
-	}
+	# 读取文件名到数组
+	local search_dir="/usr/local/nagios/etc/objects/myservers"
+	local array_host
+	for host_group_member in $search_dir/*
+	do
+		if [ -f $host_group_member ]; then
+			array_host=(${array_host[*]} $host_group_member)
+		fi
+	done
 
-define servicegroup{
-	servicegroup_name	trojan.go
-	alias			trojan.go
-	members			k8s-master.ml,Service trojan.go,studyaws.tk,Service trojan.go,router3721.tk,Service trojan.go,taiwan3721.ml,Service trojan.go
-	}
+	cat <<EOF > /usr/local/nagios/etc/objects/myservers/service_group.cfg
+# 2021 July 21st
+EOF
 
-define servicegroup{
-	servicegroup_name	nginx
-	alias			nginx
-	members			k8s-master.ml,Service nginx,studyaws.tk,Service nginx,router3721.tk,Service nginx,taiwan3721.ml,Service nginx
-	}
+	local Service_Type
+	local Service_Group_Member=$currentHost
+	local tmpService_Group_Member
+	local Service_Type_Index=0
+	local Myservers_Host_Index=0
+	local array_service=(v2ray xray trojan.go nginx httpd v2-ui x-ui webmin docker)
 
+	for i in ${array_service[*]}
+	do
+		Service_Type=${array_service[Service_Type_Index]}
+		
+		for e in ${array_host[*]}
+		do
+		tmpService_Group_Member=${array_host[Myservers_Host_Index]##*/}
+		Service_Group_Member=$Service_Group_Member", Service "${Service_Type}
+		
+		if [[ "${tmpService_Group_Member}" == "host_group.cfg" ]] || [[ "${tmpService_Group_Member}" == "service_group.cfg" ]] || [[ "${tmpService_Group_Member}" == "$currentHost"".cfg" ]] ; then
+			print_error "skip file"
+			echoContent white "${tmpService_Group_Member}"
+			let Myservers_Host_Index++
+		else
+			Service_Group_Member=$Service_Group_Member","${tmpService_Group_Member%.*}",Service "${Service_Type}
+			print_info "$Service_Group_Member"
+			let Myservers_Host_Index++
+		fi
+		done
+		cat <<EOF >> /usr/local/nagios/etc/objects/myservers/service_group.cfg
 define servicegroup{
-	servicegroup_name	httpd
-	alias			httpd
-	members			k8s-master.ml,Service httpd,studyaws.tk,Service httpd,router3721.tk,Service httpd,taiwan3721.ml,Service httpd
-	}
-
-define servicegroup{
-	servicegroup_name	v2-ui
-	alias			v2-ui
-	members			k8s-master.ml,Service v2-ui,studyaws.tk,Service v2-ui,router3721.tk,Service v2-ui,taiwan3721.ml,Service v2-ui
-	}
-
-define servicegroup{
-	servicegroup_name	x-ui
-	alias			x-ui
-	members			k8s-master.ml,Service x-ui,studyaws.tk,Service x-ui,router3721.tk,Service x-ui,taiwan3721.ml,Service x-ui
-	}
-
-define servicegroup{
-	servicegroup_name	webmin
-	alias			webmin
-	members			k8s-master.ml,Service webmin,studyaws.tk,Service webmin,router3721.tk,Service webmin,taiwan3721.ml,Service webmin
+	servicegroup_name	${Service_Type}
+	alias			${Service_Type}
+	members			${Service_Group_Member}
 	}
 EOF
+		let Service_Type_Index++
+	done
 	chown nagios:nagios /usr/local/nagios/etc/objects/myservers/service_group.cfg
 	chmod 777 /usr/local/nagios/etc/objects/myservers/service_group.cfg
-	fi
+
 }
 #-----------------------------------------------------------------------------#
 # 定制 Nagios Server Command
@@ -2695,7 +2692,8 @@ function nagios_menu() {
 	echoContent yellow "5.定制 nagios client "
 	echoContent yellow "6.添加 nagios client myservers "
 	echoContent yellow "7.展示 nagios client myservers "
-	echoContent yellow "11.添加 nagios client myservers host groups "
+	echoContent yellow "11.添加 nagios client myservers - Host group "
+	echoContent yellow "12.添加 nagios client myservers - Service group "
 	echoContent skyBlue "---------------------------主题选择-----------------------------"
 	echoContent yellow "8.激活 nagios dark mode "
 	echoContent yellow "9.激活 nagios normal mode "
@@ -2733,6 +2731,10 @@ function nagios_menu() {
 		;;
 	11)
 		customize_nagios_server_host_group
+		customize_nagios_server_restart
+		;;
+	12)
+		customize_nagios_server_service_group
 		customize_nagios_server_restart
 		;;
 	*)
