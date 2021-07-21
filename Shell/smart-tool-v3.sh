@@ -2024,7 +2024,7 @@ function customize_nagios_server_myservers {
 #-----------------------------------------------------------------------------#
 # 定制 Nagios Server Host Group
 function customize_nagios_server_host_group {
-	print_info "Step 4: Nagios 服务器组配置文件： /usr/local/nagios/etc/objects/myservers/host_group.cfg"
+	print_start "Step 4: Nagios 服务器组配置文件： /usr/local/nagios/etc/objects/myservers/host_group.cfg"
 
 	# 读取文件名到数组
 	local search_dir="/usr/local/nagios/etc/objects/myservers"
@@ -2054,7 +2054,7 @@ function customize_nagios_server_host_group {
 			let myservers_index++
 		else
 			Myservers_Host_Group=$Myservers_Host_Group","${tmpMyservers_Host_Group%.*}
-			print_info "$Myservers_Host_Group"
+			# print_info "$Myservers_Host_Group"
 			let myservers_index++
 		fi
 		done
@@ -2074,7 +2074,7 @@ EOF
 	#fi
 	print_info "展示 host_group.cfg"
 	cat /usr/local/nagios/etc/objects/myservers/host_group.cfg
-
+	print_complete "Step 4: Nagios 服务器组配置文件： /usr/local/nagios/etc/objects/myservers/host_group.cfg"
 }
 #-----------------------------------------------------------------------------#
 # 定制 Nagios Server Service Group
