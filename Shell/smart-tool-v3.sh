@@ -2047,7 +2047,8 @@ function customize_nagios_server_host_group {
 		# print_info "${arr[myservers_index]##*/}"
 		
 		tmpMyservers_Host_Group=${arr[myservers_index]##*/}
-		if $tmpMyservers_Host_Group="host_group.cfg" || $tmpMyservers_Host_Group="service_group.cfg" ; then
+		if [[ "${tmpMyservers_Host_Group}"=="host_group.cfg" ]] || [[ "${tmpMyservers_Host_Group}"=="service_group.cfg" ]] ; then
+		#if [[ "${coreInstallType}" == "1" ]] && [[ -n $(pgrep -f xray/xray) ]]; then
 			# skip
 			print_error "skip file"
 			let myservers_index++
