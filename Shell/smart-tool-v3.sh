@@ -2049,6 +2049,7 @@ function customize_nagios_server_host_group {
 		tmpMyservers_Host_Group=${arr[myservers_index]##*/}
 		if [[ ${arr[myservers_index]##*/}=="host_group.cfg" ]] || [[ ${arr[myservers_index]##*/}=="service_group.cfg" ]] ; then
 			# skip
+			print_error "skip file"
 			let myservers_index++
 		else
 			Myservers_Host_Group=$Myservers_Host_Group","${arr[myservers_index]##*/}
