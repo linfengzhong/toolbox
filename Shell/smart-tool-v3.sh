@@ -2106,13 +2106,10 @@ EOF
 	for i in ${array_service[*]}
 	do
 		Service_Type=${array_service[Service_Type_Index]}
-		
+		Service_Group_Member=$Service_Group_Member", Service "${Service_Type}
 		for e in ${array_host[*]}
 		do
 		tmpService_Group_Member=${array_host[Myservers_Host_Index]##*/}
-		print_info "$tmpService_Group_Member"
-		Service_Group_Member=$Service_Group_Member", Service "${Service_Type}
-		
 		if [[ "${tmpService_Group_Member}" == "host_group.cfg" ]] || [[ "${tmpService_Group_Member}" == "service_group.cfg" ]] || [[ "${tmpService_Group_Member}" == "$currentHost"".cfg" ]] ; then
 			print_error "skip file"
 			echoContent white "${tmpService_Group_Member}"
