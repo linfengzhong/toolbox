@@ -1973,6 +1973,16 @@ function install_v2_ui {
 function install_x_ui {
 	bash <(curl -Ls https://raw.githubusercontent.com/sprov065/x-ui/master/install.sh) 0.2.0
 }
+
+function customize_nagios_server_check_myservers_folder {
+	print_info "Step 1: 检查文件夹：/usr/local/nagios/etc/objects/myservers 如未存在则新建。 "
+	if [ ! -d /usr/local/nagios/etc/objects/myservers ]; then
+	mkdir /usr/local/nagios/etc/objects/myservers
+	chown nagios:nagios /usr/local/nagios/etc/objects/myservers
+	chmod 777 /usr/local/nagios/etc/objects/myservers
+	else
+	fi
+}
 #-----------------------------------------------------------------------------#
 # 定制 Nagios Server Nagios.cfg
 function customize_nagios_server_nagios_cfg {
@@ -1994,7 +2004,7 @@ function customize_nagios_server_nagios_cfg {
 #-----------------------------------------------------------------------------#
 # 定制 Nagios Server Myservers
 function customize_nagios_server_myservers {
-	print_info "Step 1: 检查文件夹：/usr/local/nagios/etc/objects/myservers 如未存在则新建。 "
+
 	mkdir -p /usr/local/nagios/etc/objects/myservers
 	chown nagios:nagios /usr/local/nagios/etc/objects/myservers
 	chmod 777 /usr/local/nagios/etc/objects/myservers
@@ -2027,7 +2037,7 @@ function customize_nagios_server_myservers {
 #-----------------------------------------------------------------------------#
 # 定制 Nagios Server Host Group
 function customize_nagios_server_host_group {
-	print_start "Step 4: Nagios 服务器组配置文件： /usr/local/nagios/etc/objects/myservers/host_group.cfg"
+	print_info "Step 4: Nagios 服务器组配置文件： /usr/local/nagios/etc/objects/myservers/host_group.cfg"
 
 	# 读取文件名到数组
 	local search_dir="/usr/local/nagios/etc/objects/myservers"
@@ -2078,7 +2088,7 @@ EOF
 	#fi
 	# print_info "展示 host_group.cfg"
 	# cat /usr/local/nagios/etc/objects/myservers/host_group.cfg
-	print_complete "Step 4: Nagios 服务器组配置文件： /usr/local/nagios/etc/objects/myservers/host_group.cfg"
+	# print_complete "Step 4: Nagios 服务器组配置文件： /usr/local/nagios/etc/objects/myservers/host_group.cfg"
 }
 #-----------------------------------------------------------------------------#
 # 定制 Nagios Server Service Group
@@ -2175,6 +2185,7 @@ function customize_nagios_server_restart {
 function customize_nagios_server {
 	print_start "定制 Nagios Server "
 
+	customize_nagios_server_check_myservers_folder
 	customize_nagios_server_nagios_cfg
 	customize_nagios_server_myservers
 	customize_nagios_server_host_group
