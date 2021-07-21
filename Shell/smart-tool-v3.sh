@@ -2199,24 +2199,25 @@ function customize_nagios_server_myservers_show {
 	print_start "Nagios Myservers "
 
 	local search_dir="/usr/local/nagios/etc/objects/myservers"
-	for entry in $search_dir/*
+	for xxmember in $search_dir/*
 	do
-		if [ -f $entry ]; then
-			arr=(${arr[*]} $entry)
+		if [ -f $xxmember ]; then
+			myservers_member_arr=(${myservers_member_arr[*]} $xxmember)
 		fi
 	done
 
-	local myservers_index1=0
-	for f in ${arr[*]}
+	local myservers_member_index=0
+	local myservers_member_count=0
+	for myservers_member_count in ${myservers_member_arr[*]}
 	do
 	# 正则表达式 ${var##*/}  --> 左边算起的最后一个/字符左边的内容
-	tmpMyservers_Member=${arr[myservers_index1]##*/}
+	tmpMyservers_Member=${myservers_member_arr[myservers_member_index]##*/}
 		if [[ "${tmpMyservers_Member}" == "host_group.cfg" ]] || [[ "${tmpMyservers_Member}" == "service_group.cfg" ]] ; then
-			let myservers_index1++
+			let myservers_member_index++
 		else
 			Myservers_Member=${tmpMyservers_Member%.*}
 			print_info "$Myservers_Member"
-			let myservers_index1++
+			let myservers_member_index++
 		fi
 	done
 	
