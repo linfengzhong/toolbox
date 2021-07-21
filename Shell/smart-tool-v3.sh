@@ -314,7 +314,7 @@ function install_apache_httpd {
 	else
 		sed -i 's!Listen 80!Listen 8080!g' /etc/httpd/conf/httpd.conf
 	fi
-	systemctl reload httpd
+	# systemctl reload httpd
 	systemctl enable httpd
 	systemctl restart httpd
 	print_complete "安装 apache httpd, 并设置端口：8080"
