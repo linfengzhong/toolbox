@@ -278,10 +278,44 @@ function install_git () {
 #-----------------------------------------------------------------------------#
 # Install nginx
 function install_nginx () {
-	print_start "Install Nginx "
+	print_start "Install Nginx - port: 7080"
 	print_info "安装进行中ing "
 	sudo yum -y install nginx #>/dev/null 2>&1
-	print_complete "Install Nginx "
+
+	# /etc/nginx/nginx.conf
+	# listen       80 default_server;
+    # listen       [::]:80 default_server;
+	if cat /etc/nginx/nginx.conf | grep "listen       80 default_server;" ; then
+		print_error "已经设置端口：7080，无需重复设置！"
+	else
+		sed -i 's!listen       80 default_server;!listen       7080 default_server;!g' /etc/nginx/nginx.conf
+	fi
+
+	if cat /etc/nginx/nginx.conf | grep "listen       [::]:80 default_server;" ; then
+		print_error "已经设置端口：7080，无需重复设置！"
+	else
+		sed -i 's!listen       [::]:80 default_server;!listen       [::]:7080 default_server;;!g' /etc/nginx/nginx.conf
+	fi
+	systemctl reload nginx
+	systemctl enable nginx
+	systemctl restart nginx
+	print_complete "Install Nginx - port: 7080 "
+}
+#-----------------------------------------------------------------------------#
+# 安装 apache httpd
+function install_apache_httpd {
+	print_start "安装 apache httpd, 并设置端口：8080"
+	yum -y install httpd
+	# /etc/httpd/conf/httpd.conf
+	if cat /etc/httpd/conf/httpd.conf | grep "Listen 8080" ; then
+		print_error "已经设置端口：8080，无需重复设置！"
+	else
+		sed -i 's!Listen 80!Listen 8080!g' /etc/httpd/conf/httpd.conf
+	fi
+	systemctl reload httpd
+	systemctl enable httpd
+	systemctl restart httpd
+	print_complete "安装 apache httpd, 并设置端口：8080"
 }
 #-----------------------------------------------------------------------------#
 # Install nginx
@@ -293,7 +327,7 @@ function install_tomcat () {
 }
 #-----------------------------------------------------------------------------#
 # 安装 v2ray-agent
-function InstallV2rayAgent {
+function install_v2ray_agent {
 	# https://github.com/mack-a/v2ray-agent
 	print_start "安装 v2ray-agent "
 	wget -c -q --show-progress -P /root -N --no-check-certificate "https://raw.githubusercontent.com/mack-a/v2ray-agent/master/install.sh" 
@@ -1938,13 +1972,6 @@ function install_x_ui {
 	bash <(curl -Ls https://raw.githubusercontent.com/sprov065/x-ui/master/install.sh) 0.2.0
 }
 #-----------------------------------------------------------------------------#
-# 安装 apache httpd
-function install_apache_httpd {
-	print_start "安装 apache httpd"
-	yum -y install httpd
-	print_complete "安装 apache httpd"
-}
-#-----------------------------------------------------------------------------#
 # 定制 Nagios Server Nagios.cfg
 function customize_nagios_server_nagios_cfg {
 	print_info "Step 2: Nagios 主配置文件： /usr/local/nagios/etc/nagios.cfg"
@@ -2270,7 +2297,7 @@ function enable_nagios_normal_mode {
 #-----------------------------------------------------------------------------#
 # 激活 apache httpd SSL
 function enable_httpd_ssl {
-	print_start "激活 apache httpd SSL"
+	print_start "激活 apache httpd SSL - Port: 8443"
 	print_info "Step 1: 安装ssl认证模块 "
 	yum -y install mod_ssl
 	print_info "Step 2: 编辑 /etc/httpd/conf.d/ssl.conf"
@@ -2606,9 +2633,6 @@ function nagios_menu() {
 	echoContent green "当前系统Linux版本 : \c" 
 	checkSystem
 	echoContent red "=================================================================="
-	echoContent skyBlue "--------------------------监控安装前继----------------------------"
-	echoContent yellow "1.安装 Apache httpd "
-	echoContent yellow "2.激活 Apache httpd SSL "
 	echoContent skyBlue "--------------------------监控安装菜单----------------------------"
 	echoContent yellow "3.安装 nagios server "
 	echoContent yellow "4.安装 nagios nrpe "
@@ -2623,12 +2647,7 @@ function nagios_menu() {
 	echoContent red "=================================================================="
 	read -r -p "Please choose the function (请选择) : " selectInstallType
 	case ${selectInstallType} in
-	1)
-		install_apache_httpd
-		;;
-	2)
-		enable_httpd_ssl
-		;;
+
 	3)
 		install_nagios_server
 		;;
@@ -2696,7 +2715,7 @@ function kxsw_menu() {
 	read -r -p "Please choose the function (请选择) : " selectInstallType
 	case ${selectInstallType} in
 	0)
-		InstallV2rayAgent
+		install_v2ray_agent
 		;;
 	1)
 		install_xray_onekey
@@ -2965,11 +2984,11 @@ function menu() {
 	echoContent yellow "11.安装 prerequisite"
 	echoContent yellow "12.安装 acme.sh"
 	echoContent yellow "13.安装 bpytop"
-	echoContent yellow "14.安装 webmin"
-	echoContent yellow "15.安装 docker CE"
-	echoContent yellow "16.安装 docker compose"
-	echoContent yellow "17.安装 git"
-	echoContent yellow "18.安装 nginx"
+	echoContent yellow "14.安装 webmin - port: 10000"
+	echoContent yellow "15.安装 docker CE & docker compose"
+	echoContent yellow "16.安装 git"
+	echoContent yellow "17.安装 nginx - port: 7080"
+	echoContent yellow "18.安装 httpd - port: 8080 & port: 8443"
 	echoContent skyBlue "---------------------------版本控制-------------------------------"  
 	echoContent yellow "20.git init | 21.git clone | 22.git pull | 23.git push"
 	echoContent yellow "24.更新日志、配置文件、动态数据到GitHub"
@@ -2986,8 +3005,8 @@ function menu() {
 	echoContent skyBlue "---------------------------脚本管理-------------------------------"
 	echoContent yellow "0.更新脚本"
 	echoContent yellow "1.科学上网工具 [Sub Menu]"
-	echoContent yellow "2.Nagios监控 [Sub Menu]"
-	echoContent yellow "3.Webmin管理 [Sub Menu]"
+	echoContent yellow "2.Nagios监控 - port: 8443 [Sub Menu]"
+	echoContent yellow "3.Webmin管理 - port: 10000[Sub Menu]"
 	echoContent yellow "4.设置域名 | 5.设置时区：上海"
 	echoContent yellow "6.设置UUID | 7.恢复默认UUID"
 	echoContent yellow "8.bpytop "
@@ -3021,18 +3040,17 @@ function menu() {
 		;;
 	15)
 		install_docker
-		;;
-	16)
 		install_docker_compose
 		;;
-	17)
+	16)
 		install_git
 		;;
-	18)
+	17)
 		install_nginx
 		;;
-	19)
-		install_tomcat
+	18)
+		install_apache_httpd
+		enable_httpd_ssl
 		;;
 	20)
 		git_init
@@ -3154,7 +3172,7 @@ function menu() {
 		;;
 	esac
 }
-SmartToolVersion=v0.307
+SmartToolVersion=v0.308
 cleanScreen
 initVar $1
 set_current_host_domain
