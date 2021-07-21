@@ -285,13 +285,13 @@ function install_nginx () {
 	# /etc/nginx/nginx.conf
 	# listen       80 default_server;
     # listen       [::]:80 default_server;
-	if cat /etc/nginx/nginx.conf | grep "listen       80 default_server;" ; then
+	if cat /etc/nginx/nginx.conf | grep "listen       7080 default_server;" ; then
 		print_error "已经设置端口：7080，无需重复设置！"
 	else
 		sed -i 's!listen       80 default_server;!listen       7080 default_server;!g' /etc/nginx/nginx.conf
 	fi
 
-	if cat /etc/nginx/nginx.conf | grep "listen       [::]:80 default_server;" ; then
+	if cat /etc/nginx/nginx.conf | grep "listen       [::]:7080 default_server;" ; then
 		print_error "已经设置端口：7080，无需重复设置！"
 	else
 		sed -i 's!listen       [::]:80 default_server;!listen       [::]:7080 default_server;;!g' /etc/nginx/nginx.conf
