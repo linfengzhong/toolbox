@@ -2111,7 +2111,7 @@ EOF
 	local tmpService_Group_Member
 	local Service_Type_Index=0
 	local i=0
-	local array_service=(v2ray xray trojan.go nginx httpd v2-ui x-ui webmin docker Ping)
+	local array_service=(v2ray xray trojan.go nginx httpd v2-ui x-ui webmin docker)
 	# "CPU statistics" "Memory usage"
 	for i in ${array_service[*]}
 	do
