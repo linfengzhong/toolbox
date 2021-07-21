@@ -2114,10 +2114,10 @@ EOF
 	# local array_service=(v2ray xray trojan.go nginx httpd v2-ui x-ui webmin docker)
 	local array_service=("Service v2ray" "Service xray" "Service trojan.go" "Service nginx" "Service httpd" "Service v2-ui" "Service x-ui" "Service webmin" "Service docker" "CPU statistics" "Memory usage" Ping)
 	
-	echo ${array_service[*]}
+	echo ${array_service[@]}
 	# for i in ${array_service[*]} 
 	# 数组元素有空格，要用双引号
-	for i in "${array_service[*]}"
+	for i in "${array_service[@]}"
 	do
 		Service_Type=${array_service[Service_Type_Index]}
 		# Service_Group_Member=$Service_Group_Member",Service "${Service_Type}
