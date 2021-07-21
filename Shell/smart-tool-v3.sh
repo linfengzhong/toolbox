@@ -2113,6 +2113,8 @@ EOF
 	local i=0
 	# local array_service=(v2ray xray trojan.go nginx httpd v2-ui x-ui webmin docker)
 	local array_service=("Service v2ray" "Service xray" "Service trojan.go" "Service nginx" "Service httpd" "Service v2-ui" "Service x-ui" "Service webmin" "Service docker" "CPU statistics" "Memory usage" Ping)
+	
+	echo ${array_service[*]}
 	for i in ${array_service[*]}
 	do
 		Service_Type=${array_service[Service_Type_Index]}
@@ -2128,6 +2130,7 @@ EOF
 			# echoContent white "${tmpService_Group_Member}"
 			let Myservers_Host_Index++
 		else
+			# Service_Group_Member=$Service_Group_Member","${tmpService_Group_Member%.*}",Service "${Service_Type}
 			Service_Group_Member=$Service_Group_Member","${tmpService_Group_Member%.*}","${Service_Type}
 			# print_info "$Service_Group_Member"
 			let Myservers_Host_Index++
