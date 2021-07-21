@@ -2110,6 +2110,7 @@ EOF
 		for e in ${array_host[*]}
 		do
 		tmpService_Group_Member=${array_host[Myservers_Host_Index]##*/}
+		print_info "$tmpService_Group_Member"
 		Service_Group_Member=$Service_Group_Member", Service "${Service_Type}
 		
 		if [[ "${tmpService_Group_Member}" == "host_group.cfg" ]] || [[ "${tmpService_Group_Member}" == "service_group.cfg" ]] || [[ "${tmpService_Group_Member}" == "$currentHost"".cfg" ]] ; then
