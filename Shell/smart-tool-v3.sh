@@ -2177,8 +2177,8 @@ function customize_nagios_server {
 
 	customize_nagios_server_nagios_cfg
 	customize_nagios_server_myservers
-	# customize_nagios_server_host_group
-	# customize_nagios_server_service_group
+	customize_nagios_server_host_group
+	customize_nagios_server_service_group
 	customize_nagios_server_command
 	customize_nagios_server_restart
 
