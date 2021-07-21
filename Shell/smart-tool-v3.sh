@@ -2361,7 +2361,7 @@ function customize_nagios_client_copy_libexec {
 function customize_nagios_client_restart {
 	print_info "重启NRPE服务"
 	systemctl restart nrpe
-	systemctl status nrpe
+	# systemctl status nrpe
 }
 #-----------------------------------------------------------------------------#
 # 定制 Nagios Client
@@ -3288,7 +3288,7 @@ function menu() {
 		;;
 	esac
 }
-SmartToolVersion=v0.315
+SmartToolVersion=v0.316
 cleanScreen
 initVar $1
 set_current_host_domain
