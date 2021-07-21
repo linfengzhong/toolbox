@@ -2196,7 +2196,7 @@ function customize_nagios_server {
 #-----------------------------------------------------------------------------#
 # 定制 Nagios Server Myservers Show
 function customize_nagios_server_myservers_show {
-	print_start "Nagios Myservers "
+	print_info " ---> Nagios Myservers <--- "
 
 	local search_dir="/usr/local/nagios/etc/objects/myservers"
 	for xxmember in $search_dir/*
@@ -2221,7 +2221,7 @@ function customize_nagios_server_myservers_show {
 		fi
 	done
 	
-	print_complete "Nagios Myservers "
+	print_info "---> Nagios Myservers <--- "
 }
 #-----------------------------------------------------------------------------#
 # 定制 Nagios Client NRPE.cfg
