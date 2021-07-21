@@ -2343,10 +2343,16 @@ function customize_nagios_client_copy_libexec {
 	else
 		print_error "请先Git同步toolbox到本地，再进行设置！"
 		print_info "Plan B: wget 文件到Libexec"
-		wget -c -q -P /usr/local/nagios/libexec/check_cpu_stats.sh -N --no-check-certificate "https://raw.githubusercontent.com/linfengzhong/toolbox/main/Nagios/Libexec/check_cpu_stats.sh"
-		wget -c -q -P /usr/local/nagios/libexec/check_kernel -N --no-check-certificate "https://raw.githubusercontent.com/linfengzhong/toolbox/main/Nagios/Libexec/check_kernel"
-		wget -c -q -P /usr/local/nagios/libexec/check_mem.pl -N --no-check-certificate "https://raw.githubusercontent.com/linfengzhong/toolbox/main/Nagios/Libexec/check_mem.pl"
-		wget -c -q -P /usr/local/nagios/libexec/check_service.sh -N --no-check-certificate "https://raw.githubusercontent.com/linfengzhong/toolbox/main/Nagios/Libexec/check_service.sh"	
+		
+		rm -f /usr/local/nagios/libexec/check_cpu_stats.sh
+		rm -f /usr/local/nagios/libexec/check_kernel
+		rm -f /usr/local/nagios/libexec/check_mem.pl
+		rm -f /usr/local/nagios/libexec/check_service.sh
+
+		wget -c -q -P /usr/local/nagios/libexec/ -N --no-check-certificate "https://raw.githubusercontent.com/linfengzhong/toolbox/main/Nagios/Libexec/check_cpu_stats.sh"
+		wget -c -q -P /usr/local/nagios/libexec/ -N --no-check-certificate "https://raw.githubusercontent.com/linfengzhong/toolbox/main/Nagios/Libexec/check_kernel"
+		wget -c -q -P /usr/local/nagios/libexec/ -N --no-check-certificate "https://raw.githubusercontent.com/linfengzhong/toolbox/main/Nagios/Libexec/check_mem.pl"
+		wget -c -q -P /usr/local/nagios/libexec/ -N --no-check-certificate "https://raw.githubusercontent.com/linfengzhong/toolbox/main/Nagios/Libexec/check_service.sh"	
 		chmod 755 /usr/local/nagios/libexec/*.*
 	fi
 }
@@ -3282,7 +3288,7 @@ function menu() {
 		;;
 	esac
 }
-SmartToolVersion=v0.314
+SmartToolVersion=v0.315
 cleanScreen
 initVar $1
 set_current_host_domain
