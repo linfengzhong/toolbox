@@ -2111,13 +2111,13 @@ EOF
 	local tmpService_Group_Member
 	local Service_Type_Index=0
 	local i=0
-	local array_service=(v2ray xray trojan.go nginx httpd v2-ui x-ui webmin docker)
-	# "CPU statistics" "Memory usage"
+	# local array_service=(v2ray xray trojan.go nginx httpd v2-ui x-ui webmin docker)
+	local array_service=("Service v2ray" "Service xray" "Service trojan.go" "Service nginx" "Service httpd" "Service v2-ui" "Service x-ui" "Service webmin" "Service docker" "CPU statistics" "Memory usage" Ping)
 	for i in ${array_service[*]}
 	do
 		Service_Type=${array_service[Service_Type_Index]}
-		Service_Group_Member=$Service_Group_Member",Service "${Service_Type}
-
+		# Service_Group_Member=$Service_Group_Member",Service "${Service_Type}
+		Service_Group_Member=$Service_Group_Member","${Service_Type}
 		local e=0
 		local Myservers_Host_Index=0
 		for e in ${array_host[*]}
@@ -2128,7 +2128,7 @@ EOF
 			# echoContent white "${tmpService_Group_Member}"
 			let Myservers_Host_Index++
 		else
-			Service_Group_Member=$Service_Group_Member","${tmpService_Group_Member%.*}",Service "${Service_Type}
+			Service_Group_Member=$Service_Group_Member","${tmpService_Group_Member%.*}","${Service_Type}
 			# print_info "$Service_Group_Member"
 			let Myservers_Host_Index++
 		fi
@@ -3237,7 +3237,7 @@ function menu() {
 		;;
 	esac
 }
-SmartToolVersion=v0.312
+SmartToolVersion=v0.313
 cleanScreen
 initVar $1
 set_current_host_domain
