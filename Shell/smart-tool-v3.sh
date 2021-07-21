@@ -2140,8 +2140,8 @@ EOF
 		done
 		cat <<EOF >> /usr/local/nagios/etc/objects/myservers/service_group.cfg
 define servicegroup{
-	servicegroup_name	${Service_Type}
-	alias			${Service_Type}
+	servicegroup_name	${Service_Type#* }
+	alias			${Service_Type#* }
 	members			${Service_Group_Member}
 	}
 EOF
