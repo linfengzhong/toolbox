@@ -2156,6 +2156,7 @@ function customize_nagios_server {
 # 定制 Nagios Server Myservers Show
 function customize_nagios_server_myservers_show {
 	print_start "Nagios Myservers "
+
 	local search_dir="/usr/local/nagios/etc/objects/myservers"
 	for entry in $search_dir/*
 	do
@@ -2163,7 +2164,14 @@ function customize_nagios_server_myservers_show {
 			arr=(${arr[*]} $entry)
 		fi
 	done
-	print_info "${arr[*]}"
+
+	local myservers_index=0
+	for i in ${arr[*]}
+	do
+	print_info "${arr[myservers_index]}"
+	let myservers_index++
+	done
+	
 	print_complete "Nagios Myservers "
 }
 #-----------------------------------------------------------------------------#
