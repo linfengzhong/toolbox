@@ -2053,8 +2053,8 @@ function customize_nagios_server_host_group {
 		if [[ "${tmpMyservers_Host_Group}" == "host_group.cfg" ]] || [[ "${tmpMyservers_Host_Group}" == "service_group.cfg" ]] || [[ "${tmpMyservers_Host_Group}" == "$currentHost"".cfg" ]] ; then
 		#if [[ "${coreInstallType}" == "1" ]] && [[ -n $(pgrep -f xray/xray) ]]; then
 			# skip
-			print_error "skip file"
-			echoContent white "${tmpMyservers_Host_Group}"
+			# print_error "skip file"
+			# echoContent white "${tmpMyservers_Host_Group}"
 			let myservers_index++
 		else
 			Myservers_Host_Group=$Myservers_Host_Group","${tmpMyservers_Host_Group%.*}
@@ -2076,8 +2076,8 @@ EOF
 		chown nagios:nagios /usr/local/nagios/etc/objects/myservers/host_group.cfg
 		chmod 777 /usr/local/nagios/etc/objects/myservers/host_group.cfg
 	#fi
-	print_info "展示 host_group.cfg"
-	cat /usr/local/nagios/etc/objects/myservers/host_group.cfg
+	# print_info "展示 host_group.cfg"
+	# cat /usr/local/nagios/etc/objects/myservers/host_group.cfg
 	print_complete "Step 4: Nagios 服务器组配置文件： /usr/local/nagios/etc/objects/myservers/host_group.cfg"
 }
 #-----------------------------------------------------------------------------#
