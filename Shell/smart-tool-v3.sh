@@ -2363,11 +2363,11 @@ EOF
 	#重启http服务
 	systemctl restart httpd.service
 	#查看状态
-	systemctl status httpd.service
+	# systemctl status httpd.service
 	print_info "Nagio 访问地址 https://${currentHost}:8443/nagios"
 	print_info "Nagio 用户名：nagiosadmin"
 	print_info "Nagio 密码：xxxxxx"
-	print_complete "激活 apache httpd SSL"
+	print_complete "激活 apache httpd SSL - Port: 8443 "
 }
 #-----------------------------------------------------------------------------#
 # 安装 nagios server
@@ -3031,6 +3031,8 @@ function menu() {
 		install_docker_compose
 		install_git
 		install_nginx
+		install_apache_httpd
+		enable_apache_httpd_ssl
 		;;
 	11)
 		install_prerequisite
