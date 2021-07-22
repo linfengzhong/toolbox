@@ -2567,7 +2567,7 @@ EOF
 function customize_nagios_client_copy_libexec {
 
 	# check_ssl_certificate
-	yum -y install nagios-plugins-perl
+	yum -y install nagios-plugins-perl >/dev/null 2>&1
 	# yum -y install libcrypt-ssleay-perl
 	# yum -y install libcrypt-x509-perl
 
