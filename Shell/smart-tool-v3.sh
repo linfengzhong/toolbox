@@ -2196,12 +2196,14 @@ function customize_nagios_server_myservers_three {
 	chown nagios:nagios /usr/local/nagios/etc/objects/myservers
 	chmod 777 /usr/local/nagios/etc/objects/myservers
 
+	local NagiosClientDomain1
+	local NagiosClientIP1
 	local array_service_description=("CPU statistics" "Current users" "Disk usage" "Memory usage" "Total procedures" "SSH" "Ping" "Service v2ray" "Service xray" "Service trojan.go" "Service nginx" "Service httpd" "Service v2-ui" "Service x-ui" "Service webmin" "Service docker" "Service nrpe" "Service node_exporter")
 	local array_check_command=("check_cpu_stats" "check_users" "check_disk" "check_mem" "check_total_procs" "check_ssh" "check_ping" "check_v2ray3" "check_xray3" "check_trojan.go3" "check_nginx3" "check_httpd3" "check_v2_ui" "check_x_ui" "check_webmin" "check_docker" "check_nrpe" "check_node_exporter")
 	local array_service_and_command_index=0
 	local servicexx
-	local NagiosClientDomain1
-	local NagiosClientIP1
+	local temp_array_service_description
+	local temp_array_check_command
 
 	read -r -p "请输入Nagios client address : " NagiosClientDomain1
 	if [ $NagiosClientDomain1 ]; then
@@ -2226,14 +2228,16 @@ define host{
 }
 EOF
 	for servicexx in "${array_service_description[@]}"
+		temp_array_service_description=${array_service_description[array_service_and_command_index]}
+		temp_array_check_command=${array_check_command[array_service_and_command_index]}
 	do
 	cat <<EOF >> /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
-# Define a service to do $array_service_description[array_service_and_command_index] on the remote machine.
+# Define a service to do $temp_array_service_description on the remote machine.
 define service {
     use                     generic-service
     host_name               $NagiosClientDomain1
-    service_description     $array_service_description[array_service_and_command_index]
-    check_command           check_nrpe!$array_check_command[array_service_and_command_index]
+    service_description     $temp_array_service_description
+    check_command           check_nrpe!$temp_array_check_command
 }
 EOF
 	let array_service_and_command_index++
@@ -2241,6 +2245,8 @@ EOF
 
 	chown nagios:nagios /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
 	chmod 777 /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
+
+	cat /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
 
 }
 #-----------------------------------------------------------------------------#
@@ -3669,7 +3675,7 @@ function menu() {
 		;;
 	esac
 }
-SmartToolVersion=v0.323
+SmartToolVersion=v0.324
 cleanScreen
 initVar $1
 set_current_host_domain
