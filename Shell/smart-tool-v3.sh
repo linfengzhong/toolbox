@@ -2476,6 +2476,7 @@ function customize_nagios_client_nrpe_cfg {
 			if [ $TMPnagiosHostIP ]; then
 				print_info "Nagios Server IP : ${TMPnagiosHostIP}"
 			else
+				print_error "未检测到输入，将使用默认地址！"
 				TMPnagiosHostIP=${nagiosHostIP}
 				print_info "使用默认 Nagios Server IP : ${TMPnagiosHostIP}"
 			fi
