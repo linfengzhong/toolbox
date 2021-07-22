@@ -3185,6 +3185,7 @@ function nagios_menu() {
 	echoContent yellow "8.展示 nagios server 配置文件 "
 	echoContent yellow "9.展示 nagios client 配置文件 "
 	echoContent yellow "10.测试 nagios server 配置文件 "
+	echoContent yellow "11.清除 nagios myservers 文件夹 "
 	echoContent red "=================================================================="
 	read -r -p "Please choose the function (请选择) : " selectInstallType
 	case ${selectInstallType} in
@@ -3222,6 +3223,9 @@ function nagios_menu() {
 		;;
 	10)
 		/usr/local/nagios/bin/nagios -v /usr/local/nagios/etc/nagios.cfg
+		;;
+	11)
+		rm -rf /usr/local/nagios/etc/objects/myservers
 		;;
 	*)
 		print_error "请输入正确的数字"
