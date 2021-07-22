@@ -2715,6 +2715,19 @@ function install_exec_node_exporter {
   
 }
 #-----------------------------------------------------------------------------#
+# 安装 Node Exporter linux 版本
+function install_exec_node_exporter_linux {
+
+	print_start "安装 Node Exporter linux 版本 "
+	print_info "Installing the repository "
+	curl -Lo /etc/yum.repos.d/_copr_ibotty-prometheus-exporters.repo https://copr.fedorainfracloud.org/coprs/ibotty/prometheus-exporters/repo/epel-8/ibotty-prometheus-exporters-epel-8.repo
+
+	print_info "安装 node_exporter"
+	yum install node_exporter
+	print_complete "安装 Node Exporter linux 版本 "
+
+}
+#-----------------------------------------------------------------------------#
 # 安装 & 运行 Grafana container - Port: 3000 
 function install_exec_grafana {
 	
@@ -2786,6 +2799,8 @@ function grafana_menu() {
 	echoContent yellow "4.停止 & 删除 Prometheus "
 	echoContent yellow "5.停止 & 删除 Node Exporter container "
 	echoContent yellow "6.停止 & 删除 Grafana container "
+	echoContent skyBlue "----------------------------安装菜单------------------------------"
+	echoContent yellow "7.安装 & 运行 Node Exporter 单机版 - Port: 9100 "
 	echoContent red "=================================================================="
 	read -r -p "Please choose the function (请选择) : " selectInstallType
 	case ${selectInstallType} in
@@ -2807,6 +2822,9 @@ function grafana_menu() {
 		;;
 	6)
 		stop_remove_grafana
+		;;
+	7)
+		install_exec_node_exporter_linux
 		;;
 	*)
 		print_error "请输入正确的数字"
@@ -3413,7 +3431,7 @@ function menu() {
 		;;
 	esac
 }
-SmartToolVersion=v0.317
+SmartToolVersion=v0.318
 cleanScreen
 initVar $1
 set_current_host_domain
