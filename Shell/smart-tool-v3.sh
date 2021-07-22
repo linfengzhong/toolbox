@@ -3169,10 +3169,12 @@ function nagios_menu() {
 	echoContent yellow "4.定制 nagios server "
 	echoContent yellow "5.定制 nagios client "
 	echoContent skyBlue "----------------------------主题选择------------------------------"
-	echoContent yellow "6.激活 nagios dark mode "
-	echoContent yellow "7.激活 nagios normal mode "
+	echoContent yellow "6.激活 nagios server dark mode "
+	echoContent yellow "7.激活 nagios server normal mode "
 	echoContent skyBlue "----------------------------检测配置------------------------------"
-	echoContent yellow "8.测试 nagios server 配置文件 "
+	echoContent yellow "8.展示 nagios server 配置文件 "
+	echoContent yellow "9.展示 nagios client 配置文件 "
+	echoContent yellow "10.测试 nagios server 配置文件 "
 	echoContent red "=================================================================="
 	read -r -p "Please choose the function (请选择) : " selectInstallType
 	case ${selectInstallType} in
@@ -3203,6 +3205,12 @@ function nagios_menu() {
 		nagios_menu
 		;;
 	8)
+		cat /usr/local/nagios/etc/nagios.cfg
+		;;
+	9)
+		cat /usr/local/nagios/etc/nrpe.cfg
+		;;
+	10)
 		/usr/local/nagios/bin/nagios -v /usr/local/nagios/etc/nagios.cfg
 		;;
 	*)
