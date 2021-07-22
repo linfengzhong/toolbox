@@ -2691,6 +2691,64 @@ function install_nagios_nrpe {
 	print_complete "Step 5: 设置防火墙开启端口 5666"
 }
 #-----------------------------------------------------------------------------#
+# Grafana 菜单
+function grafana_menu() {
+	clear
+	cd "$HOME" || exit
+	echoContent red "=================================================================="
+	echoContent green "SmartTool：\c"
+	echoContent white "${SmartToolVersion}"
+	echoContent green "Github：\c"
+	echoContent white "https://github.com/linfengzhong/toolbox"
+	echoContent green "logserver：\c"
+	echoContent white "https://github.com/linfengzhong/logserver"
+	echoContent green "初始化服务器、安装Docker、执行容器、科学上网 on \c" 
+	echoContent white "${currentHost}"
+	echoContent green "当前主机外部IP地址： \c" 
+	echoContent white "${currentIP}"	
+	echoContent green "当前UUID： \c" 
+	echoContent white "${currentUUID}"
+	echoContent green "当前系统Linux版本 : \c" 
+	checkSystem
+	echoContent red "=================================================================="
+	echoContent skyBlue "---------------------------安装菜单-----------------------------"
+	echoContent yellow "1.安装 Prometheus "
+	echoContent yellow "2.安装 Node Exporter "
+	echoContent yellow "3.安装 Grafana "
+	echoContent skyBlue "---------------------------配置菜单-----------------------------"
+	echoContent yellow "4.定制 Prometheus - Port: 9090 "
+	echoContent yellow "5.定制 Node Exporter - Port: 9100"
+	echoContent yellow "6.定制 Grafana 配置 "
+	echoContent red "=================================================================="
+	read -r -p "Please choose the function (请选择) : " selectInstallType
+	case ${selectInstallType} in
+
+	1)
+		install_prometheus
+		;;
+	2)
+		install_node_exporter
+		;;
+	3)
+		install_grafana
+		;;
+	4)
+		customize_prometheus
+		;;
+	5)
+		customize_node_exporter
+		;;
+	6)
+		customize_grafana
+		;;
+	*)
+		print_error "请输入正确的数字"
+		sleep 1
+		menu
+		;;
+	esac
+}
+#-----------------------------------------------------------------------------#
 # webmin 安装菜单
 function webmin_menu() {
 	clear
@@ -3096,12 +3154,12 @@ function menu() {
 	echoContent skyBlue "---------------------------脚本管理-------------------------------"
 	echoContent yellow "0.更新脚本"
 	echoContent yellow "1.科学上网工具 [Sub Menu]"
-	echoContent yellow "2.Nagios监控 - port: 8443 [Sub Menu]"
-	echoContent yellow "3.Webmin管理 - port: 10000[Sub Menu]"
-	echoContent yellow "4.设置域名 | 5.设置时区：上海"
-	echoContent yellow "6.设置UUID | 7.恢复默认UUID"
-	echoContent yellow "8.bpytop "
-	echoContent yellow "9.退出"
+	echoContent yellow "2.Nagios监控  - port: 8443 [Sub Menu]"
+	echoContent yellow "3.Grafana监控 - port: 3000 [Sub Menu]"
+	echoContent yellow "4.Webmin管理  - port: 10000[Sub Menu]"
+	echoContent yellow "5.设置域名 | 6.设置时区：上海"
+	echoContent yellow "7.设置UUID | 8.恢复默认UUID"
+	echoContent yellow "9.bpytop "
 	echoContent skyBlue "---------------------------安装软件-------------------------------"
 	echoContent yellow "10.安装 全部程序"
 	echoContent yellow "11.安装 prerequisite"
@@ -3130,6 +3188,45 @@ function menu() {
 	aliasInstall
 	read -r -p "Please choose the function (请选择) : " selectInstallType
 	case ${selectInstallType} in
+	0)
+		updateSmartTool
+		sleep 1
+		st
+		;;
+	1)
+		kxsw_menu
+		;;
+	2)
+		nagios_menu
+		;;
+	3)
+		grafana_menu
+		;;
+	4)
+		webmin_menu
+		;;
+	5)
+		clear_myHostDomain
+		set_current_host_domain
+		;;
+	6)
+		set_timezone
+		sleep 1
+		st
+		;;
+	7)
+		clear_currentUUID
+		set_current_uuid
+		sleep 1
+		st
+		;;
+	8)
+		clear_currentUUID
+		st
+		;;
+	9)
+		execBpytop
+		;;
 	10)
 		install_prerequisite
 		install_acme
@@ -3243,52 +3340,13 @@ function menu() {
 	42)
 		renewalTLS
 		;;
-	0)
-		updateSmartTool
-		sleep 2
-		st
-		;;
-	1)
-		kxsw_menu
-		;;
-	2)
-		nagios_menu
-		;;
-	3)
-		webmin_menu
-		;;
-	4)
-		clear_myHostDomain
-		set_current_host_domain
-		;;
-	5)
-		set_timezone
-		sleep 1
-		st
-		;;
-	6)
-		clear_currentUUID
-		set_current_uuid
-		sleep 1
-		st
-		;;
-	7)
-		clear_currentUUID
-		st
-		;;
-	8)
-		execBpytop
-		;;
-	9)
-	    exit 0
-		;;
 	*)
 		print_error "请输入正确的数字"
 #		menu "$@"
 		;;
 	esac
 }
-SmartToolVersion=v0.316
+SmartToolVersion=v0.317
 cleanScreen
 initVar $1
 set_current_host_domain
