@@ -2550,7 +2550,7 @@ command[check_nrpe]=/usr/local/nagios/libexec/check_service.sh -s nrpe
 command[check_node_exporter]=/usr/local/nagios/libexec/check_service.sh -s node_exporter
 
 command[check_http]=/usr/local/nagios/libexec/check_http -H localhost -S -w 0.5 -c 1 -t 5
-command[check_ssl_certificate]=/usr/local/nagios/libexec/check_ssl_certificate -H $currentHost -c 3 -w 10
+command[check_ssl_certificate]=/usr/local/nagios/libexec/check_ssl_certificate -H localhost -c 3 -w 10
 command[check_ssl_cert_expiry]=/usr/local/nagios/libexec/check_ssl_cert_expiry -h $currentHost -c 3 -w 10
 
 command[check_port_5666]=/usr/local/nagios/libexec/check_tcp -H $currentHost -p 5666 -w 0.1 -c 0.5 -t 5
