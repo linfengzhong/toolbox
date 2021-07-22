@@ -2816,12 +2816,18 @@ function grafana_menu() {
 		;;
 	4)
 		stop_remove_prometheus
+		sleep 1
+		grafana_menu
 		;;
 	5)
 		stop_remove_node_exporter
+		sleep 1
+		grafana_menu
 		;;
 	6)
 		stop_remove_grafana
+		sleep 1
+		grafana_menu
 		;;
 	7)
 		install_exec_node_exporter_linux
@@ -3431,7 +3437,7 @@ function menu() {
 		;;
 	esac
 }
-SmartToolVersion=v0.318
+SmartToolVersion=v0.319
 cleanScreen
 initVar $1
 set_current_host_domain
