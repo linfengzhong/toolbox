@@ -2117,7 +2117,7 @@ EOF
 	local Service_Type_Index=0
 	local i=0
 	# local array_service=(v2ray xray trojan.go nginx httpd v2-ui x-ui webmin docker)
-	local array_service=("Service v2ray" "Service xray" "Service trojan.go" "Service nginx" "Service httpd" "Service v2-ui" "Service x-ui" "Service webmin" "Service docker" "CPU statistics" "Memory usage" Ping)
+	local array_service=("Service v2ray" "Service xray" "Service trojan.go" "Service nginx" "Service httpd" "Service v2-ui" "Service x-ui" "Service webmin" "Service docker" "CPU statistics" "Memory usage" Ping "Service nrpe" "Service node_exporter")
 	
 	# echo ${array_service[@]}
 	# for i in ${array_service[*]} 
@@ -2332,6 +2332,8 @@ command[check_x_ui]=/usr/local/nagios/libexec/check_service.sh -s x-ui
 command[check_webmin]=/usr/local/nagios/libexec/check_service.sh -s webmin
 command[check_docker]=/usr/local/nagios/libexec/check_service.sh -s docker
 
+command[check_nrpe]=/usr/local/nagios/libexec/check_service.sh -s nrpe
+command[check_node_exporter]=/usr/local/nagios/libexec/check_service.sh -s node_exporter
 EOF
 		# fi
 	chown nagios:nagios /usr/local/nagios/etc/nrpe.cfg
@@ -3454,7 +3456,7 @@ function menu() {
 		;;
 	esac
 }
-SmartToolVersion=v0.321
+SmartToolVersion=v0.322
 cleanScreen
 initVar $1
 set_current_host_domain
