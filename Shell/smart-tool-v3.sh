@@ -21,8 +21,8 @@ function initVar() {
 	customPath="rdxyzukwofngusfpmheud"
 
 	# 自定义服务数组
-	array_service_description=("CPU" "Disk usage" "Memory" "Total procedures" "SSH" "Ping" "Service v2ray" "Service xray" "Service trojan.go" "Service nginx" "Service httpd" "Service v2-ui" "Service x-ui" "Service webmin" "Service docker" "Service nrpe" "Service node_exporter" "Https" "Certificate" )
-	array_check_command=("check_cpu_stats" "check_disk" "check_mem" "check_total_procs" "check_ssh" "check_ping" "check_v2ray3" "check_xray3" "check_trojan.go3" "check_nginx3" "check_httpd3" "check_v2_ui" "check_x_ui" "check_webmin" "check_docker" "check_nrpe" "check_node_exporter" "check_http" "check_ssl_certificate" )
+	array_service_description=("CPU" "Disk usage" "Memory" "Total procedures" "SSH" "Ping" "Service v2ray" "Service xray" "Service trojan.go" "Service nginx" "Service httpd" "Service v2-ui" "Service x-ui" "Service webmin" "Service docker" "Service nrpe" "Service node_exporter" "Https" "Certificate" "TCP 5666" "TCP 8443" "TCP 8080" "TCP 10000" "Certificate expires")
+	array_check_command=("check_cpu_stats" "check_disk" "check_mem" "check_total_procs" "check_ssh" "check_ping" "check_v2ray3" "check_xray3" "check_trojan.go3" "check_nginx3" "check_httpd3" "check_v2_ui" "check_x_ui" "check_webmin" "check_docker" "check_nrpe" "check_node_exporter" "check_http" "check_ssl_certificate" "check_port_5666" "check_port_8443" "check_port_8080" "check_port_10000" "check_certificate_expires")
 	#定义变量
 	# WORKDIR="/root/git/toolbox/Docker/docker-compose/${currentHost}/"
 	SmartToolDir="/root/git/toolbox/Shell"
@@ -2549,9 +2549,15 @@ command[check_docker2]=/usr/local/nagios/libexec/check_docker -w 50 -c 80
 command[check_nrpe]=/usr/local/nagios/libexec/check_service.sh -s nrpe
 command[check_node_exporter]=/usr/local/nagios/libexec/check_service.sh -s node_exporter
 
-command[check_http]=/usr/local/nagios/libexec/check_http -I $currentHost -S -w 0.5 -c 1
+command[check_http]=/usr/local/nagios/libexec/check_http -H localhost -S -w 0.5 -c 1 -t 5
 command[check_ssl_certificate]=/usr/local/nagios/libexec/check_ssl_certificate -H $currentHost -c 3 -w 10
 command[check_ssl_cert_expiry]=/usr/local/nagios/libexec/check_ssl_cert_expiry -h $currentHost -c 3 -w 10
+
+command[check_port_5666]=/usr/local/nagios/libexec/check_tcp -H $currentHost -p 5666 -w 0.1 -c 0.5 -t 5
+command[check_port_10000]=/usr/local/nagios/libexec/check_tcp -H $currentHost -p 10000 -w 0.1 -c 0.5 -t 5 -S
+command[check_port_8443]=/usr/local/nagios/libexec/check_tcp -H $currentHost -p 8443 -w 0.1 -c 0.5 -t 5 -S
+command[check_port_8080]=/usr/local/nagios/libexec/check_tcp -H $currentHost -p 8080 -w 0.1 -c 0.5 -t 5
+command[check_certificate_expires]=/usr/local/nagios/libexec/check_tcp -H localhost -p 443 -w 0.1 -c 0.5 -t 5  -S -D 90
 EOF
 		# fi
 	chown nagios:nagios /usr/local/nagios/etc/nrpe.cfg
