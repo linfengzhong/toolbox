@@ -2065,118 +2065,118 @@ function customize_nagios_server_myservers_two {
 
 define host{   
   use                     linux-server           
-  host_name               $NagiosClientDomain
-  alias                   $NagiosClientDomain
-  address                 $NagiosClientIP
+  host_name               $NagiosClientDomain1
+  alias                   $NagiosClientDomain1
+  address                 $NagiosClientIP1
 }
 EOF
 
 	cat <<EOF >> /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
 define service {
     use                     generic-service
-    host_name               $NagiosClientDomain
+    host_name               $NagiosClientDomain1
     service_description     CPU statistics
     check_command           check_nrpe!check_cpu_stats
 }
 define service {
     use                     generic-service
-    host_name               $NagiosClientDomain
+    host_name               $NagiosClientDomain1
     service_description     Current users
     check_command           check_nrpe!check_users
 }
 define service {
     use                     generic-service
-    host_name               $NagiosClientDomain
+    host_name               $NagiosClientDomain1
     service_description     Disk usage
     check_command           check_nrpe!check_disk
 }
 define service {
     use                     generic-service
-    host_name               $NagiosClientDomain
+    host_name               $NagiosClientDomain1
     service_description     Memory usage
     check_command           check_nrpe!check_mem
 }
 define service {
     use                     generic-service
-    host_name               $NagiosClientDomain
+    host_name               $NagiosClientDomain1
     service_description     Total procedures
     check_command           check_nrpe!check_total_procs
 }
 define service {
     use                     generic-service
-    host_name               $NagiosClientDomain
+    host_name               $NagiosClientDomain1
     service_description     SSH
     check_command           check_nrpe!check_ssh
 }
 define service {
     use                     generic-service
-    host_name               $NagiosClientDomain
+    host_name               $NagiosClientDomain1
     service_description     Ping 
     check_command           check_nrpe!check_ping
 }
 define service {
     use                     generic-service
-    host_name               $NagiosClientDomain
+    host_name               $NagiosClientDomain1
     service_description     Service v2ray
     check_command           check_nrpe!check_v2ray3
 }
 define service {
     use                     generic-service
-    host_name               $NagiosClientDomain
+    host_name               $NagiosClientDomain1
     service_description     Service xray
     check_command           check_nrpe!check_xray3
 }
 define service {
     use                     generic-service
-    host_name               $NagiosClientDomain
+    host_name               $NagiosClientDomain1
     service_description     Service trojan.go
     check_command           check_nrpe!check_trojan.go3
 }
 define service {
     use                     generic-service
-    host_name               $NagiosClientDomain
+    host_name               $NagiosClientDomain1
     service_description     Service nginx
     check_command           check_nrpe!check_nginx3
 }
 define service {
     use                     generic-service
-    host_name               $NagiosClientDomain
+    host_name               $NagiosClientDomain1
     service_description     Service httpd
     check_command           check_nrpe!check_httpd3
 }
 define service {
     use                     generic-service
-    host_name               $NagiosClientDomain
+    host_name               $NagiosClientDomain1
     service_description     Service v2-ui
     check_command           check_nrpe!check_v2_ui
 }
 define service {
     use                     generic-service
-    host_name               $NagiosClientDomain
+    host_name               $NagiosClientDomain1
     service_description     Service x-ui
     check_command           check_nrpe!check_x_ui
 }
 define service {
     use                     generic-service
-    host_name               $NagiosClientDomain
+    host_name               $NagiosClientDomain1
     service_description     Service webmin
     check_command           check_nrpe!check_webmin
 }
 define service {
     use                     generic-service
-    host_name               $NagiosClientDomain
+    host_name               $NagiosClientDomain1
     service_description     Service docker
     check_command           check_nrpe!check_docker
 }
 define service {
     use                     generic-service
-    host_name               $NagiosClientDomain
+    host_name               $NagiosClientDomain1
     service_description     Service nrpe
     check_command           check_nrpe!check_nrpe
 }
 define service {
     use                     generic-service
-    host_name               $NagiosClientDomain
+    host_name               $NagiosClientDomain1
     service_description     Service node_exporter
     check_command           check_nrpe!check_node_exporter
 }
