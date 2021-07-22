@@ -2708,7 +2708,7 @@ EOF
 # 安装 nagios server
 function install_nagios_server {
 
-	nagios_status_running='systemctl status nagios | grep Active | awk '{print $3}' | cut -d "(" -f2 | cut -d ")" -f1'
+	nagios_status_running=$(systemctl status nagios | grep Active | awk '{print $3}' | cut -d "(" -f2 | cut -d ")" -f1)
 	if [ "$nagios_status_running" == "running" ]  
         then  
             print_info "Nagios 服务正在运行！" 
@@ -2868,7 +2868,7 @@ function install_nagios_plugins {
 # 安装 nagios nrpe
 function install_nagios_nrpe {
 
-	nrpe_status_running='systemctl status nrpe | grep Active | awk '{print $3}' | cut -d "(" -f2 | cut -d ")" -f1'
+	nrpe_status_running=$(systemctl status nrpe | grep Active | awk '{print $3}' | cut -d "(" -f2 | cut -d ")" -f1)
 	if [ "$nrpe_status_running" == "running" ]  
         then  
             print_info "NRPE 服务正在运行！" 
@@ -3692,7 +3692,7 @@ function menu() {
 		;;
 	esac
 }
-SmartToolVersion=v0.326
+SmartToolVersion=v0.327
 cleanScreen
 initVar $1
 set_current_host_domain
