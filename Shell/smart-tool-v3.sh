@@ -2228,10 +2228,10 @@ define host{
 }
 EOF
 	for servicexx in "${array_service_description[@]}"
+	do
 		temp_array_service_description=${array_service_description[array_service_and_command_index]}
 		temp_array_check_command=${array_check_command[array_service_and_command_index]}
-	do
-	cat <<EOF >> /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
+		cat <<EOF >> /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
 # Define a service to do $temp_array_service_description on the remote machine.
 define service {
     use                     generic-service
@@ -2240,7 +2240,7 @@ define service {
     check_command           check_nrpe!$temp_array_check_command
 }
 EOF
-	let array_service_and_command_index++
+		let array_service_and_command_index++
 	done
 
 	chown nagios:nagios /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
@@ -3675,7 +3675,7 @@ function menu() {
 		;;
 	esac
 }
-SmartToolVersion=v0.324
+SmartToolVersion=v0.325
 cleanScreen
 initVar $1
 set_current_host_domain
