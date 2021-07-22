@@ -1978,7 +1978,8 @@ function install_v2_ui {
 function install_x_ui {
 	bash <(curl -Ls https://raw.githubusercontent.com/sprov065/x-ui/master/install.sh) 0.2.0
 }
-
+#-----------------------------------------------------------------------------#
+# 定制 Nagios Server Check MyServers Folder
 function customize_nagios_server_check_myservers_folder {
 	print_info "Step 1: 检查文件夹：/usr/local/nagios/etc/objects/myservers "
 	mkdir -p /usr/local/nagios/etc/objects/myservers
@@ -2187,6 +2188,62 @@ EOF
 
 }
 #-----------------------------------------------------------------------------#
+# 定制 Nagios Server Myservers Three
+function customize_nagios_server_myservers_three {
+	print_info "Step 3: Nagios MyServers 独立服务器配置文件"
+
+	mkdir -p /usr/local/nagios/etc/objects/myservers
+	chown nagios:nagios /usr/local/nagios/etc/objects/myservers
+	chmod 777 /usr/local/nagios/etc/objects/myservers
+
+	local array_service_description=("CPU statistics" "Current users" "Disk usage" "Memory usage" "Total procedures" "SSH" "Ping" "Service v2ray" "Service xray" "Service trojan.go" "Service nginx" "Service httpd" "Service v2-ui" "Service x-ui" "Service webmin" "Service docker" "Service nrpe" "Service node_exporter")
+	local array_check_command=("check_cpu_stats" "check_users" "check_disk" "check_mem" "check_total_procs" "check_ssh" "check_ping" "check_v2ray3" "check_xray3" "check_trojan.go3" "check_nginx3" "check_httpd3" "check_v2_ui" "check_x_ui" "check_webmin" "check_docker" "check_nrpe" "check_node_exporter")
+	local array_service_and_command_index=0
+	local servicexx
+	local NagiosClientDomain1
+	local NagiosClientIP1
+
+	read -r -p "请输入Nagios client address : " NagiosClientDomain1
+	if [ $NagiosClientDomain1 ]; then
+		print_info "使用输入地址：${NagiosClientDomain1}"
+	else
+		print_error "未检测到输入，使用默认地址 ${currentHost}"
+		NagiosClientDomain1=${currentHost}
+	fi
+	
+	NagiosClientIP1=$(ping ${NagiosClientDomain1} -c 1 | sed '1{s/[^(]*(//;s/).*//;q}')
+	print_info "输入的服务器IP地址: \c"
+	echoContent white "${NagiosClientIP1}"
+
+	print_info "独立服务器配置文件： /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg"
+	cat <<EOF > /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
+# Define a host for the remote machine
+define host{   
+  use                     linux-server           
+  host_name               $NagiosClientDomain1
+  alias                   $NagiosClientDomain1
+  address                 $NagiosClientIP1
+}
+EOF
+	for servicexx in "${array_service_description[@]}"
+	do
+	cat <<EOF >> /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
+# Define a service to do $array_service_description[array_service_and_command_index] on the remote machine.
+define service {
+    use                     generic-service
+    host_name               $NagiosClientDomain1
+    service_description     $array_service_description[array_service_and_command_index]
+    check_command           check_nrpe!$array_check_command[array_service_and_command_index]
+}
+EOF
+	let array_service_and_command_index++
+	done
+
+	chown nagios:nagios /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
+	chmod 777 /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
+
+}
+#-----------------------------------------------------------------------------#
 # 定制 Nagios Server Host Group
 function customize_nagios_server_host_group {
 	print_info "Step 4: Nagios 服务器组配置文件： /usr/local/nagios/etc/objects/myservers/host_group.cfg"
@@ -2347,7 +2404,8 @@ function customize_nagios_server {
 	customize_nagios_server_check_myservers_folder
 	customize_nagios_server_nagios_cfg
 	# customize_nagios_server_myservers
-	customize_nagios_server_myservers_two
+	# customize_nagios_server_myservers_two
+	customize_nagios_server_myservers_three
 	customize_nagios_server_host_group
 	customize_nagios_server_service_group
 	customize_nagios_server_command
