@@ -2826,6 +2826,10 @@ function install_nagios_server {
 #-----------------------------------------------------------------------------#
 # 安装 nagios plugins
 function install_nagios_plugins {
+
+	if [[ -d "/usr/local/nagios/libexec/" ]]; then
+		print_error "Nagios Plugins 已经存在，无需重复安装！ "
+	else
 	# 2021-April-06 [Initial Version] - Shell Script for Nagios Plugins installing
 	# Nagios Plugins - Installing Nagios Plugins From Source
 
@@ -2863,6 +2867,8 @@ function install_nagios_plugins {
 	make install
 	systemctl restart nrpe
 	print_complete "Step 4: 安装nagios plugins, 并重新启动nrpe服务"
+
+	fi
 }
 #-----------------------------------------------------------------------------#
 # 安装 nagios nrpe
@@ -3692,7 +3698,7 @@ function menu() {
 		;;
 	esac
 }
-SmartToolVersion=v0.327
+SmartToolVersion=v0.328
 cleanScreen
 initVar $1
 set_current_host_domain
