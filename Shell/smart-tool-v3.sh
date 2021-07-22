@@ -2515,7 +2515,7 @@ command[check_hda1]=/usr/local/nagios/libexec/check_disk -w 20% -c 10% -p /dev/h
 command[check_zombie_procs]=/usr/local/nagios/libexec/check_procs -w 5 -c 10 -s Z
 command[check_total_procs]=/usr/local/nagios/libexec/check_procs -w 150 -c 200
 
-command[check_ping]=/usr/local/nagios/libexec/check_ping -H $HOSTADDRESS$ -w 100.0,20% -c 500.0,60% -p 5
+command[check_ping]=/usr/local/nagios/libexec/check_ping -H localhost -w 100.0,20% -c 500.0,60% -p 5
 command[check_mem]=/usr/local/nagios/libexec/check_mem.pl -u -w 95 -c 100 -C
 command[check_swap]=/usr/local/nagios/libexec/check_swap -c 0
 
@@ -2555,7 +2555,7 @@ command[check_nrpe]=/usr/local/nagios/libexec/check_service.sh -s nrpe
 command[check_node_exporter]=/usr/local/nagios/libexec/check_service.sh -s node_exporter
 
 command[check_http]=/usr/local/nagios/libexec/check_http -I 127.0.0.1 -S -w 0.5 -c 1
-command[check_ssl_certificate]=/usr/local/nagios/libexec/check_ssl_certificate -H $HOSTADDRESS$ -c 10:20 -w 2:7
+command[check_ssl_certificate]=/usr/local/nagios/libexec/check_ssl_certificate -H localhost -c 10:20 -w 2:7
 EOF
 		# fi
 	chown nagios:nagios /usr/local/nagios/etc/nrpe.cfg
