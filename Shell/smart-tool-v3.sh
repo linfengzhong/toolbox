@@ -843,7 +843,7 @@ server {
 
 	location /prometheus/ {
         proxy_pass http://prometheus:9090;
-	}
+    }
 EOF
 	print_complete "生成 NGINX 配置文件 "
 }
