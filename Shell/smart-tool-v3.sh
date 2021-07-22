@@ -2691,6 +2691,59 @@ function install_nagios_nrpe {
 	print_complete "Step 5: 设置防火墙开启端口 5666"
 }
 #-----------------------------------------------------------------------------#
+# 安装 & 运行 Prometheus container - Port: 9090 
+function install_exec_prometheus {
+
+	docker run -d \
+	--name="prometheus-standalone" \
+    -p 9090:9090 \
+    -v /etc/fuckGFW/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml \
+    prom/prometheus:latest
+
+}
+#-----------------------------------------------------------------------------#
+# 安装 & 运行 Node Exporter container - Port: 9100 
+function install_exec_node_exporter {
+
+	docker run -d \
+	--name="node-exporter" \
+	--net="host" \
+	--pid="host" \
+	-v "/:/host:ro,rslave" \
+	quay.io/prometheus/node-exporter:latest \
+	--path.rootfs=/host
+  
+}
+#-----------------------------------------------------------------------------#
+# 安装 & 运行 Grafana container - Port: 3000 
+function install_exec_grafana {
+	
+	docker run -d \
+	-p 3000:3000 \
+	--name="grafana-standalone" \
+	-e "GF_INSTALL_PLUGINS=grafana-clock-panel,grafana-simple-json-datasource" \
+	grafana/grafana:latest
+
+}
+#-----------------------------------------------------------------------------#
+# 停止 & 删除 Prometheus
+function stop_remove_prometheus {
+	docker container stop prometheus-standalone
+	docker container rm -f prometheus-standalone
+}
+#-----------------------------------------------------------------------------#
+# 停止 & 删除 Node Exporter container
+function stop_remove_node_exporter {
+	docker container stop node-exporter
+	docker container rm -f node-exporter
+}
+#-----------------------------------------------------------------------------#
+# 停止 & 删除 Grafana container 
+function stop_remove_grafana {
+	docker container stop grafana-standalone
+	docker container rm -f grafana-standalone
+}
+#-----------------------------------------------------------------------------#
 # Grafana 菜单
 function grafana_menu() {
 	clear
@@ -2711,35 +2764,35 @@ function grafana_menu() {
 	echoContent green "当前系统Linux版本 : \c" 
 	checkSystem
 	echoContent red "=================================================================="
-	echoContent skyBlue "---------------------------安装菜单-----------------------------"
-	echoContent yellow "1.安装 Prometheus "
-	echoContent yellow "2.安装 Node Exporter "
-	echoContent yellow "3.安装 Grafana "
-	echoContent skyBlue "---------------------------配置菜单-----------------------------"
-	echoContent yellow "4.定制 Prometheus - Port: 9090 "
-	echoContent yellow "5.定制 Node Exporter - Port: 9100"
-	echoContent yellow "6.定制 Grafana 配置 "
+	echoContent skyBlue "----------------------------安装菜单------------------------------"
+	echoContent yellow "1.安装 & 运行 Prometheus container - Port: 9090 "
+	echoContent yellow "2.安装 & 运行 Node Exporter container - Port: 9100 "
+	echoContent yellow "3.安装 & 运行 Grafana container - Port: 3000 "
+	echoContent skyBlue "----------------------------配置菜单------------------------------"
+	echoContent yellow "4.停止 & 删除 Prometheus "
+	echoContent yellow "5.停止 & 删除 Node Exporter container "
+	echoContent yellow "6.停止 & 删除 Grafana container "
 	echoContent red "=================================================================="
 	read -r -p "Please choose the function (请选择) : " selectInstallType
 	case ${selectInstallType} in
 
 	1)
-		install_prometheus
+		install_exec_prometheus
 		;;
 	2)
-		install_node_exporter
+		install_exec_node_exporter
 		;;
 	3)
-		install_grafana
+		install_exec_grafana
 		;;
 	4)
-		customize_prometheus
+		stop_remove_prometheus
 		;;
 	5)
-		customize_node_exporter
+		stop_remove_node_exporter
 		;;
 	6)
-		customize_grafana
+		stop_remove_grafana
 		;;
 	*)
 		print_error "请输入正确的数字"
@@ -2809,15 +2862,15 @@ function nagios_menu() {
 	echoContent green "当前系统Linux版本 : \c" 
 	checkSystem
 	echoContent red "=================================================================="
-	echoContent skyBlue "---------------------------安装菜单-----------------------------"
+	echoContent skyBlue "----------------------------安装菜单------------------------------"
 	echoContent yellow "1.安装 nagios server "
 	echoContent yellow "2.安装 nagios nrpe "
 	echoContent yellow "3.安装 nagios plugins "
-	echoContent skyBlue "---------------------------配置菜单-----------------------------"
+	echoContent skyBlue "----------------------------配置菜单------------------------------"
 	echoContent yellow "4.定制 nagios server "
 	echoContent yellow "5.定制 nagios client "
 	echoContent yellow "8.测试 nagios server 配置文件 "
-	echoContent skyBlue "---------------------------主题选择-----------------------------"
+	echoContent skyBlue "----------------------------主题选择------------------------------"
 	echoContent yellow "6.激活 nagios dark mode "
 	echoContent yellow "7.激活 nagios normal mode "
 	echoContent red "=================================================================="
