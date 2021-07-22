@@ -21,8 +21,8 @@ function initVar() {
 	customPath="rdxyzukwofngusfpmheud"
 
 	# 自定义服务数组
-	array_service_description=("CPU" "Users" "Disk usage" "Memory" "Procedures" "SSH" "Ping" "Service v2ray" "Service xray" "Service trojan.go" "Service nginx" "Service httpd" "Service v2-ui" "Service x-ui" "Service webmin" "Service docker" "Service nrpe" "Service node_exporter" "HTTP" "Certificate" "Certificate date" "Docker 2")
-	array_check_command=("check_cpu_stats" "check_users" "check_disk" "check_mem" "check_total_procs" "check_ssh" "check_ping" "check_v2ray3" "check_xray3" "check_trojan.go3" "check_nginx3" "check_httpd3" "check_v2_ui" "check_x_ui" "check_webmin" "check_docker" "check_nrpe" "check_node_exporter" "check_http" "check_ssl_certificate" "check_ssl_cert_expiry" "check_docker2")
+	array_service_description=("CPU" "Disk usage" "Memory" "total procedures" "SSH" "Ping" "Service v2ray" "Service xray" "Service trojan.go" "Service nginx" "Service httpd" "Service v2-ui" "Service x-ui" "Service webmin" "Service docker" "Service nrpe" "Service node_exporter" "HTTP" "Certificate" )
+	array_check_command=("check_cpu_stats" "check_disk" "check_mem" "check_total_procs" "check_ssh" "check_ping" "check_v2ray3" "check_xray3" "check_trojan.go3" "check_nginx3" "check_httpd3" "check_v2_ui" "check_x_ui" "check_webmin" "check_docker" "check_nrpe" "check_node_exporter" "check_http" "check_ssl_certificate" )
 	#定义变量
 	# WORKDIR="/root/git/toolbox/Docker/docker-compose/${currentHost}/"
 	SmartToolDir="/root/git/toolbox/Shell"
@@ -2509,8 +2509,8 @@ command[check_hda1]=/usr/local/nagios/libexec/check_disk -w 20% -c 10% -p /dev/h
 command[check_zombie_procs]=/usr/local/nagios/libexec/check_procs -w 5 -c 10 -s Z
 command[check_total_procs]=/usr/local/nagios/libexec/check_procs -w 150 -c 200
 
-command[check_ping]=/usr/local/nagios/libexec/check_ping -H localhost -w 100.0,20% -c 500.0,60% -p 5
-command[check_mem]=/usr/local/nagios/libexec/check_mem.pl -u -w 95 -c 100 -C
+command[check_ping]=/usr/local/nagios/libexec/check_ping -H $currentHost -w 100.0,20% -c 500.0,60% -p 5
+command[check_mem]=/usr/local/nagios/libexec/check_mem.pl -u -w 80 -c 95 -C
 command[check_swap]=/usr/local/nagios/libexec/check_swap -c 0
 
 command[check_disk]=/usr/local/nagios/libexec/check_disk -w 30% -c 20% -p /
@@ -2518,7 +2518,7 @@ command[check_kernel]=/usr/local/nagios/libexec/check_kernel --warn-only
 
 command[check_netint]=/usr/local/nagios/libexec/check_netinterfaces -n -f -k -Y -B -w 95000000,95000000 -c 98000000,98000000
 command[check_cpu_stats]=/usr/local/nagios/libexec/check_cpu_stats.sh
-command[check_ssh]=/usr/local/nagios/libexec/check_ssh -H localhost
+command[check_ssh]=/usr/local/nagios/libexec/check_ssh -H $currentHost
 
 command[check_v2ray1]=/usr/local/nagios/libexec/check_services -p v2ray
 command[check_v2ray2]=/usr/local/nagios/libexec/check_init_service v2ray
@@ -2549,9 +2549,9 @@ command[check_docker2]=/usr/local/nagios/libexec/check_docker -w 50 -c 80
 command[check_nrpe]=/usr/local/nagios/libexec/check_service.sh -s nrpe
 command[check_node_exporter]=/usr/local/nagios/libexec/check_service.sh -s node_exporter
 
-command[check_http]=/usr/local/nagios/libexec/check_http -I 127.0.0.1 -S -w 0.5 -c 1
-command[check_ssl_certificate]=/usr/local/nagios/libexec/check_ssl_certificate -H localhost -c 3 -w 10
-command[check_ssl_cert_expiry]=/usr/local/nagios/libexec/check_ssl_cert_expiry -h localhost -c 3 -w 10
+command[check_http]=/usr/local/nagios/libexec/check_http -I $currentHost -S -w 0.5 -c 1
+command[check_ssl_certificate]=/usr/local/nagios/libexec/check_ssl_certificate -H $currentHost -c 3 -w 10
+command[check_ssl_cert_expiry]=/usr/local/nagios/libexec/check_ssl_cert_expiry -h $currentHost -c 3 -w 10
 EOF
 		# fi
 	chown nagios:nagios /usr/local/nagios/etc/nrpe.cfg
