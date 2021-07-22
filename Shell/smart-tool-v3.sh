@@ -2723,7 +2723,7 @@ function install_exec_node_exporter_linux {
 	curl -Lo /etc/yum.repos.d/_copr_ibotty-prometheus-exporters.repo https://copr.fedorainfracloud.org/coprs/ibotty/prometheus-exporters/repo/epel-8/ibotty-prometheus-exporters-epel-8.repo
 
 	print_info "安装 node_exporter"
-	yum install node_exporter
+	yum -y install node_exporter
 	print_complete "安装 Node Exporter linux 版本 "
 
 }
