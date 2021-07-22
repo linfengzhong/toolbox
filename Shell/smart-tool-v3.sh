@@ -2478,7 +2478,8 @@ function customize_nagios_client_nrpe_cfg {
 			else
 				print_error "未检测到输入，将使用默认地址！"
 				TMPnagiosHostIP=${nagiosHostIP}
-				print_info "使用默认 Nagios Server IP : ${TMPnagiosHostIP}"
+				print_info "使用默认 Nagios Server IP : \c "
+				echoContent white "${TMPnagiosHostIP}"
 			fi
 			# 双引号可以用shell变量
 			# sed -i "s/allowed_hosts=127.0.0.1,::1/allowed_hosts=127.0.0.1,::1,$TMPnagiosHostIP/g" /usr/local/nagios/etc/nrpe.cfg
