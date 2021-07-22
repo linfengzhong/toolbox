@@ -2726,7 +2726,7 @@ function install_exec_grafana {
 	-e "GF_SERVER_HTTP_PORT: 3000" \
 	-e "GF_SERVER_DOMAIN: ${currentHost}" \
 	-e "GF_SERVER_SERVE_FROM_SUB_PATH: "true"" \
-	-e "GF_SECURITY_ADMIN_USER: root
+	-e "GF_SECURITY_ADMIN_USER: root" \
 	-e "GF_SECURITY_ADMIN_PASSWORD: "abc123abc"" \
 	-e "GF_SERVER_ENABLE_GZIP: 'true'" \
 	-e "GF_USERS_ALLOW_SIGN_UP: 'true'" \
