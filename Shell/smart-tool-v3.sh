@@ -3227,6 +3227,7 @@ function nagios_menu() {
 		;;
 	11)
 		rm -rf /usr/local/nagios/etc/objects/myservers
+		nagios_menu
 		;;
 	*)
 		print_error "请输入正确的数字"
