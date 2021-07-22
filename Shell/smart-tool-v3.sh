@@ -2707,6 +2707,13 @@ EOF
 #-----------------------------------------------------------------------------#
 # 安装 nagios server
 function install_nagios_server {
+
+	nagios_status_running='systemctl status nagios | grep Active | awk '{print $3}' | cut -d "(" -f2 | cut -d ")" -f1'
+	if [ "$nagios_status_running" == "running" ]  
+        then  
+            print_info "Nagios 服务正在运行！" 
+			print_error "无需重新安装！"
+		else
 	# Security-Enhanced Linux
 	# This guide is based on SELinux being disabled or in permissive mode. 
 	# Steps to do this are as follows.
@@ -2814,6 +2821,7 @@ function install_nagios_server {
 	# for example:
 	# http://10.25.5.143/nagios
 	# http://core-013.domain.local/nagios
+	fi
 }
 #-----------------------------------------------------------------------------#
 # 安装 nagios plugins
@@ -2859,6 +2867,13 @@ function install_nagios_plugins {
 #-----------------------------------------------------------------------------#
 # 安装 nagios nrpe
 function install_nagios_nrpe {
+
+	nrpe_status_running='systemctl status nrpe | grep Active | awk '{print $3}' | cut -d "(" -f2 | cut -d ")" -f1'
+	if [ "$nrpe_status_running" == "running" ]  
+        then  
+            print_info "NRPE 服务正在运行！" 
+			print_error "无需重新安装！"
+		else
 	#*** Configuration summary for nrpe 4.0.3 2020-04-28 ***:
 	#
 	# General Options:
@@ -2911,6 +2926,8 @@ function install_nagios_nrpe {
 	firewall-cmd --zone=public --add-port=5666/tcp
 	firewall-cmd --zone=public --add-port=5666/tcp --permanent
 	print_complete "Step 5: 设置防火墙开启端口 5666"
+
+	fi
 }
 #-----------------------------------------------------------------------------#
 # 安装 & 运行 Prometheus container - Port: 9090 
@@ -3675,7 +3692,7 @@ function menu() {
 		;;
 	esac
 }
-SmartToolVersion=v0.325
+SmartToolVersion=v0.326
 cleanScreen
 initVar $1
 set_current_host_domain
