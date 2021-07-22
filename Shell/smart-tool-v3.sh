@@ -844,6 +844,8 @@ server {
 	location /prometheus/ {
         proxy_pass http://prometheus:9090;
     }
+}
+
 EOF
 	print_complete "生成 NGINX 配置文件 "
 }
@@ -3440,7 +3442,7 @@ function menu() {
 		;;
 	esac
 }
-SmartToolVersion=v0.320
+SmartToolVersion=v0.321
 cleanScreen
 initVar $1
 set_current_host_domain
