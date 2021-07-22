@@ -2721,7 +2721,6 @@ function install_exec_grafana {
 	docker run -d \
 	-p 3000:3000 \
 	--name="grafana-standalone" \
-	-e "GF_INSTALL_PLUGINS=grafana-clock-panel,grafana-simple-json-datasource" \
 	-e "TZ: Asia/Shanghai" \
     -e "GF_SERVER_PROTOCOL: http" \
 	-e "GF_SERVER_HTTP_PORT: 3000" \
