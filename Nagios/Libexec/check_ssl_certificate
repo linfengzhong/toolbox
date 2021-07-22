@@ -130,7 +130,8 @@ close(OPENSSL);
 $date =~ s/ +/ /g;
 
 my ($month, $day, $hour, $min, $sec, $year, $tz) = split(/[\s+|:]/, $date);
-print "m=$month, d=$day, h=$hour, m=$min, s=$sec, y=$year, z=$tz\n";
+# print "m=$month, d=$day, h=$hour, m=$min, s=$sec, y=$year, z=$tz\n";
+print "Date of Validity = $year-$month-$day $hour:$min:$sec Timezone=$tz\n";
 
 my $daysLeft = int((timegm($sec, $min, $hour, $day, $months{$month}, $year - 1900) - time()) / 86400);
 
