@@ -2555,7 +2555,7 @@ command[check_nrpe]=/usr/local/nagios/libexec/check_service.sh -s nrpe
 command[check_node_exporter]=/usr/local/nagios/libexec/check_service.sh -s node_exporter
 
 command[check_http]=/usr/local/nagios/libexec/check_http -I 127.0.0.1 -S -w 0.5 -c 1
-command[check_ssl_certificate]=/usr/local/nagios/libexec/check_ssl_certificate -H localhost -c 10:20 -w 2:7
+command[check_ssl_certificate]=/usr/local/nagios/libexec/check_ssl_certificate -H localhost -c 90 -w 100
 EOF
 		# fi
 	chown nagios:nagios /usr/local/nagios/etc/nrpe.cfg
