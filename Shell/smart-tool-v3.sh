@@ -2330,8 +2330,8 @@ EOF
 	local Service_Type_Index=0
 	local i=0
 	# local array_service=(v2ray xray trojan.go nginx httpd v2-ui x-ui webmin docker)
-	local array_service=("Service v2ray" "Service xray" "Service trojan.go" "Service nginx" "Service httpd" "Service v2-ui" "Service x-ui" "Service webmin" "Service docker" "CPU statistics" "Memory usage" Ping "Service nrpe" "Service node_exporter")
-	
+	# local array_service=("Service v2ray" "Service xray" "Service trojan.go" "Service nginx" "Service httpd" "Service v2-ui" "Service x-ui" "Service webmin" "Service docker" "CPU statistics" "Memory usage" Ping "Service nrpe" "Service node_exporter")
+	local array_service=("CPU statistics" "Current users" "Disk usage" "Memory usage" "Total procedures" "SSH" "Ping" "Service v2ray" "Service xray" "Service trojan.go" "Service nginx" "Service httpd" "Service v2-ui" "Service x-ui" "Service webmin" "Service docker" "Service nrpe" "Service node_exporter")
 	# echo ${array_service[@]}
 	# for i in ${array_service[*]} 
 	# 数组元素有空格，要用双引号
