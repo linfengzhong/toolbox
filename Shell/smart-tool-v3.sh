@@ -2936,24 +2936,35 @@ function nagios_menu() {
 
 	1)
 		install_nagios_server
+		nagios_menu
 		;;
 	2)
 		install_nagios_nrpe
+		nagios_menu
 		;;
 	3)
 		install_nagios_plugins
+		nagios_menu
 		;;
 	4)
 		customize_nagios_server
+		sleep 2
+		nagios_menu
 		;;
 	5)
 		customize_nagios_client
+		sleep 2
+		nagios_menu
 		;;
 	6)
 		enable_nagios_dark_mode
+		sleep 1
+		nagios_menu
 		;;
 	7)
 		enable_nagios_normal_mode
+		sleep 1
+		nagios_menu
 		;;
 	8)
 		/usr/local/nagios/bin/nagios -v /usr/local/nagios/etc/nagios.cfg
