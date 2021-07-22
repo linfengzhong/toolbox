@@ -2555,6 +2555,7 @@ command[check_nrpe]=/usr/local/nagios/libexec/check_service.sh -s nrpe
 command[check_node_exporter]=/usr/local/nagios/libexec/check_service.sh -s node_exporter
 
 command[check_http]=/usr/local/nagios/libexec/check_http -I 127.0.0.1 -S -w 0.5 -c 1
+command[check_ssl_certificate]=/usr/local/nagios/libexec/check_ssl_certificate -H k8s-master.ml -c 10:20 -w 2:7
 EOF
 		# fi
 	chown nagios:nagios /usr/local/nagios/etc/nrpe.cfg
@@ -2565,8 +2566,11 @@ EOF
 # 定制 Nagios Client Copy Libexec
 function customize_nagios_client_copy_libexec {
 
+	# check_ssl_certificate
 	yum -y install nagios-plugins-perl
-	
+	# yum -y install libcrypt-ssleay-perl
+	# yum -y install libcrypt-x509-perl
+
 	print_info "Step 2: 拷贝libexec 到本地"
 	if [[ -d "${GITHUB_REPO_TOOLBOX}/Nagios/Libexec" ]] ; then
 		cp -pf 	${GITHUB_REPO_TOOLBOX}/Nagios/Libexec/* /usr/local/nagios/libexec/
