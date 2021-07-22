@@ -2557,7 +2557,7 @@ command[check_port_5666]=/usr/local/nagios/libexec/check_tcp -H $currentHost -p 
 command[check_port_10000]=/usr/local/nagios/libexec/check_tcp -H $currentHost -p 10000 -w 0.1 -c 0.5 -t 5 -S
 command[check_port_8443]=/usr/local/nagios/libexec/check_tcp -H $currentHost -p 8443 -w 0.1 -c 0.5 -t 5 -S
 command[check_port_8080]=/usr/local/nagios/libexec/check_tcp -H $currentHost -p 8080 -w 0.1 -c 0.5 -t 5
-command[check_certificate_expires]=/usr/local/nagios/libexec/check_tcp -H localhost -p 443 -w 0.1 -c 0.5 -t 5  -S -D 90
+command[check_certificate_expires]=/usr/local/nagios/libexec/check_tcp -H localhost -p 443 -w 0.1 -c 0.5 -t 5  -S -D 30
 EOF
 		# fi
 	chown nagios:nagios /usr/local/nagios/etc/nrpe.cfg
