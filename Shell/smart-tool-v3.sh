@@ -3698,7 +3698,30 @@ function menu() {
 		;;
 	esac
 }
-SmartToolVersion=v0.328
+
+# 检查指定端口是否开启
+function checkPortStatus()
+{
+	status=`nmap -sS 127.0.0.1 -p $1 | grep open | awk '{print $2}'`
+	if [ "$status" != "open" ];
+		then
+			return 0;
+        else
+			return 1;
+	fi
+}
+# 判断进程是否再运行
+function check_procs_status() {
+	PROC_NAME=$1  
+	ProcNumber=`ps -ef |grep -w $PROC_NAME|grep -v grep|wc -l`  
+	if [ $ProcNumber -le 0 ];then  
+	result=0  
+	else  
+	result=1   
+	fi 
+}
+
+SmartToolVersion=v0.329
 cleanScreen
 initVar $1
 set_current_host_domain
