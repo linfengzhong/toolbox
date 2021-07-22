@@ -21,8 +21,8 @@ function initVar() {
 	customPath="rdxyzukwofngusfpmheud"
 
 	# 自定义服务数组
-	array_service_description=("CPU" "Users" "Disk usage" "Memory" "Procedures" "SSH" "Ping" "Service v2ray" "Service xray" "Service trojan.go" "Service nginx" "Service httpd" "Service v2-ui" "Service x-ui" "Service webmin" "Service docker" "Service nrpe" "Service node_exporter" "HTTP" "Certificate")
-	array_check_command=("check_cpu_stats" "check_users" "check_disk" "check_mem" "check_total_procs" "check_ssh" "check_ping" "check_v2ray3" "check_xray3" "check_trojan.go3" "check_nginx3" "check_httpd3" "check_v2_ui" "check_x_ui" "check_webmin" "check_docker" "check_nrpe" "check_node_exporter" "check_http" "check_ssl_certificate")
+	array_service_description=("CPU" "Users" "Disk usage" "Memory" "Procedures" "SSH" "Ping" "Service v2ray" "Service xray" "Service trojan.go" "Service nginx" "Service httpd" "Service v2-ui" "Service x-ui" "Service webmin" "Service docker" "Service nrpe" "Service node_exporter" "HTTP" "Certificate" "Certificate date")
+	array_check_command=("check_cpu_stats" "check_users" "check_disk" "check_mem" "check_total_procs" "check_ssh" "check_ping" "check_v2ray3" "check_xray3" "check_trojan.go3" "check_nginx3" "check_httpd3" "check_v2_ui" "check_x_ui" "check_webmin" "check_docker" "check_nrpe" "check_node_exporter" "check_http" "check_ssl_certificate" "check_ssl_cert_expiry")
 	#定义变量
 	# WORKDIR="/root/git/toolbox/Docker/docker-compose/${currentHost}/"
 	SmartToolDir="/root/git/toolbox/Shell"
@@ -2550,6 +2550,7 @@ command[check_node_exporter]=/usr/local/nagios/libexec/check_service.sh -s node_
 
 command[check_http]=/usr/local/nagios/libexec/check_http -I 127.0.0.1 -S -w 0.5 -c 1
 command[check_ssl_certificate]=/usr/local/nagios/libexec/check_ssl_certificate -H localhost -c 3 -w 10
+command[check_ssl_cert_expiry]=/usr/local/nagios/libexec/check_ssl_cert_expiry -H localhost -c 3 -w 10
 EOF
 		# fi
 	chown nagios:nagios /usr/local/nagios/etc/nrpe.cfg
