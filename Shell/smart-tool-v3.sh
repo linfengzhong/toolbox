@@ -2502,12 +2502,6 @@ command_timeout=60
 connection_timeout=300
 disable_syslog=0
 
-command[check_users]=/usr/local/nagios/libexec/check_users -w 5 -c 10
-command[check_load]=/usr/local/nagios/libexec/check_load -r -w .15,.10,.05 -c .30,.25,.20
-command[check_hda1]=/usr/local/nagios/libexec/check_disk -w 20% -c 10% -p /dev/hda1
-command[check_zombie_procs]=/usr/local/nagios/libexec/check_procs -w 5 -c 10 -s Z
-command[check_total_procs]=/usr/local/nagios/libexec/check_procs -w 150 -c 200
-
 # 定制命令 - 2021 July 18th
 command[check_users]=/usr/local/nagios/libexec/check_users -w 5 -c 10
 command[check_load]=/usr/local/nagios/libexec/check_load -r -w .15,.10,.05 -c .30,.25,.20
