@@ -2566,7 +2566,9 @@ EOF
 function customize_nagios_client_copy_libexec {
 	print_info "Step 2: 拷贝libexec 到本地"
 	if [[ -d "${GITHUB_REPO_TOOLBOX}/Nagios/Libexec" ]] ; then
+		cp -pf 	${GITHUB_REPO_TOOLBOX}/Nagios/Libexec/* /usr/local/nagios/libexec/
 		cp -pf 	${GITHUB_REPO_TOOLBOX}/Nagios/Libexec/*.* /usr/local/nagios/libexec/
+		chmod 755 /usr/local/nagios/libexec/*
 		chmod 755 /usr/local/nagios/libexec/*.*
 	else
 		print_error "请先Git同步toolbox到本地，再进行设置！"
@@ -2583,6 +2585,7 @@ function customize_nagios_client_copy_libexec {
 		wget -c -q -P /usr/local/nagios/libexec/ -N --no-check-certificate "https://raw.githubusercontent.com/linfengzhong/toolbox/main/Nagios/Libexec/check_mem.pl"
 		wget -c -q -P /usr/local/nagios/libexec/ -N --no-check-certificate "https://raw.githubusercontent.com/linfengzhong/toolbox/main/Nagios/Libexec/check_service.sh"
 		wget -c -q -P /usr/local/nagios/libexec/ -N --no-check-certificate "https://raw.githubusercontent.com/linfengzhong/toolbox/main/Nagios/Libexec/check_ssl_certificate"
+		chmod 755 /usr/local/nagios/libexec/*
 		chmod 755 /usr/local/nagios/libexec/*.*
 	fi
 }
