@@ -2037,6 +2037,156 @@ function customize_nagios_server_myservers {
 	fi
 }
 #-----------------------------------------------------------------------------#
+# 定制 Nagios Server Myservers two
+function customize_nagios_server_myservers_two {
+
+	mkdir -p /usr/local/nagios/etc/objects/myservers
+	chown nagios:nagios /usr/local/nagios/etc/objects/myservers
+	chmod 777 /usr/local/nagios/etc/objects/myservers
+
+	print_info "Step 3: Nagios 服务器配置文件： /usr/local/nagios/etc/objects/myservers/template.cfg"
+	local NagiosClientDomain1
+	local NagiosClientIP1
+
+	read -r -p "请输入Nagios client address : " NagiosClientDomain1
+	if [ $NagiosClientDomain1 ]; then
+		print_info "使用输入地址：${NagiosClientDomain1}"
+	else
+		print_error "未检测到输入，使用默认地址 ${currentHost}"
+		NagiosClientDomain1=${currentHost}
+	fi
+	
+	NagiosClientIP1=$(ping ${NagiosClientDomain1} -c 1 | sed '1{s/[^(]*(//;s/).*//;q}')
+	print_info "输入的服务器IP地址: \c"
+	echoContent white "${NagiosClientIP1}"
+
+	cat <<EOF > /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
+# Define a host for the remote machine
+
+define host{   
+  use                     linux-server           
+  host_name               NagiosClientDomain
+  alias                   NagiosClientDomain
+  address                 NagiosClientIP
+}
+EOF
+
+	cat <<EOF >> /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
+define service {
+    use                     generic-service
+    host_name               NagiosClientDomain
+    service_description     CPU statistics
+    check_command           check_nrpe!check_cpu_stats
+}
+define service {
+    use                     generic-service
+    host_name               NagiosClientDomain
+    service_description     Current users
+    check_command           check_nrpe!check_users
+}
+define service {
+    use                     generic-service
+    host_name               NagiosClientDomain
+    service_description     Disk usage
+    check_command           check_nrpe!check_disk
+}
+define service {
+    use                     generic-service
+    host_name               NagiosClientDomain
+    service_description     Memory usage
+    check_command           check_nrpe!check_mem
+}
+define service {
+    use                     generic-service
+    host_name               NagiosClientDomain
+    service_description     Total procedures
+    check_command           check_nrpe!check_total_procs
+}
+define service {
+    use                     generic-service
+    host_name               NagiosClientDomain
+    service_description     SSH
+    check_command           check_nrpe!check_ssh
+}
+define service {
+    use                     generic-service
+    host_name               NagiosClientDomain
+    service_description     Ping 
+    check_command           check_nrpe!check_ping
+}
+define service {
+    use                     generic-service
+    host_name               NagiosClientDomain
+    service_description     Service v2ray
+    check_command           check_nrpe!check_v2ray3
+}
+define service {
+    use                     generic-service
+    host_name               NagiosClientDomain
+    service_description     Service xray
+    check_command           check_nrpe!check_xray3
+}
+define service {
+    use                     generic-service
+    host_name               NagiosClientDomain
+    service_description     Service trojan.go
+    check_command           check_nrpe!check_trojan.go3
+}
+define service {
+    use                     generic-service
+    host_name               NagiosClientDomain
+    service_description     Service nginx
+    check_command           check_nrpe!check_nginx3
+}
+define service {
+    use                     generic-service
+    host_name               NagiosClientDomain
+    service_description     Service httpd
+    check_command           check_nrpe!check_httpd3
+}
+define service {
+    use                     generic-service
+    host_name               NagiosClientDomain
+    service_description     Service v2-ui
+    check_command           check_nrpe!check_v2_ui
+}
+define service {
+    use                     generic-service
+    host_name               NagiosClientDomain
+    service_description     Service x-ui
+    check_command           check_nrpe!check_x_ui
+}
+define service {
+    use                     generic-service
+    host_name               NagiosClientDomain
+    service_description     Service webmin
+    check_command           check_nrpe!check_webmin
+}
+define service {
+    use                     generic-service
+    host_name               NagiosClientDomain
+    service_description     Service docker
+    check_command           check_nrpe!check_docker
+}
+define service {
+    use                     generic-service
+    host_name               NagiosClientDomain
+    service_description     Service nrpe
+    check_command           check_nrpe!check_nrpe
+}
+define service {
+    use                     generic-service
+    host_name               NagiosClientDomain
+    service_description     Service node_exporter
+    check_command           check_nrpe!check_node_exporter
+}
+EOF
+
+	chown nagios:nagios /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
+	chmod 777 /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
+
+}
+#-----------------------------------------------------------------------------#
 # 定制 Nagios Server Host Group
 function customize_nagios_server_host_group {
 	print_info "Step 4: Nagios 服务器组配置文件： /usr/local/nagios/etc/objects/myservers/host_group.cfg"
@@ -2196,7 +2346,8 @@ function customize_nagios_server {
 
 	customize_nagios_server_check_myservers_folder
 	customize_nagios_server_nagios_cfg
-	customize_nagios_server_myservers
+	# customize_nagios_server_myservers
+	customize_nagios_server_myservers_two
 	customize_nagios_server_host_group
 	customize_nagios_server_service_group
 	customize_nagios_server_command
