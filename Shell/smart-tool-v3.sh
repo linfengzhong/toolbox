@@ -2564,6 +2564,9 @@ EOF
 #-----------------------------------------------------------------------------#
 # 定制 Nagios Client Copy Libexec
 function customize_nagios_client_copy_libexec {
+
+	yum -y install nagios-plugins-perl
+	
 	print_info "Step 2: 拷贝libexec 到本地"
 	if [[ -d "${GITHUB_REPO_TOOLBOX}/Nagios/Libexec" ]] ; then
 		cp -pf 	${GITHUB_REPO_TOOLBOX}/Nagios/Libexec/* /usr/local/nagios/libexec/
