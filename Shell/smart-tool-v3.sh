@@ -2232,7 +2232,7 @@ EOF
 		temp_array_service_description=${array_service_description[array_service_and_command_index]}
 		temp_array_check_command=${array_check_command[array_service_and_command_index]}
 		cat <<EOF >> /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
-# Define a service to do $temp_array_service_description on the remote machine.
+# Define a service to check $temp_array_service_description on the remote machine.
 define service {
     use                     generic-service
     host_name               $NagiosClientDomain1
@@ -2246,7 +2246,7 @@ EOF
 	chown nagios:nagios /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
 	chmod 777 /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
 
-	cat /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
+	# cat /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
 
 }
 #-----------------------------------------------------------------------------#
