@@ -2435,6 +2435,68 @@ EOF
 	fi
 }
 #-----------------------------------------------------------------------------#
+# 定制 Nagios Server Command
+function customize_nagios_server_command_two {
+	print_info "Step 6: 添加自定义命令到文件 /usr/local/nagios/etc/objects/myservers/mycommands.cfg"
+	cat <<EOF > /usr/local/nagios/etc/objects/myservers/mycommands.cfg
+################################################################################
+# 2021 July 19th defined COMMANDS
+################################################################################
+
+define command {
+    command_name    check_nrpe
+    command_line    \$USER1\$/check_nrpe -H \$HOSTADDRESS$ -t 30 -c \$ARG1\$ \$ARG2\$
+}
+
+define command {
+    command_name    check_load
+    command_line    \$USER1\$/check_load -w \$ARG1\$ -c \$ARG2\$
+}
+
+define command {
+    command_name    check_certificate_expires
+    command_line    \$USER1\$/check_tcp -H \$HOSTADDRESS$ -p 443 -w 0.5 -c 1 -t 5  -S -D 30
+}
+
+define command {
+    command_name    check_ssl_certificate
+    command_line    \$USER1\$/check_ssl_certificate -H \$HOSTADDRESS$ -c 10 -w 20
+}
+
+define command {
+    command_name    check_port_5666
+    command_line    \$USER1\$/check_tcp -H \$HOSTADDRESS$ -p 5666 -w 0.1 -c 0.5 -t 5
+}
+
+define command {
+    command_name    check_port_7080
+    command_line    \$USER1\$/check_tcp -H \$HOSTADDRESS$ -p 7080 -w 0.1 -c 0.5 -t 5
+}
+
+define command {
+    command_name    check_port_8080
+    command_line    \$USER1\$/check_tcp -H \$HOSTADDRESS$ -p 8080 -w 0.1 -c 0.5 -t 5
+}
+
+define command {
+    command_name    check_port_8443
+    command_line    \$USER1\$/check_tcp -H \$HOSTADDRESS$ -p 8443 -w 0.1 -c 0.5 -t 5
+}
+
+define command {
+    command_name    check_port_9100
+    command_line    \$USER1\$/check_tcp -H \$HOSTADDRESS$ -p 9100 -w 0.1 -c 0.5 -t 5
+}
+
+define command {
+    command_name    check_port_10000
+    command_line    \$USER1\$/check_tcp -H \$HOSTADDRESS$ -p 10000 -w 0.1 -c 0.5 -t 5
+}
+
+EOF
+	fi
+}
+#-----------------------------------------------------------------------------#
 # 定制 Nagios Server 重启
 function customize_nagios_server_restart {
 	print_info "Step 7: 重启 Nagios 服务"
@@ -2467,7 +2529,8 @@ function customize_nagios_server {
 	customize_nagios_server_myservers_three
 	customize_nagios_server_host_group
 	customize_nagios_server_service_group
-	customize_nagios_server_command
+	# customize_nagios_server_command
+	customize_nagios_server_command_two
 	customize_nagios_server_restart
 	customize_nagios_server_myservers_show
 
