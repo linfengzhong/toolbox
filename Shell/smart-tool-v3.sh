@@ -21,7 +21,7 @@ function initVar() {
 	customPath="rdxyzukwofngusfpmheud"
 
 	# 自定义服务数组
-	array_service_description=("Network" "CPU" "Disk usage" "Memory" "Total procedures" "SSH" "Service v2ray" "Service xray" "Service trojan.go" "Service nginx" "Service httpd" "Service v2-ui" "Service x-ui" "Service webmin" "Service docker" "Service nrpe" "Service node_exporter" "Https" "Certificate" "TCP 5666" "TCP 8443" "TCP 8080" "TCP 10000" "Certificate expires")
+	array_service_description=("Network" "CPU" "Disk usage" "Memory" "Total procedures" "SSH" "Service v2ray" "Service xray" "Service trojan.go" "Service nginx" "Service httpd" "Service v2-ui" "Service x-ui" "Service webmin" "Service docker" "Service nrpe" "Service node_exporter" "Https" "Certificate" "TCP 5666" "TCP 8443" "TCP 8080" "TCP 10000" "Certificate expiration date")
 	array_check_command=("check_netint" "check_cpu_stats" "check_disk" "check_mem" "check_total_procs" "check_ssh" "check_v2ray" "check_xray" "check_trojan.go" "check_nginx" "check_httpd" "check_v2_ui" "check_x_ui" "check_webmin" "check_docker" "check_nrpe" "check_node_exporter" "check_http" "check_ssl_certificate" "check_port_5666" "check_port_8443" "check_port_8080" "check_port_10000" "check_certificate_expires")
 	#定义变量
 	# WORKDIR="/root/git/toolbox/Docker/docker-compose/${currentHost}/"
