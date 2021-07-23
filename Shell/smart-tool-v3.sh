@@ -2205,6 +2205,7 @@ function customize_nagios_server_myservers_three {
 	local servicexx
 	local temp_array_service_description
 	local temp_array_check_command
+	local temp_array_check_command1
 
 	read -r -p "请输入Nagios client address : " NagiosClientDomain1
 	if [ $NagiosClientDomain1 ]; then
@@ -2232,13 +2233,19 @@ EOF
 	do
 		temp_array_service_description=${array_service_description[array_service_and_command_index]}
 		temp_array_check_command=${array_check_command[array_service_and_command_index]}
+
+		if temp_array_check_command!="check_ping" ; then
+			temp_array_check_command1="check_nrpe!$temp_array_check_command"
+		else
+			temp_array_check_command1="$temp_array_check_command"
+		fi
 		cat <<EOF >> /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
 # Define a service to check $temp_array_service_description on the remote machine.
 define service {
     use                     generic-service
     host_name               $NagiosClientDomain1
     service_description     $temp_array_service_description
-    check_command           check_nrpe!$temp_array_check_command
+    check_command           $temp_array_check_command1
 }
 EOF
 		let array_service_and_command_index++
