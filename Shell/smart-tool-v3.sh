@@ -2272,7 +2272,7 @@ function customize_nagios_server_host_group {
 		# print_info "${arr[myservers_index]##*/}"
 		
 		tmpMyservers_Host_Group=${arr[myservers_index]##*/}
-		if [[ "${tmpMyservers_Host_Group}" == "host_group.cfg" ]] || [[ "${tmpMyservers_Host_Group}" == "service_group.cfg" ]] || [[ "${tmpMyservers_Host_Group}" == "$currentHost"".cfg" ]] ; then
+		if [[ "${tmpMyservers_Host_Group}" == "host_group.cfg" ]] || [[ "${tmpMyservers_Host_Group}" == "service_group.cfg" ]] || [[ "${tmpMyservers_Host_Group}" == "$currentHost"".cfg" ]] || [[ "${tmpMyservers_Member}" == "mycommands.cfg" ]] ; then
 		#if [[ "${coreInstallType}" == "1" ]] && [[ -n $(pgrep -f xray/xray) ]]; then
 			# skip
 			# print_error "skip file"
@@ -2568,7 +2568,7 @@ function customize_nagios_server_myservers_show {
 			let myservers_member_index++
 		fi
 	done
-	myserver_number=$myservers_member_index - 3
+	let myserver_number=$myservers_member_index - 3
 	print_info "服务器数量： \c "
 	echoContent white "$myserver_number"
 	print_info "---> Nagios Myservers <--- "
