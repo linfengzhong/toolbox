@@ -2554,6 +2554,8 @@ function customize_nagios_server_myservers_show {
 
 	local myservers_member_index=0
 	local myservers_member_count=0
+	local myserver_number=0
+
 	for myservers_member_count in ${myservers_member_arr[*]}
 	do
 	# 正则表达式 ${var##*/}  --> 左边算起的最后一个/字符左边的内容
@@ -2566,8 +2568,9 @@ function customize_nagios_server_myservers_show {
 			let myservers_member_index++
 		fi
 	done
+	myserver_number=$myservers_member_index - 3
 	print_info "服务器数量： \c "
-	echoContent white "$myservers_member_index"
+	echoContent white "$myserver_number"
 	print_info "---> Nagios Myservers <--- "
 }
 #-----------------------------------------------------------------------------#
