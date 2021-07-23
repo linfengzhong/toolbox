@@ -2652,8 +2652,18 @@ function enable_nagios_dark_mode {
 	print_info "Step 2: 复制黑暗模式 "
 	rm -rf /usr/local/nagios/share/stylesheets
 	rm -f /usr/local/nagios/share/index.php
-	cp -rpf /root/git/toolbox/Nagios/nagios4-dark-theme-master/stylesheets /usr/local/nagios/share/
-	cp -pf /root/git/toolbox/Nagios/nagios4-dark-theme-master/index.php /usr/local/nagios/share/index.php
+
+	if [[ -d "/root/git/toolbox/Nagios/nagios4-dark-theme-master/stylesheets/x" ]] ; then
+		cp -rpf /root/git/toolbox/Nagios/nagios4-dark-theme-master/stylesheets /usr/local/nagios/share/
+		cp -pf /root/git/toolbox/Nagios/nagios4-dark-theme-master/index.php /usr/local/nagios/share/index.php
+	else
+		print_error "Git未安装或未同步，执行Plan B"
+		mkdir -p /usr/local/nagios/share/stylesheets
+		wget -c -q -P /usr/local/nagios/share/stylesheets/ -N --no-check-certificate "https://raw.githubusercontent.com/linfengzhong/toolbox/main/Nagios/nagios4-dark-theme-master/stylesheets.zip"
+		wget -c -q -P /usr/local/nagios/share/ -N --no-check-certificate "https://raw.githubusercontent.com/linfengzhong/toolbox/main/Nagios/nagios4-dark-theme-master/index.php"
+		unzip -o /usr/local/nagios/share/stylesheets/stylesheets.zip -d /usr/local/nagios/share/stylesheets/ >/dev/null
+		rm -f /usr/local/nagios/share/stylesheets/stylesheets.zip
+	fi
 	print_info "Step 3: 重启 Nagios "
 	systemctl restart nagios
 	systemctl status nagios
@@ -3285,31 +3295,31 @@ function kxsw_menu() {
 	checkSystem
 	echoContent red "=================================================================="
 	echoContent skyBlue "--------------------------科学上网菜单----------------------------"
-	echoContent yellow "0.安装 v2ray-agent | 快捷方式 [vasma]"
-	echoContent yellow "1.安装 xray-OneKey"
-	echoContent yellow "2.安装 BBR 拥塞控制算法加速"
-	echoContent yellow "3.安装 v2-ui | 快捷方式 [v2-ui]"
-	echoContent yellow "4.安装 x-ui  | 快捷方式 [x-ui]"
-	echoContent yellow "5.安装 trojan-go 单机"
+	echoContent yellow "1.安装 v2ray-agent | 快捷方式 [vasma]"
+	echoContent yellow "2.安装 xray-OneKey"
+	echoContent yellow "3.安装 BBR 拥塞控制算法加速"
+	echoContent yellow "4.安装 v2-ui | 快捷方式 [v2-ui]"
+	echoContent yellow "5.安装 x-ui  | 快捷方式 [x-ui]"
+	echoContent yellow "6.安装 trojan-go 单机"
 	echoContent red "=================================================================="
 	read -r -p "Please choose the function (请选择) : " selectInstallType
 	case ${selectInstallType} in
-	0)
+	1)
 		install_v2ray_agent
 		;;
-	1)
+	2)
 		install_xray_onekey
 		;;
-	2)
+	3)
 		install_bbr
 		;;
-	3)
+	4)
 		install_v2_ui
 		;;
-	4)
+	5)
 		install_x_ui
 		;;
-	5)
+	6)
 		install_standalone_trojan_go
 		;;
 	*)
