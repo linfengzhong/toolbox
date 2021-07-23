@@ -2558,7 +2558,7 @@ function customize_nagios_server_myservers_show {
 	do
 	# 正则表达式 ${var##*/}  --> 左边算起的最后一个/字符左边的内容
 	tmpMyservers_Member=${myservers_member_arr[myservers_member_index]##*/}
-		if [[ "${tmpMyservers_Member}" == "host_group.cfg" ]] || [[ "${tmpMyservers_Member}" == "service_group.cfg" ]] ; then
+		if [[ "${tmpMyservers_Member}" == "host_group.cfg" ]] || [[ "${tmpMyservers_Member}" == "service_group.cfg" ]] || [[ "${tmpMyservers_Member}" == "mycommands.cfg" ]] ; then
 			let myservers_member_index++
 		else
 			Myservers_Member=${tmpMyservers_Member%.*}
@@ -2566,7 +2566,8 @@ function customize_nagios_server_myservers_show {
 			let myservers_member_index++
 		fi
 	done
-	
+	print_info "服务器数量： \c "
+	echoContent white "$myservers_member_index"
 	print_info "---> Nagios Myservers <--- "
 }
 #-----------------------------------------------------------------------------#
