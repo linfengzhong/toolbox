@@ -3247,13 +3247,9 @@ function nagios_menu() {
 		;;
 	6)
 		enable_nagios_dark_mode
-		sleep 1
-		nagios_menu
 		;;
 	7)
 		enable_nagios_normal_mode
-		sleep 1
-		nagios_menu
 		;;
 	8)
 		cat /usr/local/nagios/etc/nagios.cfg
