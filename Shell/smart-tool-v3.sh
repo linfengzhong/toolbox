@@ -2653,7 +2653,7 @@ function enable_nagios_dark_mode {
 	rm -rf /usr/local/nagios/share/stylesheets
 	rm -f /usr/local/nagios/share/index.php
 
-	if [[ -d "/root/git/toolbox/Nagios/nagios4-dark-theme-master/stylesheets/x" ]] ; then
+	if [[ -d "/root/git/toolbox/Nagios/nagios4-dark-theme-master/stylesheets" ]] ; then
 		cp -rpf /root/git/toolbox/Nagios/nagios4-dark-theme-master/stylesheets /usr/local/nagios/share/
 		cp -pf /root/git/toolbox/Nagios/nagios4-dark-theme-master/index.php /usr/local/nagios/share/index.php
 	else
@@ -2666,7 +2666,7 @@ function enable_nagios_dark_mode {
 	fi
 	chown nagios:nagios /usr/local/nagios/share/index.php
 	chown -R nagios:nagios /usr/local/nagios/share/stylesheets
-	
+
 	print_info "Step 3: 重启 Nagios "
 	systemctl restart nagios
 	systemctl status nagios
