@@ -1161,7 +1161,8 @@ scrape_configs:
 
   - job_name: "linux"
     static_configs:
-    - targets: ['35.185.165.176:9100','34.80.73.27:9100','35.221.170.54:9100','104.199.212.122:9100']
+    # - targets: ['35.185.165.176:9100','34.80.73.27:9100','35.221.170.54:9100','104.199.212.122:9100']
+	- targets: ['34.146.230.25:9100','35.221.204.2:9100','34.146.167.253:9100','35.247.169.26:9100','35.236.108.164:9100','34.96.129.154:9100','34.64.184.215:9100']
 EOF
 	print_complete "生成 prometheus 配置文件 "
 }
@@ -3776,7 +3777,7 @@ function check_procs_status() {
 	fi 
 }
 
-SmartToolVersion=v0.334
+SmartToolVersion=v0.335
 cleanScreen
 initVar $1
 set_current_host_domain
