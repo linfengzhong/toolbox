@@ -2566,9 +2566,9 @@ function customize_nagios_server_myservers_show {
 			Myservers_Member=${tmpMyservers_Member%.*}
 			print_info "$Myservers_Member"
 			let myservers_member_index++
+			let myserver_number++
 		fi
 	done
-	let myserver_number=$myservers_member_index - 3
 	print_info "服务器数量： \c "
 	echoContent white "$myserver_number"
 	print_info "---> Nagios Myservers <--- "
