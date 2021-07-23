@@ -2661,7 +2661,7 @@ function enable_nagios_dark_mode {
 		mkdir -p /usr/local/nagios/share/stylesheets
 		wget -c -q -P /usr/local/nagios/share/ -N --no-check-certificate "https://raw.githubusercontent.com/linfengzhong/toolbox/main/Nagios/nagios4-dark-theme-master/stylesheets.zip"
 		wget -c -q -P /usr/local/nagios/share/ -N --no-check-certificate "https://raw.githubusercontent.com/linfengzhong/toolbox/main/Nagios/nagios4-dark-theme-master/index.php"
-		unzip -o /usr/local/nagios/share/stylesheets/stylesheets.zip -d /usr/local/nagios/share/ >/dev/null
+		unzip -o /usr/local/nagios/share/stylesheets.zip -d /usr/local/nagios/share/ >/dev/null
 		rm -f /usr/local/nagios/share/stylesheets.zip
 	fi
 	chown nagios:nagios /root/git/toolbox/Nagios/nagios4-dark-theme-master/index.php
