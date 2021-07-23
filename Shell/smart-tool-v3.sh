@@ -2199,8 +2199,8 @@ function customize_nagios_server_myservers_three {
 	chown nagios:nagios /usr/local/nagios/etc/objects/myservers
 	chmod 777 /usr/local/nagios/etc/objects/myservers
 
-	NagiosClientDomain1
-	NagiosClientIP1
+	# NagiosClientDomain1
+	# NagiosClientIP1
 	local array_service_and_command_index=0
 	local servicexx
 	local temp_array_service_description
