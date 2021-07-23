@@ -2234,7 +2234,7 @@ EOF
 		temp_array_service_description=${array_service_description[array_service_and_command_index]}
 		temp_array_check_command=${array_check_command[array_service_and_command_index]}
 
-		if temp_array_check_command = "check_ping" ; then
+		if [temp_array_check_command != "check_ping" ]; then
 			temp_array_check_command1="check_nrpe!"$temp_array_check_command
 		else
 			temp_array_check_command1=$temp_array_check_command
