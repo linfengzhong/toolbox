@@ -2566,7 +2566,7 @@ command[check_hda1]=/usr/local/nagios/libexec/check_disk -w 20% -c 10% -p /dev/h
 command[check_zombie_procs]=/usr/local/nagios/libexec/check_procs -w 5 -c 10 -s Z
 command[check_total_procs]=/usr/local/nagios/libexec/check_procs -w 150 -c 200
 
-command[check_mem]=/usr/local/nagios/libexec/check_mem.pl -u -w 80 -c 95 -C
+command[check_mem]=/usr/local/nagios/libexec/check_mem.pl -f -u -w 80 -c 95 -C
 command[check_swap]=/usr/local/nagios/libexec/check_swap -c 0
 
 command[check_disk]=/usr/local/nagios/libexec/check_disk -w 30% -c 20% -p /
