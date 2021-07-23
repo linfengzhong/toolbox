@@ -2199,8 +2199,8 @@ function customize_nagios_server_myservers_three {
 	chown nagios:nagios /usr/local/nagios/etc/objects/myservers
 	chmod 777 /usr/local/nagios/etc/objects/myservers
 
-	local NagiosClientDomain1
-	local NagiosClientIP1
+	NagiosClientDomain1
+	NagiosClientIP1
 	local array_service_and_command_index=0
 	local servicexx
 	local temp_array_service_description
@@ -2443,6 +2443,20 @@ function customize_nagios_server_restart {
 	# systemctl status nagios
 }
 #-----------------------------------------------------------------------------#
+# 定制 /etc/hosts
+function customize_nagios_server_hosts_ip {
+
+	if cat /etc/hosts | grep ${NagiosClientDomain1} >/dev/null; then
+   		print_error "主机地址已经添加到/etc/hosts，无需重复操作！"
+	else
+		print_info "写入主机IP和域名到/etc/hosts "
+		cat <<EOF >> /etc/hosts
+${NagiosClientIP1} ${NagiosClientDomain1}
+EOF
+	fi
+
+}
+#-----------------------------------------------------------------------------#
 # 定制 Nagios Server
 function customize_nagios_server {
 	print_start "定制 Nagios Server "
@@ -2457,6 +2471,9 @@ function customize_nagios_server {
 	customize_nagios_server_command
 	customize_nagios_server_restart
 	customize_nagios_server_myservers_show
+
+	customize_nagios_server_hosts_ip
+
 
 	print_complete "定制 Nagios Server "
 }
