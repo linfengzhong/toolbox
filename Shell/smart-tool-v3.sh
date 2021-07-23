@@ -21,8 +21,8 @@ function initVar() {
 	customPath="rdxyzukwofngusfpmheud"
 
 	# 自定义服务数组
-	array_service_description=("Network" "CPU" "Disk usage" "Memory" "Total procedures" "SSH" "Service v2ray" "Service xray" "Service trojan.go" "Service nginx" "Service httpd" "Service v2-ui" "Service x-ui" "Service webmin" "Service docker" "Service nrpe" "Service node_exporter" "Https" "Certificate" "TCP 5666" "TCP 8443" "TCP 8080" "TCP 10000" "Certificate expiration date")
-	array_check_command=("check_netint" "check_cpu_stats" "check_disk" "check_mem" "check_total_procs" "check_ssh" "check_v2ray" "check_xray" "check_trojan.go" "check_nginx" "check_httpd" "check_v2_ui" "check_x_ui" "check_webmin" "check_docker" "check_nrpe" "check_node_exporter" "check_http" "check_ssl_certificate" "check_port_5666" "check_port_8443" "check_port_8080" "check_port_10000" "check_certificate_expires")
+	array_service_description=("Network" "CPU" "Disk usage" "Memory" "Total procedures" "SSH" "Service v2ray" "Service xray" "Service trojan.go" "Service nginx" "Service httpd" "Service v2-ui" "Service x-ui" "Service webmin" "Service docker" "Service nrpe" "Service node_exporter" "Https" "Certificate" "TCP 5666" "TCP 7080" "TCP 8080" "TCP 8443" "TCP 9100" "TCP 10000" "Certificate expiration date")
+	array_check_command=("check_netint" "check_cpu_stats" "check_disk" "check_mem" "check_total_procs" "check_ssh" "check_v2ray" "check_xray" "check_trojan.go" "check_nginx" "check_httpd" "check_v2_ui" "check_x_ui" "check_webmin" "check_docker" "check_nrpe" "check_node_exporter" "check_http" "check_ssl_certificate" "check_port_5666" "check_port_7080" "check_port_8080" "check_port_8443" "check_port_9100" "check_port_10000" "check_certificate_expires")
 	#定义变量
 	# WORKDIR="/root/git/toolbox/Docker/docker-compose/${currentHost}/"
 	SmartToolDir="/root/git/toolbox/Shell"
@@ -2393,12 +2393,12 @@ define command {
 
 define command {
     command_name    check_certificate_expires
-    command_line    \$USER1\$/check_tcp -H \$HOSTADDRESS$ -p 443 -w 0.1 -c 0.5 -t 5  -S -D 30
+    command_line    \$USER1\$/check_tcp -H \$HOSTADDRESS$ -p 443 -w 0.5 -c 1 -t 5  -S -D 30
 }
 
 define command {
     command_name    check_ssl_certificate
-    command_line    \$USER1\$/check_ssl_certificate -H \$HOSTADDRESS$ -c 3 -w 10
+    command_line    \$USER1\$/check_ssl_certificate -H \$HOSTADDRESS$ -c 10 -w 20
 }
 
 define command {
@@ -2407,13 +2407,23 @@ define command {
 }
 
 define command {
-    command_name    check_port_8443
-    command_line    \$USER1\$/check_tcp -H \$HOSTADDRESS$ -p 8443 -w 0.1 -c 0.5 -t 5
+    command_name    check_port_7080
+    command_line    \$USER1\$/check_tcp -H \$HOSTADDRESS$ -p 7080 -w 0.1 -c 0.5 -t 5
 }
 
 define command {
     command_name    check_port_8080
     command_line    \$USER1\$/check_tcp -H \$HOSTADDRESS$ -p 8080 -w 0.1 -c 0.5 -t 5
+}
+
+define command {
+    command_name    check_port_8443
+    command_line    \$USER1\$/check_tcp -H \$HOSTADDRESS$ -p 8443 -w 0.1 -c 0.5 -t 5
+}
+
+define command {
+    command_name    check_port_9100
+    command_line    \$USER1\$/check_tcp -H \$HOSTADDRESS$ -p 9100 -w 0.1 -c 0.5 -t 5
 }
 
 define command {
@@ -2669,7 +2679,7 @@ function enable_nagios_dark_mode {
 
 	print_info "Step 3: 重启 Nagios "
 	systemctl restart nagios
-	systemctl status nagios
+	# systemctl status nagios
 	print_complete "激活 Nagios 黑暗模式 "
 }
 #-----------------------------------------------------------------------------#
@@ -2683,7 +2693,7 @@ function enable_nagios_normal_mode {
 	cp -pf /etc/fuckGFW/nagios/index.php /usr/local/nagios/share/index.php
 	print_info "Step 2: 重启 Nagios "
 	systemctl restart nagios
-	systemctl status nagios
+	# systemctl status nagios
 	print_complete "恢复 Nagios 普通模式 "
 }
 #-----------------------------------------------------------------------------#
