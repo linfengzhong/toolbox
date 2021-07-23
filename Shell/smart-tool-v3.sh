@@ -2868,7 +2868,7 @@ function install_nagios_server {
 # 安装 nagios plugins
 function install_nagios_plugins {
 
-	if [[ -d "/usr/local/nagios/libexec/" ]]; then
+	if [[ -f "/usr/local/nagios/libexec/check_cpu_stats.sh" ]]; then
 		print_error "Nagios Plugins 已经存在，无需重复安装！ "
 	else
 	# 2021-April-06 [Initial Version] - Shell Script for Nagios Plugins installing
@@ -3776,7 +3776,7 @@ function check_procs_status() {
 	fi 
 }
 
-SmartToolVersion=v0.333
+SmartToolVersion=v0.334
 cleanScreen
 initVar $1
 set_current_host_domain
