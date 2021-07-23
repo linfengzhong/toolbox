@@ -2520,8 +2520,8 @@ function customize_nagios_client_nrpe_cfg {
 				print_info "Nagios Server IP : ${TMPnagiosHostIP}"
 			else
 				print_error "未检测到输入，将使用默认Nagios Server: \c "
-				echoContent white "k8s-master.ml"
-				TMPnagiosHostIP=$(ping k8s-master.ml -c 1 | sed '1{s/[^(]*(//;s/).*//;q}')
+				echoContent white "k8s-master.cf"
+				TMPnagiosHostIP=$(ping k8s-master.cf -c 1 | sed '1{s/[^(]*(//;s/).*//;q}')
 
 				# TMPnagiosHostIP=${nagiosHostIP}
 				print_info "使用默认 Nagios Server IP: \c "
@@ -3776,7 +3776,7 @@ function check_procs_status() {
 	fi 
 }
 
-SmartToolVersion=v0.331
+SmartToolVersion=v0.333
 cleanScreen
 initVar $1
 set_current_host_domain
