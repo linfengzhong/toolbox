@@ -2664,8 +2664,9 @@ function enable_nagios_dark_mode {
 		unzip -o /usr/local/nagios/share/stylesheets.zip -d /usr/local/nagios/share/ >/dev/null
 		rm -f /usr/local/nagios/share/stylesheets.zip
 	fi
-	chown nagios:nagios /root/git/toolbox/Nagios/nagios4-dark-theme-master/index.php
-	chown -R nagios:nagios /root/git/toolbox/Nagios/nagios4-dark-theme-master/stylesheets
+	chown nagios:nagios /usr/local/nagios/share/index.php
+	chown -R nagios:nagios /usr/local/nagios/share/stylesheets
+	
 	print_info "Step 3: 重启 Nagios "
 	systemctl restart nagios
 	systemctl status nagios
