@@ -21,8 +21,8 @@ function initVar() {
 	customPath="rdxyzukwofngusfpmheud"
 
 	# 自定义服务数组
-	array_service_description=("CPU" "Disk usage" "Memory" "Total procedures" "SSH" "Ping" "Service v2ray" "Service xray" "Service trojan.go" "Service nginx" "Service httpd" "Service v2-ui" "Service x-ui" "Service webmin" "Service docker" "Service nrpe" "Service node_exporter" "Https" "Certificate" "TCP 5666" "TCP 8443" "TCP 8080" "TCP 10000" "Certificate expires")
-	array_check_command=("check_cpu_stats" "check_disk" "check_mem" "check_total_procs" "check_ssh" "check_ping" "check_v2ray3" "check_xray3" "check_trojan.go3" "check_nginx3" "check_httpd3" "check_v2_ui" "check_x_ui" "check_webmin" "check_docker" "check_nrpe" "check_node_exporter" "check_http" "check_ssl_certificate" "check_port_5666" "check_port_8443" "check_port_8080" "check_port_10000" "check_certificate_expires")
+	array_service_description=("Network" "CPU" "Disk usage" "Memory" "Total procedures" "SSH" "Ping" "Service v2ray" "Service xray" "Service trojan.go" "Service nginx" "Service httpd" "Service v2-ui" "Service x-ui" "Service webmin" "Service docker" "Service nrpe" "Service node_exporter" "Https" "Certificate" "TCP 5666" "TCP 8443" "TCP 8080" "TCP 10000" "Certificate expires")
+	array_check_command=("check_netint" "check_cpu_stats" "check_disk" "check_mem" "check_total_procs" "check_ssh" "check_ping" "check_v2ray3" "check_xray3" "check_trojan.go3" "check_nginx3" "check_httpd3" "check_v2_ui" "check_x_ui" "check_webmin" "check_docker" "check_nrpe" "check_node_exporter" "check_http" "check_ssl_certificate" "check_port_5666" "check_port_8443" "check_port_8080" "check_port_10000" "check_certificate_expires")
 	#定义变量
 	# WORKDIR="/root/git/toolbox/Docker/docker-compose/${currentHost}/"
 	SmartToolDir="/root/git/toolbox/Shell"
@@ -2516,7 +2516,7 @@ command[check_swap]=/usr/local/nagios/libexec/check_swap -c 0
 command[check_disk]=/usr/local/nagios/libexec/check_disk -w 30% -c 20% -p /
 command[check_kernel]=/usr/local/nagios/libexec/check_kernel --warn-only
 
-command[check_netint]=/usr/local/nagios/libexec/check_netinterfaces -n -f -k -Y -B -w 95000000,95000000 -c 98000000,98000000
+command[check_netint]=/usr/local/nagios/libexec/check_netinterfaces -n eth0 -f -k -z
 command[check_cpu_stats]=/usr/local/nagios/libexec/check_cpu_stats.sh
 command[check_ssh]=/usr/local/nagios/libexec/check_ssh -H $currentHost
 
@@ -3756,7 +3756,7 @@ function check_procs_status() {
 	fi 
 }
 
-SmartToolVersion=v0.330
+SmartToolVersion=v0.331
 cleanScreen
 initVar $1
 set_current_host_domain
