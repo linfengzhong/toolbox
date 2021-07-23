@@ -3559,15 +3559,6 @@ function menu() {
 	echoContent green "当前系统Linux版本 : \c" 
 	checkSystem
 	echoContent red "=================================================================="
-	echoContent skyBlue "---------------------------脚本管理-------------------------------"
-	echoContent yellow "0.更新脚本"
-	echoContent yellow "1.科学上网工具 [Sub Menu]"
-	echoContent yellow "2.Nagios监控  - port: 8443 [Sub Menu]"
-	echoContent yellow "3.Grafana监控 - port: 3000 [Sub Menu]"
-	echoContent yellow "4.Webmin管理  - port: 10000[Sub Menu]"
-	echoContent yellow "5.设置域名 | 6.设置时区：上海"
-	echoContent yellow "7.设置UUID | 8.恢复默认UUID"
-	echoContent yellow "9.bpytop "
 	echoContent skyBlue "---------------------------安装软件-------------------------------"
 	echoContent yellow "10.安装 全部程序"
 	echoContent yellow "11.安装 prerequisite"
@@ -3591,6 +3582,15 @@ function menu() {
 	echoContent yellow "37.show account"
 	echoContent skyBlue "---------------------------证书管理-------------------------------"
 	echoContent yellow "40.show CA | 41.generate CA | 42.renew CA"
+	echoContent skyBlue "---------------------------脚本管理-------------------------------"
+	echoContent yellow "0.更新脚本"
+	echoContent yellow "1.科学上网工具 [Sub Menu]"
+	echoContent yellow "2.Nagios监控  - port: 8443 [Sub Menu]"
+	echoContent yellow "3.Grafana监控 - port: 3000 [Sub Menu]"
+	echoContent yellow "4.Webmin管理  - port: 10000[Sub Menu]"
+	echoContent yellow "5.设置域名 | 6.设置时区：上海"
+	echoContent yellow "7.设置UUID | 8.恢复默认UUID"
+	echoContent yellow "9.状态监控 bpytop "
 	echoContent red "=================================================================="
 	mkdirTools
 	aliasInstall
@@ -3777,7 +3777,7 @@ function check_procs_status() {
 	fi 
 }
 
-SmartToolVersion=v0.335
+SmartToolVersion=v0.336
 cleanScreen
 initVar $1
 set_current_host_domain
