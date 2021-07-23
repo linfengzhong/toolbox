@@ -22,7 +22,7 @@ function initVar() {
 
 	# 自定义服务数组
 	array_service_description=("Network" "CPU" "Disk usage" "Memory" "Total procedures" "SSH" "Service v2ray" "Service xray" "Service trojan.go" "Service nginx" "Service httpd" "Service v2-ui" "Service x-ui" "Service webmin" "Service docker" "Service nrpe" "Service node_exporter" "Https" "Certificate" "TCP 5666" "TCP 8443" "TCP 8080" "TCP 10000" "Certificate expires")
-	array_check_command=("check_netint" "check_cpu_stats" "check_disk" "check_mem" "check_total_procs" "check_ssh" "check_v2ray3" "check_xray3" "check_trojan.go3" "check_nginx3" "check_httpd3" "check_v2_ui" "check_x_ui" "check_webmin" "check_docker" "check_nrpe" "check_node_exporter" "check_http" "check_ssl_certificate" "check_port_5666" "check_port_8443" "check_port_8080" "check_port_10000" "check_certificate_expires")
+	array_check_command=("check_netint" "check_cpu_stats" "check_disk" "check_mem" "check_total_procs" "check_ssh" "check_v2ray" "check_xray" "check_trojan.go" "check_nginx" "check_httpd" "check_v2_ui" "check_x_ui" "check_webmin" "check_docker" "check_nrpe" "check_node_exporter" "check_http" "check_ssl_certificate" "check_port_5666" "check_port_8443" "check_port_8080" "check_port_10000" "check_certificate_expires")
 	#定义变量
 	# WORKDIR="/root/git/toolbox/Docker/docker-compose/${currentHost}/"
 	SmartToolDir="/root/git/toolbox/Shell"
@@ -2085,12 +2085,6 @@ define service {
 define service {
     use                     generic-service
     host_name               $NagiosClientDomain1
-    service_description     Current users
-    check_command           check_nrpe!check_users
-}
-define service {
-    use                     generic-service
-    host_name               $NagiosClientDomain1
     service_description     Disk usage
     check_command           check_nrpe!check_disk
 }
@@ -2110,43 +2104,37 @@ define service {
     use                     generic-service
     host_name               $NagiosClientDomain1
     service_description     SSH
-    check_command           check_nrpe!check_ssh
-}
-define service {
-    use                     generic-service
-    host_name               $NagiosClientDomain1
-    service_description     Ping 
-    check_command           check_nrpe!check_ping
+    check_command           check_ssh
 }
 define service {
     use                     generic-service
     host_name               $NagiosClientDomain1
     service_description     Service v2ray
-    check_command           check_nrpe!check_v2ray3
+    check_command           check_nrpe!check_v2ray
 }
 define service {
     use                     generic-service
     host_name               $NagiosClientDomain1
     service_description     Service xray
-    check_command           check_nrpe!check_xray3
+    check_command           check_nrpe!check_xray
 }
 define service {
     use                     generic-service
     host_name               $NagiosClientDomain1
     service_description     Service trojan.go
-    check_command           check_nrpe!check_trojan.go3
+    check_command           check_nrpe!check_trojan.go
 }
 define service {
     use                     generic-service
     host_name               $NagiosClientDomain1
     service_description     Service nginx
-    check_command           check_nrpe!check_nginx3
+    check_command           check_nrpe!check_nginx
 }
 define service {
     use                     generic-service
     host_name               $NagiosClientDomain1
     service_description     Service httpd
-    check_command           check_nrpe!check_httpd3
+    check_command           check_nrpe!check_httpd
 }
 define service {
     use                     generic-service
@@ -2567,7 +2555,6 @@ command[check_hda1]=/usr/local/nagios/libexec/check_disk -w 20% -c 10% -p /dev/h
 command[check_zombie_procs]=/usr/local/nagios/libexec/check_procs -w 5 -c 10 -s Z
 command[check_total_procs]=/usr/local/nagios/libexec/check_procs -w 150 -c 200
 
-#command[check_ping]=/usr/local/nagios/libexec/check_ping -H $currentHost -w 100.0,20% -c 500.0,60% -p 5
 command[check_mem]=/usr/local/nagios/libexec/check_mem.pl -u -w 80 -c 95 -C
 command[check_swap]=/usr/local/nagios/libexec/check_swap -c 0
 
@@ -2576,46 +2563,21 @@ command[check_kernel]=/usr/local/nagios/libexec/check_kernel --warn-only
 
 command[check_netint]=/usr/local/nagios/libexec/check_netinterfaces -n eth0 -f -k -z
 command[check_cpu_stats]=/usr/local/nagios/libexec/check_cpu_stats.sh
-#command[check_ssh]=/usr/local/nagios/libexec/check_ssh -H $currentHost
 
-command[check_v2ray1]=/usr/local/nagios/libexec/check_services -p v2ray
-command[check_v2ray2]=/usr/local/nagios/libexec/check_init_service v2ray
-command[check_v2ray3]=/usr/local/nagios/libexec/check_service.sh -s v2ray
-
-command[check_xray1]=/usr/local/nagios/libexec/check_services -p xray
-command[check_xray2]=/usr/local/nagios/libexec/check_init_service xray
-command[check_xray3]=/usr/local/nagios/libexec/check_service.sh -s xray
-
-command[check_trojan.go1]=/usr/local/nagios/libexec/check_services -p trojan-go
-command[check_trojan.go2]=/usr/local/nagios/libexec/check_init_service trojan-go
-command[check_trojan.go3]=/usr/local/nagios/libexec/check_service.sh -s trojan-go
-
-command[check_nginx1]=/usr/local/nagios/libexec/check_services -p nginx
-command[check_nginx2]=/usr/local/nagios/libexec/check_init_service nginx
-command[check_nginx3]=/usr/local/nagios/libexec/check_service.sh -s nginx
-
-command[check_httpd1]=/usr/local/nagios/libexec/check_services -p httpd
-command[check_httpd2]=/usr/local/nagios/libexec/check_init_service httpd
-command[check_httpd3]=/usr/local/nagios/libexec/check_service.sh -s httpd
+command[check_v2ray]=/usr/local/nagios/libexec/check_service.sh -s v2ray
+command[check_xray]=/usr/local/nagios/libexec/check_service.sh -s xray
+command[check_trojan.go]=/usr/local/nagios/libexec/check_service.sh -s trojan-go
+command[check_nginx]=/usr/local/nagios/libexec/check_service.sh -s nginx
+command[check_httpd]=/usr/local/nagios/libexec/check_service.sh -s httpd
 
 command[check_v2_ui]=/usr/local/nagios/libexec/check_service.sh -s v2-ui
 command[check_x_ui]=/usr/local/nagios/libexec/check_service.sh -s x-ui
 command[check_webmin]=/usr/local/nagios/libexec/check_service.sh -s webmin
 command[check_docker]=/usr/local/nagios/libexec/check_service.sh -s docker
 command[check_docker2]=/usr/local/nagios/libexec/check_docker -w 50 -c 80
-
 command[check_nrpe]=/usr/local/nagios/libexec/check_service.sh -s nrpe
 command[check_node_exporter]=/usr/local/nagios/libexec/check_service.sh -s node_exporter
 
-#command[check_http]=/usr/local/nagios/libexec/check_http -H localhost -S -w 0.5 -c 1 -t 5
-#command[check_ssl_certificate]=/usr/local/nagios/libexec/check_ssl_certificate -H localhost -c 3 -w 10
-#command[check_ssl_cert_expiry]=/usr/local/nagios/libexec/check_ssl_cert_expiry -h localhost -c 3 -w 10
-
-#command[check_port_5666]=/usr/local/nagios/libexec/check_tcp -H $currentHost -p 5666 -w 0.1 -c 0.5 -t 5
-#command[check_port_10000]=/usr/local/nagios/libexec/check_tcp -H $currentHost -p 10000 -w 0.1 -c 0.5 -t 5 -S
-#command[check_port_8443]=/usr/local/nagios/libexec/check_tcp -H $currentHost -p 8443 -w 0.1 -c 0.5 -t 5 -S
-#command[check_port_8080]=/usr/local/nagios/libexec/check_tcp -H $currentHost -p 8080 -w 0.1 -c 0.5 -t 5
-#command[check_certificate_expires]=/usr/local/nagios/libexec/check_tcp -H localhost -p 443 -w 0.1 -c 0.5 -t 5  -S -D 30
 EOF
 		# fi
 	chown nagios:nagios /usr/local/nagios/etc/nrpe.cfg
