@@ -2566,7 +2566,7 @@ command[check_hda1]=/usr/local/nagios/libexec/check_disk -w 20% -c 10% -p /dev/h
 command[check_zombie_procs]=/usr/local/nagios/libexec/check_procs -w 5 -c 10 -s Z
 command[check_total_procs]=/usr/local/nagios/libexec/check_procs -w 150 -c 200
 
-command[check_mem]=/usr/local/nagios/libexec/check_mem.pl -w 90,30 -c 95,50 -v
+command[check_mem]=/usr/local/nagios/libexec/check_mem -w 90 -c 95 -W 50 -C 80
 command[check_swap]=/usr/local/nagios/libexec/check_swap -c 0
 
 command[check_disk]=/usr/local/nagios/libexec/check_disk -w 30% -c 20% -p /
@@ -2617,12 +2617,14 @@ function customize_nagios_client_copy_libexec {
 		rm -f /usr/local/nagios/libexec/check_cpu_stats.sh
 		rm -f /usr/local/nagios/libexec/check_kernel
 		rm -f /usr/local/nagios/libexec/check_mem.pl
+		rm -f /usr/local/nagios/libexec/check_mem
 		rm -f /usr/local/nagios/libexec/check_service.sh
 		rm -f /usr/local/nagios/libexec/check_ssl_certificate
 
 		wget -c -q -P /usr/local/nagios/libexec/ -N --no-check-certificate "https://raw.githubusercontent.com/linfengzhong/toolbox/main/Nagios/Libexec/check_cpu_stats.sh"
 		wget -c -q -P /usr/local/nagios/libexec/ -N --no-check-certificate "https://raw.githubusercontent.com/linfengzhong/toolbox/main/Nagios/Libexec/check_kernel"
 		wget -c -q -P /usr/local/nagios/libexec/ -N --no-check-certificate "https://raw.githubusercontent.com/linfengzhong/toolbox/main/Nagios/Libexec/check_mem.pl"
+		wget -c -q -P /usr/local/nagios/libexec/ -N --no-check-certificate "https://raw.githubusercontent.com/linfengzhong/toolbox/main/Nagios/Libexec/check_mem"
 		wget -c -q -P /usr/local/nagios/libexec/ -N --no-check-certificate "https://raw.githubusercontent.com/linfengzhong/toolbox/main/Nagios/Libexec/check_service.sh"
 		wget -c -q -P /usr/local/nagios/libexec/ -N --no-check-certificate "https://raw.githubusercontent.com/linfengzhong/toolbox/main/Nagios/Libexec/check_ssl_certificate"
 		wget -c -q -P /usr/local/nagios/libexec/ -N --no-check-certificate "https://raw.githubusercontent.com/linfengzhong/toolbox/main/Nagios/Libexec/check_ssl_cert_expiry"
