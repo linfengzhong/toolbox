@@ -2376,7 +2376,7 @@ EOF
 # Define a service to check $temp_array_service_description on the remote machine.
 define service {
     use                     normal-service
-    hostgroup_name          "Fuck GFW"
+    hostgroup_name          Fuck GFW
     service_description     $temp_array_service_description
     check_command           $temp_array_check_command1
 }
