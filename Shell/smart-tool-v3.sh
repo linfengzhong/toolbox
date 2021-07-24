@@ -603,6 +603,8 @@ function generate_ca () {
 	fi
 
 	if [[ -d "$HOME/.acme.sh/${currentHost}_ecc" ]] && [[ -f "$HOME/.acme.sh/${currentHost}_ecc/${currentHost}.key" ]] && [[ -f "$HOME/.acme.sh/${currentHost}_ecc/${currentHost}.cer" ]]; then
+		mkdir -p $HOME/.acme.sh/${currentHost}
+		chmod 755 $HOME/.acme.sh/${currentHost}
 		cp -pf $HOME/.acme.sh/${currentHost}_ecc/*.* $HOME/.acme.sh/${currentHost}/
 		print_info "Copy ECC to RSA "
 	fi
@@ -3884,7 +3886,7 @@ function check_procs_status() {
 	fi 
 }
 
-SmartToolVersion=v0.339
+SmartToolVersion=v0.340
 cleanScreen
 initVar $1
 set_current_host_domain
