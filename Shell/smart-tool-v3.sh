@@ -2329,8 +2329,8 @@ EOF
 # 定制 Nagios Server Services
 function customize_nagios_server_myservers_services {
 	print_info "Step 4: Nagios 自定义文件夹 服务配置文件"
-	print_info "Step 4-1: 独立服务器配置文件 /usr/local/nagios/etc/objects/myservers/Services.cfg"
-	cat <<EOF > /usr/local/nagios/etc/objects/myservers/Services.cfg
+	print_info "Step 4-1: 独立服务器配置文件 /usr/local/nagios/etc/objects/myservers/services.cfg"
+	cat <<EOF > /usr/local/nagios/etc/objects/myservers/services.cfg
 define service {
     name                            normal-service          ; The 'name' of this service template
     active_checks_enabled           1                       ; Active service checks are enabled
@@ -2372,7 +2372,7 @@ EOF
 		else
 			temp_array_check_command1=$temp_array_check_command
 		fi
-		cat <<EOF >> /usr/local/nagios/etc/objects/myservers/Services.cfg
+		cat <<EOF >> /usr/local/nagios/etc/objects/myservers/services.cfg
 # Define a service to check $temp_array_service_description on the remote machine.
 define service {
     use                     normal-service
@@ -2701,7 +2701,7 @@ function customize_nagios_server {
 	# customize_nagios_server_myservers_two
 	# customize_nagios_server_myservers_three
 	customize_nagios_server_myservers_host
-	customize_nagios_server_myservers_service
+	customize_nagios_server_myservers_services
 
 	
 
