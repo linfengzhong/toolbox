@@ -2305,7 +2305,7 @@ EOF
 #-----------------------------------------------------------------------------#
 # 定制 Nagios Server Service Group
 function customize_nagios_server_service_group {
-	print_info "Step 5: 服务组配置文件： /usr/local/nagios/etc/objects/myservers/service_group.cfg"
+	print_info "Step 5: Nagios 服务组配置文件： /usr/local/nagios/etc/objects/myservers/service_group.cfg"
 
 	# 读取文件名到数组
 	local search_dir="/usr/local/nagios/etc/objects/myservers"
@@ -2371,7 +2371,7 @@ EOF
 #-----------------------------------------------------------------------------#
 # 定制 Nagios Server Command
 function customize_nagios_server_command {
-	print_info "Step 6: 添加自定义命令到文件 /usr/local/nagios/etc/objects/commands.cfg"
+	print_info "Step 6: Nagios 自定义命令文件 /usr/local/nagios/etc/objects/commands.cfg"
 	if cat /usr/local/nagios/etc/objects/commands.cfg | grep "# 2021 July 19th defined COMMANDS" >/dev/null; then
    			print_error "commands.cfg 已定制过，无需重复操作！"
 	else
@@ -2437,7 +2437,7 @@ EOF
 #-----------------------------------------------------------------------------#
 # 定制 Nagios Server Command
 function customize_nagios_server_command_two {
-	print_info "Step 6: 添加自定义命令到文件 /usr/local/nagios/etc/objects/myservers/mycommands.cfg"
+	print_info "Step 6: Nagios 自定义 命令文件 /usr/local/nagios/etc/objects/myservers/mycommands.cfg"
 	cat <<EOF > /usr/local/nagios/etc/objects/myservers/mycommands.cfg
 ################################################################################
 # 2021 July 19th defined COMMANDS
