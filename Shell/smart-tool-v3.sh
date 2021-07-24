@@ -2682,7 +2682,7 @@ function customize_nagios_client_copy_libexec {
 		chmod 755 /usr/local/nagios/libexec/*.*
 	else
 		print_error "请先Git同步toolbox到本地，再进行设置！"
-		print_info "Plan B: wget 文件到Libexec"
+		print_error "Plan B: wget 文件到Libexec"
 		
 #		rm -f /usr/local/nagios/libexec/check_cpu_stats.sh
 #		rm -f /usr/local/nagios/libexec/check_kernel
