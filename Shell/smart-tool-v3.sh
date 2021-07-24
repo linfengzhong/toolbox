@@ -3104,6 +3104,46 @@ function stop_remove_grafana {
 	docker container rm -f grafana-standalone
 }
 #-----------------------------------------------------------------------------#
+# 安装其他软件菜单
+function install_other_software_menu() {
+	clear
+	cd "$HOME" || exit
+	echoContent red "=================================================================="
+	echoContent green "SmartTool：\c"
+	echoContent white "${SmartToolVersion}"
+	echoContent green "Github：\c"
+	echoContent white "https://github.com/linfengzhong/toolbox"
+	echoContent green "logserver：\c"
+	echoContent white "https://github.com/linfengzhong/logserver"
+	echoContent green "初始化服务器、安装Docker、执行容器、科学上网 on \c" 
+	echoContent white "${currentHost}"
+	echoContent green "当前主机外部IP地址： \c" 
+	echoContent white "${currentIP}"	
+	echoContent green "当前UUID： \c" 
+	echoContent white "${currentUUID}"
+	echoContent green "当前系统Linux版本 : \c" 
+	checkSystem
+	echoContent red "=================================================================="
+	echoContent skyBlue "----------------------------安装菜单------------------------------"
+	echoContent yellow "1.安装 & 运行 Node Exporter 单机版 - Port: 9100 "
+	echoContent yellow "2.安装 nginx - port: 7080 "
+	echoContent red "=================================================================="
+	read -r -p "Please choose the function (请选择) : " selectInstallType
+	case ${selectInstallType} in
+	7)
+		install_exec_node_exporter_linux
+		;;
+	12)
+		install_nginx
+		;;
+	*)
+		print_error "请输入正确的数字"
+		sleep 1
+		menu
+		;;
+	esac
+}
+#-----------------------------------------------------------------------------#
 # Grafana 菜单
 function grafana_menu() {
 	clear
@@ -3132,8 +3172,6 @@ function grafana_menu() {
 	echoContent yellow "4.停止 & 删除 Prometheus "
 	echoContent yellow "5.停止 & 删除 Node Exporter container "
 	echoContent yellow "6.停止 & 删除 Grafana container "
-	echoContent skyBlue "----------------------------安装菜单------------------------------"
-	echoContent yellow "7.安装 & 运行 Node Exporter 单机版 - Port: 9100 "
 	echoContent red "=================================================================="
 	read -r -p "Please choose the function (请选择) : " selectInstallType
 	case ${selectInstallType} in
@@ -3161,9 +3199,6 @@ function grafana_menu() {
 		stop_remove_grafana
 		sleep 1
 		grafana_menu
-		;;
-	7)
-		install_exec_node_exporter_linux
 		;;
 	*)
 		print_error "请输入正确的数字"
@@ -3250,8 +3285,6 @@ function nagios_menu() {
 	echoContent yellow "9.展示 nagios client 配置文件 "
 	echoContent yellow "00.测试 nagios server 配置文件 "
 	echoContent yellow "11.清除 nagios myservers 文件夹 "
-	echoContent skyBlue "----------------------------选装菜单------------------------------"
-	echoContent yellow "12.安装 nginx - port: 7080 "
 	echoContent red "=================================================================="
 	read -r -p "Please choose the function (请选择) : " selectInstallType
 	case ${selectInstallType} in
@@ -3292,9 +3325,6 @@ function nagios_menu() {
 	11)
 		rm -rf /usr/local/nagios/etc/objects/myservers
 		nagios_menu
-		;;
-	12)
-		install_nginx
 		;;
 	*)
 		print_error "请输入正确的数字"
@@ -3626,9 +3656,9 @@ function menu() {
 	echoContent yellow "2.Nagios监控  - port: 8443 [Sub Menu]"
 	echoContent yellow "3.Grafana监控 - port: 3000 [Sub Menu]"
 	echoContent yellow "4.Webmin管理  - port: 10000[Sub Menu]"
-	echoContent yellow "5.设置域名 | 6.设置时区：上海"
-	echoContent yellow "7.设置UUID | 8.恢复默认UUID"
+	echoContent yellow "5.设置域名 | 6.设置时区：上海 ｜ 7.设置UUID | 8.恢复默认UUID "
 	echoContent yellow "9.状态监控 bpytop "
+	echoContent yellow "51.安装其他软件 [Sub Menu] "
 	echoContent red "=================================================================="
 	mkdirTools
 	aliasInstall
@@ -3775,6 +3805,9 @@ function menu() {
 		;;
 	42)
 		renewalTLS
+		;;
+	51)
+		install_other_software_menu
 		;;
 	*)
 		print_error "请输入正确的数字"
