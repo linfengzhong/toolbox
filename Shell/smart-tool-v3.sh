@@ -199,22 +199,25 @@ function install_acme () {
 # PyPi (will always have latest version)
 # Install or update to latest version
 function install_bpytop () {
-	print_start "Install Prerequisites for Python3 "
-	sudo yum -y install gcc libffi-devel python3-devel \
-                    openssl-devel \
-                    automake autoconf libtool make >/dev/null 2>&1
-	print_info "安装进行中ing "
-	print_complete "Install Prerequisites for Python3 "
-
 	print_start "Install bpytop "
-	sudo pip3 install bpytop --upgrade >/dev/null 2>&1
-	print_info "安装进行中ing "
-	print_complete "1/2 Install bpytop "
+	if [[ -f "/usr/local/bin/bpytop" ]]; then
+		print_error "bpytop已经安装，无需重复操作！"
+	else
+		print_start "Install Prerequisites for Python3 "
+		sudo yum -y install gcc libffi-devel python3-devel \
+						openssl-devel \
+						automake autoconf libtool make >/dev/null 2>&1
+		print_info "安装进行中ing "
+		print_complete "Install Prerequisites for Python3 "
 
-	echo 'alias bpytop=/usr/local/bin/bpytop'>>~/.bash_profile
-	source ~/.bash_profile 
-	print_complete "2/2 添加 bpytop 命令到.bash_profile"
+		sudo pip3 install bpytop --upgrade >/dev/null 2>&1
+		print_info "安装进行中ing "
+		print_complete "1/2 Install bpytop "
 
+		echo 'alias bpytop=/usr/local/bin/bpytop'>>~/.bash_profile
+		source ~/.bash_profile 
+		print_complete "2/2 添加 bpytop 命令到.bash_profile"
+	fi
 	print_complete "Install bpytop"
 }
 #-----------------------------------------------------------------------------#
@@ -3896,7 +3899,7 @@ function check_procs_status() {
 	fi 
 }
 
-SmartToolVersion=v0.342
+SmartToolVersion=v0.343
 cleanScreen
 initVar $1
 set_current_host_domain
