@@ -1697,7 +1697,27 @@ function init_webmin_ssl {
 			systemctl start webmin.service
 		fi
 	else
-		print_error "未找到SSL证书！ "
+		print_error "未找到 RSA非对称加密算法 SSL证书！ "
+		if [[ -d "$HOME/.acme.sh/${currentHost}_ecc" ]] && [[ -f "$HOME/.acme.sh/${currentHost}_ecc/${currentHost}.key" ]] && [[ -f "$HOME/.acme.sh/${currentHost}_ecc/${currentHost}.cer" ]]; then
+		print_info "写入 ${currentHost}_ecc SSL证书 "
+
+			if [[ -f "/etc/webmin/check" ]]; then
+				print_error "已经写入过SSL证书，不需重复写入！"
+			else
+				cd /etc/webmin
+				touch check
+				cat $HOME/.acme.sh/${currentHost}_ecc/${currentHost}.key > /etc/webmin/miniserv.pem
+				cat $HOME/.acme.sh/${currentHost}_ecc/${currentHost}.cer >> /etc/webmin/miniserv.pem
+				cat $HOME/.acme.sh/${currentHost}_ecc/ca.cer > /etc/webmin/miniserv.ca
+				echo "extracas=/etc/webmin/miniserv.ca" >> /etc/webmin/miniserv.conf
+				print_info "重启 webmin.service "
+				systemctl stop webmin.service
+				sleep 2
+				systemctl start webmin.service
+			fi
+		else
+		print_error "未找到 ECC椭圆曲线加密算法 SSL证书！ "
+		fi
 	fi
 	print_complete "初始化webmin SSL证书 "
 }
