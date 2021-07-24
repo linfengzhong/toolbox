@@ -1711,9 +1711,7 @@ function init_webmin_ssl {
 			cat $HOME/.acme.sh/$currentHost/ca.cer > /etc/webmin/miniserv.ca
 			echo "extracas=/etc/webmin/miniserv.ca" >> /etc/webmin/miniserv.conf
 			print_info "重启 webmin.service "
-			systemctl stop webmin.service
-			sleep 2
-			systemctl start webmin.service
+			service webmin restart
 		fi
 	else
 		print_error "未找到 RSA非对称加密算法 SSL证书！ "
@@ -1730,9 +1728,7 @@ function init_webmin_ssl {
 				cat $HOME/.acme.sh/${currentHost}_ecc/ca.cer > /etc/webmin/miniserv.ca
 				echo "extracas=/etc/webmin/miniserv.ca" >> /etc/webmin/miniserv.conf
 				print_info "重启 webmin.service "
-				systemctl stop webmin.service
-				sleep 2
-				systemctl start webmin.service
+				service webmin restart
 			fi
 		else
 		print_error "未找到 ECC椭圆曲线加密算法 SSL证书！ "
@@ -3899,7 +3895,7 @@ function check_procs_status() {
 	fi 
 }
 
-SmartToolVersion=v0.343
+SmartToolVersion=v0.344
 cleanScreen
 initVar $1
 set_current_host_domain
