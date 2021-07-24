@@ -2535,14 +2535,14 @@ function customize_nagios_server_myservers_show {
 			let myservers_member_index++
 		else
 			Myservers_Member=${tmpMyservers_Member%.*}
-			print_info "服务器地址: \c"
+			print_info "服务器域名: \c"
 			echoContent white "$Myservers_Member"
 			let myservers_member_index++
 			let myserver_number++
 		fi
 	done
-	print_info "服务器数量: \c "
-	echoContent white "$myserver_number"
+	print_info "服务器总数: \c "
+	echoContent red "$myserver_number"
 	print_info "---> Nagios Myservers <--- "
 }
 #-----------------------------------------------------------------------------#
