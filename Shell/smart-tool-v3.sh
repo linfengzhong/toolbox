@@ -2211,11 +2211,33 @@ function customize_nagios_server_myservers_three {
 	print_info "Step 3-3: 独立服务器配置文件 /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg"
 	cat <<EOF > /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
 # Define a host for the remote machine
-define host{   
-  use                     linux-server           
-  host_name               $NagiosClientDomain1
-  alias                   $NagiosClientDomain1
-  address                 $NagiosClientIP1
+define host {
+    host_name			            $NagiosClientDomain1
+    alias				            $NagiosClientDomain1
+    address                         $NagiosClientIP1
+    notifications_enabled           1                       ; Host notifications are enabled
+    event_handler_enabled           1                       ; Host event handler is enabled
+    flap_detection_enabled          1                       ; Flap detection is enabled
+    process_perf_data               1                       ; Process performance data
+    retain_status_information       1                       ; Retain status information across program restarts
+    retain_nonstatus_information    1                       ; Retain non-status information across program restarts
+    check_period                    24x7                    ; By default, Linux hosts are checked round the clock
+    check_interval                  5                       ; Actively check the host every 5 minutes
+    retry_interval                  1                       ; Schedule host check retries at 1 minute intervals
+    max_check_attempts              10                      ; Check each Linux host 10 times (max)
+    check_command                   check-host-alive        ; Default command to check Linux hosts
+    notification_period             24x7                    ; Send host notifications at any time 24x7 or workhours
+    notification_interval           120                     ; Resend notifications every 2 hours
+    notification_options            d,u,r                   ; Only send notifications for specific host states
+                                                            ; d = send notifications on a DOWN state
+                                                            ; u = send notifications on an UNREACHABLE state
+                                                            ; r = send notifications on recoveries (OK state)
+                                                            ; f = send notifications when the host starts and stops flapping
+                                                            ; s = send notifications when scheduled downtime starts and ends
+                                                            ; n = none
+                                                            ; If you do not specify any notification options, Nagios will assume that you want notifications to be sent out for all possible states. 
+    contacts                        nagiosadmin             ; This is a list of the short names of the contacts that should be notified whenever there are problems (or recoveries) with this host. Multiple contacts should be separated by commas. Useful if you want notifications to go to just a few people and don't want to configure contact groups. You must specify at least one contact or contact group in each host definition.
+    contact_groups                  admins                  ; Notifications get sent to the admins by default
 }
 EOF
 	for servicexx in "${array_service_description[@]}"
