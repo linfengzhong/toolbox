@@ -3233,6 +3233,8 @@ function nagios_menu() {
 	echoContent green "当前系统Linux版本 : \c" 
 	checkSystem
 	echoContent red "=================================================================="
+	echoContent skyBlue "----------------------------必安前继------------------------------"
+	echoContent yellow "0.安装 httpd - port: 8080 & port: 8443 "
 	echoContent skyBlue "----------------------------安装菜单------------------------------"
 	echoContent yellow "1.安装 nagios server "
 	echoContent yellow "2.安装 nagios nrpe "
@@ -3243,15 +3245,20 @@ function nagios_menu() {
 	echoContent skyBlue "----------------------------主题选择------------------------------"
 	echoContent yellow "6.激活 nagios server dark mode "
 	echoContent yellow "7.激活 nagios server normal mode "
-	echoContent skyBlue "----------------------------检测配置------------------------------"
+	echoContent skyBlue "----------------------------选装菜单------------------------------"
 	echoContent yellow "8.展示 nagios server 配置文件 "
 	echoContent yellow "9.展示 nagios client 配置文件 "
-	echoContent yellow "10.测试 nagios server 配置文件 "
+	echoContent yellow "00.测试 nagios server 配置文件 "
 	echoContent yellow "11.清除 nagios myservers 文件夹 "
+	echoContent skyBlue "----------------------------选装菜单------------------------------"
+	echoContent yellow "12.安装 nginx - port: 7080 "
 	echoContent red "=================================================================="
 	read -r -p "Please choose the function (请选择) : " selectInstallType
 	case ${selectInstallType} in
-
+	0)
+		install_apache_httpd
+		enable_apache_httpd_ssl
+		;;
 	1)
 		install_nagios_server
 		;;
@@ -3285,6 +3292,9 @@ function nagios_menu() {
 	11)
 		rm -rf /usr/local/nagios/etc/objects/myservers
 		nagios_menu
+		;;
+	12)
+		install_nginx
 		;;
 	*)
 		print_error "请输入正确的数字"
@@ -3589,8 +3599,6 @@ function menu() {
 	echoContent green "当前系统Linux版本 : \c" 
 	checkSystem
 	echoContent red "=================================================================="
-	echoContent skyBlue "---------------------------证书管理-------------------------------"
-	echoContent yellow "40.show CA | 41.generate CA | 42.renew CA"
 	echoContent skyBlue "---------------------------安装软件-------------------------------"
 	echoContent yellow "10.安装 全部程序"
 	echoContent yellow "11.安装 prerequisite"
@@ -3599,8 +3607,6 @@ function menu() {
 	echoContent yellow "14.安装 webmin - port: 10000"
 	echoContent yellow "15.安装 docker CE & docker compose"
 	echoContent yellow "16.安装 git"
-	echoContent yellow "17.安装 nginx - port: 7080"
-	echoContent yellow "18.安装 httpd - port: 8080 & port: 8443"
 	echoContent skyBlue "---------------------------版本控制-------------------------------"  
 	echoContent yellow "20.git init | 21.git clone | 22.git pull | 23.git push"
 	echoContent yellow "24.更新日志、配置文件、动态数据到GitHub"
@@ -3612,6 +3618,8 @@ function menu() {
 	echoContent yellow "35.show configs [Sub Menu]"
 	echoContent yellow "36.show logs [Sub Menu]"
 	echoContent yellow "37.show account"
+	echoContent skyBlue "---------------------------证书管理-------------------------------"
+	echoContent yellow "40.show CA | 41.generate CA | 42.renew CA"
 	echoContent skyBlue "---------------------------脚本管理-------------------------------"
 	echoContent yellow "0.更新脚本"
 	echoContent yellow "1.科学上网工具 [Sub Menu]"
@@ -3673,9 +3681,6 @@ function menu() {
 		install_docker
 		install_docker_compose
 		install_git
-		install_nginx
-		install_apache_httpd
-		enable_apache_httpd_ssl
 		;;
 	11)
 		install_prerequisite
@@ -3695,13 +3700,6 @@ function menu() {
 		;;
 	16)
 		install_git
-		;;
-	17)
-		install_nginx
-		;;
-	18)
-		install_apache_httpd
-		enable_apache_httpd_ssl
 		;;
 	20)
 		git_init
