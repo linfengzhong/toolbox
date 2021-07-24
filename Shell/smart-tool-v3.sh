@@ -3856,6 +3856,8 @@ function menu() {
 	41)
 		generate_ca
 		checkTLStatus "${currentHost}"
+		sleep 3
+		st
 		;;
 	*)
 		print_error "请输入正确的数字"
