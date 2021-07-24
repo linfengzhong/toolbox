@@ -3637,11 +3637,12 @@ function menu() {
 	echoContent skyBlue "---------------------------安装软件-------------------------------"
 	echoContent yellow "10.安装 全部程序"
 	echoContent yellow "11.安装 prerequisite"
-	echoContent yellow "12.安装 acme.sh"
-	echoContent yellow "13.安装 bpytop"
-	echoContent yellow "14.安装 webmin - port: 10000"
-	echoContent yellow "15.安装 docker CE & docker compose"
-	echoContent yellow "16.安装 git"
+	echoContent yellow "12.安装 git"
+	echoContent yellow "13.安装 acme.sh"
+	echoContent yellow "14.安装 bpytop"
+	echoContent yellow "15.安装 webmin - port: 10000"
+	echoContent yellow "16.安装 docker CE"
+	echoContent yellow "17.安装 docker compose"
 	echoContent skyBlue "---------------------------版本控制-------------------------------"  
 	echoContent yellow "20.git init | 21.git clone | 22.git pull | 23.git push"
 	echoContent yellow "24.更新日志、配置文件、动态数据到GitHub"
@@ -3710,31 +3711,33 @@ function menu() {
 		;;
 	10)
 		install_prerequisite
+		install_git
 		install_acme
 		install_bpytop
 		install_webmin
 		install_docker
 		install_docker_compose
-		install_git
 		;;
 	11)
 		install_prerequisite
 		;;
 	12)
-		install_acme
+		install_git
 		;;
 	13)
-		install_bpytop
+		install_acme
 		;;
 	14)
-		install_webmin
+		install_bpytop
 		;;
 	15)
-		install_docker
-		install_docker_compose
+		install_webmin
 		;;
 	16)
-		install_git
+		install_docker
+		;;
+	17)
+		install_docker_compose
 		;;
 	20)
 		git_init
