@@ -2687,6 +2687,7 @@ function customize_nagios_client_copy_libexec {
 		rm -f /usr/local/nagios/libexec/check_mem
 		rm -f /usr/local/nagios/libexec/check_service.sh
 		rm -f /usr/local/nagios/libexec/check_ssl_certificate
+		rm -f /usr/local/nagios/libexec/check_netinterfaces
 
 		wget -c -q -P /usr/local/nagios/libexec/ -N --no-check-certificate "https://raw.githubusercontent.com/linfengzhong/toolbox/main/Nagios/Libexec/check_cpu_stats.sh"
 		wget -c -q -P /usr/local/nagios/libexec/ -N --no-check-certificate "https://raw.githubusercontent.com/linfengzhong/toolbox/main/Nagios/Libexec/check_kernel"
@@ -2695,6 +2696,7 @@ function customize_nagios_client_copy_libexec {
 		wget -c -q -P /usr/local/nagios/libexec/ -N --no-check-certificate "https://raw.githubusercontent.com/linfengzhong/toolbox/main/Nagios/Libexec/check_service.sh"
 		wget -c -q -P /usr/local/nagios/libexec/ -N --no-check-certificate "https://raw.githubusercontent.com/linfengzhong/toolbox/main/Nagios/Libexec/check_ssl_certificate"
 		wget -c -q -P /usr/local/nagios/libexec/ -N --no-check-certificate "https://raw.githubusercontent.com/linfengzhong/toolbox/main/Nagios/Libexec/check_ssl_cert_expiry"
+		wget -c -q -P /usr/local/nagios/libexec/ -N --no-check-certificate "https://raw.githubusercontent.com/linfengzhong/toolbox/main/Nagios/Libexec/check_netinterfaces"
 		chmod 755 /usr/local/nagios/libexec/*
 		chmod 755 /usr/local/nagios/libexec/*.*
 	fi
@@ -3865,7 +3867,7 @@ function check_procs_status() {
 	fi 
 }
 
-SmartToolVersion=v0.336
+SmartToolVersion=v0.337
 cleanScreen
 initVar $1
 set_current_host_domain
