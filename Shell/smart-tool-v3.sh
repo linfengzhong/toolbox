@@ -2497,51 +2497,22 @@ EOF
 
 }
 #-----------------------------------------------------------------------------#
-# 定制 Nagios Server 重启
-function customize_nagios_server_restart {
-	print_info "Step 7: 重启 Nagios 服务"
-	systemctl restart nagios
-	# systemctl status nagios
-}
-#-----------------------------------------------------------------------------#
 # 定制 /etc/hosts
 function customize_nagios_server_hosts_ip {
-
+	print_info "Step 7: 编辑 /etc/hosts "
 	if cat /etc/hosts | grep ${NagiosClientDomain1} >/dev/null; then
    		print_error "主机地址已经添加到/etc/hosts，无需重复操作！"
 	else
-		print_info "写入主机IP和域名到/etc/hosts "
+		print_info "Step 7-1: 写入主机IP和域名到/etc/hosts "
 		cat <<EOF >> /etc/hosts
 ${NagiosClientIP1} ${NagiosClientDomain1}
 EOF
 	fi
-
-}
-#-----------------------------------------------------------------------------#
-# 定制 Nagios Server
-function customize_nagios_server {
-	print_start "定制 Nagios Server "
-
-	customize_nagios_server_check_myservers_folder
-	customize_nagios_server_nagios_cfg
-	# customize_nagios_server_myservers
-	# customize_nagios_server_myservers_two
-	customize_nagios_server_myservers_three
-	customize_nagios_server_host_group
-	customize_nagios_server_service_group
-	# customize_nagios_server_command
-	customize_nagios_server_command_two
-	customize_nagios_server_restart
-	customize_nagios_server_myservers_show
-
-	customize_nagios_server_hosts_ip
-
-
-	print_complete "定制 Nagios Server "
 }
 #-----------------------------------------------------------------------------#
 # 定制 Nagios Server Myservers Show
 function customize_nagios_server_myservers_show {
+	print_info "Step 8: 服务器列表"
 	print_info " ---> Nagios Myservers <--- "
 
 	local search_dir="/usr/local/nagios/etc/objects/myservers"
@@ -2573,6 +2544,34 @@ function customize_nagios_server_myservers_show {
 	echoContent white "$myserver_number"
 	print_info "---> Nagios Myservers <--- "
 }
+#-----------------------------------------------------------------------------#
+# 定制 Nagios Server 重启
+function customize_nagios_server_restart {
+	print_info "Step 9: 重启 Nagios 服务"
+	systemctl restart nagios
+	# systemctl status nagios
+}
+#-----------------------------------------------------------------------------#
+# 定制 Nagios Server
+function customize_nagios_server {
+	print_start "定制 Nagios Server "
+
+	customize_nagios_server_check_myservers_folder
+	customize_nagios_server_nagios_cfg
+	# customize_nagios_server_myservers
+	# customize_nagios_server_myservers_two
+	customize_nagios_server_myservers_three
+	customize_nagios_server_host_group
+	customize_nagios_server_service_group
+	# customize_nagios_server_command
+	customize_nagios_server_command_two
+	customize_nagios_server_hosts_ip
+	customize_nagios_server_myservers_show
+	customize_nagios_server_restart
+
+	print_complete "定制 Nagios Server "
+}
+
 #-----------------------------------------------------------------------------#
 # 定制 Nagios Client NRPE.cfg
 function customize_nagios_client_nrpe_cfg {
