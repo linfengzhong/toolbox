@@ -2016,7 +2016,7 @@ function customize_nagios_server_nagios_cfg {
 		if cat /usr/local/nagios/etc/objects/contacts.cfg | grep "nagios@localhost" >/dev/null; then
 			read -r -p "请输入Nagios Admin 邮件地址 : " NagiosAdminMail
 			if [ $NagiosAdminMail ]; then
-				sed -i 's!nagios@localhost!$NagiosAdminMail!g' /usr/local/nagios/etc/objects/contacts.cfg
+				sed -i 's!nagios@localhost!'"$NagiosAdminMail"'!g' /usr/local/nagios/etc/objects/contacts.cfg
 			else
 				print_info "未检测到输入邮件地址！"
 			fi
