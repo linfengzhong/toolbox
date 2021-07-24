@@ -3286,7 +3286,7 @@ function nagios_menu() {
 	9)
 		cat /usr/local/nagios/etc/nrpe.cfg
 		;;
-	10)
+	00)
 		/usr/local/nagios/bin/nagios -v /usr/local/nagios/etc/nagios.cfg
 		;;
 	11)
