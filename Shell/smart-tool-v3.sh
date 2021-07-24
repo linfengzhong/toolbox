@@ -3662,9 +3662,9 @@ function menu() {
 	echoContent yellow "2.Nagios监控  - port: 8443 [Sub Menu]"
 	echoContent yellow "3.Grafana监控 - port: 3000 [Sub Menu]"
 	echoContent yellow "4.Webmin管理  - port: 10000[Sub Menu]"
-	echoContent yellow "5.设置域名 | 6.设置时区：上海 ｜ 7.设置UUID | 8.恢复默认UUID "
+	echoContent yellow "5.安装其他 - port: 7080 / 8080 / 8443 [Sub Menu] "
+	echoContent yellow "6.设置域名 | 7.设置时区：上海 ｜ 8.设置随机UUID "
 	echoContent yellow "9.状态监控 bpytop "
-	echoContent yellow "51.安装其他软件 [Sub Menu] "
 	echoContent red "=================================================================="
 	mkdirTools
 	aliasInstall
@@ -3688,22 +3688,21 @@ function menu() {
 		webmin_menu
 		;;
 	5)
+		install_other_software_menu
+		;;
+	6)
 		clear_myHostDomain
 		set_current_host_domain
 		;;
-	6)
-		set_timezone
-		sleep 1
-		st
-		;;
 	7)
-		clear_currentUUID
-		set_current_uuid
+		set_timezone
 		sleep 1
 		st
 		;;
 	8)
 		clear_currentUUID
+		set_current_uuid
+		sleep 1
 		st
 		;;
 	9)
@@ -3813,9 +3812,6 @@ function menu() {
 		;;
 	42)
 		renewalTLS
-		;;
-	51)
-		install_other_software_menu
 		;;
 	*)
 		print_error "请输入正确的数字"
