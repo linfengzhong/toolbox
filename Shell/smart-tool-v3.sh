@@ -2196,19 +2196,19 @@ function customize_nagios_server_myservers_three {
 	local temp_array_check_command
 	local temp_array_check_command1
 
-	read -r -p "Step 3-1: 请输入Nagios client address : " NagiosClientDomain1
+	read -r -p "请输入Nagios client address : " NagiosClientDomain1
 	if [ $NagiosClientDomain1 ]; then
-		print_info "Step 3-2: 使用输入地址：${NagiosClientDomain1}"
+		print_info "Step 3-1: 使用输入地址：${NagiosClientDomain1}"
 	else
-		print_error "Step 3-2: 未检测到输入，使用默认地址 ${currentHost}"
+		print_error "Step 3-1: 未检测到输入，使用默认地址 ${currentHost}"
 		NagiosClientDomain1=${currentHost}
 	fi
 	
 	NagiosClientIP1=$(ping ${NagiosClientDomain1} -c 1 | sed '1{s/[^(]*(//;s/).*//;q}')
-	print_info "Step 3-3: 输入的服务器IP地址: \c"
+	print_info "Step 3-2: 输入的服务器IP地址: \c"
 	echoContent white "${NagiosClientIP1}"
 
-	print_info "Step 3-4: 独立服务器配置文件： /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg"
+	print_info "Step 3-3: 独立服务器配置文件： /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg"
 	cat <<EOF > /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
 # Define a host for the remote machine
 define host{   
