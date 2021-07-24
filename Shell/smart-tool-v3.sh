@@ -176,19 +176,25 @@ function echoContent() {
 # 安装必要程序
 function install_prerequisite () {
 	print_start "安装 wget lsof tar unzip curl socat nmap bind-utils jq "
-	print_info "安装进行中ing "	
-	yum -y install wget lsof tar unzip curl socat nmap bind-utils jq >/dev/null 2>&1
+	if [[ -f "/etc/fuckGFW/prerequisite/check" ]]; then
+		print_error "wget lsof tar unzip curl socat nmap bind-utils jq已经安装，无需重复操作！"
+	else
+		print_info "安装进行中ing "	
+		yum -y install wget lsof tar unzip curl socat nmap bind-utils jq >/dev/null 2>&1
+		mkdir -P /etc/fuckGFW/prerequisite
+		touch /etc/fuckGFW/prerequisite/check
 	#  install dig and nslookup --> bind-utils
+	fi
 	print_complete "安装 wget lsof tar unzip curl socat nmap bind-utils jq "
 }
 #-----------------------------------------------------------------------------#
 # Install acme.sh
 function install_acme () {
 	print_start "Install acme.sh "
-	print_info "安装进行中ing "
 	if [[ -d "$HOME/.acme.sh" ]] ; then
-		print_error "acme.sh 已经安装，无需重复操作！"
+		print_error "acme.sh已经安装，无需重复操作！"
 	else
+		print_info "安装进行中ing "
 		sudo curl -s https://get.acme.sh | sh -s email=$EMAIL >/dev/null 2>&1
 	fi
 	print_complete "安装 acme.sh "
@@ -226,17 +232,17 @@ function install_bpytop () {
 # https://doxfer.webmin.com/Webmin/Installation
 function install_webmin () {
 	print_start "Install webmin "
-	(echo "[Webmin]
+	if [[ -d "/etc/webmin" ]]; then
+		print_error "Webmin已经安装，无需重复操作！"
+	else
+		print_info "安装进行中ing "
+		(echo "[Webmin]
 name=Webmin Distribution Neutral
 baseurl=http://download.webmin.com/download/yum
 enabled=1
 gpgcheck=1
 gpgkey=http://www.webmin.com/jcameron-key.asc" >/etc/yum.repos.d/webmin.repo;)
-	sleep 0.5
-	print_info "安装进行中ing "
-	if [[ -d "/etc/webmin" ]]; then
-		print_error "Webmin已经安装，无需重复操作！"
-	else
+		sleep 0.5
 		sudo yum -y install webmin >/dev/null 2>&1
 	fi
 	print_complete "Install webmin "
@@ -246,26 +252,30 @@ gpgkey=http://www.webmin.com/jcameron-key.asc" >/etc/yum.repos.d/webmin.repo;)
 # https://docs.docker.com/engine/install/centos/
 function install_docker () {
 	print_start "Install Docker CE "
-	sudo yum -y remove docker \
-					docker-client \
-					docker-client-latest \
-					docker-common \
-					docker-latest \
-					docker-latest-logrotate \
-					docker-logrotate \
-					docker-engine >/dev/null 2>&1
-	print_complete "1/3 Uninstall old versions of Docker CE "
-	print_info "安装进行中ing "
-	sudo yum -y install yum-utils >/dev/null 2>&1
-	sudo yum-config-manager \
-			--add-repo \
-			https://download.docker.com/linux/centos/docker-ce.repo  >/dev/null 2>&1
-	print_complete "2/3 Set up the repository for Docker "
-	print_info "安装进行中ing "
-	sudo yum -y install docker-ce docker-ce-cli containerd.io >/dev/null 2>&1
-	sudo systemctl start docker
-	sudo systemctl enable docker
-	print_complete "3/3 Install Docker Engine "
+	if [[ -f "/usr/bin/docker" ]]; then
+		print_error "Docker CE已经安装，无需重复操作！"
+	else
+		print_info "安装进行中ing "
+		sudo yum -y remove docker \
+						docker-client \
+						docker-client-latest \
+						docker-common \
+						docker-latest \
+						docker-latest-logrotate \
+						docker-logrotate \
+						docker-engine >/dev/null 2>&1
+		print_complete "1/3 Uninstall old versions of Docker CE "
+		
+		sudo yum -y install yum-utils >/dev/null 2>&1
+		sudo yum-config-manager \
+				--add-repo \
+				https://download.docker.com/linux/centos/docker-ce.repo  >/dev/null 2>&1
+		print_complete "2/3 Set up the repository for Docker "
+		sudo yum -y install docker-ce docker-ce-cli containerd.io >/dev/null 2>&1
+		sudo systemctl start docker
+		sudo systemctl enable docker
+		print_complete "3/3 Install Docker Engine "
+	fi
 	print_complete "Install Docker CE "
 }
 #-----------------------------------------------------------------------------#
@@ -273,11 +283,15 @@ function install_docker () {
 # https://docs.docker.com/compose/install/#install-compose
 function install_docker_compose () {
 	print_start "Install docker compose "
-	sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose >/dev/null 2>&1
-	sudo chmod +x /usr/local/bin/docker-compose >/dev/null 2>&1
-	sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose >/dev/null 2>&1
-	docker-compose --version >/dev/null 2>&1
-	print_info "安装进行中ing "
+	if [[ -f "/usr/local/bin/docker-compose" ]]; then
+		print_error "docker compose已经安装，无需重复操作！"
+	else
+		sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose >/dev/null 2>&1
+		sudo chmod +x /usr/local/bin/docker-compose >/dev/null 2>&1
+		sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose >/dev/null 2>&1
+		docker-compose --version >/dev/null 2>&1
+		print_info "安装进行中ing "
+	fi
 	print_complete "Install docker compose "
 }
 #-----------------------------------------------------------------------------#
@@ -286,35 +300,43 @@ function install_docker_compose () {
 function install_git () {
 	print_start "Install Git "
 	print_info "安装进行中ing "
-	sudo yum -y install git >/dev/null 2>&1
+	if [[ -f "/usr/bin/git" ]]; then
+		print_error "Git已经安装，无需重复操作！"
+	else
+		sudo yum -y install git >/dev/null 2>&1
+	fi
 	print_complete "Install Git "
 }
 #-----------------------------------------------------------------------------#
 # Install nginx
 function install_nginx () {
 	print_start "Install Nginx - port: 7080"
-	print_info "安装进行中ing "
-	sudo yum -y install nginx >/dev/null 2>&1
-
-	# /etc/nginx/nginx.conf
-	# listen       80 default_server;
-    # listen       [::]:80 default_server;
-	if cat /etc/nginx/nginx.conf | grep "listen       7080 default_server;" ; then
-		print_error "已经设置端口：7080，无需重复设置！"
+	if [[ -d "/etc/nginx" ]]; then
+		print_error "Nginx已经安装，无需重复操作！"
 	else
-		print_info "设置IPv4 端口为 7080"
-		sed -i 's!listen       80 default_server;!listen       7080 default_server;!g' /etc/nginx/nginx.conf
-	fi
+		print_info "安装进行中ing "
+		sudo yum -y install nginx >/dev/null 2>&1
 
-	if cat /etc/nginx/nginx.conf | grep "listen       \[\:\:\]\:7080 default_server;" ; then
-		print_error "已经设置端口：7080，无需重复设置！"
-	else
-		print_info "设置IPv6 端口为 7080"
-		sed -i 's!listen       \[\:\:\]\:80 default_server;!listen       \[\:\:\]\:7080 default_server;!g' /etc/nginx/nginx.conf
-	fi
+		# /etc/nginx/nginx.conf
+		# listen       80 default_server;
+		# listen       [::]:80 default_server;
+		if cat /etc/nginx/nginx.conf | grep "listen       7080 default_server;" ; then
+			print_error "已经设置端口：7080，无需重复设置！"
+		else
+			print_info "设置IPv4 端口为 7080"
+			sed -i 's!listen       80 default_server;!listen       7080 default_server;!g' /etc/nginx/nginx.conf
+		fi
+
+		if cat /etc/nginx/nginx.conf | grep "listen       \[\:\:\]\:7080 default_server;" ; then
+			print_error "已经设置端口：7080，无需重复设置！"
+		else
+			print_info "设置IPv6 端口为 7080"
+			sed -i 's!listen       \[\:\:\]\:80 default_server;!listen       \[\:\:\]\:7080 default_server;!g' /etc/nginx/nginx.conf
+		fi
 	# systemctl reload nginx
 	systemctl enable nginx
 	systemctl restart nginx
+	fi
 	print_complete "Install Nginx - port: 7080 "
 }
 #-----------------------------------------------------------------------------#
