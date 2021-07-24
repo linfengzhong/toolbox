@@ -2212,8 +2212,8 @@ function customize_nagios_server_myservers_three {
 	cat <<EOF > /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
 # Define a host for the remote machine
 define host {
-    host_name			            $NagiosClientDomain1
-    alias				            $NagiosClientDomain1
+    host_name                       $NagiosClientDomain1
+    alias                           $NagiosClientDomain1
     address                         $NagiosClientIP1
     notifications_enabled           1                       ; Host notifications are enabled
     event_handler_enabled           1                       ; Host event handler is enabled
