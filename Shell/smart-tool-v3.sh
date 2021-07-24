@@ -601,6 +601,12 @@ function generate_ca () {
 		print_error "未发现acme.sh， 请安装后再运行生成证书！"
 		exit 0
 	fi
+
+	if [[ -d "$HOME/.acme.sh/${currentHost}_ecc" ]] && [[ -f "$HOME/.acme.sh/${currentHost}_ecc/${currentHost}.key" ]] && [[ -f "$HOME/.acme.sh/${currentHost}_ecc/${currentHost}.cer" ]]; then
+		cp -pf $HOME/.acme.sh/${currentHost}_ecc/*.* $HOME/.acme.sh/${currentHost}/
+		print_info "Copy ECC to RSA "
+	fi
+
 	local tempDomainName
 	if [[ -d "$HOME/.acme.sh/${currentHost}" ]] && [[ -f "$HOME/.acme.sh/${currentHost}/${currentHost}.key" ]] && [[ -f "$HOME/.acme.sh/${currentHost}/${currentHost}.cer" ]]; then
 		print_info "证书已经存在，无需重新生成！！！"
@@ -3878,7 +3884,7 @@ function check_procs_status() {
 	fi 
 }
 
-SmartToolVersion=v0.338
+SmartToolVersion=v0.339
 cleanScreen
 initVar $1
 set_current_host_domain
