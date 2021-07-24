@@ -2481,7 +2481,7 @@ EOF
 		for e in ${array_host[*]}
 		do
 		tmpService_Group_Member=${array_host[Myservers_Host_Index]##*/}
-		if [[ "${tmpService_Group_Member}" == "host_group.cfg" ]] || [[ "${tmpService_Group_Member}" == "service_group.cfg" ]] || [[ "${tmpService_Group_Member}" == "mycommands.cfg" ]] || [[ "${tmpService_Group_Member}" == "$currentHost"".cfg" ]] ; then
+		if [[ "${tmpService_Group_Member}" == "host_group.cfg" ]] || [[ "${tmpService_Group_Member}" == "service_group.cfg" ]] || [[ "${tmpService_Group_Member}" == "mycommands.cfg" ]] || [[ "${tmpService_Group_Member}" == "services.cfg" ]] || [[ "${tmpService_Group_Member}" == "$currentHost"".cfg" ]] ; then
 			# print_error "skip file"
 			# echoContent white "${tmpService_Group_Member}"
 			let Myservers_Host_Index++
@@ -2669,7 +2669,7 @@ function customize_nagios_server_myservers_show {
 	do
 	# 正则表达式 ${var##*/}  --> 左边算起的最后一个/字符左边的内容
 	tmpMyservers_Member=${myservers_member_arr[myservers_member_index]##*/}
-		if [[ "${tmpMyservers_Member}" == "host_group.cfg" ]] || [[ "${tmpMyservers_Member}" == "service_group.cfg" ]] || [[ "${tmpMyservers_Member}" == "mycommands.cfg" ]] ; then
+		if [[ "${tmpMyservers_Member}" == "host_group.cfg" ]] || [[ "${tmpMyservers_Member}" == "service_group.cfg" ]] || [[ "${tmpMyservers_Member}" == "mycommands.cfg" ]] || [[ "${tmpService_Group_Member}" == "services.cfg" ]] ; then
 			let myservers_member_index++
 		else
 			Myservers_Member=${tmpMyservers_Member%.*}
