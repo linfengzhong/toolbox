@@ -1993,7 +1993,7 @@ function customize_nagios_server_check_myservers_folder {
 #-----------------------------------------------------------------------------#
 # 定制 Nagios Server Nagios.cfg
 function customize_nagios_server_nagios_cfg {
-	print_info "Step 2: Nagios 主配置文件 /usr/local/nagios/etc/nagios.cfg"
+	print_info "Step 2: Nagios 主配置文件集 /usr/local/nagios/etc/nagios.cfg"
 	if [[ ! -f "/usr/local/nagios/etc/nagios.cfg" ]]; then
 		print_error "Nagios 主配置文件不存在，请确认是否正确安装Nagios core！"
 		exit 0
@@ -2107,7 +2107,7 @@ function customize_nagios_server_myservers_host {
 
 	read -r -p "请输入Nagios 被监控主机域名: " NagiosClientDomain1
 	if [ $NagiosClientDomain1 ]; then
-		print_info "使用输入地址: ${NagiosClientDomain1}"
+		print_info "被监控主机域名: ${NagiosClientDomain1}"
 	else
 		print_error "未检测到输入，使用默认域名: ${currentHost}"
 		NagiosClientDomain1=${currentHost}
