@@ -2333,6 +2333,7 @@ function customize_nagios_server_myservers_services {
 	cat <<EOF > /usr/local/nagios/etc/objects/myservers/services.cfg
 define service {
     name                            normal-service          ; The 'name' of this service template
+	hostgroup_name                  Fuck GFW                ; Customized
     active_checks_enabled           1                       ; Active service checks are enabled
     passive_checks_enabled          1                       ; Passive service checks are enabled/accepted
     parallelize_check               1                       ; Active service checks should be parallelized (disabling this can lead to major performance problems)
