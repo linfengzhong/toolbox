@@ -3648,7 +3648,7 @@ function menu() {
 	echoContent green "当前系统Linux版本 : \c" 
 	checkSystem
 	echoContent red "=================================================================="
-	echoContent skyBlue "---------------------------安装软件-------------------------------"
+	echoContent skyBlue "--------------------------安装基础软件------------------------------"
 	echoContent yellow "10.安装 全部程序"
 	echoContent yellow "11.安装 prerequisite"
 	echoContent yellow "12.安装 acme.sh"
@@ -3726,6 +3726,8 @@ function menu() {
 		install_prerequisite
 		install_acme
 		install_bpytop
+		sleep 1
+		st
 		;;
 	11)
 		install_prerequisite
@@ -3739,6 +3741,8 @@ function menu() {
 	20)
 		install_git
 		git_init
+		sleep 1
+		st
 		;;
 	21)
 		git_clone_toolbox
@@ -3784,6 +3788,8 @@ function menu() {
 		github_push_toolbox
 		github_push_logserver
 		docker_compose_up
+		sleep 1
+		st
 		;;
 	31)
 		docker_compose_up
@@ -3816,6 +3822,8 @@ function menu() {
 	40)
 		install_acme
 		renewalTLS
+		sleep 1
+		st
 		;;
 	41)
 		generate_ca
