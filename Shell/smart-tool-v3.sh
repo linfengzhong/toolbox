@@ -3850,7 +3850,7 @@ function menu() {
 	40)
 		install_acme
 		renewalTLS
-		sleep 2
+		sleep 3
 		st
 		;;
 	41)
