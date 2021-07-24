@@ -2010,170 +2010,8 @@ function customize_nagios_server_nagios_cfg {
 }
 #-----------------------------------------------------------------------------#
 # 定制 Nagios Server Myservers
-function customize_nagios_server_myservers {
-
-	mkdir -p /usr/local/nagios/etc/objects/myservers
-	chown nagios:nagios /usr/local/nagios/etc/objects/myservers
-	chmod 777 /usr/local/nagios/etc/objects/myservers
-	
-	print_info "Step 3: Nagios 服务器配置文件 /usr/local/nagios/etc/objects/myservers/template.cfg"
-	local NagiosClientDomain1
-	local NagiosClientIP1
-	if [[ -f "${GITHUB_REPO_TOOLBOX}/Nagios/server/myservers/template.cfg" ]] ; then
-		read -r -p "Step 3-1: 请输入Nagios client address : " NagiosClientDomain1
-		if [ $NagiosClientDomain1 ]; then
-			print_info "Step 3-1: 使用输入地址: ${NagiosClientDomain1}"
-		else
-			print_error "Step 3-1: 未检测到输入，使用默认地址: ${currentHost}"
-			NagiosClientDomain1=${currentHost}
-		fi
-		cp -pf 	${GITHUB_REPO_TOOLBOX}/Nagios/server/myservers/template.cfg /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
-		# 双引号可以用shell变量
-		sed -i "s/NagiosClientDomain/$NagiosClientDomain1/g" /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
-		NagiosClientIP1=$(ping ${NagiosClientDomain1} -c 1 | sed '1{s/[^(]*(//;s/).*//;q}')
-		print_info "Step 3-2: 输入的服务器IP地址: \c"
-		echoContent white "${NagiosClientIP1}"
-		# 双引号可以用shell变量
-		sed -i "s/NagiosClientIP/$NagiosClientIP1/g" /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
-		chown nagios:nagios /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
-		chmod 777 /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
-	else
-		print_error "请先Git同步toolbox到本地，再进行设置！"
-	fi
-}
 #-----------------------------------------------------------------------------#
 # 定制 Nagios Server Myservers two
-function customize_nagios_server_myservers_two {
-	print_info "Step 3: Nagios 服务器配置文件 /usr/local/nagios/etc/objects/myservers/template.cfg"
-	local NagiosClientDomain1
-	local NagiosClientIP1
-
-	read -r -p "请输入Nagios client address : " NagiosClientDomain1
-	if [ $NagiosClientDomain1 ]; then
-		print_info "使用输入地址: ${NagiosClientDomain1}"
-	else
-		print_error "未检测到输入，使用默认地址: ${currentHost}"
-		NagiosClientDomain1=${currentHost}
-	fi
-	
-	NagiosClientIP1=$(ping ${NagiosClientDomain1} -c 1 | sed '1{s/[^(]*(//;s/).*//;q}')
-	print_info "输入的服务器IP地址: \c"
-	echoContent white "${NagiosClientIP1}"
-
-	cat <<EOF > /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
-# Define a host for the remote machine
-
-define host{   
-  use                     linux-server           
-  host_name               $NagiosClientDomain1
-  alias                   $NagiosClientDomain1
-  address                 $NagiosClientIP1
-}
-EOF
-
-	cat <<EOF >> /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
-define service {
-    use                     generic-service
-    host_name               $NagiosClientDomain1
-    service_description     CPU statistics
-    check_command           check_nrpe!check_cpu_stats
-}
-define service {
-    use                     generic-service
-    host_name               $NagiosClientDomain1
-    service_description     Disk usage
-    check_command           check_nrpe!check_disk
-}
-define service {
-    use                     generic-service
-    host_name               $NagiosClientDomain1
-    service_description     Memory usage
-    check_command           check_nrpe!check_mem
-}
-define service {
-    use                     generic-service
-    host_name               $NagiosClientDomain1
-    service_description     Total procedures
-    check_command           check_nrpe!check_total_procs
-}
-define service {
-    use                     generic-service
-    host_name               $NagiosClientDomain1
-    service_description     SSH
-    check_command           check_ssh
-}
-define service {
-    use                     generic-service
-    host_name               $NagiosClientDomain1
-    service_description     Service v2ray
-    check_command           check_nrpe!check_v2ray
-}
-define service {
-    use                     generic-service
-    host_name               $NagiosClientDomain1
-    service_description     Service xray
-    check_command           check_nrpe!check_xray
-}
-define service {
-    use                     generic-service
-    host_name               $NagiosClientDomain1
-    service_description     Service trojan.go
-    check_command           check_nrpe!check_trojan.go
-}
-define service {
-    use                     generic-service
-    host_name               $NagiosClientDomain1
-    service_description     Service nginx
-    check_command           check_nrpe!check_nginx
-}
-define service {
-    use                     generic-service
-    host_name               $NagiosClientDomain1
-    service_description     Service httpd
-    check_command           check_nrpe!check_httpd
-}
-define service {
-    use                     generic-service
-    host_name               $NagiosClientDomain1
-    service_description     Service v2-ui
-    check_command           check_nrpe!check_v2_ui
-}
-define service {
-    use                     generic-service
-    host_name               $NagiosClientDomain1
-    service_description     Service x-ui
-    check_command           check_nrpe!check_x_ui
-}
-define service {
-    use                     generic-service
-    host_name               $NagiosClientDomain1
-    service_description     Service webmin
-    check_command           check_nrpe!check_webmin
-}
-define service {
-    use                     generic-service
-    host_name               $NagiosClientDomain1
-    service_description     Service docker
-    check_command           check_nrpe!check_docker
-}
-define service {
-    use                     generic-service
-    host_name               $NagiosClientDomain1
-    service_description     Service nrpe
-    check_command           check_nrpe!check_nrpe
-}
-define service {
-    use                     generic-service
-    host_name               $NagiosClientDomain1
-    service_description     Service node_exporter
-    check_command           check_nrpe!check_node_exporter
-}
-EOF
-
-	chown nagios:nagios /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
-	chmod 777 /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
-
-}
 #-----------------------------------------------------------------------------#
 # 定制 Nagios Server Myservers Three
 function customize_nagios_server_myservers_three {
@@ -2263,24 +2101,23 @@ EOF
 #-----------------------------------------------------------------------------#
 # 定制 Nagios Server Host
 function customize_nagios_server_myservers_host {
-	print_info "Step 3: Nagios 自定义文件夹 独立服务器配置文件"
-
+	# print_info "Step 3: Nagios 自定义文件夹 独立服务器配置文件"
 	# NagiosClientDomain1
 	# NagiosClientIP1
 
 	read -r -p "请输入Nagios 被监控主机域名: " NagiosClientDomain1
 	if [ $NagiosClientDomain1 ]; then
-		print_info "Step 3-1: 使用输入地址: ${NagiosClientDomain1}"
+		print_info "使用输入地址: ${NagiosClientDomain1}"
 	else
-		print_error "Step 3-1: 未检测到输入，使用默认域名: ${currentHost}"
+		print_error "未检测到输入，使用默认域名: ${currentHost}"
 		NagiosClientDomain1=${currentHost}
 	fi
 	
 	NagiosClientIP1=$(ping ${NagiosClientDomain1} -c 1 | sed '1{s/[^(]*(//;s/).*//;q}')
-	print_info "Step 3-2: 被监控主机IP地址: \c"
+	print_info "被监控主机IP地址: \c"
 	echoContent white "${NagiosClientIP1}"
 
-	print_info "Step 3-3: 独立服务器配置文件 /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg"
+	print_info "Step 3: Nagios 自定义服务器 usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg"
 	cat <<EOF > /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
 # Define a host for the remote machine
 define host {
@@ -2319,8 +2156,7 @@ EOF
 #-----------------------------------------------------------------------------#
 # 定制 Nagios Server Services
 function customize_nagios_server_myservers_services {
-	print_info "Step 4: Nagios 自定义文件夹 服务配置文件"
-	print_info "Step 4-1: 独立服务器配置文件 /usr/local/nagios/etc/objects/myservers/services.cfg"
+	print_info "Step 4: Nagios 自定义服务集 /usr/local/nagios/etc/objects/myservers/services.cfg"
 	cat <<EOF > /usr/local/nagios/etc/objects/myservers/services.cfg
 define service {
     name                            normal-service          ; The 'name' of this service template
@@ -2381,7 +2217,7 @@ EOF
 #-----------------------------------------------------------------------------#
 # 定制 Nagios Server Host Group
 function customize_nagios_server_myservers_host_group {
-	print_info "Step 4: Nagios 自定义主机组 /usr/local/nagios/etc/objects/myservers/host_group.cfg"
+	print_info "Step 5: Nagios 自定义主机组 /usr/local/nagios/etc/objects/myservers/host_group.cfg"
 
 	# 读取文件名到数组
 	local search_dir="/usr/local/nagios/etc/objects/myservers"
@@ -2437,7 +2273,7 @@ EOF
 #-----------------------------------------------------------------------------#
 # 定制 Nagios Server Service Group
 function customize_nagios_server_myservers_service_group {
-	print_info "Step 5: Nagios 自定义服务组 /usr/local/nagios/etc/objects/myservers/service_group.cfg"
+	print_info "Step 6: Nagios 自定义服务组 /usr/local/nagios/etc/objects/myservers/service_group.cfg"
 
 	# 读取文件名到数组
 	local search_dir="/usr/local/nagios/etc/objects/myservers"
@@ -2502,74 +2338,8 @@ EOF
 }
 #-----------------------------------------------------------------------------#
 # 定制 Nagios Server Command
-function customize_nagios_server_command {
-	print_info "Step 6: Nagios 自定义命令集 /usr/local/nagios/etc/objects/commands.cfg"
-	if cat /usr/local/nagios/etc/objects/commands.cfg | grep "# 2021 July 19th defined COMMANDS" >/dev/null; then
-   			print_error "commands.cfg 已定制过，无需重复操作！"
-	else
-		# \ --> 不转译
-		cat <<EOF >> /usr/local/nagios/etc/objects/commands.cfg
-################################################################################
-# 2021 July 19th defined COMMANDS
-################################################################################
-
-define command {
-    command_name    check_nrpe
-    command_line    \$USER1\$/check_nrpe -H \$HOSTADDRESS$ -t 30 -c \$ARG1\$ \$ARG2\$
-}
-
-define command {
-    command_name    check_load
-    command_line    \$USER1\$/check_load -w \$ARG1\$ -c \$ARG2\$
-}
-
-define command {
-    command_name    check_certificate_expires
-    command_line    \$USER1\$/check_tcp -H \$HOSTADDRESS$ -p 443 -w 0.5 -c 1 -t 5  -S -D 30
-}
-
-define command {
-    command_name    check_ssl_certificate
-    command_line    \$USER1\$/check_ssl_certificate -H \$HOSTADDRESS$ -c 10 -w 20
-}
-
-define command {
-    command_name    check_port_5666
-    command_line    \$USER1\$/check_tcp -H \$HOSTADDRESS$ -p 5666 -w 0.1 -c 0.5 -t 5
-}
-
-define command {
-    command_name    check_port_7080
-    command_line    \$USER1\$/check_tcp -H \$HOSTADDRESS$ -p 7080 -w 0.1 -c 0.5 -t 5
-}
-
-define command {
-    command_name    check_port_8080
-    command_line    \$USER1\$/check_tcp -H \$HOSTADDRESS$ -p 8080 -w 0.1 -c 0.5 -t 5
-}
-
-define command {
-    command_name    check_port_8443
-    command_line    \$USER1\$/check_tcp -H \$HOSTADDRESS$ -p 8443 -w 0.1 -c 0.5 -t 5
-}
-
-define command {
-    command_name    check_port_9100
-    command_line    \$USER1\$/check_tcp -H \$HOSTADDRESS$ -p 9100 -w 0.1 -c 0.5 -t 5
-}
-
-define command {
-    command_name    check_port_10000
-    command_line    \$USER1\$/check_tcp -H \$HOSTADDRESS$ -p 10000 -w 0.1 -c 0.5 -t 5
-}
-
-EOF
-	fi
-}
-#-----------------------------------------------------------------------------#
-# 定制 Nagios Server Command
-function customize_nagios_server_command_two {
-	print_info "Step 6: Nagios 自定义命令集 /usr/local/nagios/etc/objects/myservers/mycommands.cfg"
+function customize_nagios_server_myservers_command {
+	print_info "Step 7: Nagios 自定义命令集 /usr/local/nagios/etc/objects/myservers/mycommands.cfg"
 	cat <<EOF > /usr/local/nagios/etc/objects/myservers/mycommands.cfg
 ################################################################################
 # 2021 July 19th defined COMMANDS
@@ -2632,11 +2402,11 @@ EOF
 #-----------------------------------------------------------------------------#
 # 定制 /etc/hosts
 function customize_nagios_server_hosts_ip {
-	print_info "Step 7: 编辑 /etc/hosts "
+	print_info "Step 8: 编辑 /etc/hosts "
 	if cat /etc/hosts | grep ${NagiosClientDomain1} >/dev/null; then
    		print_error "主机地址已经添加到/etc/hosts，无需重复操作！"
 	else
-		print_info "Step 7-1: 写入主机IP和域名到/etc/hosts "
+		print_info "Step 8-1: 写入主机IP和域名到/etc/hosts "
 		cat <<EOF >> /etc/hosts
 ${NagiosClientIP1} ${NagiosClientDomain1}
 EOF
@@ -2645,7 +2415,7 @@ EOF
 #-----------------------------------------------------------------------------#
 # 定制 Nagios Server Myservers Show
 function customize_nagios_server_myservers_show {
-	print_info "Step 8: 服务器列表"
+	print_info "Step 9: 服务器列表"
 	print_info "#------------------------------# "
 
 	local search_dir="/usr/local/nagios/etc/objects/myservers"
@@ -2681,7 +2451,7 @@ function customize_nagios_server_myservers_show {
 #-----------------------------------------------------------------------------#
 # 定制 Nagios Server 重启
 function customize_nagios_server_restart {
-	print_info "Step 9: 重启 Nagios 服务"
+	print_info "Step 10: 重启 Nagios 服务"
 	systemctl restart nagios
 	# systemctl status nagios
 }
@@ -2692,18 +2462,12 @@ function customize_nagios_server {
 
 	customize_nagios_server_check_myservers_folder
 	customize_nagios_server_nagios_cfg
-	# customize_nagios_server_myservers
-	# customize_nagios_server_myservers_two
 	# customize_nagios_server_myservers_three
 	customize_nagios_server_myservers_host
 	customize_nagios_server_myservers_services
-
-	
-
 	customize_nagios_server_myservers_host_group
 	customize_nagios_server_myservers_service_group
-	# customize_nagios_server_command
-	customize_nagios_server_command_two
+	customize_nagios_server_myservers_command
 	customize_nagios_server_hosts_ip
 	customize_nagios_server_myservers_show
 	customize_nagios_server_restart
