@@ -2513,7 +2513,7 @@ EOF
 # 定制 Nagios Server Myservers Show
 function customize_nagios_server_myservers_show {
 	print_info "Step 8: 服务器列表"
-	print_info " ---> Nagios Myservers <--- "
+	print_info " #-----> Nagios Myservers <-----# "
 
 	local search_dir="/usr/local/nagios/etc/objects/myservers"
 	for xxmember in $search_dir/*
@@ -2535,15 +2535,15 @@ function customize_nagios_server_myservers_show {
 			let myservers_member_index++
 		else
 			Myservers_Member=${tmpMyservers_Member%.*}
-			print_info "服务器域名: \c"
+			print_info "# 服务器域名: \c"
 			echoContent white "$Myservers_Member"
 			let myservers_member_index++
 			let myserver_number++
 		fi
 	done
-	print_info "服务器总数: \c "
-	echoContent red "$myserver_number"
-	print_info "---> Nagios Myservers <--- "
+	print_info "# 服务器总数: \c "
+	echoContent green "$myserver_number"
+	print_info "#-----> Nagios Myservers <-----# "
 }
 #-----------------------------------------------------------------------------#
 # 定制 Nagios Server 重启
