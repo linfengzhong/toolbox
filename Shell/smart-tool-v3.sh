@@ -654,12 +654,12 @@ function renewalTLS() {
 		if [[ ${remainingDays} -le 1 ]]; then
 			print_info " ---> 重新生成证书"
 			sh /root/.acme.sh/acme.sh  --issue  -d $currentHost --standalone --force
-			# generate_ca
 		else
 			print_info " ---> 证书有效 <--- "
 		fi
 	else
 		echoContent red " ---> 未安装 <--- "
+		generate_ca
 	fi
 	print_complete "更新证书 "
 }
@@ -3669,7 +3669,7 @@ function menu() {
 	echoContent yellow "38.安装 docker CE"
 	echoContent yellow "39.安装 docker compose"
 	echoContent skyBlue "---------------------------证书管理-------------------------------"
-	echoContent yellow "40.show CA | 41.generate CA | 42.renew CA"
+	echoContent yellow "40.CA one key | 41.generate CA "
 	echoContent skyBlue "---------------------------脚本管理-------------------------------"
 	echoContent yellow "0.更新脚本"
 	echoContent yellow "1.科学上网工具 [Sub Menu]"
@@ -3772,7 +3772,6 @@ function menu() {
 		github_pull_toolbox
 		github_pull_logserver
 		generate_docker_compose_yml
-		generate_ca
 		renewalTLS
 		generate_nginx_conf
 		generate_xray_conf
@@ -3815,13 +3814,12 @@ function menu() {
 		install_docker_compose
 		;;
 	40)
-		checkTLStatus "${currentHost}"
+		install_acme
+		renewalTLS
 		;;
 	41)
 		generate_ca
-		;;
-	42)
-		renewalTLS
+		checkTLStatus "${currentHost}"
 		;;
 	*)
 		print_error "请输入正确的数字"
