@@ -186,7 +186,11 @@ function install_prerequisite () {
 function install_acme () {
 	print_start "Install acme.sh "
 	print_info "安装进行中ing "
-	sudo curl -s https://get.acme.sh | sh -s email=$EMAIL >/dev/null 2>&1
+	if [[ -d "$HOME/.acme.sh" ]] ; then
+		print_error "acme.sh 已经安装，无需重复操作！"
+	else
+		sudo curl -s https://get.acme.sh | sh -s email=$EMAIL >/dev/null 2>&1
+	fi
 	print_complete "安装 acme.sh "
 }
 #-----------------------------------------------------------------------------#
@@ -3888,7 +3892,7 @@ function check_procs_status() {
 	fi 
 }
 
-SmartToolVersion=v0.340
+SmartToolVersion=v0.341
 cleanScreen
 initVar $1
 set_current_host_domain
