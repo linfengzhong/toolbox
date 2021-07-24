@@ -2107,7 +2107,8 @@ function customize_nagios_server_myservers_host {
 
 	read -r -p "请输入Nagios 被监控主机域名: " NagiosClientDomain1
 	if [ $NagiosClientDomain1 ]; then
-		print_info "被监控主机域名: ${NagiosClientDomain1}"
+		print_info "被监控主机域名: \c"
+		echoContent white "${NagiosClientDomain1}"
 	else
 		print_error "未检测到输入，使用默认域名: ${currentHost}"
 		NagiosClientDomain1=${currentHost}
