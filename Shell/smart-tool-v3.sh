@@ -231,7 +231,11 @@ gpgcheck=1
 gpgkey=http://www.webmin.com/jcameron-key.asc" >/etc/yum.repos.d/webmin.repo;)
 	sleep 0.5
 	print_info "安装进行中ing "
-	sudo yum -y install webmin >/dev/null 2>&1
+	if [[ -d "/etc/webmin" ]]; then
+		print_error "Webmin已经安装，无需重复操作！"
+	else
+		sudo yum -y install webmin >/dev/null 2>&1
+	fi
 	print_complete "Install webmin "
 }
 #-----------------------------------------------------------------------------#
@@ -3892,7 +3896,7 @@ function check_procs_status() {
 	fi 
 }
 
-SmartToolVersion=v0.341
+SmartToolVersion=v0.342
 cleanScreen
 initVar $1
 set_current_host_domain
