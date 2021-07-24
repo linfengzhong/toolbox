@@ -2236,7 +2236,8 @@ define host {
                                                             ; s = send notifications when scheduled downtime starts and ends
                                                             ; n = none
                                                             ; If you do not specify any notification options, Nagios will assume that you want notifications to be sent out for all possible states. 
-    contacts                        nagiosadmin             ; This is a list of the short names of the contacts that should be notified whenever there are problems (or recoveries) with this host. Multiple contacts should be separated by commas. Useful if you want notifications to go to just a few people and don't want to configure contact groups. You must specify at least one contact or contact group in each host definition.
+    contacts                        nagiosadmin             ; This is a list of the short names of the contacts that should be notified whenever there are problems (or recoveries) with this host. Multiple contacts should be separated by commas.
+                                                            ; Useful if you want notifications to go to just a few people and don't want to configure contact groups. You must specify at least one contact or contact group in each host definition.
     contact_groups                  admins                  ; Notifications get sent to the admins by default
 }
 EOF
