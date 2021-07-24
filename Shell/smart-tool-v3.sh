@@ -1985,7 +1985,7 @@ function install_x_ui {
 #-----------------------------------------------------------------------------#
 # 定制 Nagios Server Check MyServers Folder
 function customize_nagios_server_check_myservers_folder {
-	print_info "Step 1: 检查文件夹：/usr/local/nagios/etc/objects/myservers "
+	print_info "Step 1: Nagios 自定义文件夹 /usr/local/nagios/etc/objects/myservers "
 	mkdir -p /usr/local/nagios/etc/objects/myservers
 	chown nagios:nagios /usr/local/nagios/etc/objects/myservers
 	chmod 777 /usr/local/nagios/etc/objects/myservers
@@ -1993,7 +1993,7 @@ function customize_nagios_server_check_myservers_folder {
 #-----------------------------------------------------------------------------#
 # 定制 Nagios Server Nagios.cfg
 function customize_nagios_server_nagios_cfg {
-	print_info "Step 2: Nagios 主配置文件： /usr/local/nagios/etc/nagios.cfg"
+	print_info "Step 2: Nagios 主配置文件 /usr/local/nagios/etc/nagios.cfg"
 	if [[ ! -f "/usr/local/nagios/etc/nagios.cfg" ]]; then
 		print_error "Nagios 主配置文件不存在，请确认是否正确安装Nagios core！"
 		exit 0
@@ -2016,15 +2016,15 @@ function customize_nagios_server_myservers {
 	chown nagios:nagios /usr/local/nagios/etc/objects/myservers
 	chmod 777 /usr/local/nagios/etc/objects/myservers
 	
-	print_info "Step 3: Nagios 服务器配置文件： /usr/local/nagios/etc/objects/myservers/template.cfg"
+	print_info "Step 3: Nagios 服务器配置文件 /usr/local/nagios/etc/objects/myservers/template.cfg"
 	local NagiosClientDomain1
 	local NagiosClientIP1
 	if [[ -f "${GITHUB_REPO_TOOLBOX}/Nagios/server/myservers/template.cfg" ]] ; then
 		read -r -p "Step 3-1: 请输入Nagios client address : " NagiosClientDomain1
 		if [ $NagiosClientDomain1 ]; then
-			print_info "Step 3-1: 使用输入地址：${NagiosClientDomain1}"
+			print_info "Step 3-1: 使用输入地址: ${NagiosClientDomain1}"
 		else
-			print_error "Step 3-1: 未检测到输入，使用默认地址 ${currentHost}"
+			print_error "Step 3-1: 未检测到输入，使用默认地址: ${currentHost}"
 			NagiosClientDomain1=${currentHost}
 		fi
 		cp -pf 	${GITHUB_REPO_TOOLBOX}/Nagios/server/myservers/template.cfg /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
@@ -2049,15 +2049,15 @@ function customize_nagios_server_myservers_two {
 	chown nagios:nagios /usr/local/nagios/etc/objects/myservers
 	chmod 777 /usr/local/nagios/etc/objects/myservers
 
-	print_info "Step 3: Nagios 服务器配置文件： /usr/local/nagios/etc/objects/myservers/template.cfg"
+	print_info "Step 3: Nagios 服务器配置文件 /usr/local/nagios/etc/objects/myservers/template.cfg"
 	local NagiosClientDomain1
 	local NagiosClientIP1
 
 	read -r -p "请输入Nagios client address : " NagiosClientDomain1
 	if [ $NagiosClientDomain1 ]; then
-		print_info "使用输入地址：${NagiosClientDomain1}"
+		print_info "使用输入地址: ${NagiosClientDomain1}"
 	else
-		print_error "未检测到输入，使用默认地址 ${currentHost}"
+		print_error "未检测到输入，使用默认地址: ${currentHost}"
 		NagiosClientDomain1=${currentHost}
 	fi
 	
@@ -2182,7 +2182,7 @@ EOF
 #-----------------------------------------------------------------------------#
 # 定制 Nagios Server Myservers Three
 function customize_nagios_server_myservers_three {
-	print_info "Step 3: Nagios MyServers 独立服务器配置文件"
+	print_info "Step 3: Nagios 自定义文件夹 独立服务器配置文件"
 
 	mkdir -p /usr/local/nagios/etc/objects/myservers
 	chown nagios:nagios /usr/local/nagios/etc/objects/myservers
@@ -2198,9 +2198,9 @@ function customize_nagios_server_myservers_three {
 
 	read -r -p "请输入Nagios client address : " NagiosClientDomain1
 	if [ $NagiosClientDomain1 ]; then
-		print_info "Step 3-1: 使用输入地址：${NagiosClientDomain1}"
+		print_info "Step 3-1: 使用输入地址: ${NagiosClientDomain1}"
 	else
-		print_error "Step 3-1: 未检测到输入，使用默认地址 ${currentHost}"
+		print_error "Step 3-1: 未检测到输入，使用默认地址: ${currentHost}"
 		NagiosClientDomain1=${currentHost}
 	fi
 	
@@ -2208,7 +2208,7 @@ function customize_nagios_server_myservers_three {
 	print_info "Step 3-2: 输入的服务器IP地址: \c"
 	echoContent white "${NagiosClientIP1}"
 
-	print_info "Step 3-3: 独立服务器配置文件： /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg"
+	print_info "Step 3-3: 独立服务器配置文件 /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg"
 	cat <<EOF > /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
 # Define a host for the remote machine
 define host{   
