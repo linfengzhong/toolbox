@@ -2684,18 +2684,19 @@ function customize_nagios_client_copy_libexec {
 		print_error "请先Git同步toolbox到本地，再进行设置！"
 		print_info "Plan B: wget 文件到Libexec"
 		
-		rm -f /usr/local/nagios/libexec/check_cpu_stats.sh
-		rm -f /usr/local/nagios/libexec/check_kernel
-		rm -f /usr/local/nagios/libexec/check_mem.pl
-		rm -f /usr/local/nagios/libexec/check_mem
-		rm -f /usr/local/nagios/libexec/check_service.sh
-		rm -f /usr/local/nagios/libexec/check_ssl_certificate
-		rm -f /usr/local/nagios/libexec/check_netinterfaces
-		rm -f /usr/local/nagios/libexec/check_eth
+#		rm -f /usr/local/nagios/libexec/check_cpu_stats.sh
+#		rm -f /usr/local/nagios/libexec/check_kernel
+#		rm -f /usr/local/nagios/libexec/check_mem.pl
+#		rm -f /usr/local/nagios/libexec/check_mem
+#		rm -f /usr/local/nagios/libexec/check_service.sh
+#		rm -f /usr/local/nagios/libexec/check_ssl_certificate
+#		rm -f /usr/local/nagios/libexec/check_netinterfaces
+#		rm -f /usr/local/nagios/libexec/check_eth
 
 		wget -c -q -P /tmp/ -N --no-check-certificate "https://raw.githubusercontent.com/linfengzhong/toolbox/main/Nagios/Libexec.zip"	
-		unzip -o /tmp/Libexec.zip -d /tmp/Libexec >/dev/null
-		cp -f /tmp/Libexec/ /usr/local/nagios/libexec/
+		unzip -o /tmp/Libexec.zip -d /tmp/ >/dev/null
+		mv -f /tmp/Libexec/* /usr/local/nagios/libexec/
+		
 		rm -f /tmp/Libexec.zip
 		rm -rf /tmp/Libexec/ 
 #		wget -c -q -P /usr/local/nagios/libexec/ -N --no-check-certificate "https://raw.githubusercontent.com/linfengzhong/toolbox/main/Nagios/Libexec/check_cpu_stats.sh"
