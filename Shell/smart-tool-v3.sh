@@ -2376,7 +2376,7 @@ EOF
 # Define a service to check $temp_array_service_description on the remote machine.
 define service {
     use                     normal-service
-    hohostgroup_name        "Fuck GFW"
+    hostgroup_name          "Fuck GFW"
     service_description     $temp_array_service_description
     check_command           $temp_array_check_command1
 }
@@ -2410,7 +2410,7 @@ function customize_nagios_server_myservers_host_group {
 		# print_info "${arr[myservers_index]##*/}"
 		
 		tmpMyservers_Host_Group=${arr[myservers_index]##*/}
-		if [[ "${tmpMyservers_Host_Group}" == "host_group.cfg" ]] || [[ "${tmpMyservers_Host_Group}" == "service_group.cfg" ]] || [[ "${tmpMyservers_Host_Group}" == "mycommands.cfg" ]] || [[ "${tmpMyservers_Host_Group}" == "$currentHost"".cfg" ]] ; then
+		if [[ "${tmpMyservers_Host_Group}" == "host_group.cfg" ]] || [[ "${tmpMyservers_Host_Group}" == "service_group.cfg" ]] || [[ "${tmpMyservers_Host_Group}" == "mycommands.cfg" ]] || [[ "${tmpMyservers_Host_Group}" == "services.cfg" ]] || [[ "${tmpMyservers_Host_Group}" == "$currentHost"".cfg" ]] ; then
 		#if [[ "${coreInstallType}" == "1" ]] && [[ -n $(pgrep -f xray/xray) ]]; then
 			# skip
 			# print_error "skip file"
@@ -2669,7 +2669,7 @@ function customize_nagios_server_myservers_show {
 	do
 	# 正则表达式 ${var##*/}  --> 左边算起的最后一个/字符左边的内容
 	tmpMyservers_Member=${myservers_member_arr[myservers_member_index]##*/}
-		if [[ "${tmpMyservers_Member}" == "host_group.cfg" ]] || [[ "${tmpMyservers_Member}" == "service_group.cfg" ]] || [[ "${tmpMyservers_Member}" == "mycommands.cfg" ]] || [[ "${tmpService_Group_Member}" == "services.cfg" ]] ; then
+		if [[ "${tmpMyservers_Member}" == "host_group.cfg" ]] || [[ "${tmpMyservers_Member}" == "service_group.cfg" ]] || [[ "${tmpMyservers_Member}" == "mycommands.cfg" ]] || [[ "${tmpMyservers_Member}" == "services.cfg" ]] ; then
 			let myservers_member_index++
 		else
 			Myservers_Member=${tmpMyservers_Member%.*}
