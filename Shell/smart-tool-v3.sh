@@ -2437,7 +2437,7 @@ EOF
 #-----------------------------------------------------------------------------#
 # 定制 Nagios Server Command
 function customize_nagios_server_command_two {
-	print_info "Step 6: Nagios 自定义命令 /usr/local/nagios/etc/objects/myservers/mycommands.cfg"
+	print_info "Step 6: Nagios 自定义命令集 /usr/local/nagios/etc/objects/myservers/mycommands.cfg"
 	cat <<EOF > /usr/local/nagios/etc/objects/myservers/mycommands.cfg
 ################################################################################
 # 2021 July 19th defined COMMANDS
