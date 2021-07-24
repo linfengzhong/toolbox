@@ -3640,8 +3640,6 @@ function menu() {
 	echoContent yellow "12.安装 git"
 	echoContent yellow "13.安装 acme.sh"
 	echoContent yellow "14.安装 bpytop"
-	echoContent yellow "15.安装 docker CE"
-	echoContent yellow "16.安装 docker compose"
 	echoContent skyBlue "---------------------------版本控制-------------------------------"  
 	echoContent yellow "20.git init | 21.git clone | 22.git pull | 23.git push"
 	echoContent yellow "24.更新日志、配置文件、动态数据到GitHub"
@@ -3653,6 +3651,8 @@ function menu() {
 	echoContent yellow "35.show configs [Sub Menu]"
 	echoContent yellow "36.show logs [Sub Menu]"
 	echoContent yellow "37.show account"
+	echoContent yellow "38.安装 docker CE"
+	echoContent yellow "39.安装 docker compose"
 	echoContent skyBlue "---------------------------证书管理-------------------------------"
 	echoContent yellow "40.show CA | 41.generate CA | 42.renew CA"
 	echoContent skyBlue "---------------------------脚本管理-------------------------------"
@@ -3712,8 +3712,6 @@ function menu() {
 		install_git
 		install_acme
 		install_bpytop
-		install_docker
-		install_docker_compose
 		;;
 	11)
 		install_prerequisite
@@ -3726,12 +3724,6 @@ function menu() {
 		;;
 	14)
 		install_bpytop
-		;;
-	15)
-		install_docker
-		;;
-	16)
-		install_docker_compose
 		;;
 	20)
 		git_init
@@ -3758,6 +3750,8 @@ function menu() {
 		menu
 		;;
 	30)
+		install_docker
+		install_docker_compose
 		generate_docker_compose_yml
 		docker_compose_down
 		github_pull_toolbox
@@ -3798,6 +3792,12 @@ function menu() {
 		;;
 	37)
 		generate_vmess_trojan_account
+		;;
+	38)
+		install_docker
+		;;
+	39)
+		install_docker_compose
 		;;
 	40)
 		checkTLStatus "${currentHost}"
