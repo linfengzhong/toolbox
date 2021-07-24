@@ -423,6 +423,20 @@ function git_init () {
 		cat ~/.ssh/id_rsa.pub
 		print_info "======== Public key End========= "
 		print_complete "初始化 Git "
+	
+		read -r -p "将上面的 Publick Key 输入到您的 GitHub 账户[y/n]: " answer_y_n
+		if [[ "${answer_y_n}" == "y" ]]; then
+			git_clone_toolbox
+			git_clone_logserver
+
+			github_pull_toolbox
+			github_pull_logserver
+
+			github_push_toolbox
+			github_push_logserver
+		else
+			print_error "请设置好GitHub后，再继续进行！"
+		fi
 	fi
 }
 #-----------------------------------------------------------------------------#
@@ -3837,7 +3851,7 @@ function check_procs_status() {
 	fi 
 }
 
-SmartToolVersion=v0.337
+SmartToolVersion=v0.338
 cleanScreen
 initVar $1
 set_current_host_domain
