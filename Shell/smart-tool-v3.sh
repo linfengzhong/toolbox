@@ -3726,7 +3726,7 @@ function menu() {
 		install_prerequisite
 		install_acme
 		install_bpytop
-		sleep 1
+		sleep 2
 		st
 		;;
 	11)
@@ -3741,7 +3741,7 @@ function menu() {
 	20)
 		install_git
 		git_init
-		sleep 1
+		sleep 2
 		st
 		;;
 	21)
@@ -3788,7 +3788,7 @@ function menu() {
 		github_push_toolbox
 		github_push_logserver
 		docker_compose_up
-		sleep 1
+		sleep 2
 		st
 		;;
 	31)
@@ -3822,7 +3822,7 @@ function menu() {
 	40)
 		install_acme
 		renewalTLS
-		sleep 1
+		sleep 2
 		st
 		;;
 	41)
