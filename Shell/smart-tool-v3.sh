@@ -1731,6 +1731,10 @@ function set_current_host_domain {
 	WORKDIR="/etc/fuckGFW/docker/${currentHost}/"
 	LOGDIR="/root/git/logserver/${currentHost}/"
 	print_complete "设置 current Host Domain "
+
+	hostnamectl set-hostname ${currentHost}
+	hostnamectl status
+
 }
 #-----------------------------------------------------------------------------#
 # 设置 current UUID 
