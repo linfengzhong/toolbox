@@ -181,7 +181,7 @@ function install_prerequisite () {
 	else
 		print_info "安装进行中ing "	
 		yum -y install wget lsof tar unzip curl socat nmap bind-utils jq >/dev/null 2>&1
-		mkdir -P /etc/fuckGFW/prerequisite
+		mkdir -p /etc/fuckGFW/prerequisite
 		touch /etc/fuckGFW/prerequisite/check
 	#  install dig and nslookup --> bind-utils
 	fi
