@@ -22,7 +22,7 @@ function initVar() {
 
 	# 自定义服务数组
 	array_service_description=("Network" "CPU" "Disk usage" "Memory" "Total procedures" "SSH" "Service v2ray" "Service xray" "Service trojan.go" "Service nginx" "Service httpd" "Service v2-ui" "Service x-ui" "Service webmin" "Service docker" "Service nrpe" "Service node_exporter" "HTTPS" "Certificate" "TCP 5666" "TCP 7080" "TCP 8080" "TCP 8443" "TCP 9100" "TCP 10000" )
-	array_check_command=("check_netint" "check_cpu_stats" "check_disk" "check_mem" "check_total_procs" "check_ssh" "check_v2ray" "check_xray" "check_trojan.go" "check_nginx" "check_httpd" "check_v2_ui" "check_x_ui" "check_webmin" "check_docker" "check_nrpe" "check_node_exporter" "check_http" "check_certificate_expires" "check_port_5666" "check_port_7080" "check_port_8080" "check_port_8443" "check_port_9100" "check_port_10000" )
+	array_check_command=("check_eth" "check_cpu_stats" "check_disk" "check_mem" "check_total_procs" "check_ssh" "check_v2ray" "check_xray" "check_trojan.go" "check_nginx" "check_httpd" "check_v2_ui" "check_x_ui" "check_webmin" "check_docker" "check_nrpe" "check_node_exporter" "check_http" "check_certificate_expires" "check_port_5666" "check_port_7080" "check_port_8080" "check_port_8443" "check_port_9100" "check_port_10000" )
 	#定义变量
 	# WORKDIR="/root/git/toolbox/Docker/docker-compose/${currentHost}/"
 	SmartToolDir="/root/git/toolbox/Shell"
@@ -2656,6 +2656,9 @@ command[check_docker2]=/usr/local/nagios/libexec/check_docker -w 50 -c 80
 command[check_nrpe]=/usr/local/nagios/libexec/check_service.sh -s nrpe
 command[check_node_exporter]=/usr/local/nagios/libexec/check_service.sh -s node_exporter
 
+#command[check_eth]=/usr/local/nagios/libexec/check_eth -i eth0 -w 2M Bps -c 10M Bps
+command[check_eth]=/usr/local/nagios/libexec/check_eth -i eth0 -w 1024K Bps -c 2048K Bps
+
 EOF
 		# fi
 	chown nagios:nagios /usr/local/nagios/etc/nrpe.cfg
@@ -2688,6 +2691,7 @@ function customize_nagios_client_copy_libexec {
 		rm -f /usr/local/nagios/libexec/check_service.sh
 		rm -f /usr/local/nagios/libexec/check_ssl_certificate
 		rm -f /usr/local/nagios/libexec/check_netinterfaces
+		rm -f /usr/local/nagios/libexec/check_eth
 
 		wget -c -q -P /usr/local/nagios/libexec/ -N --no-check-certificate "https://raw.githubusercontent.com/linfengzhong/toolbox/main/Nagios/Libexec/check_cpu_stats.sh"
 		wget -c -q -P /usr/local/nagios/libexec/ -N --no-check-certificate "https://raw.githubusercontent.com/linfengzhong/toolbox/main/Nagios/Libexec/check_kernel"
@@ -2697,6 +2701,7 @@ function customize_nagios_client_copy_libexec {
 		wget -c -q -P /usr/local/nagios/libexec/ -N --no-check-certificate "https://raw.githubusercontent.com/linfengzhong/toolbox/main/Nagios/Libexec/check_ssl_certificate"
 		wget -c -q -P /usr/local/nagios/libexec/ -N --no-check-certificate "https://raw.githubusercontent.com/linfengzhong/toolbox/main/Nagios/Libexec/check_ssl_cert_expiry"
 		wget -c -q -P /usr/local/nagios/libexec/ -N --no-check-certificate "https://raw.githubusercontent.com/linfengzhong/toolbox/main/Nagios/Libexec/check_netinterfaces"
+		wget -c -q -P /usr/local/nagios/libexec/ -N --no-check-certificate "https://raw.githubusercontent.com/linfengzhong/toolbox/main/Nagios/Libexec/check_eth"
 		chmod 755 /usr/local/nagios/libexec/*
 		chmod 755 /usr/local/nagios/libexec/*.*
 	fi
