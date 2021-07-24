@@ -228,6 +228,8 @@ gpgkey=http://www.webmin.com/jcameron-key.asc" >/etc/yum.repos.d/webmin.repo;)
 	sleep 0.5
 	print_info "安装进行中ing "
 	sudo yum -y install webmin >/dev/null 2>&1
+	systemctl enable webmin
+	systemctl start webmin
 	print_complete "Install webmin "
 }
 #-----------------------------------------------------------------------------#
