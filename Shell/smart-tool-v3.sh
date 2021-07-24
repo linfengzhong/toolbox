@@ -2270,8 +2270,123 @@ EOF
 
 }
 #-----------------------------------------------------------------------------#
+# 定制 Nagios Server Host
+function customize_nagios_server_myservers_host {
+	print_info "Step 3: Nagios 自定义文件夹 独立服务器配置文件"
+
+	# NagiosClientDomain1
+	# NagiosClientIP1
+
+	read -r -p "请输入Nagios 被监控主机域名: " NagiosClientDomain1
+	if [ $NagiosClientDomain1 ]; then
+		print_info "Step 3-1: 使用输入地址: ${NagiosClientDomain1}"
+	else
+		print_error "Step 3-1: 未检测到输入，使用默认域名: ${currentHost}"
+		NagiosClientDomain1=${currentHost}
+	fi
+	
+	NagiosClientIP1=$(ping ${NagiosClientDomain1} -c 1 | sed '1{s/[^(]*(//;s/).*//;q}')
+	print_info "Step 3-2: 被监控主机IP地址: \c"
+	echoContent white "${NagiosClientIP1}"
+
+	print_info "Step 3-3: 独立服务器配置文件 /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg"
+	cat <<EOF > /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
+# Define a host for the remote machine
+define host {
+    host_name                       $NagiosClientDomain1
+    alias                           $NagiosClientDomain1
+    address                         $NagiosClientIP1
+    notifications_enabled           1                       ; Host notifications are enabled
+    event_handler_enabled           1                       ; Host event handler is enabled
+    flap_detection_enabled          1                       ; Flap detection is enabled
+    process_perf_data               1                       ; Process performance data
+    retain_status_information       1                       ; Retain status information across program restarts
+    retain_nonstatus_information    1                       ; Retain non-status information across program restarts
+    check_period                    24x7                    ; By default, Linux hosts are checked round the clock
+    check_interval                  5                       ; Actively check the host every 5 minutes
+    retry_interval                  1                       ; Schedule host check retries at 1 minute intervals
+    max_check_attempts              10                      ; Check each Linux host 10 times (max)
+    check_command                   check-host-alive        ; Default command to check Linux hosts
+    notification_period             24x7                    ; Send host notifications at any time 24x7 or workhours
+    notification_interval           120                     ; Resend notifications every 2 hours
+    notification_options            d,u,r                   ; Only send notifications for specific host states
+                                                            ; d = send notifications on a DOWN state
+                                                            ; u = send notifications on an UNREACHABLE state
+                                                            ; r = send notifications on recoveries (OK state)
+                                                            ; f = send notifications when the host starts and stops flapping
+                                                            ; s = send notifications when scheduled downtime starts and ends
+                                                            ; n = none
+                                                            ; If you do not specify any notification options, Nagios will assume that you want notifications to be sent out for all possible states. 
+    contacts                        nagiosadmin             ; This is a list of the short names of the contacts that should be notified whenever there are problems (or recoveries) with this host. Multiple contacts should be separated by commas.
+                                                            ; Useful if you want notifications to go to just a few people and don't want to configure contact groups. You must specify at least one contact or contact group in each host definition.
+    contact_groups                  admins                  ; Notifications get sent to the admins by default
+}
+EOF
+	chown nagios:nagios /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
+	chmod 777 /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
+}
+#-----------------------------------------------------------------------------#
+# 定制 Nagios Server Services
+function customize_nagios_server_myservers_services {
+	print_info "Step 4: Nagios 自定义文件夹 服务配置文件"
+	print_info "Step 4-1: 独立服务器配置文件 /usr/local/nagios/etc/objects/myservers/Services.cfg"
+	cat <<EOF > /usr/local/nagios/etc/objects/myservers/Services.cfg
+define service {
+    name                            normal-service          ; The 'name' of this service template
+    active_checks_enabled           1                       ; Active service checks are enabled
+    passive_checks_enabled          1                       ; Passive service checks are enabled/accepted
+    parallelize_check               1                       ; Active service checks should be parallelized (disabling this can lead to major performance problems)
+    obsess_over_service             1                       ; We should obsess over this service (if necessary)
+    check_freshness                 0                       ; Default is to NOT check service 'freshness'
+    notifications_enabled           1                       ; Service notifications are enabled
+    event_handler_enabled           1                       ; Service event handler is enabled
+    flap_detection_enabled          1                       ; Flap detection is enabled
+    process_perf_data               1                       ; Process performance data
+    retain_status_information       1                       ; Retain status information across program restarts
+    retain_nonstatus_information    1                       ; Retain non-status information across program restarts
+    is_volatile                     0                       ; The service is not volatile
+    check_period                    24x7                    ; The service can be checked at any time of the day
+    max_check_attempts              3                       ; Re-check the service up to 3 times in order to determine its final (hard) state
+    check_interval                  10                      ; Check the service every 10 minutes under normal conditions
+    retry_interval                  2                       ; Re-check the service every two minutes until a hard state can be determined
+    contact_groups                  admins                  ; Notifications get sent out to everyone in the 'admins' group
+    notification_options            w,u,c,r                 ; Send notifications about warning, unknown, critical, and recovery events
+    notification_interval           60                      ; Re-notify about service problems every hour
+    notification_period             24x7                    ; Notifications can be sent out at any time
+}
+EOF
+
+	local array_service_and_command_index=0
+	local servicexx
+	local temp_array_service_description
+	local temp_array_check_command
+	local temp_array_check_command1
+
+	for servicexx in "${array_service_description[@]}"
+	do
+		temp_array_service_description=${array_service_description[array_service_and_command_index]}
+		temp_array_check_command=${array_check_command[array_service_and_command_index]}
+
+		if [[ "$temp_array_check_command" != "check_ssh" && "$temp_array_check_command" != "check_certificate_expires" && "$temp_array_check_command" != "check_ssl_certificate" && "$temp_array_check_command" != "check_http" && "$temp_array_check_command" != "check_port_5666" && "$temp_array_check_command" != "check_port_7080" && "$temp_array_check_command" != "check_port_8080" && "$temp_array_check_command" != "check_port_8443" && "$temp_array_check_command" != "check_port_9100" && "$temp_array_check_command" != "check_port_10000" ]]; then
+			temp_array_check_command1="check_nrpe!"$temp_array_check_command
+		else
+			temp_array_check_command1=$temp_array_check_command
+		fi
+		cat <<EOF >> /usr/local/nagios/etc/objects/myservers/Services.cfg
+# Define a service to check $temp_array_service_description on the remote machine.
+define service {
+    use                     normal-service
+    hohostgroup_name        "Fuck GFW"
+    service_description     $temp_array_service_description
+    check_command           $temp_array_check_command1
+}
+EOF
+		let array_service_and_command_index++
+	done
+}
+#-----------------------------------------------------------------------------#
 # 定制 Nagios Server Host Group
-function customize_nagios_server_host_group {
+function customize_nagios_server_myservers_host_group {
 	print_info "Step 4: Nagios 自定义主机组 /usr/local/nagios/etc/objects/myservers/host_group.cfg"
 
 	# 读取文件名到数组
@@ -2327,7 +2442,7 @@ EOF
 }
 #-----------------------------------------------------------------------------#
 # 定制 Nagios Server Service Group
-function customize_nagios_server_service_group {
+function customize_nagios_server_myservers_service_group {
 	print_info "Step 5: Nagios 自定义服务组 /usr/local/nagios/etc/objects/myservers/service_group.cfg"
 
 	# 读取文件名到数组
@@ -2584,9 +2699,14 @@ function customize_nagios_server {
 	customize_nagios_server_nagios_cfg
 	# customize_nagios_server_myservers
 	# customize_nagios_server_myservers_two
-	customize_nagios_server_myservers_three
-	customize_nagios_server_host_group
-	customize_nagios_server_service_group
+	# customize_nagios_server_myservers_three
+	customize_nagios_server_myservers_host
+	customize_nagios_server_myservers_service
+
+	
+
+	customize_nagios_server_myservers_host_group
+	customize_nagios_server_myservers_service_group
 	# customize_nagios_server_command
 	customize_nagios_server_command_two
 	customize_nagios_server_hosts_ip
