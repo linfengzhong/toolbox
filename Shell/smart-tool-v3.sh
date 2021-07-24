@@ -1988,7 +1988,7 @@ function customize_nagios_server_check_myservers_folder {
 	print_info "Step 1: Nagios 自定义文件夹 /usr/local/nagios/etc/objects/myservers "
 	mkdir -p /usr/local/nagios/etc/objects/myservers
 	chown nagios:nagios /usr/local/nagios/etc/objects/myservers
-	chmod 664 /usr/local/nagios/etc/objects/myservers
+	chmod 777 /usr/local/nagios/etc/objects/myservers
 }
 #-----------------------------------------------------------------------------#
 # 定制 Nagios Server Nagios.cfg
@@ -2014,7 +2014,7 @@ function customize_nagios_server_myservers {
 
 	mkdir -p /usr/local/nagios/etc/objects/myservers
 	chown nagios:nagios /usr/local/nagios/etc/objects/myservers
-	chmod 664 /usr/local/nagios/etc/objects/myservers
+	chmod 777 /usr/local/nagios/etc/objects/myservers
 	
 	print_info "Step 3: Nagios 服务器配置文件 /usr/local/nagios/etc/objects/myservers/template.cfg"
 	local NagiosClientDomain1
@@ -2036,7 +2036,7 @@ function customize_nagios_server_myservers {
 		# 双引号可以用shell变量
 		sed -i "s/NagiosClientIP/$NagiosClientIP1/g" /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
 		chown nagios:nagios /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
-		chmod 664 /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
+		chmod 777 /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
 	else
 		print_error "请先Git同步toolbox到本地，再进行设置！"
 	fi
@@ -2171,7 +2171,7 @@ define service {
 EOF
 
 	chown nagios:nagios /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
-	chmod 664 /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
+	chmod 777 /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
 
 }
 #-----------------------------------------------------------------------------#
@@ -2255,7 +2255,7 @@ EOF
 	done
 
 	chown nagios:nagios /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
-	chmod 664 /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
+	chmod 777 /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
 
 	# cat /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
 
@@ -2314,7 +2314,7 @@ define host {
 }
 EOF
 	chown nagios:nagios /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
-	chmod 664 /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
+	chmod 777 /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
 }
 #-----------------------------------------------------------------------------#
 # 定制 Nagios Server Services
@@ -2376,7 +2376,7 @@ EOF
 		let array_service_and_command_index++
 	done
 	chown nagios:nagios /usr/local/nagios/etc/objects/myservers/services.cfg
-	chmod 664 /usr/local/nagios/etc/objects/myservers/services.cfg
+	chmod 777 /usr/local/nagios/etc/objects/myservers/services.cfg
 }
 #-----------------------------------------------------------------------------#
 # 定制 Nagios Server Host Group
@@ -2428,7 +2428,7 @@ define hostgroup{
 EOF
 
 		chown nagios:nagios /usr/local/nagios/etc/objects/myservers/host_group.cfg
-		chmod 664 /usr/local/nagios/etc/objects/myservers/host_group.cfg
+		chmod 777 /usr/local/nagios/etc/objects/myservers/host_group.cfg
 	#fi
 	# print_info "展示 host_group.cfg"
 	# cat /usr/local/nagios/etc/objects/myservers/host_group.cfg
@@ -2497,7 +2497,7 @@ EOF
 		let Service_Type_Index++
 	done
 	chown nagios:nagios /usr/local/nagios/etc/objects/myservers/service_group.cfg
-	chmod 664 /usr/local/nagios/etc/objects/myservers/service_group.cfg
+	chmod 777 /usr/local/nagios/etc/objects/myservers/service_group.cfg
 
 }
 #-----------------------------------------------------------------------------#
@@ -2627,7 +2627,7 @@ define command {
 
 EOF
 	chown nagios:nagios /usr/local/nagios/etc/objects/myservers/mycommands.cfg
-	chmod 664 /usr/local/nagios/etc/objects/myservers/mycommands.cfg
+	chmod 777 /usr/local/nagios/etc/objects/myservers/mycommands.cfg
 }
 #-----------------------------------------------------------------------------#
 # 定制 /etc/hosts
