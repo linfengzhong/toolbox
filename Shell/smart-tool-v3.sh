@@ -3927,7 +3927,7 @@ function check_procs_status() {
 	fi 
 }
 
-SmartToolVersion=v0.344
+SmartToolVersion=v0.345
 cleanScreen
 initVar $1
 set_current_host_domain
