@@ -3125,16 +3125,21 @@ function install_other_software_menu() {
 	checkSystem
 	echoContent red "=================================================================="
 	echoContent skyBlue "----------------------------安装菜单------------------------------"
-	echoContent yellow "1.安装 & 运行 Node Exporter 单机版 - Port: 9100 "
-	echoContent yellow "2.安装 nginx - port: 7080 "
+	echoContent yellow "1.安装 Node Exporter 单机版 - Port: 9100 "
+	echoContent yellow "2.安装 nginx 单机版         - port: 7080 "
+	echoContent yellow "3.安装 httpd 单机版         - port: 8080 & port: 8443 "
 	echoContent red "=================================================================="
 	read -r -p "Please choose the function (请选择) : " selectInstallType
 	case ${selectInstallType} in
-	7)
+	1)
 		install_exec_node_exporter_linux
 		;;
-	12)
+	2)
 		install_nginx
+		;;
+	3)
+		install_apache_httpd
+		enable_apache_httpd_ssl
 		;;
 	*)
 		print_error "请输入正确的数字"
