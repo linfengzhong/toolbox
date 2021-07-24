@@ -424,7 +424,7 @@ function git_init () {
 		print_info "======== Public key End========= "
 		print_complete "初始化 Git "
 	
-		read -r -p "将上面的 Publick Key 输入到您的 GitHub 账户[y/n]: " answer_y_n
+		read -r -p "将上面的 Public Key 输入到您的 GitHub 账户[y/n]: " answer_y_n
 		if [[ "${answer_y_n}" == "y" ]]; then
 			git_clone_toolbox
 			git_clone_logserver
