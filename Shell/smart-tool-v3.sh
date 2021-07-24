@@ -3651,14 +3651,15 @@ function menu() {
 	echoContent skyBlue "---------------------------安装软件-------------------------------"
 	echoContent yellow "10.安装 全部程序"
 	echoContent yellow "11.安装 prerequisite"
-	echoContent yellow "12.安装 git"
-	echoContent yellow "13.安装 acme.sh"
-	echoContent yellow "14.安装 bpytop"
+	echoContent yellow "12.安装 acme.sh"
+	echoContent yellow "13.安装 bpytop"
 	echoContent skyBlue "---------------------------版本控制-------------------------------"  
-	echoContent yellow "20.git init | 21.git clone | 22.git pull | 23.git push"
+	echoContent yellow "20.git one key"
+	echoContent yellow "21.git clone | 22.git pull | 23.git push"
 	echoContent yellow "24.更新日志、配置文件、动态数据到GitHub"
+	echoContent yellow "25.安装 git"
 	echoContent skyBlue "---------------------------容器相关-------------------------------"
-	echoContent yellow "30.One-key"
+	echoContent yellow "30.docker one key"
 	echoContent yellow "31.docker-compose up ｜ 32.docker-compose down"
 	echoContent yellow "33.docker status"
 	echoContent yellow "34.generate conf & logs [Sub Menu]"
@@ -3723,7 +3724,6 @@ function menu() {
 		;;
 	10)
 		install_prerequisite
-		install_git
 		install_acme
 		install_bpytop
 		;;
@@ -3731,15 +3731,13 @@ function menu() {
 		install_prerequisite
 		;;
 	12)
-		install_git
-		;;
-	13)
 		install_acme
 		;;
-	14)
+	13)
 		install_bpytop
 		;;
 	20)
+		install_git
 		git_init
 		;;
 	21)
@@ -3762,6 +3760,9 @@ function menu() {
 		upload_logs_configuration_dynamic_data
 		sleep 2
 		menu
+		;;
+	25)
+		install_git
 		;;
 	30)
 		install_docker
