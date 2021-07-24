@@ -2117,7 +2117,7 @@ function customize_nagios_server_myservers_host {
 	print_info "被监控主机IP地址: \c"
 	echoContent white "${NagiosClientIP1}"
 
-	print_info "Step 3: Nagios 自定义服务器 usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg"
+	print_info "Step 3: Nagios 自定义服务器 /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg"
 	cat <<EOF > /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
 # Define a host for the remote machine
 define host {
