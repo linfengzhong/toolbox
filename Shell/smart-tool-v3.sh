@@ -1993,7 +1993,7 @@ function customize_nagios_server_check_myservers_folder {
 #-----------------------------------------------------------------------------#
 # 定制 Nagios Server Nagios.cfg
 function customize_nagios_server_nagios_cfg {
-	print_info "Step 2: Nagios 主配置文件集 /usr/local/nagios/etc/nagios.cfg"
+	print_info "Step 2-1: Nagios 主配置文件集 /usr/local/nagios/etc/nagios.cfg"
 	if [[ ! -f "/usr/local/nagios/etc/nagios.cfg" ]]; then
 		print_error "Nagios 主配置文件不存在，请确认是否正确安装Nagios core！"
 		exit 0
@@ -2007,6 +2007,27 @@ function customize_nagios_server_nagios_cfg {
 			sed -i 's!#cfg_dir=/usr/local/nagios/etc/servers!cfg_dir=/usr/local/nagios/etc/objects/myservers!g' /usr/local/nagios/etc/nagios.cfg
 		fi
 	fi
+
+ 	print_info "Step 2-2: Nagios 主配置通讯录 /usr/local/nagios/etc/objects/contacts.cfg"
+	if [[ ! -f "/usr/local/nagios/etc/objects/contacts.cfg" ]]; then
+		print_error "Nagios 通讯录文件不存在，请确认是否正确安装Nagios core！"
+		exit 0
+	else
+		if cat /usr/local/nagios/etc/objects/contacts.cfg | grep "nagios@localhost" >/dev/null; then
+			read -r -p "请输入Nagios Admin 邮件地址 : " NagiosAdminMail
+			if [ $NagiosAdminMail ]; then
+				sed -i 's!nagios@localhost!$NagiosAdminMail!g' /usr/local/nagios/etc/objects/contacts.cfg
+			else
+				print_info "未检测到输入邮件地址！"
+			fi
+		else
+   			print_error "contacts.cfg 已定制过，无需重复操作！"
+		fi
+	fi
+
+  	print_info "Step 2-3: Nagios 主配置时间段 /usr/local/nagios/etc/objects/timeperiods.cfg"
+	print_info "Step 2-4: Nagios 主配置命令集 /usr/local/nagios/etc/objects/commands.cfg"
+	print_info "Step 2-5: Nagios 主配置命令集 /usr/local/nagios/etc/objects/templates.cfg"
 }
 #-----------------------------------------------------------------------------#
 # 定制 Nagios Server Myservers
