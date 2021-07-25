@@ -2107,7 +2107,7 @@ function customize_nagios_server_nagios_cfg {
 
   	print_info "Step 2-3: Nagios 主配置时间段 /usr/local/nagios/etc/objects/timeperiods.cfg"
 	print_info "Step 2-4: Nagios 主配置命令集 /usr/local/nagios/etc/objects/commands.cfg"
-	print_info "Step 2-5: Nagios 主配置命令集 /usr/local/nagios/etc/objects/templates.cfg"
+	print_info "Step 2-5: Nagios 主配置模版集 /usr/local/nagios/etc/objects/templates.cfg"
 }
 #-----------------------------------------------------------------------------#
 # 定制 Nagios Server Myservers
