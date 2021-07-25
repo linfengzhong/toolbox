@@ -1258,8 +1258,8 @@ services:
         restart: always
         environment: 
             TZ: Asia/Shanghai
-        expose:
-            - 443
+        #expose:
+        #    - 443
         ports:
             - 80:80
         volumes: 
