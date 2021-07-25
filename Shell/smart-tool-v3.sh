@@ -275,6 +275,7 @@ function install_docker () {
 				--add-repo \
 				https://download.docker.com/linux/centos/docker-ce.repo  >/dev/null 2>&1
 		print_complete "2/3 Set up the repository for Docker "
+		print_info "安装进行中ing "
 		sudo yum -y install docker-ce docker-ce-cli containerd.io >/dev/null 2>&1
 		sudo systemctl start docker
 		sudo systemctl enable docker
