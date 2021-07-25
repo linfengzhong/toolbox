@@ -1442,6 +1442,60 @@ EOF
 	print_complete "生成 docker-compose.yml 配置文件 "
 }
 #-----------------------------------------------------------------------------#
+# 生成 docker-compose.yml 配置文件
+function generate_docker_compose_yml_light {
+	print_start "生成 docker-compose.yml 配置文件 "
+	print_info "/etc/fuckGFW/docker/${currentHost}/docker-compose.yml"
+	cat <<EOF >/etc/fuckGFW/docker/${currentHost}/docker-compose.yml
+version: '3.8'
+services:
+    #1. Nginx -> proxy server
+    #2. trojan go -> fuck GFW
+    #3. xray -> fuck GFW * Proxy Server
+    #4. v2ray -> fuck GFW * Proxy Server
+    #5. cadvisor -> container advisor / monitor  
+    #--> Working      
+    cadvisor:
+        image: google/cadvisor:latest
+        container_name: cadvisor
+        restart: always
+        environment: 
+            TZ: Asia/Shanghai
+        expose: 
+            - 8080
+        volumes:
+            - /:/rootfs
+            - /var/run:/var/run
+            - /sys:/sys
+            - /var/lib/docker/:/var/lib/docker
+            - /dev/disk/:/dev/disk
+        networks: 
+            - net
+    #6. prometheus -> monitor virtual machines
+    #7. node exporter -> provide dynamic data to prometheus via the port: 9100
+    node_exporter:
+        image: quay.io/prometheus/node-exporter:latest
+        container_name: node_exporter
+        environment: 
+            TZ: Asia/Shanghai
+        expose: 
+            - 9100
+        command:
+           - '--path.rootfs=/host'
+        network_mode: host
+        pid: host
+        restart: unless-stopped
+        volumes:
+          - '/:/host:ro,rslave'
+    #8. grafana -> monitor UI
+    #9. Portainer -> Docker UI
+networks: 
+    net:
+        driver: bridge
+EOF
+	print_complete "生成 docker-compose.yml 配置文件 "
+}
+#-----------------------------------------------------------------------------#
 # 查看 Nginx 配置文件
 function show_nginx_conf {
 	print_start "查看 Nginx 配置文件 "
@@ -3874,8 +3928,6 @@ function menu() {
 		github_push_toolbox
 		github_push_logserver
 		docker_compose_up
-		sleep 2
-		st
 		;;
 	31)
 		docker_compose_up
