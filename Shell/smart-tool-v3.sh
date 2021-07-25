@@ -1369,7 +1369,18 @@ services:
             - /root/git/logserver/${currentHost}/prometheus/rules/:/usr/local/prometheus/rules/ 
         networks: 
             - net
-    #7. grafana -> monitor UI
+	#7.node exporter -> provide dynamic data to prometheus via the port: 9100
+	node_exporter:
+		image: quay.io/prometheus/node-exporter:latest
+		container_name: node_exporter
+		command:
+			- '--path.rootfs=/host'
+		network_mode: host
+		pid: host
+		restart: unless-stopped
+		volumes:
+			- '/:/host:ro,rslave'
+    #8. grafana -> monitor UI
     #--> Working
     grafana:
         image: grafana/grafana:latest
@@ -1402,7 +1413,7 @@ services:
             - 3000
         networks: 
             - net
-    #8. Portainer -> Docker UI
+    #9. Portainer -> Docker UI
     #--> Working
     portainer:
         image: portainer/portainer-ce:alpine
