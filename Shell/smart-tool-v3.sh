@@ -1458,7 +1458,7 @@ services:
     #--> Working      
     cadvisor:
         image: google/cadvisor:latest
-        container_name: cadvisor
+        container_name: ${currentHost}_cadvisor
         restart: always
         environment: 
             TZ: Asia/Shanghai
@@ -1476,7 +1476,7 @@ services:
     #7. node exporter -> provide dynamic data to prometheus via the port: 9100
     node_exporter:
         image: quay.io/prometheus/node-exporter:latest
-        container_name: node_exporter
+        container_name: ${currentHost}_node_exporter
         environment: 
             TZ: Asia/Shanghai
         expose: 
