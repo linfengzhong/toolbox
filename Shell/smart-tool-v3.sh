@@ -1222,7 +1222,7 @@ scrape_configs:
 
   - job_name: "docker"
     static_configs:
-    - targets: ['cadvisor:8080']
+    - targets: ['cadvisor:8080','taiwan3721.cf:8080]
 
   - job_name: "linux"
     static_configs:
@@ -1462,8 +1462,8 @@ services:
         restart: always
         environment: 
             TZ: Asia/Shanghai
-        expose: 
-            - 8080
+        ports: 
+            - 8080:8080
         volumes:
             - /:/rootfs
             - /var/run:/var/run
