@@ -1444,7 +1444,7 @@ EOF
 #-----------------------------------------------------------------------------#
 # 生成 docker-compose.yml 配置文件
 function generate_docker_compose_yml_lite {
-	print_start "生成 docker-compose.yml 配置文件 "
+	print_start "生成 docker-compose.yml lite 配置文件 "
 	print_info "/etc/fuckGFW/docker/${currentHost}/docker-compose.yml"
 	cat <<EOF >/etc/fuckGFW/docker/${currentHost}/docker-compose.yml
 version: '3.8'
@@ -1493,7 +1493,7 @@ networks:
     net:
         driver: bridge
 EOF
-	print_complete "生成 docker-compose.yml 配置文件 "
+	print_complete "生成 docker-compose.yml lite 配置文件 "
 }
 #-----------------------------------------------------------------------------#
 # 查看 Nginx 配置文件
@@ -3215,6 +3215,13 @@ function install_exec_node_exporter_linux {
 	print_complete "安装 Node Exporter linux 版本 "
 }
 #-----------------------------------------------------------------------------#
+# 卸载 Node Exporter linux 版本
+function uninstall_exec_node_exporter_linux {
+	print_start "卸载 Node Exporter linux 版本 "
+	yum -y remove node_exporter >/dev/null 2>&1
+	print_complete "卸载 Node Exporter linux 版本 "
+}
+#-----------------------------------------------------------------------------#
 # 安装 & 运行 Grafana container - Port: 3000 
 function install_exec_grafana {
 	
@@ -3282,6 +3289,8 @@ function install_other_software_menu() {
 	echoContent yellow "1.安装 Node Exporter 单机版 - Port: 9100 "
 	echoContent yellow "2.安装 nginx 单机版         - port: 7080 "
 	echoContent yellow "3.安装 httpd 单机版         - port: 8080 & port: 8443 "
+	echoContent skyBlue "----------------------------卸载菜单------------------------------"
+	echoContent yellow "4.安装 Node Exporter 单机版 - Port: 9100 "
 	echoContent red "=================================================================="
 	read -r -p "Please choose the function (请选择) : " selectInstallType
 	case ${selectInstallType} in
@@ -3294,6 +3303,9 @@ function install_other_software_menu() {
 	3)
 		install_apache_httpd
 		enable_apache_httpd_ssl
+		;;
+	4)
+		uninstall_exec_node_exporter_linux
 		;;
 	*)
 		print_error "请输入正确的数字"
