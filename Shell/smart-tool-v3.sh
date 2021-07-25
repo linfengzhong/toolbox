@@ -1373,6 +1373,10 @@ services:
     node_exporter:
         image: quay.io/prometheus/node-exporter:latest
         container_name: node_exporter
+        environment: 
+            TZ: Asia/Shanghai
+        expose: 
+            - 9100
         command:
            - '--path.rootfs=/host'
         network_mode: host
