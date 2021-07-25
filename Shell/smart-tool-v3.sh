@@ -1298,9 +1298,9 @@ services:
         restart: always
         environment: 
             TZ: Asia/Shanghai
-        expose:
-            - 37211
-            - 37212
+        #expose:
+        #    - 37211
+        #    - 37212
         ports: 
             - 443:443
         volumes: 
