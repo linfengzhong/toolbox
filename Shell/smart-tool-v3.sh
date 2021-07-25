@@ -1443,7 +1443,7 @@ EOF
 }
 #-----------------------------------------------------------------------------#
 # 生成 docker-compose.yml 配置文件
-function generate_docker_compose_yml_light {
+function generate_docker_compose_yml_lite {
 	print_start "生成 docker-compose.yml 配置文件 "
 	print_info "/etc/fuckGFW/docker/${currentHost}/docker-compose.yml"
 	cat <<EOF >/etc/fuckGFW/docker/${currentHost}/docker-compose.yml
@@ -3806,8 +3806,8 @@ function menu() {
 	echoContent yellow "35.show configs [Sub Menu]"
 	echoContent yellow "36.show logs [Sub Menu]"
 	echoContent yellow "37.show account"
-	echoContent yellow "38.安装 docker CE"
-	echoContent yellow "39.安装 docker compose"
+	echoContent yellow "38.安装 docker CE & docker compose"
+	echoContent yellow "39.docker one key - lite"
 	echoContent skyBlue "---------------------------证书管理-------------------------------"
 	echoContent yellow "40.CA one key | 41.generate CA "
 	echoContent skyBlue "---------------------------脚本管理-------------------------------"
@@ -3953,9 +3953,14 @@ function menu() {
 		;;
 	38)
 		install_docker
+		install_docker_compose
 		;;
 	39)
+		install_docker
 		install_docker_compose
+		generate_docker_compose_yml_lite
+		docker_compose_down
+		docker_compose_up
 		;;
 	40)
 		install_acme
