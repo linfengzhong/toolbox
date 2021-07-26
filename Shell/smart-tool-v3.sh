@@ -294,10 +294,27 @@ function install_docker_compose () {
 		sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose >/dev/null 2>&1
 		sudo chmod +x /usr/local/bin/docker-compose >/dev/null 2>&1
 		sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose >/dev/null 2>&1
-		docker-compose --version >/dev/null 2>&1
+		docker-compose --version
 		print_info "安装进行中ing "
 	fi
 	print_complete "Install docker compose "
+}
+#-----------------------------------------------------------------------------#
+# 卸载 docker CE & docker compose 
+uninstall_docker_and_docker_compose {
+	print_start "卸载 docker CE & docker compose "
+	print_info "Uninstall the Docker Engine, CLI, and Containerd packages "
+	yum -y remove docker-ce docker-ce-cli containerd.io
+
+	print_info "Delete all images, containers, and volumes "
+	rm -rf /var/lib/docker
+	rm -rf /var/lib/containerd
+
+	print_info "Uninstall docker compose"
+	rm -f /usr/local/bin/docker-compose
+
+	print_complete "卸载 docker CE & docker compose "
+
 }
 #-----------------------------------------------------------------------------#
 # Install Git
@@ -3842,12 +3859,15 @@ function menu() {
 	echoContent yellow "30.docker one key"
 	echoContent yellow "31.docker-compose up ｜ 32.docker-compose down"
 	echoContent yellow "33.docker status"
+	echoContent skyBlue "--------------------------------------------------------------"
 	echoContent yellow "34.generate conf & logs [Sub Menu]"
 	echoContent yellow "35.show configs [Sub Menu]"
 	echoContent yellow "36.show logs [Sub Menu]"
 	echoContent yellow "37.show account"
 	echoContent yellow "38.安装 docker CE & docker compose"
+	echoContent skyBlue "--------------------------------------------------------------"
 	echoContent yellow "39.docker one key - lite"
+	echoContent yellow "42.卸载 docker CE & docker compose "
 	echoContent skyBlue "---------------------------证书管理-------------------------------"
 	echoContent yellow "40.CA one key | 41.generate CA "
 	echoContent skyBlue "---------------------------脚本管理-------------------------------"
@@ -4002,6 +4022,9 @@ function menu() {
 		docker_compose_down
 		docker_compose_up
 		;;
+	42)
+		uninstall_docker_and_docker_compose
+		;;
 	40)
 		install_acme
 		renewalTLS
@@ -4043,7 +4066,7 @@ function check_procs_status() {
 	fi 
 }
 
-SmartToolVersion=v0.346
+SmartToolVersion=v0.347
 cleanScreen
 initVar $1
 set_current_host_domain
