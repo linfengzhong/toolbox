@@ -3314,7 +3314,7 @@ function install_other_software_menu() {
 	echoContent yellow "2.安装 nginx 单机版         - port: 7080 "
 	echoContent yellow "3.安装 httpd 单机版         - port: 8080 & port: 8443 "
 	echoContent skyBlue "----------------------------卸载菜单------------------------------"
-	echoContent yellow "4.安装 Node Exporter 单机版 - Port: 9100 "
+	echoContent yellow "4.卸载 Node Exporter 单机版 - Port: 9100 "
 	echoContent red "=================================================================="
 	read -r -p "Please choose the function (请选择) : " selectInstallType
 	case ${selectInstallType} in
