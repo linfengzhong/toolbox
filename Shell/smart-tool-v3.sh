@@ -301,7 +301,7 @@ function install_docker_compose () {
 }
 #-----------------------------------------------------------------------------#
 # 卸载 docker CE & docker compose 
-uninstall_docker_and_docker_compose {
+function uninstall_docker_and_docker_compose {
 	print_start "卸载 docker CE & docker compose "
 	print_info "Uninstall the Docker Engine, CLI, and Containerd packages "
 	yum -y remove docker-ce docker-ce-cli containerd.io
