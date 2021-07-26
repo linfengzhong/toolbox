@@ -3103,7 +3103,7 @@ function install_nagios_plugins {
 #-----------------------------------------------------------------------------#
 # 安装 nagios nrpe
 function install_nagios_nrpe {
-
+	# NRPE - Nagios Remote Plugin Executor
 	nrpe_status_running=$(systemctl status nrpe | grep Active | awk '{print $3}' | cut -d "(" -f2 | cut -d ")" -f1)
 	if [ "$nrpe_status_running" == "running" ]  
         then  
@@ -3164,6 +3164,24 @@ function install_nagios_nrpe {
 	print_complete "Step 5: 设置防火墙开启端口 5666"
 
 	fi
+}
+#-----------------------------------------------------------------------------#
+# 安装 nagios ncpa
+function install_nagios_ncpa {
+	# Nagios Cross-Platform Agent
+	print_start "安装 Nagios NCPA "
+
+	print_info "Installing the Nagios Repository"
+	rpm -Uvh https://repo.nagios.com/nagios/8/nagios-repo-8-1.el8.noarch.rpm
+
+	print_info "Installing NCPA"
+	yum install ncpa -y
+
+	print_info "展示 NCPA 配置文件"
+	cat /usr/local/ncpa/etc/ncpa.cfg
+
+	print_info "访问 https://${currentHost}:5693/"
+	print_complete "安装 Nagios NCPA "
 }
 #-----------------------------------------------------------------------------#
 # 安装 & 运行 Prometheus container - Port: 9090 
@@ -3457,6 +3475,7 @@ function nagios_menu() {
 	echoContent yellow "9.展示 nagios client 配置文件 "
 	echoContent yellow "00.测试 nagios server 配置文件 "
 	echoContent yellow "11.清除 nagios myservers 文件夹 "
+	echoContent yellow "12.安装 nagios ncpa "
 	echoContent red "=================================================================="
 	read -r -p "Please choose the function (请选择) : " selectInstallType
 	case ${selectInstallType} in
@@ -3497,6 +3516,9 @@ function nagios_menu() {
 	11)
 		rm -rf /usr/local/nagios/etc/objects/myservers
 		nagios_menu
+		;;
+	12)
+		install_nagios_ncpa
 		;;
 	*)
 		print_error "请输入正确的数字"
