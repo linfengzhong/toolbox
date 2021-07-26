@@ -2781,7 +2781,7 @@ function customize_nagios_client_copy_libexec {
 		mv -f /tmp/Libexec/* /usr/local/nagios/libexec/
 		
 		rm -f /tmp/Libexec.zip
-		# rm -rf /tmp/Libexec/ 
+		rm -rf /tmp/Libexec/ 
 #		wget -c -q -P /usr/local/nagios/libexec/ -N --no-check-certificate "https://raw.githubusercontent.com/linfengzhong/toolbox/main/Nagios/Libexec/check_cpu_stats.sh"
 #		wget -c -q -P /usr/local/nagios/libexec/ -N --no-check-certificate "https://raw.githubusercontent.com/linfengzhong/toolbox/main/Nagios/Libexec/check_kernel"
 #		wget -c -q -P /usr/local/nagios/libexec/ -N --no-check-certificate "https://raw.githubusercontent.com/linfengzhong/toolbox/main/Nagios/Libexec/check_mem.pl"
