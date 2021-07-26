@@ -24,8 +24,8 @@ function initVar() {
 	# array_service_description=("Network" "CPU" "Disk usage" "Memory" "Total procedures" "SSH" "Service v2ray" "Service xray" "Service trojan.go" "Service nginx" "Service httpd" "Service v2-ui" "Service x-ui" "Service webmin" "Service docker" "Service nrpe" "Service node_exporter" "HTTPS" "Certificate" "TCP 5666" "TCP 7080" "TCP 8080" "TCP 8443" "TCP 9100" "TCP 10000" )
 	# array_check_command=("check_eth" "check_cpu_stats" "check_disk" "check_mem" "check_total_procs" "check_ssh" "check_v2ray" "check_xray" "check_trojan.go" "check_nginx" "check_httpd" "check_v2_ui" "check_x_ui" "check_webmin" "check_docker" "check_nrpe" "check_node_exporter" "check_http" "check_certificate_expires" "check_port_5666" "check_port_7080" "check_port_8080" "check_port_8443" "check_port_9100" "check_port_10000" )
 
-	array_service_description=("Network" "CPU" "Disk usage" "Memory" "Total procedures" "SSH" "Service xray" "Service nginx" "Service webmin" "Service nrpe" "Service node_exporter" "HTTPS" "Certificate" "TCP 5666" "TCP 9100" "TCP 10000" "Service docker" )
-	array_check_command=("check_eth" "check_cpu_stats" "check_disk" "check_mem" "check_total_procs" "check_ssh" "check_xray" "check_nginx" "check_webmin" "check_nrpe" "check_node_exporter" "check_http" "check_certificate_expires" "check_port_5666" "check_port_9100" "check_port_10000" "check_docker")
+	array_service_description=("Network" "CPU" "Disk usage" "Memory" "Total procedures" "SSH" "Service xray" "Service nginx" "Service webmin" "Service nrpe" "HTTPS" "Certificate" "TCP 5666" "TCP 9100" "TCP 10000" "Service docker" )
+	array_check_command=("check_eth" "check_cpu_stats" "check_disk" "check_mem" "check_total_procs" "check_ssh" "check_xray" "check_nginx" "check_webmin" "check_nrpe" "check_http" "check_certificate_expires" "check_port_5666" "check_port_9100" "check_port_10000" "check_docker")
 
 	#定义变量
 	# WORKDIR="/root/git/toolbox/Docker/docker-compose/${currentHost}/"
