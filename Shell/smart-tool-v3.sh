@@ -2527,6 +2527,11 @@ define command {
 }
 
 define command {
+    command_name    check_ncpa
+    command_line    $USER1$/check_ncpa.py -H $HOSTADDRESS$ $ARG1$
+}
+
+define command {
     command_name    check_load
     command_line    \$USER1\$/check_load -w \$ARG1\$ -c \$ARG2\$
 }
@@ -3177,7 +3182,7 @@ function install_nagios_ncpa {
 	print_info "Installing NCPA"
 	yum install ncpa -y
 
-	print_info "展示 NCPA 配置文件"
+	print_info "展示 NCPA 配置文件 /usr/local/ncpa/etc/ncpa.cfg"
 	cat /usr/local/ncpa/etc/ncpa.cfg
 
 	print_info "访问 https://${currentHost}:5693/"
