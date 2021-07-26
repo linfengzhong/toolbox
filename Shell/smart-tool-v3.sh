@@ -2548,32 +2548,32 @@ define command {
 
 define command {
     command_name    check_port_5666
-    command_line    \$USER1\$/check_tcp -H \$HOSTADDRESS$ -p 5666 -w 0.1 -c 0.5 -t 5
+    command_line    \$USER1\$/check_tcp -H \$HOSTADDRESS$ -p 5666 -w 0.2 -c 0.5 -t 5
 }
 
 define command {
     command_name    check_port_7080
-    command_line    \$USER1\$/check_tcp -H \$HOSTADDRESS$ -p 7080 -w 0.1 -c 0.5 -t 5
+    command_line    \$USER1\$/check_tcp -H \$HOSTADDRESS$ -p 7080 -w 0.2 -c 0.5 -t 5
 }
 
 define command {
     command_name    check_port_8080
-    command_line    \$USER1\$/check_tcp -H \$HOSTADDRESS$ -p 8080 -w 0.1 -c 0.5 -t 5
+    command_line    \$USER1\$/check_tcp -H \$HOSTADDRESS$ -p 8080 -w 0.2 -c 0.5 -t 5
 }
 
 define command {
     command_name    check_port_8443
-    command_line    \$USER1\$/check_tcp -H \$HOSTADDRESS$ -p 8443 -w 0.1 -c 0.5 -t 5
+    command_line    \$USER1\$/check_tcp -H \$HOSTADDRESS$ -p 8443 -w 0.2 -c 0.5 -t 5
 }
 
 define command {
     command_name    check_port_9100
-    command_line    \$USER1\$/check_tcp -H \$HOSTADDRESS$ -p 9100 -w 0.1 -c 0.5 -t 5
+    command_line    \$USER1\$/check_tcp -H \$HOSTADDRESS$ -p 9100 -w 0.2 -c 0.5 -t 5
 }
 
 define command {
     command_name    check_port_10000
-    command_line    \$USER1\$/check_tcp -H \$HOSTADDRESS$ -p 10000 -w 0.1 -c 0.5 -t 5
+    command_line    \$USER1\$/check_tcp -H \$HOSTADDRESS$ -p 10000 -w 0.2 -c 0.5 -t 5
 }
 
 EOF
