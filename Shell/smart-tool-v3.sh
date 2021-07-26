@@ -1222,7 +1222,7 @@ scrape_configs:
 
   - job_name: "docker"
     static_configs:
-    - targets: ['cadvisor:8080','taiwan3721.cf:8080', 'tokyo3721.cf:8080']
+    - targets: ['cadvisor:8080','taiwan3721.cf:8080','tokyo3721.cf:8080', 'singapore3721.cf:8080','seoul3721.cf:8080','losangeles3721.cf:8080','hongkong3721.cf:8080']
 
   - job_name: "linux"
     static_configs:
