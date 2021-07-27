@@ -179,17 +179,17 @@ function echoContent() {
 # Install Prerequisite
 # 安装必要程序
 function install_prerequisite () {
-	print_start "安装 wget lsof tar unzip curl socat nmap bind-utils jq "
+	print_start "安装 wget lsof tar unzip curl socat nmap bind-utils jq tree "
 	if [[ -f "/etc/fuckGFW/prerequisite/check" ]]; then
-		print_error "wget lsof tar unzip curl socat nmap bind-utils jq已经安装，无需重复操作！"
+		print_error "wget lsof tar unzip curl socat nmap bind-utils jq tree 已经安装，无需重复操作！"
 	else
 		print_info "安装进行中ing "	
-		yum -y install wget lsof tar unzip curl socat nmap bind-utils jq >/dev/null 2>&1
+		yum -y install wget lsof tar unzip curl socat nmap bind-utils jq tree >/dev/null 2>&1
 		mkdir -p /etc/fuckGFW/prerequisite
 		touch /etc/fuckGFW/prerequisite/check
 	#  install dig and nslookup --> bind-utils
 	fi
-	print_complete "安装 wget lsof tar unzip curl socat nmap bind-utils jq "
+	print_complete "安装 wget lsof tar unzip curl socat nmap bind-utils jq tree "
 }
 #-----------------------------------------------------------------------------#
 # Install acme.sh
