@@ -3856,6 +3856,7 @@ function menu() {
 	echoContent yellow "25.安装 git"
 	echoContent skyBlue "---------------------------容器相关-------------------------------"
 	echoContent yellow "30.docker one key"
+	echoContent yellow "42.docker one key - lite"
 	echoContent yellow "31.docker-compose up ｜ 32.docker-compose down"
 	echoContent yellow "33.docker status"
 	echoContent skyBlue "------------------------------------------------------------------"
@@ -3864,9 +3865,7 @@ function menu() {
 	echoContent yellow "36.show logs [Sub Menu]"
 	echoContent yellow "37.show account"
 	echoContent yellow "38.安装 docker CE & docker compose"
-	echoContent skyBlue "------------------------------------------------------------------"
-	echoContent yellow "39.docker one key - lite"
-	echoContent yellow "42.卸载 docker CE & docker compose "
+	echoContent yellow "39.卸载 docker CE & docker compose"
 	echoContent skyBlue "---------------------------证书管理-------------------------------"
 	echoContent yellow "40.CA one key | 41.generate CA "
 	echoContent skyBlue "---------------------------脚本管理-------------------------------"
@@ -4015,14 +4014,14 @@ function menu() {
 		install_docker_compose
 		;;
 	39)
+		uninstall_docker_and_docker_compose
+		;;
+	42)
 		install_docker
 		install_docker_compose
 		generate_docker_compose_yml_lite
 		docker_compose_down
 		docker_compose_up
-		;;
-	42)
-		uninstall_docker_and_docker_compose
 		;;
 	40)
 		install_acme
@@ -4065,7 +4064,7 @@ function check_procs_status() {
 	fi 
 }
 
-SmartToolVersion=v0.347
+SmartToolVersion=v0.348
 cleanScreen
 initVar $1
 set_current_host_domain
