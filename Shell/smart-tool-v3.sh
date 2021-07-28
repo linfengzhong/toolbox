@@ -1460,7 +1460,7 @@ services:
     #--> Working
     portainer:
         image: rancher/rancher
-		privileged: true
+        privileged: true
         container_name: rancher
         restart: always
         environment: 
