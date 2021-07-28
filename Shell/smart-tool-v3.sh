@@ -1460,6 +1460,7 @@ services:
     #--> Working
     portainer:
         image: rancher/rancher
+		privileged: true
         container_name: rancher
         restart: always
         environment: 
@@ -1467,8 +1468,6 @@ services:
         expose: 
             - 80
             - 433
-        command:
-           - '--privileged'
         networks: 
             - net
 networks: 
