@@ -928,6 +928,10 @@ server {
 	location /prometheus/ {
         proxy_pass http://prometheus:9090;
     }
+
+	location /rancher/ {
+        proxy_pass http://rancher:80;
+    }
 }
 
 EOF
@@ -1450,6 +1454,19 @@ services:
             # 持久化配置文件
             # Store data on logserver
             - /root/git/logserver/${currentHost}/portainer/data:/data
+        networks: 
+            - net
+    #10. Rancher -> Docker UI
+    #--> Working
+    portainer:
+        image: rancher/rancher
+        container_name: rancher
+        restart: always
+        environment: 
+            TZ: Asia/Shanghai
+        expose: 
+            - 80
+            - 433
         networks: 
             - net
 networks: 
