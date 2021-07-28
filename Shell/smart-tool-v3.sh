@@ -1467,6 +1467,8 @@ services:
         expose: 
             - 80
             - 433
+        command:
+           - '--privileged'
         networks: 
             - net
 networks: 
