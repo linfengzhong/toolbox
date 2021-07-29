@@ -3991,7 +3991,7 @@ function kxsw_menu() {
 		;;
 	7)
 		checkCPUVendor
-		update_xray
+		update_Xray
 		;;
 	*)
 		print_error "请输入正确的数字"
