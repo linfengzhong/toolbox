@@ -693,6 +693,9 @@ function generate_ca () {
 		cp -pf /etc/fuckGFW/tls/*.* /etc/fuckGFW/xray/${currentHost}/
 		installCronTLS
 	fi
+	cp -pf $HOME/.acme.sh/$currentHost/*.cer /etc/fuckGFW/tls/
+	cp -pf $HOME/.acme.sh/$currentHost/*.key /etc/fuckGFW/tls/
+	cp -pf /etc/fuckGFW/tls/*.* /etc/fuckGFW/xray/${currentHost}/
 	print_complete "生成网站证书 "
 }
 #-----------------------------------------------------------------------------#
@@ -2403,8 +2406,8 @@ EOF
       ],
       "certificates": [
         {
-          "certificateFile": "/etc/v2ray-agent/tls/${domain}.crt",
-          "keyFile": "/etc/v2ray-agent/tls/${domain}.key",
+          "certificateFile": "/etc/fuckGFW/tls/${domain}.crt",
+          "keyFile": "/etc/fuckGFW/tls/${domain}.key",
           "ocspStapling": 3600,
           "usage":"encipherment"
         }
