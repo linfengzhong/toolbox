@@ -2464,6 +2464,71 @@ function checkGFWStatue() {
 
 }
 #-----------------------------------------------------------------------------#
+# 更新Xray
+function update_Xray() {
+	if [[ -z "${coreInstallType}" ]]; then
+		if [[ -n "$1" ]]; then
+			version=$1
+		else
+			version=$(curl -s https://api.github.com/repos/XTLS/Xray-core/releases | jq -r .[0].tag_name)
+		fi
+
+		print_info "Xray-core版本: ${version}"
+
+		if wget --help | grep -q show-progress; then
+			wget -c -q --show-progress -P /etc/fuckGFW/xray/ "https://github.com/XTLS/Xray-core/releases/download/${version}/${xrayCoreCPUVendor}.zip"
+		else
+			wget -c -P /etc/fuckGFW/xray/ "https://github.com/XTLS/Xray-core/releases/download/${version}/${xrayCoreCPUVendor}.zip" >/dev/null 2>&1
+		fi
+
+		unzip -o /etc/fuckGFW/xray/${xrayCoreCPUVendor}.zip -d /etc/fuckGFW/xray >/dev/null
+		rm -rf /etc/fuckGFW/xray/${xrayCoreCPUVendor}.zip
+		chmod 655 /etc/fuckGFW/xray/xray
+		handleXray stop
+		handleXray start
+	else
+		print_info "当前Xray-core版本: $(/etc/fuckGFW/xray/xray --version | awk '{print $2}' | head -1)"
+
+		if [[ -n "$1" ]]; then
+			version=$1
+		else
+			version=$(curl -s https://api.github.com/repos/XTLS/Xray-core/releases | jq -r .[0].tag_name)
+		fi
+
+		if [[ -n "$1" ]]; then
+			read -r -p "回退版本为${version}，是否继续？[y/n]:" rollbackXrayStatus
+			if [[ "${rollbackXrayStatus}" == "y" ]]; then
+				print_info "当前Xray-core版本: $(/etc/fuckGFW/xray/xray --version | awk '{print $2}' | head -1)"
+
+				handleXray stop
+				rm -f /etc/fuckGFW/xray/xray
+				updateXray "${version}"
+			else
+				print_info "放弃回退版本"
+			fi
+		elif [[ "${version}" == "v$(/etc/fuckGFW/xray/xray --version | awk '{print $2}' | head -1)" ]]; then
+			read -r -p "当前版本与最新版相同，是否重新安装？[y/n]:" reInstallXrayStatus
+			if [[ "${reInstallXrayStatus}" == "y" ]]; then
+				handleXray stop
+				rm -f /etc/fuckGFW/xray/xray
+				rm -f /etc/fuckGFW/xray/xray
+				updateXray
+			else
+				print_info "放弃重新安装"
+			fi
+		else
+			read -r -p "最新版本为：${version}，是否更新？[y/n]：" installXrayStatus
+			if [[ "${installXrayStatus}" == "y" ]]; then
+				rm -f /etc/fuckGFW/xray/xray
+				updateXray
+			else
+				print_info "放弃更新"
+			fi
+
+		fi
+	fi
+}
+#-----------------------------------------------------------------------------#
 # 安装 xray_OneKey
 function install_xray_onekey {
 	wget -N --no-check-certificate -q -O xinstall.sh "https://raw.githubusercontent.com/wulabing/Xray_onekey/main/install.sh" && chmod +x xinstall.sh && bash xinstall.sh
@@ -3902,6 +3967,7 @@ function kxsw_menu() {
 	echoContent yellow "4.安装 v2-ui | 快捷方式 [v2-ui]"
 	echoContent yellow "5.安装 x-ui  | 快捷方式 [x-ui]"
 	echoContent yellow "6.安装 xray 单机"
+	echoContent yellow "7.更新 xray 单机"
 	echoContent red "=================================================================="
 	read -r -p "Please choose the function (请选择) : " selectInstallType
 	case ${selectInstallType} in
@@ -3922,6 +3988,10 @@ function kxsw_menu() {
 		;;
 	6)		
 		install_standalone_xray
+		;;
+	7)
+		checkCPUVendor
+		update_xray
 		;;
 	*)
 		print_error "请输入正确的数字"
