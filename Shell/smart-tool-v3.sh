@@ -2042,7 +2042,7 @@ function installXray() {
 			wget -c -P /etc/fuckGFW/xray/ "https://github.com/XTLS/Xray-core/releases/download/${version}/${xrayCoreCPUVendor}.zip" >/dev/null 2>&1
 		fi
 
-		unzip -o /etc/fuckGFW/xray/${xrayCoreCPUVendor}.zip -d /etc/vfuckGFW/xray >/dev/null
+		unzip -o /etc/fuckGFW/xray/${xrayCoreCPUVendor}.zip -d /etc/fuckGFW/xray >/dev/null
 		rm -rf /etc/fuckGFW/xray/${xrayCoreCPUVendor}.zip
 		chmod 655 /etc/fuckGFW/xray/xray
 	else
