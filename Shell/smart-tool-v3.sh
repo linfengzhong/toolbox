@@ -10,7 +10,7 @@
 #-----------------------------------------------------------------------------#
 # 初始化全局变量
 export LANG=en_US.UTF-8
-function initVar() {
+function inital_smart_tool() {
 	# default Host
 	defaultHost="k8s-master.cf"
 	# default UUID
@@ -821,6 +821,7 @@ function mkdirTools() {
 	mkdir -p /etc/fuckGFW/nginx/conf.d
 	mkdir -p /etc/fuckGFW/v2ray/
 	mkdir -p /etc/fuckGFW/xray/${currentHost}
+	mkdir -p /etc/fuckGFW/xray/conf
 	mkdir -p /etc/fuckGFW/trojan-go/
 	mkdir -p /etc/fuckGFW/prometheus/groups
 	mkdir -p /etc/fuckGFW/prometheus/rules
@@ -4388,7 +4389,7 @@ function check_procs_status() {
 
 SmartToolVersion=v0.349
 cleanScreen
-initVar $1
+inital_smart_tool $1
 set_current_host_domain
 cronRenewTLS
 menu
