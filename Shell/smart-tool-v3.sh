@@ -2406,7 +2406,7 @@ EOF
       ],
       "certificates": [
         {
-          "certificateFile": "/etc/fuckGFW/tls/${currentHost}.crt",
+          "certificateFile": "/etc/fuckGFW/tls/${currentHost}.cer",
           "keyFile": "/etc/fuckGFW/tls/${currentHost}.key",
           "ocspStapling": 3600,
           "usage":"encipherment"
