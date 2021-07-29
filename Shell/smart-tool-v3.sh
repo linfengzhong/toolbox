@@ -1986,89 +1986,88 @@ EOF
 	print_complete "生成 clash -> account 配置文件 "
 }
 #-----------------------------------------------------------------------------#
-# 安装Trojan-go
-function install_standalone_trojan_go() {
-	print_start "安装 trojan-go "
-	print_info "项目地址 https://github.com/p4gefau1t/trojan-go "
-
-	if ! ls /etc/fuckGFW/standalone/trojan-go/ | grep -q trojan-go; then
-
-		version=$(curl -s https://api.github.com/repos/p4gefau1t/trojan-go/releases | jq -r .[0].tag_name)
-		echoContent green " ---> Trojan-Go版本:${version}"
-		if wget --help | grep -q show-progress; then
-			wget -c -q --show-progress -P /etc/fuckGFW/standalone/trojan-go/ "https://github.com/p4gefau1t/trojan-go/releases/download/${version}/trojan-go-linux-amd64.zip"
-		else
-			wget -c -P /etc/fuckGFW/standalone/trojan-go/ "https://github.com/p4gefau1t/trojan-go/releases/download/${version}/trojan-go-linux-amd64.zip" >/dev/null 2>&1
+# 安装standalone xray
+function install_standalone_xray() {
+	checkCPUVendor
+	installXray
+	installXrayService
+	initXrayConfig
+	handleXray stop
+	handleXray start
+	checkGFWStatue
+}
+#-----------------------------------------------------------------------------#
+# 检查CPU提供商
+function checkCPUVendor() {
+	if [[ -n $(which uname) ]]; then
+		if [[ "$(uname)" == "Linux" ]];then
+			case "$(uname -m)" in
+			'amd64' | 'x86_64')
+				xrayCoreCPUVendor="Xray-linux-64"
+				v2rayCoreCPUVendor="v2ray-linux-64"
+				trojanGoCPUVendor="trojan-go-linux-amd64"
+			;;
+			'armv8' | 'aarch64')
+        		xrayCoreCPUVendor="Xray-linux-arm64-v8a"
+				v2rayCoreCPUVendor="v2ray-linux-arm64-v8a"
+				trojanGoCPUVendor="trojan-go-linux-armv8"
+        	;;
+			*)
+        		echo "  不支持此CPU架构--->"
+        		exit 1
+        	;;
+    		esac
 		fi
-		unzip -o /etc/fuckGFW/standalone/trojan-go/trojan-go-linux-amd64.zip -d /etc/fuckGFW/standalone/trojan-go >/dev/null
-		rm -rf /etc/fuckGFW/standalone/trojan-go/trojan-go-linux-amd64.zip
 	else
-		echoContent green " ---> Trojan-Go版本:$(/etc/fuckGFW/standalone/trojan-go/trojan-go --version | awk '{print $2}' | head -1)"
-		local reInstallTrojanStatus
-		read -r -p "是否重新安装？[y/n]:" reInstallTrojanStatus
-		if [[ "${reInstallTrojanStatus}" == "y" ]]; then
-			rm -rf /etc/v2ray-agent/trojan/trojan-go*
-			install_standalone_trojan_go "$1"
-		fi
+		pring_error "无法识别此CPU架构，默认amd64、x86_64 "
+		xrayCoreCPUVendor="Xray-linux-64"
+		v2rayCoreCPUVendor="v2ray-linux-64"
+		trojanGoCPUVendor="trojan-go-linux-amd64"
 	fi
 }
 #-----------------------------------------------------------------------------#
-# 更新Trojan-Go
-updateTrojanGo() {
-	print_start "更新Trojan-Go"
-	if [[ ! -d "/etc/fuckGFW/standalone/trojan-go/" ]]; then
-		echoContent red " ---> 没有检测到安装目录，请执行脚本安装内容"
-		menu
-		exit 0
-	fi
-	if find /etc/fuckGFW/standalone/trojan-go/ | grep -q "trojan-go"; then
-		version=$(curl -s https://api.github.com/repos/p4gefau1t/trojan-go/releases | jq -r .[0].tag_name)
-		echoContent green " ---> Trojan-Go版本:${version}"
-		if [[ -n $(wget --help | grep show-progress) ]]; then
-			wget -c -q --show-progress -P /etc/fuckGFW/standalone/trojan-go/ "https://github.com/p4gefau1t/trojan-go/releases/download/${version}/${trojanGoCPUVendor}.zip"
-		else
-			wget -c -P /etc/fuckGFW/standalone/trojan-go/ "https://github.com/p4gefau1t/trojan-go/releases/download/${version}/${trojanGoCPUVendor}.zip" >/dev/null 2>&1
-		fi
-		unzip -o /etc/fuckGFW/standalone/trojan-go/${trojanGoCPUVendor}.zip -d /etc/v2ray-agent/trojan >/dev/null
-		rm -rf /etc/fuckGFW/standalone/trojan-go/${trojanGoCPUVendor}.zip
-		handleTrojanGo stop
-		handleTrojanGo start
-	else
-		echoContent green " ---> 当前Trojan-Go版本:$(/etc/v2ray-agent/trojan/trojan-go --version | awk '{print $2}' | head -1)"
-		if [[ -n $(/etc/v2ray-agent/trojan/trojan-go --version) ]]; then
-			version=$(curl -s https://api.github.com/repos/p4gefau1t/trojan-go/releases | jq -r .[0].tag_name)
-			if [[ "${version}" == "$(/etc/v2ray-agent/trojan/trojan-go --version | awk '{print $2}' | head -1)" ]]; then
-				read -r -p "当前版本与最新版相同，是否重新安装？[y/n]:" reInstalTrojanGoStatus
-				if [[ "${reInstalTrojanGoStatus}" == "y" ]]; then
-					handleTrojanGo stop
-					rm -rf /etc/v2ray-agent/trojan/trojan-go
-					updateTrojanGo 1
-				else
-					echoContent green " ---> 放弃重新安装"
-				fi
-			else
-				read -r -p "最新版本为：${version}，是否更新？[y/n]：" installTrojanGoStatus
-				if [[ "${installTrojanGoStatus}" == "y" ]]; then
-					rm -rf /etc/v2ray-agent/trojan/trojan-go
-					updateTrojanGo 1
-				else
-					echoContent green " ---> 放弃更新"
-				fi
-			fi
-		fi
-	fi
-}
-# Trojan开机自启
-installTrojanService() {
-	echoContent skyBlue "\n进度  $1/${totalProgress} : 配置Trojan开机自启"
-	if [[ -n $(find /bin /usr/bin -name "systemctl") ]]; then
-		rm -rf /etc/systemd/system/trojan-go.service
-		touch /etc/systemd/system/trojan-go.service
+# 安装xray
+function installXray() {
+	print_start "安装standalone Xray"
+	coreInstallType="2"
 
-		cat <<EOF >/etc/systemd/system/trojan-go.service
+	if [[ "${coreInstallType}" != "1" ]]; then
+
+		version=$(curl -s https://api.github.com/repos/XTLS/Xray-core/releases | jq -r .[].tag_name|head -1)
+
+		print_info "Xray-core版本: ${version}"
+		if wget --help | grep -q show-progress; then
+			wget -c -q --show-progress -P /etc/fuckGFW/xray/ "https://github.com/XTLS/Xray-core/releases/download/${version}/${xrayCoreCPUVendor}.zip"
+		else
+			wget -c -P /etc/fuckGFW/xray/ "https://github.com/XTLS/Xray-core/releases/download/${version}/${xrayCoreCPUVendor}.zip" >/dev/null 2>&1
+		fi
+
+		unzip -o /etc/fuckGFW/xray/${xrayCoreCPUVendor}.zip -d /etc/vfuckGFW/xray >/dev/null
+		rm -rf /etc/fuckGFW/xray/${xrayCoreCPUVendor}.zip
+		chmod 655 /etc/fuckGFW/xray/xray
+	else
+		print_info "Xray-core版本: $(/etc/fuckGFW/xray/xray --version | awk '{print $2}' | head -1)"
+		read -r -p "是否更新、升级？[y/n]:" reInstallXrayStatus
+		if [[ "${reInstallXrayStatus}" == "y" ]]; then
+			rm -f /etc/fuckGFW/xray/xray
+			installXray "$1"
+		fi
+	fi
+
+	print_complete "安装standalone Xray"
+}
+#-----------------------------------------------------------------------------#
+# Xray开机自启
+function installXrayService() {
+	print_info "配置Xray开机自启"
+	if [[ -n $(find /bin /usr/bin -name "systemctl") ]]; then
+		rm -rf /etc/systemd/system/xray.service
+		touch /etc/systemd/system/xray.service
+		execStart='/etc/fuckGFW/xray/xray run -confdir /etc/fuckGFW/xray/conf'
+		cat <<EOF >/etc/systemd/system/xray.service
 [Unit]
-Description=Trojan-Go - A unified platform for anti-censorship
-Documentation=Trojan-Go
+Description=Xray - A unified platform for anti-censorship
+# Documentation=https://xtls.github.io https://github.com/XTLS
 After=network.target nss-lookup.target
 Wants=network-online.target
 
@@ -2077,7 +2076,7 @@ Type=simple
 User=root
 CapabilityBoundingSet=CAP_NET_BIND_SERVICE CAP_NET_RAW
 NoNewPrivileges=yes
-ExecStart=/etc/v2ray-agent/trojan/trojan-go -config /etc/v2ray-agent/trojan/config_full.json
+ExecStart=${execStart}
 Restart=on-failure
 RestartPreventExitStatus=23
 
@@ -2086,74 +2085,379 @@ RestartPreventExitStatus=23
 WantedBy=multi-user.target
 EOF
 		systemctl daemon-reload
-		systemctl enable trojan-go.service
-		echoContent green " ---> 配置Trojan开机自启成功"
+		systemctl enable xray.service
+		print_complete "配置Xray开机自启成功"
 	fi
 }
-# 操作Trojan-Go
-handleTrojanGo() {
-	if [[ -n $(find /bin /usr/bin -name "systemctl") ]] && ls /etc/systemd/system/ | grep -q trojan-go.service; then
-		if [[ -z $(pgrep -f "trojan-go") ]] && [[ "$1" == "start" ]]; then
-			systemctl start trojan-go.service
-		elif [[ -n $(pgrep -f "trojan-go") ]] && [[ "$1" == "stop" ]]; then
-			systemctl stop trojan-go.service
+#-----------------------------------------------------------------------------#
+# 初始化Xray 配置文件
+function initXrayConfig() {
+	print_start "初始化Xray配置 "
+
+	local uuid=
+	if [[ -n "${currentUUID}" ]]; then
+		read -r -p "读取到上次安装记录，是否使用上次安装时的UUID ？[y/n]:" historyUUIDStatus
+		if [[ "${historyUUIDStatus}" == "y" ]]; then
+			uuid=${currentUUID}
+			print_info "使用成功"
+		else
+			uuid=$(/etc/fuckGFW/xray/xray uuid)
 		fi
 	fi
 
-	sleep 0.5
-	if [[ "$1" == "start" ]]; then
-		if [[ -n $(pgrep -f "trojan-go") ]]; then
-			echoContent green " ---> Trojan-Go启动成功"
+	if [[ -z "${uuid}" ]];then
+		print_info "请输入自定义UUID[需合法]，[回车]随机UUID"
+		read -r -p 'UUID:' customUUID
+
+		if [[ -n ${customUUID} ]];then
+			uuid=${customUUID}
 		else
-			echoContent red "Trojan-Go启动失败"
-			echoContent red "请手动执行【/etc/v2ray-agent/trojan/trojan-go -config /etc/v2ray-agent/trojan/config_full.json】，查看错误日志"
+			uuid=$(/etc/fuckGFW/xray/xray uuid)
+		fi
+
+	fi
+
+	if [[ -z "${uuid}" ]]; then
+		echoContent red "\n ---> uuid读取错误，重新生成"
+		uuid=$(/etc/fuckGFW/xray/xray uuid)
+	fi
+
+	print_info "${uuid}"
+
+	rm -rf /etc/fuckGFW/xray/conf/*
+
+	# log
+	cat <<EOF >/etc/fuckGFW/xray/conf/00_log.json
+{
+  "log": {
+    "error": "/etc/fuckGFW/xray/error.log",
+    "loglevel": "warning"
+  }
+}
+EOF
+
+	# outbounds
+	if [[ -n "${pingIPv6}" ]]; then
+		cat <<EOF >/etc/fuckGFW/xray/conf/10_ipv6_outbounds.json
+{
+    "outbounds": [
+        {
+          "protocol": "freedom",
+          "settings": {},
+          "tag": "direct"
+        }
+    ]
+}
+EOF
+
+	else
+		cat <<EOF >/etc/fuckGFW/xray/conf/10_ipv4_outbounds.json
+{
+    "outbounds":[
+        {
+            "protocol":"freedom",
+            "settings":{
+                "domainStrategy":"UseIPv4"
+            },
+            "tag":"IPv4-out"
+        },
+        {
+            "protocol":"freedom",
+            "settings":{
+                "domainStrategy":"UseIPv6"
+            },
+            "tag":"IPv6-out"
+        },
+        {
+            "protocol":"blackhole",
+            "tag":"blackhole-out"
+        }
+    ]
+}
+EOF
+	fi
+
+
+	# dns
+	cat <<EOF >/etc/fuckGFW/xray/conf/11_dns.json
+{
+    "dns": {
+        "servers": [
+          "localhost"
+        ]
+  }
+}
+EOF
+
+	# VLESS_TCP_TLS/XTLS
+	# 回落nginx
+	local fallbacksList='{"dest":31300,"xver":0},{"alpn":"h2","dest":31302,"xver":0}'
+
+	# trojan
+	if [[ -n $(echo "${selectCustomInstallType}" | grep 4) || "$1" == "all" ]]; then
+		fallbacksList='{"dest":31296,"xver":1},{"alpn":"h2","dest":31302,"xver":0}'
+		cat <<EOF >/etc/fuckGFW/xray/conf/04_trojan_TCP_inbounds.json
+{
+"inbounds":[
+	{
+	  "port": 31296,
+	  "listen": "127.0.0.1",
+	  "protocol": "trojan",
+	  "tag":"trojanTCP",
+	  "settings": {
+		"clients": [
+		  {
+			"password": "${uuid}",
+			"email": "${domain}_trojan_tcp"
+		  }
+		],
+		"fallbacks":[
+			{"dest":"31300"}
+		]
+	  },
+	  "streamSettings": {
+		"network": "tcp",
+		"security": "none",
+		"tcpSettings": {
+			"acceptProxyProtocol": true
+		}
+	  }
+	}
+	]
+}
+EOF
+	fi
+
+	# VLESS_WS_TLS
+	if echo "${selectCustomInstallType}" | grep -q 1 || [[ "$1" == "all" ]]; then
+		fallbacksList=${fallbacksList}',{"path":"/'${customPath}'ws","dest":31297,"xver":1}'
+		cat <<EOF >/etc/fuckGFW/xray/conf/03_VLESS_WS_inbounds.json
+{
+"inbounds":[
+    {
+  "port": 31297,
+  "listen": "127.0.0.1",
+  "protocol": "vless",
+  "tag":"VLESSWS",
+  "settings": {
+    "clients": [
+      {
+        "id": "${uuid}",
+        "email": "${domain}_VLESS_WS"
+      }
+    ],
+    "decryption": "none"
+  },
+  "streamSettings": {
+    "network": "ws",
+    "security": "none",
+    "wsSettings": {
+      "acceptProxyProtocol": true,
+      "path": "/${customPath}ws"
+    }
+  }
+}
+]
+}
+EOF
+	fi
+
+
+	# trojan_grpc
+	if echo ${selectCustomInstallType} | grep -q 2 || [[ "$1" == "all" ]]; then
+		if ! echo ${selectCustomInstallType} | grep -q 5 && [[ -n ${selectCustomInstallType} ]];then
+			fallbacksList=${fallbacksList//31302/31304}
+		fi
+
+		cat <<EOF >/etc/fuckGFW/xray/conf/04_trojan_gRPC_inbounds.json
+{
+    "inbounds": [
+        {
+            "port": 31304,
+            "listen": "127.0.0.1",
+            "protocol": "trojan",
+            "tag": "trojangRPCTCP",
+            "settings": {
+                "clients": [
+                    {
+                        "password": "${uuid}",
+                        "email": "${domain}_trojan_gRPC"
+                    }
+                ],
+                "fallbacks": [
+                    {
+                        "dest": "31300"
+                    }
+                ]
+            },
+            "streamSettings": {
+                "network": "grpc",
+                "grpcSettings": {
+                    "serviceName": "${customPath}trojangrpc"
+                }
+            }
+        }
+    ]
+}
+EOF
+	fi
+
+
+	# VMess_WS
+	if echo "${selectCustomInstallType}" | grep -q 3 || [[ "$1" == "all" ]]; then
+		fallbacksList=${fallbacksList}',{"path":"/'${customPath}'vws","dest":31299,"xver":1}'
+		cat <<EOF >/etc/fuckGFW/xray/conf/05_VMess_WS_inbounds.json
+{
+"inbounds":[
+{
+  "port": 31299,
+  "protocol": "vmess",
+  "tag":"VMessWS",
+  "settings": {
+    "clients": [
+      {
+        "id": "${uuid}",
+        "alterId": 0,
+        "add": "${add}",
+        "email": "${domain}_vmess_ws"
+      }
+    ]
+  },
+  "streamSettings": {
+    "network": "ws",
+    "security": "none",
+    "wsSettings": {
+      "acceptProxyProtocol": true,
+      "path": "/${customPath}vws"
+    }
+  }
+}
+]
+}
+EOF
+	fi
+
+	if echo "${selectCustomInstallType}" | grep -q 5 || [[ "$1" == "all" ]]; then
+#		fallbacksList=${fallbacksList}',{"alpn":"h2","dest":31302,"xver":0}'
+		cat <<EOF >/etc/fuckGFW/xray/conf/06_VLESS_gRPC_inbounds.json
+{
+    "inbounds":[
+    {
+        "port": 31301,
+        "listen": "127.0.0.1",
+        "protocol": "vless",
+        "tag":"VLESSGRPC",
+        "settings": {
+            "clients": [
+                {
+                    "id": "${uuid}",
+                    "add": "${add}",
+                    "email": "${domain}_VLESS_gRPC"
+                }
+            ],
+            "decryption": "none"
+        },
+        "streamSettings": {
+            "network": "grpc",
+            "grpcSettings": {
+                "serviceName": "${customPath}grpc"
+            }
+        }
+    }
+]
+}
+EOF
+	fi
+
+	# VLESS_TCP
+	cat <<EOF >/etc/fuckGFW/xray/conf/02_VLESS_TCP_inbounds.json
+{
+"inbounds":[
+{
+  "port": 443,
+  "protocol": "vless",
+  "tag":"VLESSTCP",
+  "settings": {
+    "clients": [
+     {
+        "id": "${uuid}",
+        "add":"${add}",
+        "flow":"xtls-rprx-direct",
+        "email": "${domain}_VLESS_XTLS/TLS-direct_TCP"
+      }
+    ],
+    "decryption": "none",
+    "fallbacks": [
+        ${fallbacksList}
+    ]
+  },
+  "streamSettings": {
+    "network": "tcp",
+    "security": "xtls",
+    "xtlsSettings": {
+      "minVersion": "1.2",
+      "alpn": [
+        "http/1.1",
+        "h2"
+      ],
+      "certificates": [
+        {
+          "certificateFile": "/etc/v2ray-agent/tls/${domain}.crt",
+          "keyFile": "/etc/v2ray-agent/tls/${domain}.key",
+          "ocspStapling": 3600,
+          "usage":"encipherment"
+        }
+      ]
+    }
+  }
+}
+]
+}
+EOF
+}
+#-----------------------------------------------------------------------------#
+# 操作xray
+function handleXray() {
+	if [[ -n $(find /bin /usr/bin -name "systemctl") ]] && ls /etc/systemd/system/ | grep -q xray.service; then
+		if [[ -z $(pgrep -f "xray/xray") ]] && [[ "$1" == "start" ]]; then
+			systemctl start xray.service
+		elif [[ -n $(pgrep -f "xray/xray") ]] && [[ "$1" == "stop" ]]; then
+			systemctl stop xray.service
+		fi
+	fi
+
+	sleep 0.8
+
+	if [[ "$1" == "start" ]]; then
+		if [[ -n $(pgrep -f "xray/xray") ]]; then
+			echoContent green " ---> Xray启动成功"
+		else
+			echoContent red "xray启动失败"
+			echoContent red "请手动执行【/etc/fuckGFW/xray/xray -confdir /etc/fuckGFW/xray/conf】，查看错误日志"
 			exit 0
 		fi
 	elif [[ "$1" == "stop" ]]; then
-		if [[ -z $(pgrep -f "trojan-go") ]]; then
-			echoContent green " ---> Trojan-Go关闭成功"
+		if [[ -z $(pgrep -f "xray/xray") ]]; then
+			echoContent green " ---> Xray关闭成功"
 		else
-			echoContent red "Trojan-Go关闭失败"
-			echoContent red "请手动执行【ps -ef|grep -v grep|grep trojan-go|awk '{print \$2}'|xargs kill -9】"
+			echoContent red "xray关闭失败"
+			echoContent red "请手动执行【ps -ef|grep -v grep|grep xray|awk '{print \$2}'|xargs kill -9】"
 			exit 0
 		fi
 	fi
 }
-# 初始化Trojan-Go配置
-initTrojanGoConfig() {
+# 验证整个服务是否可用
+function checkGFWStatue() {
+	print_start "验证服务启动状态"
+	if [[ "${coreInstallType}" == "1" ]] && [[ -n $(pgrep -f xray/xray) ]]; then
+		echoContent green " ---> 服务启动成功"
+	elif [[ "${coreInstallType}" == "2" || "${coreInstallType}" == "3" ]] && [[ -n $(pgrep -f v2ray/v2ray) ]]; then
+		echoContent green " ---> 服务启动成功"
+	else
+		echoContent red " ---> 服务启动失败，请检查终端是否有日志打印"
+		exit 0
+	fi
 
-	echoContent skyBlue "\n进度 $1/${totalProgress} : 初始化Trojan配置"
-	cat <<EOF >/etc/v2ray-agent/trojan/config_full.json
-{
-    "run_type": "server",
-    "local_addr": "127.0.0.1",
-    "local_port": 31296,
-    "remote_addr": "127.0.0.1",
-    "remote_port": 31300,
-    "disable_http_check":true,
-    "log_level":3,
-    "log_file":"/etc/v2ray-agent/trojan/trojan.log",
-    "password": [
-        "${uuid}"
-    ],
-    "dns":[
-        "localhost"
-    ],
-    "transport_plugin":{
-        "enabled":true,
-        "type":"plaintext"
-    },
-    "websocket": {
-        "enabled": true,
-        "path": "/${customPath}tws",
-        "host": "${domain}",
-        "add":"${add}"
-    },
-    "router": {
-        "enabled": false
-    }
-}
-EOF
 }
 #-----------------------------------------------------------------------------#
 # 安装 xray_OneKey
@@ -3593,7 +3897,7 @@ function kxsw_menu() {
 	echoContent yellow "3.安装 BBR 拥塞控制算法加速 [提升性能明显，一定要安装！！！]"
 	echoContent yellow "4.安装 v2-ui | 快捷方式 [v2-ui]"
 	echoContent yellow "5.安装 x-ui  | 快捷方式 [x-ui]"
-	echoContent yellow "6.安装 trojan-go 单机"
+	echoContent yellow "6.安装 xray 单机"
 	echoContent red "=================================================================="
 	read -r -p "Please choose the function (请选择) : " selectInstallType
 	case ${selectInstallType} in
@@ -3612,8 +3916,8 @@ function kxsw_menu() {
 	5)
 		install_x_ui
 		;;
-	6)
-		install_standalone_trojan_go
+	6)		
+		install_standalone_xray
 		;;
 	*)
 		print_error "请输入正确的数字"
@@ -4082,7 +4386,7 @@ function check_procs_status() {
 	fi 
 }
 
-SmartToolVersion=v0.348
+SmartToolVersion=v0.349
 cleanScreen
 initVar $1
 set_current_host_domain
