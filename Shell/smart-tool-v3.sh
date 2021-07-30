@@ -3899,20 +3899,21 @@ function nagios_menu() {
 	echoContent skyBlue "----------------------------安装菜单------------------------------"
 	echoContent yellow "1.安装 nagios server "
 	echoContent yellow "2.安装 nagios nrpe "
-	echoContent yellow "3.安装 nagios plugins "
+	echoContent yellow "3.安装 nagios ncpa "
+	echoContent yellow "4.安装 nagios plugins "
 	echoContent skyBlue "----------------------------配置菜单------------------------------"
-	echoContent yellow "4.定制 nagios server "
-	echoContent yellow "5.定制 nagios client "
+	echoContent yellow "5.定制 nagios server "
+	echoContent yellow "6.定制 nagios client "
 	echoContent skyBlue "----------------------------主题选择------------------------------"
-	echoContent yellow "6.激活 nagios server dark mode "
-	echoContent yellow "7.激活 nagios server normal mode "
+	echoContent yellow "7.激活 nagios server dark mode "
+	echoContent yellow "8.激活 nagios server normal mode "
 	echoContent skyBlue "----------------------------选装菜单------------------------------"
-	echoContent yellow "8.展示 nagios server 配置文件 "
-	echoContent yellow "9.展示 nagios client 配置文件 "
-	echoContent yellow "00.测试 nagios server 配置文件 "
+	echoContent yellow "9.展示 nagios server 配置文件 "
+	echoContent yellow "10.展示 nagios client 配置文件 "
 	echoContent yellow "11.清除 nagios myservers 文件夹 "
-	echoContent yellow "12.安装 nagios ncpa "
-	echoContent yellow "13.卸载 nagios ncpa "
+	echoContent yellow "12.卸载 nagios ncpa "
+	echoContent skyBlue "----------------------------测试配置------------------------------"
+	echoContent yellow "00.测试 nagios server 配置文件 "
 	echoContent red "=================================================================="
 	read -r -p "Please choose the function (请选择) : " selectInstallType
 	case ${selectInstallType} in
@@ -3927,38 +3928,38 @@ function nagios_menu() {
 		install_nagios_nrpe
 		;;
 	3)
-		install_nagios_plugins
+		install_nagios_ncpa
 		;;
 	4)
-		customize_nagios_server
+		install_nagios_plugins
 		;;
 	5)
-		customize_nagios_client
+		customize_nagios_server
 		;;
 	6)
-		enable_nagios_dark_mode
+		customize_nagios_client
 		;;
 	7)
-		enable_nagios_normal_mode
+		enable_nagios_dark_mode
 		;;
 	8)
-		cat /usr/local/nagios/etc/nagios.cfg
+		enable_nagios_normal_mode
 		;;
 	9)
-		cat /usr/local/nagios/etc/nrpe.cfg
+		cat /usr/local/nagios/etc/nagios.cfg
 		;;
-	00)
-		/usr/local/nagios/bin/nagios -v /usr/local/nagios/etc/nagios.cfg
+	10)
+		cat /usr/local/nagios/etc/nrpe.cfg
 		;;
 	11)
 		rm -rf /usr/local/nagios/etc/objects/myservers
 		nagios_menu
 		;;
 	12)
-		install_nagios_ncpa
-		;;
-	13)
 		uninstall_nagios_ncpa
+		;;
+	00)
+		/usr/local/nagios/bin/nagios -v /usr/local/nagios/etc/nagios.cfg
 		;;
 	*)
 		print_error "请输入正确的数字"
