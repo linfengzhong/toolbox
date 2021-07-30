@@ -1403,7 +1403,7 @@ services:
         expose: 
             - 9100
         command:
-           - '--path.rootfs=/host'
+            - '--path.rootfs=/host'
         network_mode: host
         pid: host
         restart: unless-stopped
@@ -1462,18 +1462,18 @@ services:
             - net
     #10. Rancher -> Docker UI
     #--> Working
-    portainer:
-        image: rancher/rancher
-        privileged: true
-        container_name: rancher
-        restart: always
-        environment: 
-            TZ: Asia/Shanghai
-        expose: 
-            - 80
-            - 433
-        networks: 
-            - net
+#    portainer:
+#        image: rancher/rancher
+#        privileged: true
+#        container_name: rancher
+#        restart: always
+#        environment: 
+#            TZ: Asia/Shanghai
+#        expose: 
+#            - 80
+#            - 433
+#        networks: 
+#            - net
 networks: 
     net:
         driver: bridge
