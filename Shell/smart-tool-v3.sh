@@ -2920,6 +2920,7 @@ EOF
 # 定制 Nagios Server Command
 function customize_nagios_server_myservers_command {
 	print_info "Step 7: Nagios 自定义命令集 /usr/local/nagios/etc/objects/myservers/mycommands.cfg"
+	sudo ln -s /usr/bin/python3 /usr/bin/python
 	cat <<EOF > /usr/local/nagios/etc/objects/myservers/mycommands.cfg
 ################################################################################
 # 2021 July 19th defined COMMANDS
@@ -3593,6 +3594,17 @@ function install_nagios_ncpa {
 	print_complete "安装 Nagios NCPA "
 }
 #-----------------------------------------------------------------------------#
+# 卸载 nagios ncpa
+function uninstall_nagios_ncpa {
+	# Nagios Cross-Platform Agent
+	print_start "卸载 Nagios NCPA "
+
+	print_info "Uninstalling NCPA"
+	yum -y remove ncpa
+
+	print_complete "卸载 Nagios NCPA "
+}
+#-----------------------------------------------------------------------------#
 # 安装 & 运行 Prometheus container - Port: 9090 
 function install_exec_prometheus {
 
@@ -3885,6 +3897,7 @@ function nagios_menu() {
 	echoContent yellow "00.测试 nagios server 配置文件 "
 	echoContent yellow "11.清除 nagios myservers 文件夹 "
 	echoContent yellow "12.安装 nagios ncpa "
+	echoContent yellow "13.卸载 nagios ncpa "
 	echoContent red "=================================================================="
 	read -r -p "Please choose the function (请选择) : " selectInstallType
 	case ${selectInstallType} in
@@ -3928,6 +3941,9 @@ function nagios_menu() {
 		;;
 	12)
 		install_nagios_ncpa
+		;;
+	13)
+		uninstall_nagios_ncpa
 		;;
 	*)
 		print_error "请输入正确的数字"
