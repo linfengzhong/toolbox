@@ -2920,7 +2920,7 @@ EOF
 # 定制 Nagios Server Command
 function customize_nagios_server_myservers_command {
 	print_info "Step 7: Nagios 自定义命令集 /usr/local/nagios/etc/objects/myservers/mycommands.cfg"
-	sudo ln -s /usr/bin/python3 /usr/bin/python
+	sudo ln -s /usr/bin/python3 /usr/bin/python >/dev/null 2>&1
 	cat <<EOF > /usr/local/nagios/etc/objects/myservers/mycommands.cfg
 ################################################################################
 # 2021 July 19th defined COMMANDS
