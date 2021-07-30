@@ -2920,7 +2920,6 @@ EOF
 # 定制 Nagios Server Command
 function customize_nagios_server_myservers_command {
 	print_info "Step 7: Nagios 自定义命令集 /usr/local/nagios/etc/objects/myservers/mycommands.cfg"
-	sudo ln -s /usr/bin/python3 /usr/bin/python >/dev/null 2>&1
 	cat <<EOF > /usr/local/nagios/etc/objects/myservers/mycommands.cfg
 ################################################################################
 # 2021 July 19th defined COMMANDS
@@ -3604,7 +3603,9 @@ function install_nagios_ncpa {
 
 	print_info "展示 NCPA 配置文件 /usr/local/ncpa/etc/ncpa.cfg"
 	cat /usr/local/ncpa/etc/ncpa.cfg
-
+	
+	sudo ln -s /usr/bin/python3 /usr/bin/python >/dev/null 2>&1
+	
 	print_info "访问 https://${currentHost}:5693/"
 	print_complete "安装 Nagios NCPA "
 }
