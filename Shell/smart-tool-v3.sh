@@ -2981,6 +2981,21 @@ define command {
     command_line    \$USER1\$/check_tcp -H \$HOSTADDRESS$ -p 10000 -w 0.2 -c 0.5 -t 5
 }
 
+define command {
+    command_name    check_ncpa_cpu
+    command_line    check_ncpa!-t 'mytoken' -P 5693 -M cpu/percent -w 20 -c 40 -q 'aggregate=avg'
+}
+
+define command {
+    command_name    check_ncpa_memory
+    command_line    check_ncpa!-t 'mytoken' -P 5693 -M memory/virtual -w 50 -c 80 -u G
+}
+
+define command {
+    command_name    check_ncpa_processes
+    command_line    check_ncpa!-t 'mytoken' -P 5693 -M processes -w 150 -c 200
+}
+
 EOF
 	chown nagios:nagios /usr/local/nagios/etc/objects/myservers/mycommands.cfg
 	chmod 777 /usr/local/nagios/etc/objects/myservers/mycommands.cfg
