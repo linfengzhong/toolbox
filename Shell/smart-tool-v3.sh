@@ -933,9 +933,6 @@ server {
         proxy_pass http://prometheus:9090;
     }
 
-	location /rancher/ {
-        proxy_pass http://rancher:80;
-    }
 }
 
 EOF
