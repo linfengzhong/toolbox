@@ -2990,9 +2990,14 @@ define command {
     command_line    check_ncpa!-t 'mytoken' -P 5693 -M memory/virtual -w 50 -c 80 -u G
 }
 
+#define command {
+#    command_name    check_ncpa_processes
+#    command_line    check_ncpa!-t 'mytoken' -P 5693 -M processes -w 150 -c 200
+#}
+
 define command {
     command_name    check_ncpa_processes
-    command_line    check_ncpa!-t 'mytoken' -P 5693 -M processes -w 150 -c 200
+    command_line    \$USER1\$/check_ncpa.py -H \$HOSTADDRESS$ \$ARG1\$ -t 'mytoken' -P 5693 -M processes -w 150 -c 200
 }
 
 EOF
