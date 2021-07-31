@@ -2932,7 +2932,7 @@ define command {
 
 define command {
     command_name    check_ncpa
-    command_line    $USER1$/check_ncpa.py -H \$HOSTADDRESS$ \$ARG1\$
+    command_line    \$USER1\$/check_ncpa.py -H \$HOSTADDRESS$ \$ARG1\$
 }
 
 define command {
