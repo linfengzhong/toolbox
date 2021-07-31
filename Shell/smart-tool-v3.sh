@@ -2538,7 +2538,7 @@ function install_v2_ui {
 #-----------------------------------------------------------------------------#
 # 安装 x-ui
 function install_x_ui {
-	bash <(curl -Ls https://raw.githubusercontent.com/sprov065/x-ui/master/install.sh) 0.2.0
+	bash <(curl -Ls https://raw.githubusercontent.com/sprov065/x-ui/master/install.sh)
 }
 #-----------------------------------------------------------------------------#
 # 定制 Nagios Server Check MyServers Folder
