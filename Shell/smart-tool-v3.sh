@@ -1892,6 +1892,17 @@ function init_webmin_port_9999 {
 
 	print_complete "修改webmin端口为 9999"
 }
+
+#-----------------------------------------------------------------------------#
+# 重启 webmin 服务
+function restart_webmin_service {
+	print_info "重启 webmin.service "
+	service webmin restart
+	systemctl restart webmin
+	systemctl status webmin
+	print_info "重启 webmin.service "
+}
+
 #-----------------------------------------------------------------------------#
 # 清理域名
 function clear_myHostDomain {
@@ -3964,6 +3975,7 @@ function webmin_menu() {
 	echoContent yellow "1.安装 webmin "
 	echoContent yellow "2.激活 webmin SSL "
 	echoContent yellow "3.修改 webmin port: 9999 "
+	echoContent yellow "4.重启 webmin service "
 	echoContent red "=================================================================="
 	read -r -p "Please choose the function (请选择) : " selectInstallType
 	case ${selectInstallType} in
@@ -3971,6 +3983,7 @@ function webmin_menu() {
 		install_webmin
 		init_webmin_ssl
 		init_webmin_port_9999
+		restart_webmin_service
 		;;
 	1)
 		install_webmin
@@ -3980,6 +3993,9 @@ function webmin_menu() {
 		;;
 	3)
 		init_webmin_port_9999
+		;;
+	4)
+		restart_webmin_service
 		;;
 	*)
 		print_error "请输入正确的数字"
