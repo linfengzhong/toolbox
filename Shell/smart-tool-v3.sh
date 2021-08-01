@@ -3597,6 +3597,14 @@ function install_nagios_nrpe {
 #-----------------------------------------------------------------------------#
 # 安装 nagios ncpa
 function install_nagios_ncpa {
+
+	ncpa_status_running=$(systemctl status ncpa | grep Active | awk '{print $3}' | cut -d "(" -f2 | cut -d ")" -f1)
+	if [ "$ncpa_status_running" == "running" ]  
+        then  
+            print_info "NCPA 服务正在运行！" 
+			print_error "无需重新安装！"
+		else
+
 	# Nagios Cross-Platform Agent
 	print_start "安装 Nagios NCPA "
 
@@ -3613,6 +3621,8 @@ function install_nagios_ncpa {
 	
 	print_info "访问 https://${currentHost}:5693/"
 	print_complete "安装 Nagios NCPA "
+
+	fi
 }
 #-----------------------------------------------------------------------------#
 # 卸载 nagios ncpa
@@ -3903,6 +3913,7 @@ function nagios_menu() {
 	echoContent skyBlue "----------------------------必安前继------------------------------"
 	echoContent yellow "0.安装 httpd - port: 8080 & port: 8443 "
 	echoContent skyBlue "----------------------------安装菜单------------------------------"
+	echoContent yellow "99.安装 全部软件 "	
 	echoContent yellow "1.安装 nagios server "
 	echoContent yellow "2.安装 nagios nrpe "
 	echoContent yellow "3.安装 nagios ncpa "
@@ -3926,6 +3937,14 @@ function nagios_menu() {
 	0)
 		install_apache_httpd
 		enable_apache_httpd_ssl
+		;;
+	99)
+		install_apache_httpd
+		enable_apache_httpd_ssl
+		install_nagios_server
+		install_nagios_nrpe
+		install_nagios_ncpa
+		install_nagios_plugins
 		;;
 	1)
 		install_nagios_server
