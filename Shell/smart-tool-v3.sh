@@ -25,7 +25,7 @@ function inital_smart_tool() {
 	# array_check_command=("check_eth" "check_cpu_stats" "check_disk" "check_mem" "check_total_procs" "check_ssh" "check_v2ray" "check_xray" "check_trojan.go" "check_nginx" "check_httpd" "check_v2_ui" "check_x_ui" "check_webmin" "check_docker" "check_nrpe" "check_node_exporter" "check_http" "check_certificate_expires" "check_port_5666" "check_port_7080" "check_port_8080" "check_port_8443" "check_port_9100" "check_port_10000" )
 
 	array_service_description=("Network" "CPU" "Disk" "Memory" "SSH" "Service xray" "Service nginx" "Service webmin" "Service nrpe" "HTTPS" "Certificate" "TCP 5666" "TCP 5693" "TCP 9100" "Service node exporter" "Total processes" )
-	array_check_command=("check_eth" "check_ncpa_cpu" "check_disk" "check_ncpa_memory" "check_ssh" "check_xray" "check_nginx" "check_webmin" "check_nrpe" "check_http" "check_certificate_expires" "check_port_5666" "check_port_5693" "check_port_9100" "check_node_exporter" "check_ncpa_processes")
+	array_check_command=("check_eth" "check_ncpa_cpu" "check_disk" "check_ncpa_memory" "check_ssh" "check_ncpa_service_xray" "check_ncpa_service_nginx" "check_ncpa_service_webmin" "check_ncpa_service_nrpe" "check_http" "check_certificate_expires" "check_port_5666" "check_port_5693" "check_port_9100" "check_ncpa_service_node_exporter" "check_ncpa_processes")
 
 	#定义变量
 	# WORKDIR="/root/git/toolbox/Docker/docker-compose/${currentHost}/"
@@ -3010,6 +3010,27 @@ define command {
     command_name    check_ncpa_service_nginx
     command_line    \$USER1\$/check_ncpa.py -H \$HOSTADDRESS$ \$ARG1\$ -t 'mytoken' -P 5693 -M services -q service=nginx,status=running
 }
+
+define command {
+    command_name    check_ncpa_service_node_exporter
+    command_line    \$USER1\$/check_ncpa.py -H \$HOSTADDRESS$ \$ARG1\$ -t 'mytoken' -P 5693 -M services -q service=node_exporter,status=running
+}
+
+define command {
+    command_name    check_ncpa_service_nrpe
+    command_line    \$USER1\$/check_ncpa.py -H \$HOSTADDRESS$ \$ARG1\$ -t 'mytoken' -P 5693 -M services -q service=nrpe,status=running
+}
+
+define command {
+    command_name    check_ncpa_service_webmin
+    command_line    \$USER1\$/check_ncpa.py -H \$HOSTADDRESS$ \$ARG1\$ -t 'mytoken' -P 5693 -M services -q service=webmin,status=running
+}
+
+define command {
+    command_name    check_ncpa_service_xray
+    command_line    \$USER1\$/check_ncpa.py -H \$HOSTADDRESS$ \$ARG1\$ -t 'mytoken' -P 5693 -M services -q service=xray,status=running
+}
+
 EOF
 	chown nagios:nagios /usr/local/nagios/etc/objects/myservers/mycommands.cfg
 	chmod 777 /usr/local/nagios/etc/objects/myservers/mycommands.cfg
