@@ -3166,6 +3166,7 @@ command[check_webmin]=/usr/local/nagios/libexec/check_service.sh -s webmin
 command[check_docker]=/usr/local/nagios/libexec/check_service.sh -s docker
 command[check_docker2]=/usr/local/nagios/libexec/check_docker -w 50 -c 80
 command[check_nrpe]=/usr/local/nagios/libexec/check_service.sh -s nrpe
+command[check_ncpa]=/usr/local/nagios/libexec/check_service.sh -s ncpa_listener
 command[check_node_exporter]=/usr/local/nagios/libexec/check_service.sh -s node_exporter
 
 #command[check_eth]=/usr/local/nagios/libexec/check_eth -i eth0 -w 2M Bps -c 10M Bps
