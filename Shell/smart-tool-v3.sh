@@ -3488,7 +3488,7 @@ function install_nagios_plugins {
 	print_start "安装 Nagios Plugins 2.3.3"
 	if [[ -f "/usr/local/nagios/libexec/check_cpu_stats.sh" ]]; then
         print_info "Nagios Plugins 服务正在运行！" 
-		print_error "无需重复安装！ "
+		print_error "无需重复安装！"
 	else
 	# 2021-April-06 [Initial Version] - Shell Script for Nagios Plugins installing
 	# Nagios Plugins - Installing Nagios Plugins From Source
@@ -3907,25 +3907,24 @@ function nagios_menu() {
 	echoContent green "当前系统Linux版本 : \c" 
 	checkSystem
 	echoContent red "=================================================================="
-	echoContent skyBlue "----------------------------必安前继------------------------------"
-	echoContent yellow "0.安装 httpd - port: 8080 & port: 8443 "
 	echoContent skyBlue "----------------------------安装菜单------------------------------"
-	echoContent yellow "99.安装 全部软件 "	
-	echoContent yellow "1.安装 nagios server "
-	echoContent yellow "2.安装 nagios nrpe "
-	echoContent yellow "3.安装 nagios ncpa "
-	echoContent yellow "4.安装 nagios plugins "
+	echoContent yellow "0.安装 全部软件 "	
+	echoContent yellow "1.安装 httpd - port: 8080 & port: 8443 "
+	echoContent yellow "2.安装 nagios server "
+	echoContent yellow "3.安装 nagios nrpe "
+	echoContent yellow "4.安装 nagios ncpa "
+	echoContent yellow "5.安装 nagios plugins "
 	echoContent skyBlue "----------------------------配置菜单------------------------------"
-	echoContent yellow "5.定制 nagios server "
-	echoContent yellow "6.定制 nagios client "
+	echoContent yellow "6.定制 nagios server "
+	echoContent yellow "7.定制 nagios client "
 	echoContent skyBlue "----------------------------主题选择------------------------------"
-	echoContent yellow "7.激活 nagios server dark mode "
-	echoContent yellow "8.激活 nagios server normal mode "
+	echoContent yellow "8.激活 nagios server dark mode "
+	echoContent yellow "9.激活 nagios server normal mode "
 	echoContent skyBlue "----------------------------选装菜单------------------------------"
-	echoContent yellow "9.展示 nagios server 配置文件 "
-	echoContent yellow "10.展示 nagios client 配置文件 "
-	echoContent yellow "11.清除 nagios myservers 文件夹 "
-	echoContent yellow "12.卸载 nagios ncpa "
+	echoContent yellow "10.展示 nagios server 配置文件 "
+	echoContent yellow "11.展示 nagios client 配置文件 "
+	echoContent yellow "12.清除 nagios myservers 文件夹 "
+	echoContent yellow "13.卸载 nagios ncpa "
 	echoContent skyBlue "----------------------------测试配置------------------------------"
 	echoContent yellow "00.测试 nagios server 配置文件 "
 	echoContent red "=================================================================="
@@ -3934,50 +3933,50 @@ function nagios_menu() {
 	0)
 		install_apache_httpd
 		enable_apache_httpd_ssl
-		;;
-	99)
-		install_apache_httpd
-		enable_apache_httpd_ssl
 		install_nagios_server
 		install_nagios_nrpe
 		install_nagios_ncpa
 		install_nagios_plugins
 		;;
 	1)
-		install_nagios_server
+		install_apache_httpd
+		enable_apache_httpd_ssl
 		;;
 	2)
-		install_nagios_nrpe
+		install_nagios_server
 		;;
 	3)
-		install_nagios_ncpa
+		install_nagios_nrpe
 		;;
 	4)
-		install_nagios_plugins
+		install_nagios_ncpa
 		;;
 	5)
-		customize_nagios_server
+		install_nagios_plugins
 		;;
 	6)
-		customize_nagios_client
+		customize_nagios_server
 		;;
 	7)
-		enable_nagios_dark_mode
+		customize_nagios_client
 		;;
 	8)
-		enable_nagios_normal_mode
+		enable_nagios_dark_mode
 		;;
 	9)
-		cat /usr/local/nagios/etc/nagios.cfg
+		enable_nagios_normal_mode
 		;;
 	10)
-		cat /usr/local/nagios/etc/nrpe.cfg
+		cat /usr/local/nagios/etc/nagios.cfg
 		;;
 	11)
+		cat /usr/local/nagios/etc/nrpe.cfg
+		;;
+	12)
 		rm -rf /usr/local/nagios/etc/objects/myservers
 		nagios_menu
 		;;
-	12)
+	13)
 		uninstall_nagios_ncpa
 		;;
 	00)
