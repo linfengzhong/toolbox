@@ -1275,7 +1275,7 @@ version: '3.8'
 services:
     #1. Nginx -> proxy server
     #--> Working
-    # listen 80, 443 --> Mock website https://${currentHost}
+    # listen 7080, 7443 --> Mock website https://${currentHost}
     # proxy pass
     # /portainer/ --> proxy_pass http://portainer:9000/;
     nginx:
@@ -1287,7 +1287,7 @@ services:
         #expose:
         #    - 443
         ports:
-            - 80:80
+            - 7080:80
         volumes: 
             - /etc/fuckGFW/nginx/conf.d/:/etc/nginx/conf.d
             - /etc/fuckGFW/website/html:/usr/share/nginx/html
@@ -1328,7 +1328,7 @@ services:
         #    - 37211
         #    - 37212
         ports: 
-            - 443:443
+            - 7443:443
         volumes: 
             - /etc/fuckGFW/xray/config.json:/etc/xray/config.json
             # CA & Key
