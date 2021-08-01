@@ -3013,7 +3013,7 @@ define command {
 
 define command {
     command_name    check_port_9999
-    command_line    \$USER1\$/check_tcp -H \$HOSTADDRESS$ -p 9999-w 0.2 -c 0.5 -t 5
+    command_line    \$USER1\$/check_tcp -H \$HOSTADDRESS$ -p 9999 -w 0.2 -c 0.5 -t 5
 }
 
 define command {
