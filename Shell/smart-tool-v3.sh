@@ -2775,7 +2775,8 @@ EOF
 		temp_array_service_description=${array_service_description[array_service_and_command_index]}
 		temp_array_check_command=${array_check_command[array_service_and_command_index]}
 
-		if [[ "$temp_array_check_command" != "check_ssh" && "$temp_array_check_command" != "check_certificate_expires" && "$temp_array_check_command" != "check_ssl_certificate" && "$temp_array_check_command" != "check_http" && "$temp_array_check_command" != "check_port_5666" && "$temp_array_check_command" != "check_port_5693" && "$temp_array_check_command" != "check_port_7080" && "$temp_array_check_command" != "check_port_8080" && "$temp_array_check_command" != "check_port_8443" && "$temp_array_check_command" != "check_port_9100" && "$temp_array_check_command" != "check_port_10000" && "$temp_array_check_command" != "check_ncpa_processes" && "$temp_array_check_command" != "check_ncpa_cpu" && "$temp_array_check_command" != "check_ncpa_memory" ]]; then
+#		if [[ "$temp_array_check_command" != "check_ssh" && "$temp_array_check_command" != "check_certificate_expires" && "$temp_array_check_command" != "check_ssl_certificate" && "$temp_array_check_command" != "check_http" && "$temp_array_check_command" != "check_port_5666" && "$temp_array_check_command" != "check_port_5693" && "$temp_array_check_command" != "check_port_7080" && "$temp_array_check_command" != "check_port_8080" && "$temp_array_check_command" != "check_port_8443" && "$temp_array_check_command" != "check_port_9100" && "$temp_array_check_command" != "check_port_10000" && "$temp_array_check_command" != "check_ncpa_processes" && "$temp_array_check_command" != "check_ncpa_cpu" && "$temp_array_check_command" != "check_ncpa_memory" ]]; then
+		if [[ "$temp_array_check_command" = "check_eth" || "$temp_array_check_command" = "check_disk" ]]; then
 			temp_array_check_command1="check_nrpe!"$temp_array_check_command
 		else
 			temp_array_check_command1=$temp_array_check_command
@@ -2987,7 +2988,7 @@ define command {
 
 define command {
     command_name    check_ncpa_cpu
-    command_line    \$USER1\$/check_ncpa.py -H \$HOSTADDRESS$ \$ARG1\$ -t 'mytoken' -P 5693 -M cpu/percent -w 50 -c 80
+    command_line    \$USER1\$/check_ncpa.py -H \$HOSTADDRESS$ \$ARG1\$ -t 'mytoken' -P 5693 -M cpu/percent -q aggregate=avg --warning 90 --critical 95
 }
 
 define command {
@@ -3005,6 +3006,10 @@ define command {
 #    command_line    check_ncpa!-t 'mytoken' -P 5693 -M processes -w 150 -c 200
 #}
 
+define command {
+    command_name    check_ncpa_service_nginx
+    command_line    \$USER1\$/check_ncpa.py -H \$HOSTADDRESS$ \$ARG1\$ -t 'mytoken' -P 5693 -M services -q service=nginx,status=running
+}
 EOF
 	chown nagios:nagios /usr/local/nagios/etc/objects/myservers/mycommands.cfg
 	chmod 777 /usr/local/nagios/etc/objects/myservers/mycommands.cfg
