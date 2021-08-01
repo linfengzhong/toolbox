@@ -24,8 +24,8 @@ function inital_smart_tool() {
 	# array_service_description=("Network" "CPU" "Disk usage" "Memory" "Total procedures" "SSH" "Service v2ray" "Service xray" "Service trojan.go" "Service nginx" "Service httpd" "Service v2-ui" "Service x-ui" "Service webmin" "Service docker" "Service nrpe" "Service node_exporter" "HTTPS" "Certificate" "TCP 5666" "TCP 7080" "TCP 8080" "TCP 8443" "TCP 9100" "TCP 10000" )
 	# array_check_command=("check_eth" "check_cpu_stats" "check_disk" "check_mem" "check_total_procs" "check_ssh" "check_v2ray" "check_xray" "check_trojan.go" "check_nginx" "check_httpd" "check_v2_ui" "check_x_ui" "check_webmin" "check_docker" "check_nrpe" "check_node_exporter" "check_http" "check_certificate_expires" "check_port_5666" "check_port_7080" "check_port_8080" "check_port_8443" "check_port_9100" "check_port_10000" )
 
-	array_service_description=("Network" "CPU" "Disk" "Memory" "SSH" "Service xray" "Service nginx" "Service webmin" "Service nrpe" "HTTPS" "Certificate" "TCP 5666" "TCP 9100" "Service node exporter" "Total processes" )
-	array_check_command=("check_eth" "check_ncpa_cpu" "check_disk" "check_ncpa_memory" "check_ssh" "check_xray" "check_nginx" "check_webmin" "check_nrpe" "check_http" "check_certificate_expires" "check_port_5666" "check_port_9100" "check_node_exporter" "check_ncpa_processes")
+	array_service_description=("Network" "CPU" "Disk" "Memory" "SSH" "Service xray" "Service nginx" "Service webmin" "Service nrpe" "HTTPS" "Certificate" "TCP 5666" "TCP 5693" "TCP 9100" "Service node exporter" "Total processes" )
+	array_check_command=("check_eth" "check_ncpa_cpu" "check_disk" "check_ncpa_memory" "check_ssh" "check_xray" "check_nginx" "check_webmin" "check_nrpe" "check_http" "check_certificate_expires" "check_port_5666" "check_port_5693" "check_port_9100" "check_node_exporter" "check_ncpa_processes")
 
 	#定义变量
 	# WORKDIR="/root/git/toolbox/Docker/docker-compose/${currentHost}/"
@@ -2775,7 +2775,7 @@ EOF
 		temp_array_service_description=${array_service_description[array_service_and_command_index]}
 		temp_array_check_command=${array_check_command[array_service_and_command_index]}
 
-		if [[ "$temp_array_check_command" != "check_ssh" && "$temp_array_check_command" != "check_certificate_expires" && "$temp_array_check_command" != "check_ssl_certificate" && "$temp_array_check_command" != "check_http" && "$temp_array_check_command" != "check_port_5666" && "$temp_array_check_command" != "check_port_7080" && "$temp_array_check_command" != "check_port_8080" && "$temp_array_check_command" != "check_port_8443" && "$temp_array_check_command" != "check_port_9100" && "$temp_array_check_command" != "check_port_10000" && "$temp_array_check_command" != "check_ncpa_processes" && "$temp_array_check_command" != "check_ncpa_cpu" && "$temp_array_check_command" != "check_ncpa_memory" ]]; then
+		if [[ "$temp_array_check_command" != "check_ssh" && "$temp_array_check_command" != "check_certificate_expires" && "$temp_array_check_command" != "check_ssl_certificate" && "$temp_array_check_command" != "check_http" && "$temp_array_check_command" != "check_port_5666" && "$temp_array_check_command" != "check_port_5693" && "$temp_array_check_command" != "check_port_7080" && "$temp_array_check_command" != "check_port_8080" && "$temp_array_check_command" != "check_port_8443" && "$temp_array_check_command" != "check_port_9100" && "$temp_array_check_command" != "check_port_10000" && "$temp_array_check_command" != "check_ncpa_processes" && "$temp_array_check_command" != "check_ncpa_cpu" && "$temp_array_check_command" != "check_ncpa_memory" ]]; then
 			temp_array_check_command1="check_nrpe!"$temp_array_check_command
 		else
 			temp_array_check_command1=$temp_array_check_command
