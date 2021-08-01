@@ -1883,7 +1883,7 @@ function init_webmin_ssl {
 function init_webmin_port_9999 {
 	print_start "修改webmin端口为 9999"
 
-	if cat /etc/webmin/miniserv.conf | grep 10000 ; then
+	if cat /etc/webmin/miniserv.conf | grep 10000  >/dev/null 2>&1 ; then
 		sed -i 's/port=10000/port=9999/g' /etc/webmin/miniserv.conf
 		sed -i 's/listen=10000/listen=9999/g' /etc/webmin/miniserv.conf
 	else
