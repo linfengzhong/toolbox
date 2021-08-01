@@ -3366,7 +3366,7 @@ EOF
 #-----------------------------------------------------------------------------#
 # 安装 nagios server
 function install_nagios_server {
-
+	print_start "安装 Nagios Core"
 	nagios_status_running=$(systemctl status nagios | grep Active | awk '{print $3}' | cut -d "(" -f2 | cut -d ")" -f1)
 	if [ "$nagios_status_running" == "running" ]  
         then  
@@ -3376,7 +3376,6 @@ function install_nagios_server {
 	# Security-Enhanced Linux
 	# This guide is based on SELinux being disabled or in permissive mode. 
 	# Steps to do this are as follows.
-	print_start "开始安装 Nagios Core"
 	print_info "Step 1: Security-Enhanced Linux"
 	sed -i 's/SELINUX=.*/SELINUX=disabled/g' /etc/selinux/config
 	setenforce 0
@@ -3481,12 +3480,14 @@ function install_nagios_server {
 	# http://10.25.5.143/nagios
 	# http://core-013.domain.local/nagios
 	fi
+	print_complete "安装 Nagios Core"
 }
 #-----------------------------------------------------------------------------#
 # 安装 nagios plugins
 function install_nagios_plugins {
-
+	print_start "安装 Nagios Plugins 2.3.3"
 	if [[ -f "/usr/local/nagios/libexec/check_cpu_stats.sh" ]]; then
+        print_info "Nagios Plugins 服务正在运行！" 
 		print_error "Nagios Plugins 已经存在，无需重复安装！ "
 	else
 	# 2021-April-06 [Initial Version] - Shell Script for Nagios Plugins installing
@@ -3495,7 +3496,6 @@ function install_nagios_plugins {
 	# Security-Enhanced Linux
 	# This guide is based on SELinux being disabled or in permissive mode. 
 	# Steps to do this are as follows.
-	print_start "开始安装 Nagios Plugins 2.3.3"
 	print_info "Step 1: Security-Enhanced Linux"
 	sed -i 's/SELINUX=.*/SELINUX=disabled/g' /etc/selinux/config
 	setenforce 0
@@ -3526,12 +3526,13 @@ function install_nagios_plugins {
 	make install
 	systemctl restart nrpe
 	print_complete "Step 4: 安装nagios plugins, 并重新启动nrpe服务"
-
 	fi
+	print_complete "安装 Nagios Plugins 2.3.3"
 }
 #-----------------------------------------------------------------------------#
 # 安装 nagios nrpe
 function install_nagios_nrpe {
+	print_start "安装 Nagios NRPE"
 	# NRPE - Nagios Remote Plugin Executor
 	nrpe_status_running=$(systemctl status nrpe | grep Active | awk '{print $3}' | cut -d "(" -f2 | cut -d ")" -f1)
 	if [ "$nrpe_status_running" == "running" ]  
@@ -3551,7 +3552,6 @@ function install_nagios_nrpe {
 
 	#Security-Enhanced Linux
 	#This guide is based on SELinux being disabled or in permissive mode. Steps to do this are as follows.
-	print_start "开始安装 Nagios NRPE"
 	print_info "Step 1: SELINUX Disable"
 	sed -i 's/SELINUX=.*/SELINUX=disabled/g' /etc/selinux/config
 	setenforce 0
@@ -3591,13 +3591,13 @@ function install_nagios_nrpe {
 	firewall-cmd --zone=public --add-port=5666/tcp
 	firewall-cmd --zone=public --add-port=5666/tcp --permanent
 	print_complete "Step 5: 设置防火墙开启端口 5666"
-
 	fi
+	print_complete "安装 Nagios NRPE"
 }
 #-----------------------------------------------------------------------------#
 # 安装 nagios ncpa
 function install_nagios_ncpa {
-
+	print_start "安装 Nagios NCPA "
 	ncpa_status_running=$(systemctl status ncpa_listener.service | grep Active | awk '{print $3}' | cut -d "(" -f2 | cut -d ")" -f1)
 	if [ "$ncpa_status_running" == "running" ]  
         then  
@@ -3606,8 +3606,6 @@ function install_nagios_ncpa {
 		else
 
 	# Nagios Cross-Platform Agent
-	print_start "安装 Nagios NCPA "
-
 	print_info "Installing the Nagios Repository"
 	rpm -Uvh https://repo.nagios.com/nagios/8/nagios-repo-8-1.el8.noarch.rpm
 
@@ -3618,11 +3616,10 @@ function install_nagios_ncpa {
 	cat /usr/local/ncpa/etc/ncpa.cfg
 	
 	sudo ln -s /usr/bin/python3 /usr/bin/python >/dev/null 2>&1
-	
 	print_info "访问 https://${currentHost}:5693/"
-	print_complete "安装 Nagios NCPA "
 
 	fi
+	print_complete "安装 Nagios NCPA "
 }
 #-----------------------------------------------------------------------------#
 # 卸载 nagios ncpa
