@@ -3488,7 +3488,7 @@ function install_nagios_plugins {
 	print_start "安装 Nagios Plugins 2.3.3"
 	if [[ -f "/usr/local/nagios/libexec/check_cpu_stats.sh" ]]; then
         print_info "Nagios Plugins 服务正在运行！" 
-		print_error "Nagios Plugins 已经存在，无需重复安装！ "
+		print_error "无需重复安装！ "
 	else
 	# 2021-April-06 [Initial Version] - Shell Script for Nagios Plugins installing
 	# Nagios Plugins - Installing Nagios Plugins From Source
