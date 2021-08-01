@@ -3598,7 +3598,7 @@ function install_nagios_nrpe {
 # 安装 nagios ncpa
 function install_nagios_ncpa {
 
-	ncpa_status_running=$(systemctl status ncpa | grep Active | awk '{print $3}' | cut -d "(" -f2 | cut -d ")" -f1)
+	ncpa_status_running=$(systemctl status ncpa_listener.service | grep Active | awk '{print $3}' | cut -d "(" -f2 | cut -d ")" -f1)
 	if [ "$ncpa_status_running" == "running" ]  
         then  
             print_info "NCPA 服务正在运行！" 
