@@ -1979,7 +1979,7 @@ function generate_vmess_trojan_account {
   - name: "${currentHost}-xrayWS-${currentIP}"
     type: vmess
     server: ${currentHost}
-    port: 443
+    port: 7443
     uuid: ${currentUUID}
     alterId: 64
     cipher: auto
@@ -1992,7 +1992,7 @@ function generate_vmess_trojan_account {
   - name: "${currentHost}-v2rayWS-${currentIP}"
     type: vmess
     server: ${currentHost}
-    port: 443
+    port: 7443
     uuid: ${currentUUID}
     alterId: 64
     cipher: auto
@@ -2005,7 +2005,7 @@ function generate_vmess_trojan_account {
   - name: "${currentHost}-trojan-${currentIP}"
     type: trojan
     server: ${currentHost}
-    port: 443
+    port: 7443
     password: ${currentUUID}
     sni: ${currentHost}
 
