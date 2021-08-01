@@ -1900,7 +1900,7 @@ function restart_webmin_service {
 	service webmin restart
 	systemctl restart webmin
 	#systemctl status webmin
-	print_info "重启 webmin.service "
+	print_complete "重启 webmin.service "
 }
 
 #-----------------------------------------------------------------------------#
