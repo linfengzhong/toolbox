@@ -2958,7 +2958,7 @@ define command {
 
 define command {
     command_name    check_port_5693
-    command_line    \$USER1\$/check_tcp -H \$HOSTADDRESS$ -p 5666 -w 0.2 -c 0.5 -t 5
+    command_line    \$USER1\$/check_tcp -H \$HOSTADDRESS$ -p 5693 -w 0.2 -c 0.5 -t 5
 }
 
 define command {
