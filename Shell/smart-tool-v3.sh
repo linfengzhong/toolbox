@@ -2953,7 +2953,7 @@ define command {
 
 define command {
     command_name    check_port_80
-    command_line    \$USER1\$/check_tcp -H \$HOSTADDRESS$ -p 80 -w 0.2 -c 0.5 -t 5 -S
+    command_line    \$USER1\$/check_tcp -H \$HOSTADDRESS$ -p 80 -w 0.2 -c 0.5 -t 5
 }
 
 define command {
