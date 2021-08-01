@@ -24,8 +24,8 @@ function inital_smart_tool() {
 	# array_service_description=("Network" "CPU" "Disk usage" "Memory" "Total procedures" "SSH" "Service v2ray" "Service xray" "Service trojan.go" "Service nginx" "Service httpd" "Service v2-ui" "Service x-ui" "Service webmin" "Service docker" "Service nrpe" "Service node_exporter" "HTTPS" "Certificate" "TCP 5666" "TCP 7080" "TCP 8080" "TCP 8443" "TCP 9100" "TCP 10000" )
 	# array_check_command=("check_eth" "check_cpu_stats" "check_disk" "check_mem" "check_total_procs" "check_ssh" "check_v2ray" "check_xray" "check_trojan.go" "check_nginx" "check_httpd" "check_v2_ui" "check_x_ui" "check_webmin" "check_docker" "check_nrpe" "check_node_exporter" "check_http" "check_certificate_expires" "check_port_5666" "check_port_7080" "check_port_8080" "check_port_8443" "check_port_9100" "check_port_10000" )
 
-	array_service_description=("Network sent" "Network receive" "CPU" "Disk" "Memory" "SSH" "Service xray" "Service nginx" "Service webmin" "Service nrpe" "Service ncpa" "Http" "TCP 443" "Certificate" "TCP 5666" "TCP 5693" "TCP 9100" "TCP 10000" "Service node exporter" "Total process" )
-	array_check_command=("check_ncpa_interface_sent" "check_ncpa_interface_receive" "check_ncpa_cpu" "check_ncpa_disk" "check_ncpa_memory" "check_ssh" "check_ncpa_service_xray" "check_ncpa_service_nginx" "check_ncpa_service_webmin" "check_ncpa_service_nrpe" "check_ncpa_service_ncpa_listener" "check_http" "check_port_443" "check_certificate_expires" "check_port_5666" "check_port_5693" "check_port_9100" "check_port_10000" "check_ncpa_service_node_exporter" "check_ncpa_processes")
+	array_service_description=("Network sent" "Network receive" "CPU" "Disk" "Memory" "SSH" "Service xray" "Service nginx" "Service webmin" "Service nrpe" "Service ncpa" "Http" "TCP 443" "Certificate" "TCP 5666" "TCP 5693" "TCP 9100" "TCP 9999" "Service node exporter" "Total process" )
+	array_check_command=("check_ncpa_interface_sent" "check_ncpa_interface_receive" "check_ncpa_cpu" "check_ncpa_disk" "check_ncpa_memory" "check_ssh" "check_ncpa_service_xray" "check_ncpa_service_nginx" "check_ncpa_service_webmin" "check_ncpa_service_nrpe" "check_ncpa_service_ncpa_listener" "check_http" "check_port_443" "check_certificate_expires" "check_port_5666" "check_port_5693" "check_port_9100" "check_port_9999" "check_ncpa_service_node_exporter" "check_ncpa_processes")
 
 	#定义变量
 	# WORKDIR="/root/git/toolbox/Docker/docker-compose/${currentHost}/"
@@ -933,6 +933,10 @@ server {
         proxy_pass http://prometheus:9090;
     }
 
+	location /webmin/ {
+        proxy_pass https://${currentHost}:9999;
+    }
+
 }
 
 EOF
@@ -1821,6 +1825,8 @@ function upload_logs_configuration_dynamic_data () {
 	github_push_logserver
 	#print_complete "更新日志、配置文件、动态数据到GitHub "	
 }
+#-----------------------------------------------------------------------------#
+# 初始化 webmin SSL
 function init_webmin_ssl {
 	print_start "初始化webmin SSL证书 "
 	
@@ -1871,6 +1877,20 @@ function init_webmin_ssl {
 		fi
 	fi
 	print_complete "初始化webmin SSL证书 "
+}
+#-----------------------------------------------------------------------------#
+# 修改 webmin 端口：10000 -> 9999 
+function init_webmin_port_9999 {
+	print_start "修改webmin端口为 9999"
+
+	if cat /etc/webmin/miniserv.conf | grep 10000 ; then
+		sed -i 's/port=10000/port=9999/g' /etc/webmin/miniserv.conf
+		sed -i 's/listen=10000/listen=9999/g' /etc/webmin/miniserv.conf
+	else
+		print_error "webmin 端口已改为: 9999, 无需重复操作！"
+	fi
+
+	print_complete "修改webmin端口为 9999"
 }
 #-----------------------------------------------------------------------------#
 # 清理域名
@@ -2992,8 +3012,8 @@ define command {
 }
 
 define command {
-    command_name    check_port_10000
-    command_line    \$USER1\$/check_tcp -H \$HOSTADDRESS$ -p 10000 -w 0.2 -c 0.5 -t 5
+    command_name    check_port_9999
+    command_line    \$USER1\$/check_tcp -H \$HOSTADDRESS$ -p 9999-w 0.2 -c 0.5 -t 5
 }
 
 define command {
@@ -3940,16 +3960,26 @@ function webmin_menu() {
 	checkSystem
 	echoContent red "=================================================================="
 	echoContent skyBlue "----------------------------主机管理------------------------------"
+	echoContent yellow "0.安装 全部程序"
 	echoContent yellow "1.安装 webmin "
 	echoContent yellow "2.激活 webmin SSL "
+	echoContent yellow "3.修改 webmin port: 9999 "
 	echoContent red "=================================================================="
 	read -r -p "Please choose the function (请选择) : " selectInstallType
 	case ${selectInstallType} in
+	0)
+		install_webmin
+		init_webmin_ssl
+		init_webmin_port_9999
+		;;
 	1)
 		install_webmin
 		;;
 	2)
 		init_webmin_ssl
+		;;
+	3)
+		init_webmin_port_9999
 		;;
 	*)
 		print_error "请输入正确的数字"
