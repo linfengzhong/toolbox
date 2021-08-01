@@ -1899,7 +1899,7 @@ function restart_webmin_service {
 	print_info "重启 webmin.service "
 	service webmin restart
 	systemctl restart webmin
-	systemctl status webmin
+	#systemctl status webmin
 	print_info "重启 webmin.service "
 }
 
