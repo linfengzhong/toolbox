@@ -2982,17 +2982,17 @@ define command {
 
 define command {
     command_name    check_ncpa_cpu
-    command_line    \$USER1\$/check_ncpa.py -H \$HOSTADDRESS$ \$ARG1\$ -t 'mytoken' -P 5693 -M cpu/percent -w 20 -c 40 -q 'aggregate=avg'
+    command_line    \$USER1\$/check_ncpa.py -H \$HOSTADDRESS$ \$ARG1\$ -t 'mytoken' -P 5693 -M cpu/percent -w 50 -c 80 -q 'aggregate=avg'
 }
 
 define command {
     command_name    check_ncpa_memory
-    command_line    \$USER1\$/check_ncpa.py -H \$HOSTADDRESS$ \$ARG1\$ -t 'mytoken' -P 5693 -M memory/virtual -w 50 -c 80 -u G
+    command_line    \$USER1\$/check_ncpa.py -H \$HOSTADDRESS$ \$ARG1\$ -t 'mytoken' -P 5693 -M memory/virtual -w 80 -c 90 -u G
 }
 
 define command {
     command_name    check_ncpa_processes
-    command_line    \$USER1\$/check_ncpa.py -H \$HOSTADDRESS$ \$ARG1\$ -t 'mytoken' -P 5693 -M processes -w 150 -c 200
+    command_line    \$USER1\$/check_ncpa.py -H \$HOSTADDRESS$ \$ARG1\$ -t 'mytoken' -P 5693 -M processes -w 160 -c 200
 }
 
 #define command {
