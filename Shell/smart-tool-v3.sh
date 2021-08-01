@@ -1887,7 +1887,7 @@ function init_webmin_port_9999 {
 		sed -i 's/port=10000/port=9999/g' /etc/webmin/miniserv.conf
 		sed -i 's/listen=10000/listen=9999/g' /etc/webmin/miniserv.conf
 	else
-		print_error "webmin 端口已改为: 9999, 无需重复操作！"
+		print_error "已经修改过端口, 无需重复操作！"
 	fi
 
 	print_complete "修改webmin端口为 9999"
