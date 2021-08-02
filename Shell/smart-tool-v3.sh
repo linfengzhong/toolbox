@@ -3021,7 +3021,7 @@ define command {
 
 define command {
     command_name    check_ncpa_cpu
-    command_line    \$USER1\$/check_ncpa.py -H \$HOSTADDRESS$ \$ARG1\$ -t 'mytoken' -P 5693 -M cpu/percent -q aggregate=avg --warning 90 --critical 95
+    command_line    \$USER1\$/check_ncpa.py -H \$HOSTADDRESS$ \$ARG1\$ -t 'mytoken' -P 5693 -M cpu/percent --warning 90 --critical 95
 }
 
 define command {
