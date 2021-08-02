@@ -4523,6 +4523,7 @@ function menu() {
 		install_git
 		;;
 	30)
+		print_error "Docker 映射端口 7080 & 7443"
 		install_docker
 		install_docker_compose
 		generate_docker_compose_yml
