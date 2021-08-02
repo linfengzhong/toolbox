@@ -929,14 +929,6 @@ server {
         proxy_pass http://grafana:3000/;
     }
 
-	location /prometheus/ {
-        proxy_pass http://prometheus:9090;
-    }
-
-	location /webmin/ {
-        proxy_pass https://${currentHost}:9999;
-    }
-
 }
 
 EOF
