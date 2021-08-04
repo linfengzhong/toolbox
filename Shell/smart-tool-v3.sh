@@ -1388,20 +1388,20 @@ services:
         networks: 
             - net
     #7. node exporter -> provide dynamic data to prometheus via the port: 9100
-    node_exporter:
-        image: quay.io/prometheus/node-exporter:latest
-        container_name: node_exporter
-        environment: 
-            TZ: Asia/Shanghai
-        expose: 
-            - 9100
-        command:
-            - '--path.rootfs=/host'
-        network_mode: host
-        pid: host
-        restart: unless-stopped
-        volumes:
-          - '/:/host:ro,rslave'
+   # node_exporter:
+   #     image: quay.io/prometheus/node-exporter:latest
+   #     container_name: node_exporter
+   #     environment: 
+   #         TZ: Asia/Shanghai
+   #     expose: 
+   #         - 9100
+   #     command:
+   #         - '--path.rootfs=/host'
+   #     network_mode: host
+   #     pid: host
+   #     restart: unless-stopped
+   #     volumes:
+   #       - '/:/host:ro,rslave'
     #8. grafana -> monitor UI
     #--> Working
     grafana:
