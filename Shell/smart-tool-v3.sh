@@ -2759,7 +2759,7 @@ EOF
 
 	if [[ "${NagiosClientDomain1}" == "k8s-master.cf" ]] ; then
 
-		local array_service_description_master=("Service docker" "Service x-ui" "Service nagios" "Service apache httpd" "TCP 7080" "TCP 7443" "TCP 8080 httpd" "TCP 8443 httpd")
+		local array_service_description_master=("Service docker" "Service x-ui" "Service nagios" "Service apache httpd" "TCP 7080 nginx" "TCP 7443 nginx" "TCP 8080 httpd" "TCP 8443 httpd")
 		local array_check_command_master=("check_ncpa_service_docker" "check_ncpa_service_x-ui" "check_ncpa_service_nagios" "check_ncpa_service_httpd" "check_port_7080" "check_port_7443" "check_port_8080" "check_port_8443")
 		local servicexx_master
 		local array_service_and_command_index_master=0
