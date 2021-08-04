@@ -2757,7 +2757,7 @@ EOF
 	chown nagios:nagios /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
 	chmod 777 /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
 
-	if "${NagiosClientDomain1}" = "k8s-master.cf" ; then
+	if [[ "${NagiosClientDomain1}" == "k8s-master.cf" ]] ; then
 
 		local array_service_description_master=("Service docker" "Service x-ui" )
 		local array_check_command_master=("check_ncpa_service_docker" "check_ncpa_service_x-ui")
