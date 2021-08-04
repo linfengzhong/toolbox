@@ -2759,8 +2759,8 @@ EOF
 
 	if [[ "${NagiosClientDomain1}" == "k8s-master.cf" ]] ; then
 
-		local array_service_description_master=("Service docker" "Service x-ui" "Service nagios")
-		local array_check_command_master=("check_ncpa_service_docker" "check_ncpa_service_x-ui" "check_ncpa_service_nagios")
+		local array_service_description_master=("Service docker" "Service x-ui" "Service nagios" "Service apache httpd" "TCP 7080" "TCP 7443" "TCP 8080 httpd" "TCP 8443 httpd")
+		local array_check_command_master=("check_ncpa_service_docker" "check_ncpa_service_x-ui" "check_ncpa_service_nagios" "check_ncpa_service_httpd" "check_port_7080" "check_port_7443" "check_port_8080" "check_port_8443")
 		local servicexx_master
 		local array_service_and_command_index_master=0
 		local temp_array_service_description_master
@@ -3035,6 +3035,11 @@ define command {
 }
 
 define command {
+    command_name    check_port_7443
+    command_line    \$USER1\$/check_tcp -H \$HOSTADDRESS$ -p 7080 -w 0.2 -c 0.5 -t 5
+}
+
+define command {
     command_name    check_port_8080
     command_line    \$USER1\$/check_tcp -H \$HOSTADDRESS$ -p 8080 -w 0.2 -c 0.5 -t 5
 }
@@ -3107,6 +3112,11 @@ define command {
 define command {
     command_name    check_ncpa_service_nagios
     command_line    \$USER1\$/check_ncpa.py -H \$HOSTADDRESS$ \$ARG1\$ -t 'mytoken' -P 5693 -M services -q service=nagios,status=running
+}
+
+define command {
+    command_name    check_ncpa_service_httpd
+    command_line    \$USER1\$/check_ncpa.py -H \$HOSTADDRESS$ \$ARG1\$ -t 'mytoken' -P 5693 -M services -q service=httpd,status=running
 }
 
 define command {
