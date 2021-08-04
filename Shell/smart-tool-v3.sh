@@ -2752,9 +2752,44 @@ define host {
                                                             ; Useful if you want notifications to go to just a few people and don't want to configure contact groups. You must specify at least one contact or contact group in each host definition.
     contact_groups                  admins                  ; Notifications get sent to the admins by default
 }
+
 EOF
 	chown nagios:nagios /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
 	chmod 777 /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
+
+	if "${NagiosClientDomain1}" = "k8s-master.cf" ; then
+
+		local array_service_description_master=("Service docker" "Service x-ui" )
+		local array_check_command_master=("check_ncpa_service_docker" "check_ncpa_service_x-ui")
+		local servicexx_master
+		local array_service_and_command_index_master=0
+		local temp_array_service_description_master
+		local temp_array_check_command_master
+
+		print_info "发现Master主控，开始进行额外配置"
+
+		for servicexx_master in "${array_service_description_master[@]}"
+		do
+
+		temp_array_service_description_master=${array_service_description_master[array_service_and_command_index_master]}
+		temp_array_check_command_master=${array_check_command_master[array_service_and_command_index_master]}
+
+		cat <<EOF >> /usr/local/nagios/etc/objects/myservers/${NagiosClientDomain1}.cfg
+# Define a service to check $temp_array_service_description_master on the remote machine.
+define service {
+    use                     normal-service
+    host_name               $NagiosClientDomain1
+    service_description     $temp_array_service_description_master
+    check_command           $temp_array_check_command_master
+}
+
+EOF
+		let array_service_and_command_index_master++
+		done
+	else
+		print_info "未发现Master主控，无需额外配置"
+	fi
+
 }
 #-----------------------------------------------------------------------------#
 # 定制 Nagios Server Services
@@ -3062,6 +3097,16 @@ define command {
 define command {
     command_name    check_ncpa_service_xray
     command_line    \$USER1\$/check_ncpa.py -H \$HOSTADDRESS$ \$ARG1\$ -t 'mytoken' -P 5693 -M services -q service=xray,status=running
+}
+
+define command {
+    command_name    check_ncpa_service_docker
+    command_line    \$USER1\$/check_ncpa.py -H \$HOSTADDRESS$ \$ARG1\$ -t 'mytoken' -P 5693 -M services -q service=docker,status=running
+}
+
+define command {
+    command_name    check_ncpa_service_x-ui
+    command_line    \$USER1\$/check_ncpa.py -H \$HOSTADDRESS$ \$ARG1\$ -t 'mytoken' -P 5693 -M services -q service=x-ui,status=running
 }
 
 define command {
